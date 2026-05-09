@@ -1,0 +1,11 @@
+{
+  "name": "marketing-lab",
+  "description": "도형의 마케팅 실험실 — 비주얼 작업 자동화 플러그인 모음",
+  "plugins": [
+    {
+      "name": "visual-tools",
+      "path": "plugins/visual-tools",
+      "description": "웹 캡처 무드보드 생성(/moodboard)과 파일 날짜별 자동 정리(/sort-files). Playwright MCP 포함."
+    }
+  ]
+}
