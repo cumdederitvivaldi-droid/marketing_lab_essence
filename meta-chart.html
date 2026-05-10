@@ -6,45 +6,105 @@
 <title>Meta 광고 성과 추이</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 24px; }
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-  .card { background: #f5f5f3; border-radius: 8px; padding: 14px 16px; }
-  .card-label { font-size: 12px; color: #6b6b6b; margin-bottom: 4px; }
-  .card-value { font-size: 22px; font-weight: 500; }
-  .card-sub { font-size: 11px; color: #999; margin-top: 3px; }
-  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; font-size: 12px; color: #6b6b6b; align-items: center; }
-  .legend-item { display: flex; align-items: center; gap: 5px; }
-  .swatch-bar { width: 12px; height: 12px; border-radius: 2px; background: #85B7EB; display: inline-block; }
-  .swatch-line { width: 14px; height: 0; border-top: 2.5px solid #1D9E75; display: inline-block; }
-  .swatch-dashed { width: 14px; height: 0; border-top: 2.5px dashed #D85A30; display: inline-block; }
-  .swatch-event { width: 1.5px; height: 14px; background: rgba(136,135,128,0.6); display: inline-block; }
-  .legend-sep { width: 0.5px; height: 14px; background: #ddd; margin: 0 4px; display: inline-block; }
-  .chart-wrap { position: relative; width: 100%; height: 340px; }
-  @media (max-width: 500px) { .cards { grid-template-columns: 1fr; } }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 20px; }
+  .channel-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px 16px; background: #EFF4FF; border-left: 4px solid #1877F2; border-radius: 0 8px 8px 0; }
+  .channel-logo { width: 36px; height: 36px; background: #1877F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+  .channel-name { font-size: 15px; font-weight: 600; color: #1877F2; }
+  .channel-period { font-size: 11px; color: #666; margin-top: 2px; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .card { background: #f5f5f3; border-radius: 8px; padding: 12px 14px; }
+  .card-label { font-size: 11px; color: #6b6b6b; margin-bottom: 3px; }
+  .card-value { font-size: 20px; font-weight: 500; }
+  .card-sub { font-size: 10px; color: #999; margin-top: 2px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; font-size: 11px; color: #6b6b6b; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .sw-bar  { width: 11px; height: 11px; border-radius: 2px; background: #85B7EB; display: inline-block; }
+  .sw-line { width: 14px; height: 0; border-top: 2.5px solid #1D9E75; display: inline-block; }
+  .sw-dash { width: 14px; height: 0; border-top: 2.5px dashed #D85A30; display: inline-block; }
+  .sw-dot  { width: 14px; height: 0; border-top: 2px dotted #7C3AED; display: inline-block; }
+  .sw-ev   { width: 1.5px; height: 13px; background: rgba(136,135,128,0.6); display: inline-block; }
+  .leg-sep { width: 0.5px; height: 13px; background: #ddd; margin: 0 3px; display: inline-block; }
+  .chart-wrap { position: relative; width: 100%; height: 320px; }
+  @media (max-width: 600px) { .cards { grid-template-columns: repeat(2,1fr); } }
 </style>
 </head>
 <body>
+<div class="channel-header">
+  <div class="channel-logo">f</div>
+  <div>
+    <div class="channel-name">Meta 광고 월별 성과 추이</div>
+    <div class="channel-period">2024.06 ~ 2026.04</div>
+  </div>
+</div>
 <div class="cards">
-  <div class="card"><div class="card-label">누적 광고비</div><div class="card-value">5.7억원</div><div class="card-sub">2024.05 ~ 2025.08</div></div>
-  <div class="card"><div class="card-label">최고 월 회원가입</div><div class="card-value">9,994명</div><div class="card-sub">2025-07</div></div>
-  <div class="card"><div class="card-label">최고 월 구매</div><div class="card-value">6,584건</div><div class="card-sub">2025-07</div></div>
+  <div class="card"><div class="card-label">누적 광고비</div><div class="card-value">15.7억원</div><div class="card-sub">2024.06 ~ 2026.04</div></div>
+  <div class="card"><div class="card-label">최고 월 회원가입</div><div class="card-value">18,452명</div><div class="card-sub">2026-03</div></div>
+  <div class="card"><div class="card-label">최고 월 구매</div><div class="card-value">16,637건</div><div class="card-sub">2026-04</div></div>
+  <div class="card"><div class="card-label">최저 구매 CPA</div><div class="card-value">10,810원</div><div class="card-sub">2026-04</div></div>
 </div>
 <div class="legend">
-  <span class="legend-item"><span class="swatch-bar"></span>광고비 (왼쪽 축)</span>
-  <span class="legend-item"><span class="swatch-line"></span>회원가입 (오른쪽 축)</span>
-  <span class="legend-item"><span class="swatch-dashed"></span>구매 (오른쪽 축)</span>
-  <span class="legend-sep"></span>
-  <span class="legend-item"><span class="swatch-event"></span>주요 이벤트</span>
+  <span class="legend-item"><span class="sw-bar"></span>광고비 (왼쪽 축)</span>
+  <span class="legend-item"><span class="sw-line"></span>회원가입 (오른쪽 축)</span>
+  <span class="legend-item"><span class="sw-dash"></span>구매 (오른쪽 축)</span>
+  <span class="legend-item"><span class="sw-dot"></span>구매 CPA (원, 툴팁 확인)</span>
+  <span class="leg-sep"></span>
+  <span class="legend-item"><span class="sw-ev"></span>주요 이벤트</span>
 </div>
 <div class="chart-wrap">
-  <canvas id="mc" role="img" aria-label="메타 광고 월별 성과 추이 차트, 2024.05~2025.08">광고비 433만원에서 8,271만원, 회원가입 600명에서 9,994명, 구매 28건에서 6,584건으로 성장.</canvas>
+  <canvas id="mc" role="img" aria-label="메타 광고 월별 성과 추이, 2024.06~2026.04"></canvas>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const rows=[{m:'24-05',s:433,r:null,p:null},{m:'24-06',s:1630,r:600,p:28},{m:'24-07',s:2201,r:4438,p:247},{m:'24-08',s:2356,r:3725,p:225},{m:'24-09',s:2028,r:3014,p:198},{m:'24-10',s:2187,r:3003,p:165},{m:'24-11',s:2701,r:4988,p:490},{m:'24-12',s:2564,r:3551,p:850},{m:'25-01',s:2066,r:3967,p:1362},{m:'25-02',s:2043,r:3105,p:1148},{m:'25-03',s:3706,r:6447,p:2582},{m:'25-04',s:5690,r:7709,p:3796},{m:'25-05',s:6070,r:8898,p:3978},{m:'25-06',s:6374,r:8253,p:3739},{m:'25-07',s:8271,r:9994,p:6584},{m:'25-08',s:6758,r:8671,p:4865}];
-const annos={6:'MMP 도입',8:'구글·틱톡 확장'};
-const vLinePlugin={id:'vl',afterDraw(chart){const{ctx,chartArea:ca,scales}=chart;Object.entries(annos).forEach(([i,lbl])=>{const x=scales.x.getPixelForValue(+i);ctx.save();ctx.strokeStyle='rgba(136,135,128,0.45)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(x,ca.top+20);ctx.lineTo(x,ca.bottom);ctx.stroke();ctx.font='10px sans-serif';ctx.fillStyle='rgba(100,100,100,0.85)';ctx.textAlign='center';ctx.fillText(lbl,x,ca.top+13);ctx.restore();})}};
-new Chart(document.getElementById('mc'),{plugins:[vLinePlugin],data:{labels:rows.map(r=>r.m),datasets:[{type:'bar',label:'광고비 (만원)',data:rows.map(r=>r.s),backgroundColor:'#85B7EB',yAxisID:'yL',order:2,borderRadius:2},{type:'line',label:'회원가입',data:rows.map(r=>r.r),borderColor:'#1D9E75',backgroundColor:'transparent',borderWidth:2.5,pointRadius:3.5,pointBackgroundColor:'#1D9E75',yAxisID:'yR',order:1,tension:0.3,spanGaps:false},{type:'line',label:'구매',data:rows.map(r=>r.p),borderColor:'#D85A30',backgroundColor:'transparent',borderWidth:2.5,borderDash:[6,3],pointRadius:3.5,pointBackgroundColor:'#D85A30',yAxisID:'yR',order:1,tension:0.3,spanGaps:false}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(255,255,255,0.95)',borderColor:'rgba(0,0,0,0.08)',borderWidth:1,titleColor:'#1a1a1a',bodyColor:'#444',callbacks:{title(i){return i[0].label;},label(ctx){const v=ctx.parsed.y;if(v===null||v===undefined)return null;if(ctx.dataset.label==='광고비 (만원)')return '광고비: '+Math.round(v).toLocaleString()+'만원';if(ctx.dataset.label==='회원가입')return '회원가입: '+Math.round(v).toLocaleString()+'명';return '구매: '+Math.round(v).toLocaleString()+'건';}}}},scales:{x:{grid:{display:false},ticks:{autoSkip:false,maxRotation:45,font:{size:10},color:'#888'}},yL:{type:'linear',position:'left',title:{display:true,text:'광고비 (만원)',font:{size:11},color:'#999'},ticks:{callback:v=>v>=10000?(v/10000).toFixed(1)+'억':v.toLocaleString()+'만',font:{size:10},color:'#888'},grid:{color:'rgba(0,0,0,0.06)'}},yR:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'회원가입·구매 (명/건)',font:{size:11},color:'#999'},ticks:{callback:v=>v.toLocaleString(),font:{size:10},color:'#888'}}}}});
+const rows=[
+  {m:'24-06',s:1630,r:600,p:28,c:null},
+  {m:'24-07',s:2201,r:4438,p:247,c:89104},
+  {m:'24-08',s:2356,r:3725,p:225,c:104691},
+  {m:'24-09',s:2028,r:3014,p:198,c:102438},
+  {m:'24-10',s:2187,r:3003,p:165,c:132550},
+  {m:'24-11',s:2701,r:4988,p:490,c:55130},
+  {m:'24-12',s:2564,r:3551,p:850,c:30160},
+  {m:'25-01',s:2066,r:3967,p:1362,c:15166},
+  {m:'25-02',s:2043,r:3105,p:1148,c:17800},
+  {m:'25-03',s:3706,r:6447,p:2582,c:14354},
+  {m:'25-04',s:5690,r:7709,p:3796,c:14990},
+  {m:'25-05',s:6070,r:8898,p:3978,c:15258},
+  {m:'25-06',s:6374,r:8253,p:3739,c:17047},
+  {m:'25-07',s:8271,r:9994,p:6584,c:12562},
+  {m:'25-08',s:6758,r:8671,p:4865,c:13891},
+  {m:'25-09',s:5754,r:6333,p:4144,c:13886},
+  {m:'25-10',s:9555,r:8519,p:4206,c:22718},
+  {m:'25-11',s:8109,r:7072,p:7378,c:10991},
+  {m:'25-12',s:14198,r:9661,p:8974,c:15821},
+  {m:'26-01',s:10363,r:5606,p:3172,c:32669},
+  {m:'26-02',s:13495,r:14011,p:8236,c:16385},
+  {m:'26-03',s:20535,r:18452,p:13660,c:15033},
+  {m:'26-04',s:17984,r:15039,p:16637,c:10810},
+];
+const annos={5:'MMP 도입',7:'구글·틱톡 확장'};
+const vLinePlugin={id:'vl',afterDraw(chart){const{ctx,chartArea:ca,scales}=chart;Object.entries(annos).forEach(([i,lbl])=>{const x=scales.x.getPixelForValue(+i);ctx.save();ctx.strokeStyle='rgba(136,135,128,0.45)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(x,ca.top+20);ctx.lineTo(x,ca.bottom);ctx.stroke();ctx.font='10px sans-serif';ctx.fillStyle='rgba(100,100,100,0.85)';ctx.textAlign='center';ctx.fillText(lbl,x,ca.top+13);ctx.restore();});}};
+new Chart(document.getElementById('mc'),{
+  plugins:[vLinePlugin],
+  data:{labels:rows.map(r=>r.m),datasets:[
+    {type:'bar',label:'광고비 (만원)',data:rows.map(r=>r.s),backgroundColor:'#85B7EB',yAxisID:'yL',order:3,borderRadius:2},
+    {type:'line',label:'회원가입',data:rows.map(r=>r.r),borderColor:'#1D9E75',backgroundColor:'transparent',borderWidth:2.5,pointRadius:3,pointBackgroundColor:'#1D9E75',yAxisID:'yR',order:2,tension:0.3,spanGaps:false},
+    {type:'line',label:'구매',data:rows.map(r=>r.p),borderColor:'#D85A30',backgroundColor:'transparent',borderWidth:2.5,borderDash:[6,3],pointRadius:3,pointBackgroundColor:'#D85A30',yAxisID:'yR',order:2,tension:0.3,spanGaps:false},
+    {type:'line',label:'구매 CPA (원)',data:rows.map(r=>r.c),borderColor:'#7C3AED',backgroundColor:'transparent',borderWidth:2,borderDash:[2,2],pointRadius:2.5,pointBackgroundColor:'#7C3AED',yAxisID:'yCPA',order:1,tension:0.2,spanGaps:false}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(255,255,255,0.97)',borderColor:'rgba(0,0,0,0.08)',borderWidth:1,titleColor:'#1a1a1a',bodyColor:'#444',padding:10,
+      callbacks:{title(i){return i[0].label;},label(ctx){const v=ctx.parsed.y;if(v===null||v===undefined)return null;
+        if(ctx.dataset.label==='광고비 (만원)')return '광고비: '+Math.round(v).toLocaleString()+'만원';
+        if(ctx.dataset.label==='회원가입')return '회원가입: '+Math.round(v).toLocaleString()+'명';
+        if(ctx.dataset.label==='구매')return '구매: '+Math.round(v).toLocaleString()+'건';
+        return '구매CPA: '+Math.round(v).toLocaleString()+'원';}}}},
+    scales:{
+      x:{grid:{display:false},ticks:{autoSkip:false,maxRotation:45,font:{size:9},color:'#888'}},
+      yL:{type:'linear',position:'left',title:{display:true,text:'광고비 (만원)',font:{size:10},color:'#999'},ticks:{callback:v=>v>=10000?(v/10000).toFixed(1)+'억':v.toLocaleString()+'만',font:{size:9},color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}},
+      yR:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'회원가입·구매 (명/건)',font:{size:10},color:'#999'},ticks:{callback:v=>v.toLocaleString(),font:{size:9},color:'#888'}},
+      yCPA:{type:'linear',position:'right',display:false}
+    }
+  }
+});
 </script>
 </body>
 </html>
