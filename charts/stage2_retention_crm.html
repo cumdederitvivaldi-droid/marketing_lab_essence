@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2단계 — LTV 구조 개선 성과</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 12px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .kpi .value { font-size: 18px; font-weight: 700; color: #2563eb; }
+  .kpi .sub { font-size: 10px; color: #666; margin-top: 2px; }
+  canvas { max-height: 200px; }
+  .footer { margin-top: 12px; font-size: 11px; color: #aaa; text-align: right; }
+  .tag { display: inline-block; background: #eff6ff; color: #2563eb; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<h2>📊 2단계 — LTV 구조 개선 4축 성과 요약</h2>
+<p class="subtitle">리텐션 · CRM 재활성화 · 전환율 · AOV — 팔수록 이익이 남는 구조로 전환</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">공헌이익률 전환</div><div class="value" style="color:#16a34a">+29.86%</div><div class="sub">-39.27% → +29.86%</div></div>
+  <div class="kpi"><div class="label">등급달성 M1 리텐션</div><div class="value" style="color:#16a34a">86.9%</div><div class="sub">도입 전 45.9%</div></div>
+  <div class="kpi"><div class="label">CRM 재활성화 매출</div><div class="value" style="color:#16a34a">+12.3억</div><div class="sub">7,997명 재활성화</div></div>
+  <div class="kpi"><div class="label">객단가 개선</div><div class="value" style="color:#16a34a">+17.6%</div><div class="sub">7,205원 → 8,474원</div></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <span class="tag">① 리텐션</span>
+    <h3>등급제 도입 전/후 M1·M2 리텐션 비교</h3>
+    <canvas id="retentionChart"></canvas>
+  </div>
+  <div class="card">
+    <span class="tag">① LTV 격차</span>
+    <h3>등급 달성 여부별 180일 평균 LTV (원)</h3>
+    <canvas id="ltvChart"></canvas>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <span class="tag">② CRM 재활성화</span>
+    <h3>D22·D29·D61 CRM 도입 전/후 재활성화율</h3>
+    <canvas id="crmChart"></canvas>
+  </div>
+  <div class="card">
+    <span class="tag">③ AOV</span>
+    <h3>수거 무게 분포 변화 — 8kg 초과 비율 증가</h3>
+    <canvas id="weightChart"></canvas>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <span class="tag">② 전환율 (CVR)</span>
+    <h3>D16·D45 CRM 미전환 유저 전환율 개선</h3>
+    <canvas id="cvrChart"></canvas>
+  </div>
+  <div class="card">
+    <span class="tag">② 웰컴쿠폰</span>
+    <h3>웰컴쿠폰 도입 전/후 30일 내 활성화율</h3>
+    <canvas id="welcomeChart"></canvas>
+  </div>
+</div>
+
+<div class="footer">데이터 기준: 2024-08-26 등급제 도입일 / CRM 2024-08-28 / AOV 2024-10-16</div>
+
+<script>
+const blue = '#2563eb', green = '#16a34a', red = '#dc2626', orange = '#f59e0b', gray = '#94a3b8';
+
+new Chart(document.getElementById('retentionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['도입 전\n(11,711명)', '등급 달성\n(12,312명)', '등급 미달성\n(46,302명)'],
+    datasets: [
+      { label: 'M1 리텐션', data: [45.9, 86.9, 29.9], backgroundColor: [gray+'bb', green+'cc', red+'cc'], borderRadius: 6, borderSkipped: false },
+      { label: 'M2 리텐션', data: [38.0, 84.4, 20.0], backgroundColor: [gray+'77', green+'77', red+'77'], borderRadius: 6, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw}%` } } },
+    scales: {
+      y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('ltvChart'), {
+  type: 'bar',
+  data: {
+    labels: ['등급 달성\n(새싹 이상)', '등급 미달성\n(<7회)'],
+    datasets: [{
+      label: '180일 평균 LTV (원)',
+      data: [176121, 9743],
+      backgroundColor: [green + 'cc', gray + 'aa'],
+      borderRadius: 8, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `LTV: ${ctx.raw.toLocaleString()}원` } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => (v/10000).toFixed(0) + '만원' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('crmChart'), {
+  type: 'bar',
+  data: {
+    labels: ['D22 앱 푸시\n재주문율', 'D29 쿠폰\n재활성화율', 'D61 쿠폰\n재활성화율'],
+    datasets: [
+      { label: '도입 전', data: [12.70, 23.57, 10.32], backgroundColor: gray + 'bb', borderRadius: 6, borderSkipped: false },
+      { label: '도입 후', data: [15.77, 30.77, 15.13], backgroundColor: blue + 'cc', borderRadius: 6, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw}%` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('weightChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2kg 미만', '2~4kg', '4~6kg', '6~8kg', '8~12kg', '12~16kg', '16kg+'],
+    datasets: [
+      { label: '도입 전', data: [15.23, 30.55, 21.21, 12.25, 11.87, 4.22, 4.66], backgroundColor: gray + 'aa', borderRadius: 4, borderSkipped: false },
+      { label: '도입 후', data: [11.75, 27.15, 21.14, 12.91, 14.02, 5.97, 7.08], backgroundColor: green + 'bb', borderRadius: 4, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('cvrChart'), {
+  type: 'bar',
+  data: {
+    labels: ['D16 도입 전', 'D16 도입 후', 'D45 도입 전', 'D45 도입 후'],
+    datasets: [{
+      label: '미전환 유저 전환율',
+      data: [1.94, 3.86, 0.83, 2.75],
+      backgroundColor: [gray+'bb', blue+'cc', gray+'bb', blue+'cc'],
+      borderRadius: 8, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('welcomeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['도입 전\n(1~3월)', '도입 후\n(4~6월)'],
+    datasets: [
+      { label: '30일 내 활성화율', data: [25.53, 34.59], backgroundColor: [gray+'bb', green+'cc'], borderRadius: 8, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } } },
+    scales: {
+      y: { beginAtZero: true, max: 50, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>

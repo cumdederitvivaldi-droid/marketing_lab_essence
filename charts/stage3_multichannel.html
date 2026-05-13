@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3단계 — 멀티채널 성장 지표</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 12px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .kpi .value { font-size: 18px; font-weight: 700; color: #2563eb; }
+  .kpi .sub { font-size: 10px; color: #666; margin-top: 2px; }
+  canvas { max-height: 240px; }
+  .footer { margin-top: 12px; font-size: 11px; color: #aaa; text-align: right; }
+  .full { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+<h2>🎲 3단계 — 멀티채널 구축 성과</h2>
+<p class="subtitle">Meta 단독 → Meta·Google Ads·TikTok 멀티채널 (2024.05 ~ 2025.08)</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">월평균 B2C 매출</div><div class="value" style="color:#16a34a">+230%</div><div class="sub">1.28억 → 4.23억원</div></div>
+  <div class="kpi"><div class="label">월평균 신규유저</div><div class="value" style="color:#16a34a">+262%</div><div class="sub">1,581명 → 5,725명</div></div>
+  <div class="kpi"><div class="label">공헌이익률</div><div class="value" style="color:#16a34a">+22%대</div><div class="sub">5%대 → 22%대</div></div>
+  <div class="kpi"><div class="label">평균 CAC</div><div class="value">14,032원</div><div class="sub">14,639원 → 소폭 개선</div></div>
+</div>
+
+<div class="grid">
+  <div class="card full">
+    <h3>📈 월별 B2C 매출 추이 (2024.05 ~ 2025.08)</h3>
+    <canvas id="revenueChart" style="max-height:260px"></canvas>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>👤 월별 신규 유저 추이</h3>
+    <canvas id="userChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>💰 마케팅비 대비 매출 ROI 비교</h3>
+    <canvas id="roiChart"></canvas>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>📉 CAC 변화 추이 (원)</h3>
+    <canvas id="cacChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>📊 멀티채널 도입 전/후 비교</h3>
+    <canvas id="compareChart"></canvas>
+  </div>
+</div>
+
+<div class="footer">⚠️ 2025-06 B2C 매출 데이터 확인 필요 (현재 5월과 동일하게 기입됨) | 데이터 기준: 내부 대시보드</div>
+
+<script>
+const blue = '#2563eb', green = '#16a34a', orange = '#f59e0b', gray = '#94a3b8', red = '#dc2626';
+
+const months = ['24.05','24.06','24.07','24.08','24.09','24.10','24.11','24.12','25.01\n(멀티채널)','25.02','25.03','25.04','25.05','25.06*','25.07','25.08'];
+const revenue = [5780, 7428, 10060, 13490, 14350, 17330, 16850, 17350, 19140, 24100, 24100, 37780, 44470, null, 69010, 75350];
+const cac = [14260, 13394, 13054, 10515, 11849, 15735, 19250, 19056, 19056, 13223, 13223, 11940, 12467, null, 16253, 13626];
+const users = [600, 864, 1373, 1807, 2321, 1853, 1933, 1893, 2512, 2692, 2692, 5783, 6235, null, 10211, 9440];
+
+// 멀티채널 시작점 표시를 위한 색상
+const bgColors = months.map((m, i) => i < 8 ? gray + 'aa' : blue + 'bb');
+const bgColorsUser = months.map((m, i) => i < 8 ? orange + 'aa' : green + 'bb');
+
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      {
+        label: 'B2C 매출 (만원)',
+        data: revenue,
+        backgroundColor: bgColors,
+        borderRadius: 6, borderSkipped: false,
+        order: 2,
+      },
+      {
+        label: '멀티채널 시작',
+        data: months.map((m, i) => i === 8 ? 19140 : null),
+        type: 'line',
+        borderColor: red, borderWidth: 2, borderDash: [4,4],
+        pointRadius: 0, fill: false, order: 1,
+        yAxisID: 'y',
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label === 'B2C 매출 (만원)' ? `${(ctx.raw).toLocaleString()}만원` : '' } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v >= 10000 ? (v/10000).toFixed(1) + '억' : v/1000 + '천만' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('userChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      label: '신규 유저 (명)',
+      data: users,
+      borderColor: green, backgroundColor: green + '22',
+      fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: green,
+      spanGaps: true,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw?.toLocaleString()}명` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } }
+    }
+  }
+});
+
+new Chart(document.getElementById('roiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['메타 단독\n(24.05~24.12)', '멀티채널\n(25.01~25.08)'],
+    datasets: [
+      { label: '월평균 B2C 매출 (만원)', data: [12800, 42300], backgroundColor: [gray + 'bb', blue + 'cc'], borderRadius: 8, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()}만원` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => (v/10000).toFixed(1) + '억' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('cacChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      label: 'CAC (원)',
+      data: cac,
+      borderColor: orange, backgroundColor: orange + '22',
+      fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: orange,
+      spanGaps: true,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `CAC: ${ctx.raw?.toLocaleString()}원` } } },
+    scales: {
+      y: { beginAtZero: false, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } }
+    }
+  }
+});
+
+new Chart(document.getElementById('compareChart'), {
+  type: 'bar',
+  data: {
+    labels: ['월평균 매출', '월평균 신규유저'],
+    datasets: [
+      { label: '메타 단독 (24.05~24.12)', data: [12800, 1581], backgroundColor: gray + 'bb', borderRadius: 6, borderSkipped: false },
+      { label: '멀티채널 (25.01~25.08)', data: [42300, 5725], backgroundColor: blue + 'cc', borderRadius: 6, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { font: { size: 10 } } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
