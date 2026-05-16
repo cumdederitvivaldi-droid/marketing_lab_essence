@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1ë¨ê³ â CPI ê°ì  & ë§¤ì¶ ì±ì¥</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
+  h2 { color: #1a1a2e; font-size: 18px; margin-bottom: 4px; }
+  p.sub { color: #666; font-size: 13px; margin-top: 0; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 14px; color: #555; margin: 0 0 16px; }
+  .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 700; margin-top: 12px; }
+  canvas { max-height: 220px; }
+</style>
+</head>
+<body>
+<div style="max-width:900px;margin:0 auto">
+  <h2>ð¯ 1ë¨ê³ â ìêµ¬ì  ì í: CPI 72.8% ì ê° & ë§¤ì¶ +64%</h2>
+  <p class="sub">ê´ê³  ì§í ê¸°ê°: 23.06.02 ~ 24.07.01 | ì§ì  ì§í ìì: 24.05.21</p>
+  <div class="grid">
+    <div class="card">
+      <h3>ð CPI ë¹êµ â ì¸ì£¼ vs ì§ì  ì§í</h3>
+      <canvas id="cpiChart"></canvas>
+      <div class="badge">CPI 7,988ì â 2,169ì (-72.8%)</div>
+    </div>
+    <div class="card">
+      <h3>ð ì± ì¤ì¹ ì ë¹êµ (ëì¼ ìì°)</h3>
+      <canvas id="installChart"></canvas>
+      <div class="badge">ì¤ì¹ ì 2,743 â 8,839ê±´ (+222%)</div>
+    </div>
+    <div class="card">
+      <h3>ð° ì ë§¤ì¶ ì±ì¥ (ìì¬ ì í)</h3>
+      <canvas id="revenueChart"></canvas>
+      <div class="badge">24.04â24.06: +64.3%</div>
+    </div>
+    <div class="card">
+      <h3>ð¥ ì ê·ì ì  ì±ì¥</h3>
+      <canvas id="userChart"></canvas>
+      <div class="badge">ì ê·ì ì  600 â 1,373ëª (+129%)</div>
+    </div>
+  </div>
+</div>
+<script>
+const green = '#4CAF50', red = '#ef5350', blue = '#2196F3', orange = '#FF9800';
+new Chart(document.getElementById('cpiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['ì¸ì£¼ (CBO)', 'ì§ì  ì§í (ABO)'],
+    datasets: [{ label: 'CPI (ì)', data: [7988, 2169],
+      backgroundColor: [red+'99', green+'99'], borderColor: [red, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ì' } } } }
+});
+new Chart(document.getElementById('installChart'), {
+  type: 'bar',
+  data: {
+    labels: ['ì¸ì£¼ (11ì)', 'ì§ì  ì§í'],
+    datasets: [{ label: 'ì± ì¤ì¹ ì', data: [2743, 8839],
+      backgroundColor: [red+'99', green+'99'], borderColor: [red, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ê±´' } } } }
+});
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['24.04 (ìì¬ì )', '24.05 (ìì¬)', '24.06'],
+    datasets: [{ label: 'B2C ë§¤ì¶ (ë§ì)', data: [4520, 5780, 7428],
+      backgroundColor: [red+'99', blue+'99', green+'99'], borderColor: [red, blue, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ë§' } } } }
+});
+new Chart(document.getElementById('userChart'), {
+  type: 'bar',
+  data: {
+    labels: ['24.04 (ìì¬ì )', '24.05 (ìì¬)', '24.06'],
+    datasets: [{ label: 'ì ê·ì ì ', data: [600, 864, 1373],
+      backgroundColor: [red+'99', blue+'99', green+'99'], borderColor: [red, blue, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ëª' } } } }
+});
+</script>
+</body>
+</html>
