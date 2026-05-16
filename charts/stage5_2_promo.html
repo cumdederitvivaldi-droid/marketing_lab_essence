@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>5-2ë¨ê³ â íë¡ëª¨ì í¨ê³¼</title>
+<title>5-2단계 — 프로모션 효과</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
@@ -18,28 +18,28 @@
 </head>
 <body>
 <div style="max-width:960px;margin:0 auto">
-  <h2>ð 5-2ë¨ê³ â íë¡ëª¨ì: 990ì ì´ë²¤í¸ + ìëª©ì¼ íì´ë°± RCT</h2>
-  <p class="sub">ì¼ë° ê´ê³ ë¡ ë¿ì§ ëª»í ê³ ê°ì¸µì íë¡ëª¨ìì¼ë¡ íì±í</p>
+  <h2>🎉 5-2단계 — 프로모션: 990원 이벤트 + 식목일 페이백 RCT</h2>
+  <p class="sub">일반 광고로 닿지 못한 고객층을 프로모션으로 활성화</p>
   <div class="grid">
     <div class="card">
-      <h3>ð 990ì ì´ë²¤í¸ íµì¬ ì§í (11ì â 12ì)</h3>
+      <h3>📊 990원 이벤트 핵심 지표 (11월 → 12월)</h3>
       <canvas id="event990Chart"></canvas>
-      <div class="badge">ì ê·ì ì  +36% Â· ë¸ëëê²ì +143%</div>
+      <div class="badge">신규유저 +36% · 브랜드검색 +143%</div>
     </div>
     <div class="card">
-      <h3>ð 990ì ì¿ í° ì½í¸í¸ 6ê°ì ë¦¬íì</h3>
+      <h3>📈 990원 쿠폰 코호트 6개월 리텐션</h3>
       <canvas id="retention990Chart"></canvas>
-      <div class="badge">ì¿ í° ì¬ì© ì½í¸í¸ê° ë¹ì¿ í° ëë¹ ëì ë¦¬íì ì ì§</div>
+      <div class="badge">쿠폰 사용 코호트가 비쿠폰 대비 높은 리텐션 유지</div>
     </div>
     <div class="card">
-      <h3>ð¡ ìëª©ì¼ íì´ë°± â RCT ê¸°ë° ë¦¬íì ë¹êµ</h3>
+      <h3>💡 식목일 페이백 — RCT 기반 리텐션 비교</h3>
       <canvas id="paybackChart"></canvas>
-      <div class="badge">M1: ì²ì¹êµ° 89.5% vs ëì¡°êµ° 37.5% (+52pp)</div>
+      <div class="badge">M1: 처치군 89.5% vs 대조군 37.5% (+52pp)</div>
     </div>
     <div class="card">
-      <h3>ð° íì´ë°± LTV ìë®¬ë ì´ì (5ê°ì ëì )</h3>
+      <h3>💰 페이백 LTV 시뮬레이션 (5개월 누적)</h3>
       <canvas id="ltvChart"></canvas>
-      <div class="badge">íì´ë°± ì§í ì LTV +11,285ì/ì ì </div>
+      <div class="badge">페이백 집행 시 LTV +11,285원/유저</div>
     </div>
   </div>
 </div>
@@ -47,10 +47,10 @@
 new Chart(document.getElementById('event990Chart'), {
   type: 'bar',
   data: {
-    labels: ['CAC (ì)','ì ê·ì ì  (ëª)','ë¸ëëê²ì (í)'],
+    labels: ['CAC (원)','신규유저 (명)','브랜드검색 (회)'],
     datasets: [
-      { label: '11ì (ì´ë²¤í¸ ì )', data: [19250, 1876, 1810], backgroundColor: '#ef535066', borderColor: '#ef5350', borderWidth: 2, borderRadius: 6 },
-      { label: '12ì (ì´ë²¤í¸ í)', data: [19056, 2545, 4400], backgroundColor: '#4CAF5066', borderColor: '#4CAF50', borderWidth: 2, borderRadius: 6 }
+      { label: '11월 (이벤트 전)', data: [19250, 1876, 1810], backgroundColor: '#ef535066', borderColor: '#ef5350', borderWidth: 2, borderRadius: 6 },
+      { label: '12월 (이벤트 후)', data: [19056, 2545, 4400], backgroundColor: '#4CAF5066', borderColor: '#4CAF50', borderWidth: 2, borderRadius: 6 }
     ]
   },
   options: { plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }, scales: { y: { beginAtZero: true } } }
@@ -60,9 +60,9 @@ new Chart(document.getElementById('retention990Chart'), {
   data: {
     labels: ['M1','M2','M3','M4','M5','M6'],
     datasets: [
-      { label: '990ì ì¿ í° ì½í¸í¸ (579ëª)', data: [37.7,29.4,25.2,25.6,23.8,23.3],
+      { label: '990원 쿠폰 코호트 (579명)', data: [37.7,29.4,25.2,25.6,23.8,23.3],
         borderColor: '#4CAF50', backgroundColor: '#4CAF5033', fill: true, tension: 0.4, pointRadius: 5 },
-      { label: 'ë¹ì¿ í° ì ê· (2,492ëª)', data: [34.7,26.5,24.5,23.4,22.7,23.2],
+      { label: '비쿠폰 신규 (2,492명)', data: [34.7,26.5,24.5,23.4,22.7,23.2],
         borderColor: '#2196F3', backgroundColor: '#2196F333', fill: true, tension: 0.4, pointRadius: 5 }
     ]
   },
@@ -73,9 +73,9 @@ new Chart(document.getElementById('paybackChart'), {
   data: {
     labels: ['M1','M2','M3','M4','M5','M6'],
     datasets: [
-      { label: 'ì²ì¹êµ° â íì´ë°± ì¿ í° ì§ê¸ (874ëª)', data: [89.5,66.9,61.1,56.2,54.7,52.9],
+      { label: '처치군 — 페이백 쿠폰 지급 (874명)', data: [89.5,66.9,61.1,56.2,54.7,52.9],
         borderColor: '#4CAF50', backgroundColor: '#4CAF5033', fill: true, tension: 0.4, pointRadius: 5 },
-      { label: 'ëì¡°êµ° â ì¿ í° ë¯¸ì§ê¸ (6,564ëª)', data: [37.5,30.4,27.8,26.4,24.1,24.8],
+      { label: '대조군 — 쿠폰 미지급 (6,564명)', data: [37.5,30.4,27.8,26.4,24.1,24.8],
         borderColor: '#ef5350', backgroundColor: '#ef535033', fill: true, tension: 0.4, pointRadius: 5 }
     ]
   },
@@ -84,11 +84,11 @@ new Chart(document.getElementById('paybackChart'), {
 new Chart(document.getElementById('ltvChart'), {
   type: 'bar',
   data: {
-    labels: ['íì´ë°± ì§í','ë¯¸ì§í'],
-    datasets: [{ label: '5ê°ì ëì  LTV (ì)', data: [37500,26200],
+    labels: ['페이백 집행','미집행'],
+    datasets: [{ label: '5개월 누적 LTV (원)', data: [37500,26200],
       backgroundColor: ['#4CAF5066','#ef535066'], borderColor: ['#4CAF50','#ef5350'], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ì' } } } }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'원' } } } }
 });
 </script>
 </body>
