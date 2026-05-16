@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1ë¨ê³ â CPI ê°ì  & ë§¤ì¶ ì±ì¥</title>
+<title>1단계 — CPI 개선 & 매출 성장</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
@@ -18,28 +18,28 @@
 </head>
 <body>
 <div style="max-width:900px;margin:0 auto">
-  <h2>ð¯ 1ë¨ê³ â ìêµ¬ì  ì í: CPI 72.8% ì ê° & ë§¤ì¶ +64%</h2>
-  <p class="sub">ê´ê³  ì§í ê¸°ê°: 23.06.02 ~ 24.07.01 | ì§ì  ì§í ìì: 24.05.21</p>
+  <h2>🎯 1단계 — 소구점 전환: CPI 72.8% 절감 & 매출 +64%</h2>
+  <p class="sub">광고 집행 기간: 23.06.02 ~ 24.07.01 | 직접 집행 시작: 24.05.21</p>
   <div class="grid">
     <div class="card">
-      <h3>ð CPI ë¹êµ â ì¸ì£¼ vs ì§ì  ì§í</h3>
+      <h3>📉 CPI 비교 — 외주 vs 직접 집행</h3>
       <canvas id="cpiChart"></canvas>
-      <div class="badge">CPI 7,988ì â 2,169ì (-72.8%)</div>
+      <div class="badge">CPI 7,988원 → 2,169원 (-72.8%)</div>
     </div>
     <div class="card">
-      <h3>ð ì± ì¤ì¹ ì ë¹êµ (ëì¼ ìì°)</h3>
+      <h3>📈 앱 설치 수 비교 (동일 예산)</h3>
       <canvas id="installChart"></canvas>
-      <div class="badge">ì¤ì¹ ì 2,743 â 8,839ê±´ (+222%)</div>
+      <div class="badge">설치 수 2,743 → 8,839건 (+222%)</div>
     </div>
     <div class="card">
-      <h3>ð° ì ë§¤ì¶ ì±ì¥ (ìì¬ ì í)</h3>
+      <h3>💰 월 매출 성장 (입사 전후)</h3>
       <canvas id="revenueChart"></canvas>
-      <div class="badge">24.04â24.06: +64.3%</div>
+      <div class="badge">24.04→24.06: +64.3%</div>
     </div>
     <div class="card">
-      <h3>ð¥ ì ê·ì ì  ì±ì¥</h3>
+      <h3>👥 신규유저 성장</h3>
       <canvas id="userChart"></canvas>
-      <div class="badge">ì ê·ì ì  600 â 1,373ëª (+129%)</div>
+      <div class="badge">신규유저 600 → 1,373명 (+129%)</div>
     </div>
   </div>
 </div>
@@ -48,38 +48,38 @@ const green = '#4CAF50', red = '#ef5350', blue = '#2196F3', orange = '#FF9800';
 new Chart(document.getElementById('cpiChart'), {
   type: 'bar',
   data: {
-    labels: ['ì¸ì£¼ (CBO)', 'ì§ì  ì§í (ABO)'],
-    datasets: [{ label: 'CPI (ì)', data: [7988, 2169],
+    labels: ['외주 (CBO)', '직접 집행 (ABO)'],
+    datasets: [{ label: 'CPI (원)', data: [7988, 2169],
       backgroundColor: [red+'99', green+'99'], borderColor: [red, green], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ì' } } } }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'원' } } } }
 });
 new Chart(document.getElementById('installChart'), {
   type: 'bar',
   data: {
-    labels: ['ì¸ì£¼ (11ì)', 'ì§ì  ì§í'],
-    datasets: [{ label: 'ì± ì¤ì¹ ì', data: [2743, 8839],
+    labels: ['외주 (11월)', '직접 집행'],
+    datasets: [{ label: '앱 설치 수', data: [2743, 8839],
       backgroundColor: [red+'99', green+'99'], borderColor: [red, green], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ê±´' } } } }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'건' } } } }
 });
 new Chart(document.getElementById('revenueChart'), {
   type: 'bar',
   data: {
-    labels: ['24.04 (ìì¬ì )', '24.05 (ìì¬)', '24.06'],
-    datasets: [{ label: 'B2C ë§¤ì¶ (ë§ì)', data: [4520, 5780, 7428],
+    labels: ['24.04 (입사전)', '24.05 (입사)', '24.06'],
+    datasets: [{ label: 'B2C 매출 (만원)', data: [4520, 5780, 7428],
       backgroundColor: [red+'99', blue+'99', green+'99'], borderColor: [red, blue, green], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ë§' } } } }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'만' } } } }
 });
 new Chart(document.getElementById('userChart'), {
   type: 'bar',
   data: {
-    labels: ['24.04 (ìì¬ì )', '24.05 (ìì¬)', '24.06'],
-    datasets: [{ label: 'ì ê·ì ì ', data: [600, 864, 1373],
+    labels: ['24.04 (입사전)', '24.05 (입사)', '24.06'],
+    datasets: [{ label: '신규유저', data: [600, 864, 1373],
       backgroundColor: [red+'99', blue+'99', green+'99'], borderColor: [red, blue, green], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ëª' } } } }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'명' } } } }
 });
 </script>
 </body>
