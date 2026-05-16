@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>5-1ë¨ê³ â ì§ì­ íì¥: CAC íìë¼ì¸</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
+  h2 { color: #1a1a2e; font-size: 18px; margin-bottom: 4px; }
+  p.sub { color: #666; font-size: 13px; margin-top: 0; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; max-width: 960px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 14px; color: #555; margin: 0 0 16px; }
+  .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 700; margin-top: 10px; }
+  .kpi-row { display: flex; flex-direction: column; gap: 12px; }
+  .kpi { border-radius: 10px; padding: 14px; text-align: center; }
+  .kpi .num { font-size: 22px; font-weight: 900; }
+  .kpi .label { font-size: 12px; color: #666; margin-top: 4px; }
+  canvas { max-height: 300px; }
+</style>
+</head>
+<body>
+<div style="max-width:960px;margin:0 auto">
+  <h2>ðºï¸ 5-1ë¨ê³ â ì§ì­ íì¥: CAC 32% ì ê° & ìµë ë§¤ì¶ 900Mì</h2>
+  <p class="sub">ìì¸ ë¨ë ì´ì â ìëê¶ íì¥ | ê´ê³  í¬í ëí ì ëµ</p>
+  <div class="grid">
+    <div class="card">
+      <h3>ð ì§ì­ íì¥ì ë°ë¥¸ CAC ë³í íìë¼ì¸</h3>
+      <canvas id="cacChart"></canvas>
+      <div class="badge">CAC ìµê³  19,250ì â ìµì  12,553ì (-32%)</div>
+    </div>
+    <div class="card">
+      <div class="kpi-row">
+        <div class="kpi" style="background:#fff8e1">
+          <div class="num" style="color:#e65100">19,250ì</div>
+          <div class="label">ìì¸ í¬í êµ¬ê° CAC (24.11)</div>
+        </div>
+        <div class="kpi" style="background:#e8f5e9">
+          <div class="num" style="color:#2e7d32">12,553ì</div>
+          <div class="label">íì¥ í ìµì  CAC (25.03)</div>
+        </div>
+        <div class="kpi" style="background:#e3f2fd">
+          <div class="num" style="color:#1565c0">174Mâ900M</div>
+          <div class="label">ì B2C ë§¤ì¶ ì±ì¥</div>
+        </div>
+        <div class="kpi" style="background:#fce4ec">
+          <div class="num" style="color:#880e4f">6.90%</div>
+          <div class="label">ì¬ì  ì ì²­ ì ì  ì íì¨<br>(ê¸°ì¡´ ì ì  0.90% ëë¹ 7.7ë°°)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const labels = ['24.09\nìì¸','24.10\nìì¸','24.11\nìì¸','24.12\nìì¸','25.01\nì±ë¨íì¥','25.02\níë¨Â·êµ¬ë¦¬','25.03\në¶ì²+6ëì','25.06\nëí ë±','25.09\níí ë±'];
+const cac = [11849,15735,19250,19056,14114,13223,12553,13197,14401];
+const colors = cac.map(v => v <= 13000 ? '#4CAF50' : v >= 18000 ? '#ef5350' : '#FF9800');
+new Chart(document.getElementById('cacChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      label: 'CAC (ì)', data: cac,
+      backgroundColor: colors.map(c => c+'66'), borderColor: colors, borderWidth: 2, borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { min: 10000, max: 22000, ticks: { callback: v => (v/10000).toFixed(1)+'ë§ì' } },
+      x: { ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
