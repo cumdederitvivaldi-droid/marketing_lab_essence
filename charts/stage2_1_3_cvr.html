@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>2-1-3ë¨ê³ â CVR ê°ì </title>
+<title>2-1-3단계 — CVR 개선</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
@@ -17,21 +17,21 @@
 </head>
 <body>
 <div style="max-width:960px;margin:0 auto">
-  <h2>ð 2-1-3ë¨ê³ â CVR ê°ì : ì°ì»´ì¿ í° + D16Â·D45 ë¯¸ì í ê°ì</h2>
-  <p class="sub">ê°ì í 30ì¼ ë´ ë¯¸ì´ì© ì ì´íìë ì´ì© ì íë í¨í´ â ì´ê¸° ì í ì§ì¤ ê³µëµ</p>
+  <h2>📈 2-1-3단계 — CVR 개선: 웰컴쿠폰 + D16·D45 미전환 개입</h2>
+  <p class="sub">가입 후 30일 내 미이용 시 이후이 이용 안 하는 패턴 → 초기 전환 집중 공략</p>
   <div class="grid">
     <div class="card">
-      <h3>ð« ì°ì»´ì¿ í° â 30ì¼ ë´ íì±íì¨</h3>
+      <h3>🎫 웰컴쿠폰 — 30일 내 활성화율</h3>
       <canvas id="welcomeChart"></canvas>
       <div class="badge">+9.1pp (+35.5%)</div>
     </div>
     <div class="card">
-      <h3>â±ï¸ ì°ì»´ì¿ í° â ì²« ì£¼ë¬¸ê¹ì§ íê·  ì¼ì</h3>
+      <h3>⏱️ 웰컴쿠폰 — 첫 주문까지 평균 일수</h3>
       <canvas id="daysChart"></canvas>
-      <div class="badge">-1.4ì¼ ë¨ì¶ (ì ë° ì´í)</div>
+      <div class="badge">-1.4일 단축 (절반 이하)</div>
     </div>
     <div class="card">
-      <h3>ð¯ D16Â·D45 ë¯¸ì í ê°ì â ì íì¨</h3>
+      <h3>🎯 D16·D45 미전환 개입 — 전환율</h3>
       <canvas id="d16d45Chart"></canvas>
       <div class="badge">D16 +99% / D45 +231%</div>
     </div>
@@ -41,8 +41,8 @@
 new Chart(document.getElementById('welcomeChart'), {
   type: 'bar',
   data: {
-    labels: ['ëì ì  (Q1)', 'ëì í (Q2)'],
-    datasets: [{ label: '30ì¼ ë´ íì±íì¨', data: [25.53, 34.59],
+    labels: ['도입 전 (Q1)', '도입 후 (Q2)'],
+    datasets: [{ label: '30일 내 활성화율', data: [25.53, 34.59],
       backgroundColor: ['#ef535066','#4CAF5066'], borderColor: ['#ef5350','#4CAF50'], borderWidth: 2, borderRadius: 8 }]
   },
   options: { plugins: { legend: { display: false } }, scales: { y: { max: 50, ticks: { callback: v => v+'%' } } } }
@@ -50,17 +50,17 @@ new Chart(document.getElementById('welcomeChart'), {
 new Chart(document.getElementById('daysChart'), {
   type: 'bar',
   data: {
-    labels: ['ëì ì ', 'ëì í'],
-    datasets: [{ label: 'ì²« ì£¼ë¬¸ê¹ì§ íê·  ì¼ì', data: [2.6, 1.2],
+    labels: ['도입 전', '도입 후'],
+    datasets: [{ label: '첫 주문까지 평균 일수', data: [2.6, 1.2],
       backgroundColor: ['#ef535066','#4CAF5066'], borderColor: ['#ef5350','#4CAF50'], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v+'ì¼' } } } }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v+'일' } } } }
 });
 new Chart(document.getElementById('d16d45Chart'), {
   type: 'bar',
   data: {
-    labels: ['D16 ëì ì ', 'D16 ëì í', 'D45 ëì ì ', 'D45 ëì í'],
-    datasets: [{ label: 'ì íì¨(%)', data: [1.94, 3.86, 0.83, 2.75],
+    labels: ['D16 도입 전', 'D16 도입 후', 'D45 도입 전', 'D45 도입 후'],
+    datasets: [{ label: '전환율(%)', data: [1.94, 3.86, 0.83, 2.75],
       backgroundColor: ['#ef535066','#4CAF5066','#ef535066','#4CAF5066'],
       borderColor: ['#ef5350','#4CAF50','#ef5350','#4CAF50'], borderWidth: 2, borderRadius: 8 }]
   },
