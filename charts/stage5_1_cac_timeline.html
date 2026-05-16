@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>5-1ë¨ê³ â ì§ì­ íì¥: CAC íìë¼ì¸</title>
+<title>5-1단계 — 지역 확장: CAC 타임라인</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
@@ -21,38 +21,38 @@
 </head>
 <body>
 <div style="max-width:960px;margin:0 auto">
-  <h2>ðºï¸ 5-1ë¨ê³ â ì§ì­ íì¥: CAC 32% ì ê° & ìµë ë§¤ì¶ 900Mì</h2>
-  <p class="sub">ìì¸ ë¨ë ì´ì â ìëê¶ íì¥ | ê´ê³  í¬í ëí ì ëµ</p>
+  <h2>🗺️ 5-1단계 — 지역 확장: CAC 32% 절감 & 최대 매출 900M원</h2>
+  <p class="sub">서울 단독 운영 → 수도권 확장 | 광고 포화 돌파 전략</p>
   <div class="grid">
     <div class="card">
-      <h3>ð ì§ì­ íì¥ì ë°ë¥¸ CAC ë³í íìë¼ì¸</h3>
+      <h3>📉 지역 확장에 따른 CAC 변화 타임라인</h3>
       <canvas id="cacChart"></canvas>
-      <div class="badge">CAC ìµê³  19,250ì â ìµì  12,553ì (-32%)</div>
+      <div class="badge">CAC 최고 19,250원 → 최저 12,553원 (-32%)</div>
     </div>
     <div class="card">
       <div class="kpi-row">
         <div class="kpi" style="background:#fff8e1">
-          <div class="num" style="color:#e65100">19,250ì</div>
-          <div class="label">ìì¸ í¬í êµ¬ê° CAC (24.11)</div>
+          <div class="num" style="color:#e65100">19,250원</div>
+          <div class="label">서울 포화 구간 CAC (24.11)</div>
         </div>
         <div class="kpi" style="background:#e8f5e9">
-          <div class="num" style="color:#2e7d32">12,553ì</div>
-          <div class="label">íì¥ í ìµì  CAC (25.03)</div>
+          <div class="num" style="color:#2e7d32">12,553원</div>
+          <div class="label">확장 후 최저 CAC (25.03)</div>
         </div>
         <div class="kpi" style="background:#e3f2fd">
-          <div class="num" style="color:#1565c0">174Mâ900M</div>
-          <div class="label">ì B2C ë§¤ì¶ ì±ì¥</div>
+          <div class="num" style="color:#1565c0">174M→900M</div>
+          <div class="label">월 B2C 매출 성장</div>
         </div>
         <div class="kpi" style="background:#fce4ec">
           <div class="num" style="color:#880e4f">6.90%</div>
-          <div class="label">ì¬ì  ì ì²­ ì ì  ì íì¨<br>(ê¸°ì¡´ ì ì  0.90% ëë¹ 7.7ë°°)</div>
+          <div class="label">사전 신청 유저 전환율<br>(기존 유저 0.90% 대비 7.7배)</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <script>
-const labels = ['24.09\nìì¸','24.10\nìì¸','24.11\nìì¸','24.12\nìì¸','25.01\nì±ë¨íì¥','25.02\níë¨Â·êµ¬ë¦¬','25.03\në¶ì²+6ëì','25.06\nëí ë±','25.09\níí ë±'];
+const labels = ['24.09\n서울','24.10\n서울','24.11\n서울','24.12\n서울','25.01\n성남확장','25.02\n하남·구리','25.03\n부천+6도시','25.06\n동탄 등','25.09\n평택 등'];
 const cac = [11849,15735,19250,19056,14114,13223,12553,13197,14401];
 const colors = cac.map(v => v <= 13000 ? '#4CAF50' : v >= 18000 ? '#ef5350' : '#FF9800');
 new Chart(document.getElementById('cacChart'), {
@@ -60,14 +60,14 @@ new Chart(document.getElementById('cacChart'), {
   data: {
     labels,
     datasets: [{
-      label: 'CAC (ì)', data: cac,
+      label: 'CAC (원)', data: cac,
       backgroundColor: colors.map(c => c+'66'), borderColor: colors, borderWidth: 2, borderRadius: 6
     }]
   },
   options: {
     plugins: { legend: { display: false } },
     scales: {
-      y: { min: 10000, max: 22000, ticks: { callback: v => (v/10000).toFixed(1)+'ë§ì' } },
+      y: { min: 10000, max: 22000, ticks: { callback: v => (v/10000).toFixed(1)+'만원' } },
       x: { ticks: { font: { size: 10 } } }
     }
   }
