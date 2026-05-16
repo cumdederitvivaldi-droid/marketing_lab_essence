@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>2-2-1ë¨ê³ â ë°°ì¶ë ì ì±: ë¬´ê² ë¶í¬ ë³í</title>
+<title>2-2-1단계 — 배출량 정책: 무게 분포 변화</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
@@ -21,31 +21,31 @@
 </head>
 <body>
 <div style="max-width:900px;margin:0 auto">
-  <h2>âï¸ 2-2-1ë¨ê³ â 8kg ì´ê³¼ ë°°ì¶ ì¸ì¼í°ë¸: ë¬´ê² ë¶í¬ ë³í & ê°ë¨ê° +17.6%</h2>
-  <p class="sub">ëì: 2024-10-16 | ë¹êµ: ëì ì  6ê°ì vs ëì í 5ê°ì</p>
+  <h2>⚖️ 2-2-1단계 — 8kg 초과 배출 인센티브: 무게 분포 변화 & 객단가 +17.6%</h2>
+  <p class="sub">도입: 2024-10-16 | 비교: 도입 전 6개월 vs 도입 후 5개월</p>
   <div class="grid">
     <div class="card">
-      <h3>ð¦ ìê±° ë¬´ê² ë¶í¬ ë³í â ëì ì /í</h3>
+      <h3>📦 수거 무게 분포 변화 — 도입 전/후</h3>
       <canvas id="weightChart"></canvas>
-      <div class="badge">8kg ì´ê³¼ ë¹ì¨: 20.75% â 27.07% (+6.32%p)</div>
+      <div class="badge">8kg 초과 비율: 20.75% → 27.07% (+6.32%p)</div>
     </div>
     <div class="card">
       <div class="kpi-row">
         <div class="kpi">
-          <div class="num">7,205ì</div>
-          <div class="label">ëì ì  ê°ë¨ê°</div>
+          <div class="num">7,205원</div>
+          <div class="label">도입 전 객단가</div>
         </div>
         <div class="kpi" style="background:#e8f5e9">
-          <div class="num" style="color:#2e7d32">8,474ì</div>
-          <div class="label">ëì í ê°ë¨ê°</div>
+          <div class="num" style="color:#2e7d32">8,474원</div>
+          <div class="label">도입 후 객단가</div>
         </div>
         <div class="kpi">
           <div class="num">+17.6%</div>
-          <div class="label">ê°ë¨ê° ìì¹ë¥ </div>
+          <div class="label">객단가 상승률</div>
         </div>
         <div class="kpi" style="background:#e3f2fd">
           <div class="num" style="color:#1565c0">+2.3%</div>
-          <div class="label">ARPU ìì¹ (20,099â20,569ì)</div>
+          <div class="label">ARPU 상승 (20,099→20,569원)</div>
         </div>
       </div>
     </div>
@@ -55,11 +55,11 @@
 new Chart(document.getElementById('weightChart'), {
   type: 'bar',
   data: {
-    labels: ['2kgë¯¸ë§','2~4kg','4~6kg','6~8kg','8~12kg','12~16kg','16kgì´ì'],
+    labels: ['2kg미만','2~4kg','4~6kg','6~8kg','8~12kg','12~16kg','16kg이상'],
     datasets: [
-      { label: 'ëì ì (%)', data: [15.23,30.55,21.21,12.25,11.87,4.22,4.66],
+      { label: '도입 전(%)', data: [15.23,30.55,21.21,12.25,11.87,4.22,4.66],
         backgroundColor: '#ef535066', borderColor: '#ef5350', borderWidth: 2, borderRadius: 4 },
-      { label: 'ëì í(%)', data: [11.75,27.15,21.14,12.91,14.02,5.97,7.08],
+      { label: '도입 후(%)', data: [11.75,27.15,21.14,12.91,14.02,5.97,7.08],
         backgroundColor: '#4CAF5066', borderColor: '#4CAF50', borderWidth: 2, borderRadius: 4 }
     ]
   },
