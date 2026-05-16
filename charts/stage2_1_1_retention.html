@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>2-1-1ë¨ê³ â ë±ê¸ì  ëì: ë¦¬íì & LTV</title>
+<title>2-1-1단계 — 등급제 도입: 리텐션 & LTV</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
@@ -18,22 +18,22 @@
 </head>
 <body>
 <div style="max-width:960px;margin:0 auto">
-  <h2>ð 2-1-1ë¨ê³ â ë±ê¸ì  ëì: ì´í ë°©ì´ & LTV 18.1ë°° ìì¹</h2>
-  <p class="sub">ì½í¸í¸ íµí© 397ëª | ë±ê¸ ì¡°ê±´: 70ì¼ ë´ 7í ì´ì ì´ì©</p>
+  <h2>🏅 2-1-1단계 — 등급제 도입: 이탈 방어 & LTV 18.1배 상승</h2>
+  <p class="sub">코호트 통합 397명 | 등급 조건: 70일 내 7회 이상 이용</p>
   <div class="grid">
     <div class="card full">
-      <h3>ð íì°¨ë³ ìì¡´ì¨ & ì´íì¨ â ì¿ í° í¸ë¦¬ê±° í¬ì¸í¸</h3>
+      <h3>📉 회차별 잔존율 & 이탈율 — 쿠폰 트리거 포인트</h3>
       <canvas id="retentionChart" style="max-height:280px"></canvas>
     </div>
     <div class="card">
-      <h3>ð M1Â·M2 ë¦¬íì: ë±ê¸ì  ëì ì /í</h3>
+      <h3>📊 M1·M2 리텐션: 등급제 도입 전/후</h3>
       <canvas id="retentionCompChart"></canvas>
-      <div class="badge">ë±ê¸ ë¬ì± M1: 45.9% â 86.9%</div>
+      <div class="badge">등급 달성 M1: 45.9% → 86.9%</div>
     </div>
     <div class="card">
-      <h3>ð° 180ì¼ LTV ë¹êµ</h3>
+      <h3>💰 180일 LTV 비교</h3>
       <canvas id="ltvChart"></canvas>
-      <div class="badge">LTV 18.1ë°° ì°¨ì´ (176,121 vs 9,743ì)</div>
+      <div class="badge">LTV 18.1배 차이 (176,121 vs 9,743원)</div>
     </div>
   </div>
 </div>
@@ -41,11 +41,11 @@
 new Chart(document.getElementById('retentionChart'), {
   type: 'line',
   data: {
-    labels: ['1í','2í','3í','4í','5í','6í','7í','8í','9í','10í','11í','12í','13í','21í'],
+    labels: ['1회','2회','3회','4회','5회','6회','7회','8회','9회','10회','11회','12회','13회','21회'],
     datasets: [
-      { label: 'ìì¡´ì¨(%)', data: [100,70.2,53.4,43.9,34.2,27.1,20.8,16,11.6,8,5.8,4.4,4.2,0.9],
+      { label: '잔존율(%)', data: [100,70.2,53.4,43.9,34.2,27.1,20.8,16,11.6,8,5.8,4.4,4.2,0.9],
         borderColor: '#2196F3', backgroundColor: '#2196F333', fill: true, tension: 0.4, pointRadius: 5 },
-      { label: 'ì´ì ëë¹ ì´íì¨(%)', data: [0,29.8,23.9,17.9,22.1,20.6,23.1,23.3,27.5,31.1,27.5,24.3,3.6,0],
+      { label: '이전대비 이탈율(%)', data: [0,29.8,23.9,17.9,22.1,20.6,23.1,23.3,27.5,31.1,27.5,24.3,3.6,0],
         borderColor: '#ef5350', backgroundColor: 'transparent', borderDash: [5,5], tension: 0.3, pointRadius: 4 }
     ]
   },
@@ -53,7 +53,7 @@ new Chart(document.getElementById('retentionChart'), {
     plugins: {
       legend: { position: 'top' },
       annotation: { annotations: {
-        line7: { type: 'line', xMin: 6, xMax: 6, borderColor: '#FF9800', borderWidth: 2, label: { content: 'ì¿ í° í¸ë¦¬ê±°', enabled: true } }
+        line7: { type: 'line', xMin: 6, xMax: 6, borderColor: '#FF9800', borderWidth: 2, label: { content: '쿠폰 트리거', enabled: true } }
       }}
     },
     scales: { y: { beginAtZero: true, max: 110, ticks: { callback: v => v+'%' } } }
@@ -62,11 +62,11 @@ new Chart(document.getElementById('retentionChart'), {
 new Chart(document.getElementById('retentionCompChart'), {
   type: 'bar',
   data: {
-    labels: ['M1 ë¦¬íì', 'M2 ë¦¬íì'],
+    labels: ['M1 리텐션', 'M2 리텐션'],
     datasets: [
-      { label: 'ë±ê¸ì  ëì ì ', data: [45.9, 38.0], backgroundColor: '#ef535099', borderColor: '#ef5350', borderWidth: 2, borderRadius: 6 },
-      { label: 'ë±ê¸ ë¬ì± (ìì¹â)', data: [86.9, 84.4], backgroundColor: '#4CAF5099', borderColor: '#4CAF50', borderWidth: 2, borderRadius: 6 },
-      { label: 'ë±ê¸ ë¯¸ë¬ì±', data: [29.9, 20.0], backgroundColor: '#FF980099', borderColor: '#FF9800', borderWidth: 2, borderRadius: 6 }
+      { label: '등급제 도입 전', data: [45.9, 38.0], backgroundColor: '#ef535099', borderColor: '#ef5350', borderWidth: 2, borderRadius: 6 },
+      { label: '등급 달성 (새싹↑)', data: [86.9, 84.4], backgroundColor: '#4CAF5099', borderColor: '#4CAF50', borderWidth: 2, borderRadius: 6 },
+      { label: '등급 미달성', data: [29.9, 20.0], backgroundColor: '#FF980099', borderColor: '#FF9800', borderWidth: 2, borderRadius: 6 }
     ]
   },
   options: { plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }, scales: { y: { max: 100, ticks: { callback: v => v+'%' } } } }
@@ -74,11 +74,11 @@ new Chart(document.getElementById('retentionCompChart'), {
 new Chart(document.getElementById('ltvChart'), {
   type: 'bar',
   data: {
-    labels: ['ë±ê¸ ë¬ì± (ìì¹â)', 'ë±ê¸ ë¯¸ë¬ì±'],
-    datasets: [{ label: '180ì¼ LTV (ì)', data: [176121, 9743],
+    labels: ['등급 달성 (새싹↑)', '등급 미달성'],
+    datasets: [{ label: '180일 LTV (원)', data: [176121, 9743],
       backgroundColor: ['#4CAF5099','#ef535099'], borderColor: ['#4CAF50','#ef5350'], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'ì' } } } }
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'원' } } } }
 });
 </script>
 </body>
