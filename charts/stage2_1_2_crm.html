@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>2-1-2ë¨ê³ â CRM ìëí í¨ê³¼</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
+  h2 { color: #1a1a2e; font-size: 18px; margin-bottom: 4px; }
+  p.sub { color: #666; font-size: 13px; margin-top: 0; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; max-width: 960px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .card.full { grid-column: 1 / -1; }
+  .card h3 { font-size: 14px; color: #555; margin: 0 0 16px; }
+  .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 700; margin-top: 10px; }
+  .highlight { background: #fff8e1; border-radius: 10px; padding: 16px 20px; text-align: center; margin-top: 16px; }
+  .highlight .num { font-size: 32px; font-weight: 900; color: #e65100; }
+  .highlight .label { font-size: 13px; color: #666; margin-top: 4px; }
+  canvas { max-height: 200px; }
+</style>
+</head>
+<body>
+<div style="max-width:960px;margin:0 auto">
+  <h2>ð¬ 2-1-2ë¨ê³ â CRM ì¬êµ¬ë§¤ ìëí: D22Â·D29Â·D61 ìëë¦¬ì¤ í¨ê³¼</h2>
+  <p class="sub">ë¹êµ ê¸°ê°: ëì ì (2024-05~08) vs ëì í(2024-08~11)</p>
+  <div class="grid">
+    <div class="card">
+      <h3>ð² D22 ì± í¸ì â ì¬ì£¼ë¬¸ì¨</h3>
+      <canvas id="d22Chart"></canvas>
+      <div class="badge">+3.07%p (+24%)</div>
+    </div>
+    <div class="card">
+      <h3>ð D29 ìë¦¼í¡ ì¿ í° â ì¬íì±íì¨</h3>
+      <canvas id="d29Chart"></canvas>
+      <div class="badge">+7.20%p (+31%)</div>
+    </div>
+    <div class="card">
+      <h3>ð D61 ìë¦¼í¡ ì¿ í° â ì¬íì±íì¨</h3>
+      <canvas id="d61Chart"></canvas>
+      <div class="badge">+4.81%p (+47%)</div>
+    </div>
+    <div class="card full">
+      <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+        <div class="highlight" style="flex:1;min-width:200px">
+          <div class="num">7,997ëª</div>
+          <div class="label">ì¬íì±íë ì´ ê³ ê° ì</div>
+        </div>
+        <div class="highlight" style="flex:1;min-width:200px">
+          <div class="num">7.3ê±´</div>
+          <div class="label">1ì¸ë¹ 90ì¼ ì¶ê° ì£¼ë¬¸ ì</div>
+        </div>
+        <div class="highlight" style="flex:1;min-width:200px">
+          <div class="num" style="color:#2e7d32">12.3ìµì</div>
+          <div class="label">ì¶ê° ë§¤ì¶ ì°½ì¶ (90ì¼ LTV ê¸°ë°)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const makeHorizBar = (id, labels, before, after, suffix) => new Chart(document.getElementById(id), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      { label: 'ëì ì ', data: before, backgroundColor: '#ef535066', borderColor: '#ef5350', borderWidth: 2, borderRadius: 6 },
+      { label: 'ëì í', data: after, backgroundColor: '#4CAF5066', borderColor: '#4CAF50', borderWidth: 2, borderRadius: 6 }
+    ]
+  },
+  options: { indexAxis: 'y', plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+    scales: { x: { ticks: { callback: v => v+suffix } } } }
+});
+makeHorizBar('d22Chart', ['ì¬ì£¼ë¬¸ì¨'], [12.70], [15.77], '%');
+makeHorizBar('d29Chart', ['ì¬íì±íì¨'], [23.57], [30.77], '%');
+makeHorizBar('d61Chart', ['ì¬íì±íì¨'], [10.32], [15.13], '%');
+</script>
+</body>
+</html>
