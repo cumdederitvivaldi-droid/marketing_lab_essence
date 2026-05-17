@@ -97,20 +97,13 @@
   <h1 class="title">봉투 → 수거 퍼널 — <span class="blue">알림톡 도입 ±3개월 비교</span></h1>
   <p class="sub">
     봉투 사용 유도 알림(봉투 신청 후 D+16 미신청 시 발송) 도입 효과 측정 ·
-    <b>도입 전 3개월 vs 도입 후 3개월</b> 코호트의 봉투 신청자 → 수거 전환율 비교
+    <b>도입 전 3개월 vs 도입 후 3개월</b> 코호트의 봉투 신청자 → 수거 전환율 비교 ·
+    도입일 기준 <b>2024-08-28</b> (CRM 자동화 도입일)
   </p>
 
-  <div class="alert">
-    <span class="alert-tag">DATA REQUIRED</span>
-    <div class="alert-body">
-      기존 노션 표의 값들은 <b>관측 윈도우와 모집단 정의가 서로 달라</b> 도입 전/후 비교 불가.
-      동일 정의의 두 코호트 raw count 필요.
-    </div>
-  </div>
-
   <div class="card">
-    <div class="card-title">필요한 비교 표 구조</div>
-    <div class="card-sub">분모: 봉투 신청자 · 분자: 봉투 신청 후 90일 내 수거 신청 전환자</div>
+    <div class="card-title">도입 전/후 전환율 비교</div>
+    <div class="card-sub">도입 전: 2024-05-29 ~ 2024-08-27 · 도입 후: 2024-08-28 ~ 2024-11-26 · 측정 윈도우: 봉투 신청 후 90일</div>
     <table class="cmp">
       <thead>
         <tr>
@@ -123,31 +116,31 @@
       <tbody>
         <tr>
           <td class="label">봉투 신청자 (분모)</td>
-          <td class="num placeholder">데이터 필요</td>
-          <td class="num placeholder">데이터 필요</td>
+          <td class="num">5,721명</td>
+          <td class="num">4,360명</td>
           <td class="num">—</td>
         </tr>
         <tr>
           <td class="label">수거 신청 전환자 (분자)</td>
-          <td class="num placeholder">데이터 필요</td>
-          <td class="num placeholder">데이터 필요</td>
+          <td class="num">3,647명</td>
+          <td class="num">3,185명</td>
           <td class="num">—</td>
         </tr>
         <tr class="improve">
           <td class="label">봉투 → 수거 전환율</td>
-          <td class="num placeholder">데이터 필요</td>
-          <td class="num placeholder">데이터 필요</td>
-          <td class="num">—</td>
+          <td class="num">63.7%</td>
+          <td class="num">73.1%</td>
+          <td class="num" style="color:var(--mint-500)">+9.4pp (+14.8%)</td>
         </tr>
       </tbody>
     </table>
 
     <div class="needed">
-      <h4>📋 채우기 위해 필요한 raw 데이터</h4>
+      <h4>📌 쿼리 정의 · BigQuery <code>covering-app-ccd23.secure_dataset.order</code></h4>
       <ol>
-        <li>봉투 사용 유도 알림 <b>정확한 도입일</b> (예: <code>2024-04-01</code>)</li>
-        <li>도입 전 3개월 (<code>D-90 ~ D-1</code>) 봉투 신청자 수 / 그중 90일 내 수거 전환자 수</li>
-        <li>도입 후 3개월 (<code>D ~ D+89</code>) 봉투 신청자 수 / 그중 90일 내 수거 전환자 수</li>
+        <li>봉투 신청: <code>name IN ('FREE_HOME_KIT_DELIVERY', 'PAID_HOME_KIT_DELIVERY')</code> · <code>status IN ('PAYMENT_COMPLETED', 'COMPLETED')</code></li>
+        <li>수거 전환: <code>name = 'DEFAULT_GARBAGE'</code> · 봉투 신청 후 <code>90일 이내</code> · 취소·실패 제외</li>
+        <li>도입일 <b>2024-08-28</b>은 CRM 자동화 도입일 기준 추정 — 봉투 전용 알림 정확한 도입일 확인 시 재계산 필요</li>
       </ol>
     </div>
   </div>
