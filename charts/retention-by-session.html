@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회차 대비 잔존율 곡선</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --blue-50:#EEF3FF; --blue-100:#DCE5FF; --blue-300:#8FAEFF; --blue-400:#5C86FF;
+    --blue-500:#2D5BFF; --blue-600:#1B45E0;
+    --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB; --ink-400:#8B95A6;
+    --ink-500:#5B6675; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
+    --mint-500:#10C390; --sun-500:#F5B400; --rose-500:#EF4444;
+    --font-sans:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --shadow-sm:0 2px 6px rgba(15,25,50,.06);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font-sans); color:var(--ink-800); background:var(--ink-50);
+    font-feature-settings:"ss01" 1,"tnum" 1;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    padding:40px 32px 56px;
+  }
+  .wrap{max-width:1080px; margin:0 auto;}
+  .eyebrow{font-family:var(--font-mono); font-size:11px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--blue-500); margin-bottom:14px;}
+  h1.title{font-size:32px; font-weight:800; letter-spacing:-.02em; line-height:1.1;
+    margin:0 0 12px; color:var(--ink-900);}
+  h1.title .blue{color:var(--blue-500);}
+  .sub{font-size:14px; color:var(--ink-500); line-height:1.6; max-width:780px; margin-bottom:28px;}
+  .sub b{color:var(--ink-800); font-weight:700;}
+
+  .kpi-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px;}
+  .kpi{background:#fff; border:1px solid var(--ink-100); border-radius:12px;
+    padding:14px 16px; box-shadow:var(--shadow-sm);}
+  .kpi-lab{font-family:var(--font-mono); font-size:9.5px; font-weight:600; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--ink-400); margin-bottom:8px;}
+  .kpi-val{font-size:24px; font-weight:800; letter-spacing:-.02em; line-height:1; color:var(--ink-900);
+    font-variant-numeric:tabular-nums;}
+  .kpi-val .unit{font-size:13px; font-weight:600; color:var(--ink-400); margin-left:3px;}
+  .kpi-note{font-size:11px; color:var(--ink-500); margin-top:8px; line-height:1.5;}
+
+  .card{background:#fff; border:1px solid var(--ink-100); border-radius:14px;
+    padding:24px 28px 22px; box-shadow:var(--shadow-sm);}
+  .card-title{font-size:16px; font-weight:700; color:var(--ink-800); margin-bottom:4px;}
+  .card-sub{font-size:12px; color:var(--ink-500); margin-bottom:18px;}
+  .legend{display:flex; flex-wrap:wrap; gap:14px; row-gap:8px; font-size:11.5px;
+    color:var(--ink-600); margin-bottom:10px; align-items:center;}
+  .lg-item{display:inline-flex; align-items:center; gap:6px;}
+  .lg-dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
+  .lg-sep{width:1px; height:12px; background:var(--ink-200);}
+  .chart-wrap{position:relative; height:460px;}
+
+  .foot{margin-top:24px; padding-top:18px; border-top:1px solid var(--ink-200);
+    display:flex; justify-content:space-between; font-size:11px;
+    color:var(--ink-400); font-family:var(--font-mono); letter-spacing:.08em; text-transform:uppercase;}
+
+  @media (max-width: 900px){
+    body{padding:24px 16px;} h1.title{font-size:24px;}
+    .card{padding:18px;} .chart-wrap{height:380px;}
+    .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">RETENTION CURVE · BY SESSION</div>
+  <h1 class="title">회차 대비 <span class="blue">잔존율 곡선</span></h1>
+  <p class="sub">
+    1~21회차 코호트(<b>638명</b>)의 회차별 누적 잔존율. 1→2회차에서 <b>-29.8pp</b>로 가장 가파른 이탈이
+    발생하며, 10회차까지 92%가 이탈합니다. 21회차에 도달하는 충성 고객은 0.9%.
+  </p>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-lab">1회차 코호트</div>
+      <div class="kpi-val">638<span class="unit">명</span></div>
+      <div class="kpi-note">기준 100% 잔존</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">1→2회차 이탈</div>
+      <div class="kpi-val">-29.8<span class="unit">pp</span></div>
+      <div class="kpi-note">최대 이탈 구간 · 190명 손실</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">10회차 도달률</div>
+      <div class="kpi-val">8.0<span class="unit">%</span></div>
+      <div class="kpi-note">51명 · 9회 이탈 누적</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">충성 고객 (21+)</div>
+      <div class="kpi-val">0.9<span class="unit">%</span></div>
+      <div class="kpi-note">6명 · 이탈율 0.0%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">회차별 잔존율 (%)</div>
+    <div class="card-sub">코호트 638명 기준 누적 잔존율 · 호버 시 잔존 인원/이탈율 확인</div>
+    <div class="legend">
+      <span class="lg-item"><span class="lg-dot" style="background:#2D5BFF;"></span> 잔존율 곡선</span>
+      <span class="lg-sep"></span>
+      <span class="lg-item"><span class="lg-dot" style="background:#F5B400;"></span> TIER 1 · 7회차</span>
+      <span class="lg-item"><span class="lg-dot" style="background:#1B45E0;"></span> TIER 2 · 13회차</span>
+      <span class="lg-item"><span class="lg-dot" style="background:#10C390;"></span> TIER 3 · 21회차</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="c-ret"></canvas>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>이도형 · GROWTH MARKETING LAB</span>
+    <span>RETENTION BY SESSION</span>
+  </div>
+</div>
+
+<script>
+  const rows = [
+    {n:'1회차',  u:638, r:100.0, c:null},
+    {n:'2회차',  u:448, r:70.2,  c:29.8},
+    {n:'3회차',  u:341, r:53.4,  c:23.9},
+    {n:'4회차',  u:280, r:43.9,  c:17.9},
+    {n:'5회차',  u:218, r:34.2,  c:22.1},
+    {n:'6회차',  u:173, r:27.1,  c:20.6},
+    {n:'7회차',  u:133, r:20.8,  c:23.1},
+    {n:'8회차',  u:102, r:16.0,  c:23.3},
+    {n:'9회차',  u:74,  r:11.6,  c:27.5},
+    {n:'10회차', u:51,  r:8.0,   c:31.1},
+    {n:'11회차', u:37,  r:5.8,   c:27.5},
+    {n:'12회차', u:28,  r:4.4,   c:24.3},
+    {n:'13회차', u:27,  r:4.2,   c:3.6},
+    {n:'21회차', u:6,   r:0.9,   c:0.0},
+  ];
+  const tierColor = { 6:'#F5B400', 12:'#1B45E0', 13:'#10C390' };
+  const pointBg = rows.map((_,i)=> tierColor[i] || '#2D5BFF');
+  const pointSize = rows.map((_,i)=> tierColor[i] ? 7 : 4);
+
+  Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
+  Chart.defaults.font.size = 11;
+  Chart.defaults.color = '#5B6675';
+  Chart.defaults.plugins.legend.display = false;
+
+  new Chart(document.getElementById('c-ret'), {
+    type:'line',
+    data:{
+      labels: rows.map(r => r.n),
+      datasets:[{
+        label:'잔존율',
+        data: rows.map(r => r.r),
+        borderColor:'#2D5BFF',
+        backgroundColor:(ctx)=>{
+          const {chart} = ctx;
+          const {ctx:c, chartArea} = chart;
+          if(!chartArea) return 'rgba(45,91,255,0.12)';
+          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          g.addColorStop(0, 'rgba(45,91,255,0.22)');
+          g.addColorStop(1, 'rgba(45,91,255,0.02)');
+          return g;
+        },
+        borderWidth:2.5,
+        tension:.3,
+        fill:true,
+        pointRadius: pointSize,
+        pointHoverRadius: pointSize.map(s => s + 2),
+        pointBackgroundColor: pointBg,
+        pointBorderColor:'#fff',
+        pointBorderWidth:2,
+      }]
+    },
+    options:{
+      maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        tooltip:{
+          backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
+          padding:12, cornerRadius:8, displayColors:false,
+          callbacks:{
+            title: (items)=> items[0].label,
+            label: (ctx)=>{
+              const r = rows[ctx.dataIndex];
+              const lines = [
+                ` 잔존율: ${r.r.toFixed(1)}%`,
+                ` 잔존 유저: ${r.u.toLocaleString()}명`,
+              ];
+              if(r.c !== null) lines.push(` 이전 대비 이탈율: ${r.c.toFixed(1)}%`);
+              return lines;
+            }
+          }
+        }
+      },
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } },
+        y:{
+          beginAtZero:true, max:100,
+          grid:{ color:'#EEF1F6', drawBorder:false },
+          ticks:{ font:{ size:10 }, callback:(v)=> v+'%' },
+          title:{ display:true, text:'잔존율 (%)', color:'#8B95A6', font:{ size:11, weight:'600' } }
+        }
+      },
+    }
+  });
+</script>
+</body>
+</html>
