@@ -3,1093 +3,1393 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>이도형 — 브랜드 엑셀러레이터 포트폴리오</title>
+<title>이도형 — Growth Marketing Portfolio</title>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root {
   --cobalt: #1E29FF;
-  --cobalt-deep: #0F19D8;
-  --cobalt-bg: #0C12A8;
+  --cobalt-dim: #0F16B8;
   --lime: #D6FF3D;
-  --lime-deep: #B3DA1C;
+  --lime-dim: #B8E000;
+  --ink-950: #080C14;
+  --ink-900: #0D1220;
+  --ink-800: #131B2E;
+  --ink-700: #1E2A42;
+  --ink-600: #2E3F5C;
+  --ink-500: #4A5E7D;
+  --ink-400: #6B7E9C;
+  --ink-300: #9AAABE;
+  --ink-200: #C5CFDE;
+  --ink-100: #E4EAF2;
+  --ink-50: #F4F6FA;
   --white: #FFFFFF;
-  --lavender: #C7CBE3;
-  --lavender-dim: #8B91B4;
-  --ink: #0A0F2E;
-  --font-display: 'Pretendard Variable', Pretendard, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --mint: #10C390;
+  --rose: #EF4444;
+  --amber: #F5A623;
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+*, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
+  background: var(--ink-950);
+  color: var(--white);
+  margin: 0; padding: 0;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01" 1, "tnum" 1;
+}
+
+/* ── COVER ── */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 80px 64px;
+  background: var(--ink-950);
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -100px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(30,41,255,.22) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cover-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 80px;
+  align-items: center;
+}
+.cover-left {}
+.cover-tag {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 20px;
+  display: inline-block;
+}
+.cover-name {
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: .95;
+  margin: 0 0 24px;
+  color: var(--white);
+}
+.cover-name .highlight { color: var(--cobalt); }
+.cover-role {
+  font-size: 16px;
+  color: var(--ink-300);
+  line-height: 1.7;
+  margin: 0 0 36px;
+  max-width: 480px;
+}
+.cover-role b { color: var(--white); font-weight: 700; }
+.cover-kpis {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.cover-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cover-kpi-val {
+  font-family: var(--font-mono);
+  font-size: 28px; font-weight: 700;
+  color: var(--lime);
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+.cover-kpi-label {
+  font-size: 11px;
+  color: var(--ink-400);
+  letter-spacing: .04em;
+}
+.cover-photo-wrap {
+  width: 240px;
+  flex-shrink: 0;
+}
+.cover-photo {
+  width: 240px; height: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--ink-700);
+  background: var(--ink-800);
+}
+.cover-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* ── NAV DOTS ── */
+.side-nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 100;
+}
+.side-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ink-600);
+  transition: background .2s, transform .2s;
+  cursor: pointer;
+  display: block;
+}
+.side-dot:hover, .side-dot.active {
+  background: var(--lime);
+  transform: scale(1.4);
+}
+
+/* ── SECTION SHELL ── */
+.section {
+  min-height: 100vh;
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+.section-bg-alt { background: var(--ink-900); }
+.section-bg-dark { background: var(--ink-950); }
+
+/* ── SECTION HEADER ── */
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.sec-num {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700;
+  color: var(--cobalt);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.sec-title {
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 900;
+  letter-spacing: -.03em;
+  color: var(--white);
+  margin: 0;
+  line-height: 1.1;
+}
+.sec-title .dim { color: var(--ink-400); }
+
+/* ── METRICS (PERFORMANCE) ── */
+.metrics-section {
+  background: var(--ink-900);
+}
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.metric-card {
+  background: var(--ink-800);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius);
+  padding: 20px 20px 16px;
+  position: relative;
+  overflow: hidden;
+}
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--cobalt);
+}
+.metric-card.lime::before { background: var(--lime); }
+.metric-card.mint::before { background: var(--mint); }
+.metric-card.amber::before { background: var(--amber); }
+.metric-val {
+  font-family: var(--font-mono);
+  font-size: 32px; font-weight: 700;
+  color: var(--white);
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.metric-val .unit { font-size: 18px; color: var(--ink-300); }
+.metric-delta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mint);
+  margin-bottom: 8px;
+}
+.metric-label {
+  font-size: 11px;
+  color: var(--ink-400);
+  letter-spacing: .03em;
+}
+.chart-container {
+  background: var(--ink-800);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius);
+  overflow: hidden;
+  height: 240px;
+}
+.chart-container iframe {
+  width: 100%; height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ── STAGE CARD (the main building block) ── */
+.stage-section {
+  border-top: 1px solid var(--ink-700);
+  padding-top: 56px;
+  padding-bottom: 80px;
+}
+.stage-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.stage-badge {
+  font-family: var(--font-mono);
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
   background: var(--cobalt);
   color: var(--white);
-  font-feature-settings: "ss01" 1, "tnum" 1;
-  -webkit-font-smoothing: antialiased;
-  line-height: 1.6;
+  padding: 5px 10px;
+  border-radius: 5px;
+  flex-shrink: 0;
 }
-body::before {
+.stage-title-text {
+  font-size: 22px; font-weight: 800;
+  color: var(--white);
+  letter-spacing: -.02em;
+  line-height: 1.2;
+}
+.stage-subtitle {
+  font-size: 12px;
+  color: var(--ink-400);
+  margin-top: 4px;
+}
+
+/* ── 4-ROW ACTION GRID ── */
+.action-grid {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0;
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ink-800);
+}
+.action-row {
+  display: contents;
+}
+.action-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-400);
+  background: var(--ink-900);
+  padding: 16px 10px;
+  border-bottom: 1px solid var(--ink-700);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+.action-label.bottleneck { color: var(--rose); }
+.action-label.action { color: var(--cobalt); }
+.action-label.asset { color: var(--lime-dim); }
+.action-label.data { color: var(--mint); }
+.action-row:last-child .action-label,
+.action-row:last-child .action-content {
+  border-bottom: none;
+}
+.action-content {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--ink-700);
+  border-left: 1px solid var(--ink-700);
+}
+.action-row:last-child .action-content {
+  border-bottom: none;
+}
+
+/* content inside action rows */
+.bottleneck-text {
+  font-size: 14px; font-weight: 700;
+  color: var(--rose);
+  line-height: 1.5;
+}
+.bottleneck-sub {
+  font-size: 12px;
+  color: var(--ink-300);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.action-bullets {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.action-bullets li {
+  font-size: 13px;
+  color: var(--ink-200);
+  line-height: 1.55;
+  padding-left: 16px;
+  position: relative;
+}
+.action-bullets li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--cobalt);
+  font-weight: 700;
+}
+.action-bullets li b { color: var(--white); font-weight: 700; }
+
+/* video grid inside asset row */
+.video-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.video-item {
+  flex-shrink: 0;
+}
+.video-shorts {
+  width: 120px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--ink-900);
+}
+.video-shorts::before {
   content: '';
-  position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none; z-index: 0;
+  display: block;
+  padding-bottom: 177.78%;
 }
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(10,18,170,.9); backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(255,255,255,.1);
-  padding: 0 40px; height: 52px;
-  display: flex; align-items: center; justify-content: space-between;
+.video-shorts iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  border: none;
 }
-.nav-brand { font-size: 14px; font-weight: 800; letter-spacing: -.02em; }
-.nav-brand span { color: var(--lime); }
-.nav-links { display: flex; gap: 22px; list-style: none; }
-.nav-links a { font-size: 12px; font-weight: 600; color: var(--lavender); text-decoration: none; letter-spacing: .04em; transition: color .2s; }
-.nav-links a:hover { color: var(--lime); }
-section { position: relative; z-index: 1; }
-.container { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
-.section-inner { padding: 80px 0; }
-.eyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--lime); margin-bottom: 14px; }
-.section-title { font-size: clamp(26px,4vw,42px); font-weight: 900; letter-spacing: -.03em; line-height: 1.15; color: var(--white); margin-bottom: 12px; }
-.section-title .lime { color: var(--lime); }
-.section-sub { font-size: 16px; color: var(--lavender); line-height: 1.65; margin-bottom: 48px; }
-
-/* CHAPTER BREAK */
-.chapter-break {
-  position: relative; z-index: 2; overflow: hidden;
-  background: linear-gradient(135deg, var(--cobalt-bg) 0%, #060D80 100%);
-  border-top: 1px solid rgba(214,255,61,.2); border-bottom: 1px solid rgba(214,255,61,.2);
-  padding: 26px 48px; display: flex; align-items: center; gap: 28px;
+.video-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-400);
+  text-align: center;
+  margin-top: 4px;
 }
-.chapter-break::before {
-  content: attr(data-num); position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
-  font-family: var(--font-mono); font-size: 120px; font-weight: 900;
-  color: rgba(214,255,61,.05); line-height: 1; pointer-events: none; user-select: none;
+.asset-chart {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ink-700);
+  background: var(--ink-900);
 }
-.cb-num { font-family: var(--font-mono); font-size: 40px; font-weight: 900; color: var(--lime); line-height: 1; flex-shrink: 0; }
-.cb-content { display: flex; flex-direction: column; gap: 3px; }
-.cb-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: rgba(214,255,61,.6); }
-.cb-title { font-size: 19px; font-weight: 900; color: var(--white); letter-spacing: -.02em; }
-.cb-kpi { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--lime); margin-top: 2px; }
+.asset-chart iframe {
+  width: 100%;
+  border: none;
+  display: block;
+}
+.asset-text {
+  font-size: 12px;
+  color: var(--ink-400);
+  font-style: italic;
+  line-height: 1.5;
+  padding: 8px 12px;
+  background: var(--ink-900);
+  border-radius: 8px;
+  border: 1px dashed var(--ink-600);
+}
 
-/* CARD */
-.card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 24px 24px 20px; }
-.card-lime { border-color: rgba(214,255,61,.3); background: rgba(214,255,61,.05); }
+/* data KPI pills */
+.data-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.data-pill {
+  background: var(--ink-900);
+  border: 1px solid var(--ink-600);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 110px;
+}
+.data-pill-val {
+  font-family: var(--font-mono);
+  font-size: 18px; font-weight: 700;
+  color: var(--mint);
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+.data-pill-label {
+  font-size: 10px;
+  color: var(--ink-400);
+  line-height: 1.3;
+}
+.data-chart {
+  margin-top: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ink-700);
+  background: var(--ink-900);
+}
+.data-chart iframe {
+  width: 100%;
+  border: none;
+  display: block;
+}
 
-/* BIG NUMBER */
-.big-num { display: flex; flex-direction: column; gap: 4px; }
-.big-num .val { font-size: clamp(36px,5vw,64px); font-weight: 900; color: var(--lime); letter-spacing: -.04em; line-height: 1; }
-.big-num .label { font-size: 13px; color: var(--lavender); font-weight: 600; }
+/* ── MULTI-STAGE WRAPPER ── */
+.multi-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.sub-stage-label {
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--lime-dim);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sub-stage-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink-700);
+}
 
-/* COVER */
-#cover { min-height: 100vh; display: flex; align-items: center; padding-top: 52px; overflow: hidden; }
-#cover::after { content: ''; position: absolute; top: -100px; right: -200px; width: 700px; height: 700px; background: radial-gradient(circle,rgba(214,255,61,.1) 0%,transparent 70%); pointer-events: none; }
-.cover-inner { padding: 80px 48px; max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
-.cover-left { display: flex; flex-direction: column; }
-.cover-headline { font-size: clamp(32px,5vw,64px); font-weight: 900; letter-spacing: -.04em; line-height: 1.1; margin-bottom: 24px; }
-.cover-headline .lime { color: var(--lime); }
-.cover-sub { font-size: 16px; color: var(--lavender); margin-bottom: 40px; line-height: 1.6; max-width: 560px; }
-.cover-ribbon-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
-.ribbon { display: inline-flex; align-items: center; background: var(--lime); color: var(--ink); font-size: 12.5px; font-weight: 800; padding: 7px 16px; border-radius: 6px; transform: rotate(-1deg); letter-spacing: .01em; }
-.cover-kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
-.kpi-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 18px 18px 14px; }
-.kpi-card .val { font-size: 32px; font-weight: 900; color: var(--lime); letter-spacing: -.03em; line-height: 1; margin-bottom: 6px; }
-.kpi-card .lbl { font-size: 11.5px; color: var(--lavender); font-weight: 600; line-height: 1.4; }
+/* ── TIMELINE (Stage 4) ── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 18px; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--ink-700);
+}
+.tl-item {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 16px;
+  padding-bottom: 24px;
+  position: relative;
+}
+.tl-item:last-child { padding-bottom: 0; }
+.tl-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--cobalt);
+  border: 2px solid var(--ink-800);
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+  margin-left: 12px;
+}
+.tl-phase {
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--cobalt);
+  margin-bottom: 4px;
+}
+.tl-text {
+  font-size: 13px;
+  color: var(--ink-200);
+  line-height: 1.5;
+}
+.tl-text b { color: var(--white); font-weight: 700; }
 
-/* PROFILE PHOTO */
-.cover-photo-wrap { width: 240px; flex-shrink: 0; position: relative; }
-.cover-photo { width: 220px; height: 290px; border-radius: 20px; overflow: hidden; border: 3px solid rgba(214,255,61,.4); box-shadow: 0 0 60px rgba(214,255,61,.1),0 0 0 1px rgba(255,255,255,.06); }
-.cover-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-.cover-photo-badge { position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); background: var(--lime); color: var(--ink); font-family: var(--font-mono); font-size: 11px; font-weight: 800; padding: 6px 18px; border-radius: 20px; white-space: nowrap; box-shadow: 0 4px 20px rgba(214,255,61,.3); }
-.sparkle { position: absolute; color: var(--lime); font-size: 24px; opacity: .7; user-select: none; pointer-events: none; }
+/* ── STAGE NAV ── */
+.stage-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.stage-nav-item {
+  font-family: var(--font-mono);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--ink-600);
+  color: var(--ink-400);
+  cursor: pointer;
+  transition: all .15s;
+  text-decoration: none;
+}
+.stage-nav-item:hover {
+  border-color: var(--cobalt);
+  color: var(--cobalt);
+  background: rgba(30,41,255,.08);
+}
 
-/* PROFILE */
-#profile { background: rgba(0,0,0,.18); }
-.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-.profile-block-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--lime); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(214,255,61,.3); }
-.career-item { padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
-.career-item:last-child { border-bottom: none; }
-.career-company { font-size: 16px; font-weight: 800; color: var(--white); letter-spacing: -.01em; }
-.career-role { font-size: 12px; color: var(--lime); font-weight: 700; margin-bottom: 4px; }
-.career-period { font-family: var(--font-mono); font-size: 11px; color: var(--lavender-dim); margin-bottom: 8px; }
-.career-bullets { list-style: none; display: flex; flex-direction: column; gap: 3px; }
-.career-bullets li { font-size: 13px; color: var(--lavender); padding-left: 14px; position: relative; line-height: 1.5; }
-.career-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--lavender-dim); font-size: 11px; }
-.award-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
-.award-item:last-child { border-bottom: none; }
-.award-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-.award-name { font-size: 14px; font-weight: 700; color: var(--white); }
-.award-sub { font-size: 12px; color: var(--lavender-dim); margin-top: 2px; }
-.stack-row { display: flex; flex-direction: column; gap: 10px; }
-.stack-item { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; }
-.stack-cat { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--lime); background: rgba(214,255,61,.1); padding: 3px 8px; border-radius: 4px; white-space: nowrap; margin-top: 1px; }
-.stack-tools { color: var(--lavender); line-height: 1.5; }
+/* ── FOOTER ── */
+.footer {
+  padding: 40px 64px;
+  background: var(--ink-950);
+  border-top: 1px solid var(--ink-800);
+  text-align: center;
+}
+.footer p {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-500);
+  margin: 0;
+  letter-spacing: .08em;
+}
 
-/* PERFORMANCE */
-.chart-wrapper { background: rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 28px; margin-bottom: 40px; }
-.chart-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
-.chart-kpi { display: flex; flex-direction: column; gap: 3px; }
-.chart-kpi .v { font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--lime); letter-spacing: -.02em; line-height: 1; }
-.chart-kpi .l { font-size: 12px; color: var(--lavender-dim); font-weight: 600; }
-.stage-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-.stage-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 20px; cursor: pointer; transition: border-color .2s,background .2s; text-decoration: none; color: inherit; display: block; }
-.stage-card:hover { border-color: rgba(214,255,61,.4); background: rgba(214,255,61,.05); }
-.stage-num { font-family: var(--font-mono); font-size: 30px; font-weight: 700; color: var(--lime); line-height: 1; margin-bottom: 8px; }
-.stage-name { font-size: 14px; font-weight: 800; color: var(--white); margin-bottom: 6px; letter-spacing: -.01em; }
-.stage-desc { font-size: 12px; color: var(--lavender); line-height: 1.5; margin-bottom: 12px; }
-.stage-kpi { font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--lime); background: rgba(214,255,61,.1); padding: 4px 10px; border-radius: 4px; display: inline-block; }
+/* scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink-900); }
+::-webkit-scrollbar-thumb { background: var(--ink-600); border-radius: 3px; }
 
-/* STAGE */
-.stage-section { border-top: 1px solid rgba(255,255,255,.06); }
-.stage-header { display: flex; align-items: flex-start; gap: 24px; margin-bottom: 36px; }
-.stage-header-num { font-family: var(--font-mono); font-size: 60px; font-weight: 700; color: var(--lime); line-height: 1; flex-shrink: 0; opacity: .9; }
-.stage-header-content { flex: 1; }
-.stage-header-label { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--lime); margin-bottom: 8px; opacity: .7; }
-.stage-title { font-size: clamp(20px,3vw,34px); font-weight: 900; letter-spacing: -.03em; line-height: 1.2; color: var(--white); margin-bottom: 12px; }
-.stage-title .lime { color: var(--lime); }
-.stage-bottleneck { font-size: 14.5px; color: var(--lavender); line-height: 1.7; border-left: 3px solid rgba(214,255,61,.4); padding-left: 16px; }
-.three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 28px; }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 28px; }
-.result-block-title { font-size: 11px; font-family: var(--font-mono); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--lime); margin-bottom: 12px; opacity: .8; }
-.result-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
-.result-table th { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--lavender-dim); text-align: left; padding: 6px 10px; background: rgba(0,0,0,.2); border-bottom: 1px solid rgba(255,255,255,.08); }
-.result-table td { padding: 10px 10px; color: var(--lavender); border-bottom: 1px solid rgba(255,255,255,.06); }
-.result-table td.lime { color: var(--lime); font-weight: 700; font-family: var(--font-mono); }
-.result-table tr:last-child td { border-bottom: none; }
-.result-table tr.highlight td { background: rgba(214,255,61,.05); font-weight: 700; }
-.insight-box { display: flex; align-items: flex-start; gap: 14px; background: rgba(214,255,61,.07); border: 1px solid rgba(214,255,61,.25); border-radius: 10px; padding: 16px 20px; margin-top: 24px; }
-.insight-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-.insight-text { font-size: 14px; color: var(--lavender); line-height: 1.6; font-style: italic; }
-.insight-text strong { color: var(--white); font-style: normal; }
-.sub-card { background: rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 24px; }
-.sub-card-title { font-size: 14px; font-weight: 800; color: var(--white); margin-bottom: 6px; letter-spacing: -.01em; }
-.sub-card-sub { font-size: 12px; color: var(--lavender-dim); margin-bottom: 14px; font-style: italic; }
-.bullet-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.bullet-list li { font-size: 13.5px; color: var(--lavender); padding-left: 16px; position: relative; line-height: 1.55; }
-.bullet-list li::before { content: '▸'; position: absolute; left: 0; color: var(--lime); font-size: 10px; top: 4px; }
-.bullet-list li strong { color: var(--white); }
-.result-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(214,255,61,.12); border: 1px solid rgba(214,255,61,.3); border-radius: 20px; padding: 5px 14px; font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--lime); margin-top: 14px; }
-.result-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-.sub-divider { border: none; margin: 36px 0; border-top: 1px solid rgba(255,255,255,.07); }
-
-/* CHART IFRAME */
-.chart-iframe-wrap { background: rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden; margin-top: 28px; }
-.chart-iframe-label { padding: 10px 18px; background: rgba(0,0,0,.2); font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--lavender-dim); border-bottom: 1px solid rgba(255,255,255,.08); }
-.chart-iframe-wrap iframe { display: block; width: 100%; border: none; }
-
-/* VIDEO */
-.video-section-title { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--lime); margin: 28px 0 14px; opacity: .8; }
-.video-grid { display: grid; gap: 16px; }
-.video-grid-2 { grid-template-columns: 1fr 1fr; }
-.video-grid-3 { grid-template-columns: repeat(3,1fr); }
-.video-wrap { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); background: rgba(0,0,0,.3); }
-.video-wrap-inner { position: relative; width: 100%; padding-bottom: 177.78%; }
-.video-wrap-inner iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
-.video-label { padding: 8px 14px; font-size: 11.5px; font-weight: 700; color: var(--lavender); background: rgba(0,0,0,.2); border-top: 1px solid rgba(255,255,255,.08); }
-
-/* RETENTION TABLE */
-.ret-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; margin-top: 12px; }
-.ret-table th { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--lavender-dim); text-align: center; padding: 5px 8px; background: rgba(0,0,0,.2); border-bottom: 1px solid rgba(255,255,255,.08); }
-.ret-table th:first-child { text-align: left; }
-.ret-table td { padding: 8px 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,.05); color: var(--lavender); }
-.ret-table td:first-child { text-align: left; font-weight: 700; color: var(--white); }
-.ret-table .lime-cell { color: var(--lime); font-weight: 700; font-family: var(--font-mono); }
-.ret-table .dim { color: var(--lavender-dim); }
-.ret-table tr:last-child td { border-bottom: none; }
-
-/* PHASE STEPS */
-.phase-steps { display: flex; flex-direction: column; gap: 0; margin-top: 20px; }
-.phase-step { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
-.phase-step:last-child { border-bottom: none; }
-.phase-step-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--lime); background: rgba(214,255,61,.1); border: 1px solid rgba(214,255,61,.2); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-.phase-step-content { flex: 1; }
-.phase-step-title { font-size: 14px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
-.phase-step-desc { font-size: 12.5px; color: var(--lavender); line-height: 1.55; }
-.phase-step-tag { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 3px; margin-left: 8px; }
-.tag-risk { background: rgba(239,68,68,.2); color: #FF7070; }
-.tag-ok { background: rgba(16,196,144,.2); color: #10C390; }
-
-/* PREV CAREER */
-.prev-card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 28px 24px; }
-.prev-company { font-size: 20px; font-weight: 900; color: var(--lime); letter-spacing: -.02em; margin-bottom: 4px; }
-.prev-role-period { font-family: var(--font-mono); font-size: 11px; color: var(--lavender-dim); margin-bottom: 16px; }
-.prev-kpis { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
-.prev-kpi { display: flex; align-items: baseline; gap: 10px; }
-.prev-kpi .v { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--lime); letter-spacing: -.02em; flex-shrink: 0; }
-.prev-kpi .l { font-size: 13px; color: var(--lavender); }
-
-/* HOW I WORK */
-.how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.how-item { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: 16px 18px; }
-.how-dot { width: 8px; height: 8px; background: var(--lime); border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
-.how-text { font-size: 14px; color: var(--lavender); line-height: 1.6; }
-
-/* CLOSING */
-#closing { background: rgba(0,0,0,.2); border-top: 1px solid rgba(255,255,255,.07); }
-.closing-headline { font-size: clamp(26px,4vw,50px); font-weight: 900; letter-spacing: -.04em; line-height: 1.15; margin-bottom: 20px; }
-.closing-headline .lime { color: var(--lime); }
-.closing-sub { font-size: 16px; color: var(--lavender); line-height: 1.7; max-width: 640px; margin-bottom: 48px; }
-.contact-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; max-width: 600px; }
-.contact-card { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 14px 18px; text-decoration: none; color: inherit; transition: border-color .2s,background .2s; }
-.contact-card:hover { border-color: rgba(214,255,61,.4); background: rgba(214,255,61,.05); }
-.contact-icon { font-size: 22px; flex-shrink: 0; }
-.contact-info { display: flex; flex-direction: column; gap: 2px; }
-.contact-label { font-family: var(--font-mono); font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--lavender-dim); }
-.contact-val { font-size: 13px; font-weight: 700; color: var(--white); }
-.footer-sig { margin-top: 56px; font-family: var(--font-mono); font-size: 11px; color: var(--lavender-dim); display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.07); }
-
+/* responsive */
 @media (max-width: 900px) {
-  .container { padding: 0 24px; }
-  .cover-inner { grid-template-columns: 1fr; }
+  .cover { padding: 60px 28px; }
+  .cover-inner { grid-template-columns: 1fr; gap: 40px; }
   .cover-photo-wrap { display: none; }
-  .cover-kpis { grid-template-columns: repeat(2,1fr); }
-  .profile-grid { grid-template-columns: 1fr; }
-  .stage-grid { grid-template-columns: 1fr 1fr; }
-  .three-col { grid-template-columns: 1fr; }
-  .two-col { grid-template-columns: 1fr; }
-  .how-grid { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; }
-  nav { padding: 0 24px; }
-  .nav-links { display: none; }
-  .stage-header { flex-direction: column; gap: 12px; }
-  .stage-header-num { font-size: 40px; }
-  .video-grid-3 { grid-template-columns: 1fr; }
-  .video-grid-2 { grid-template-columns: 1fr; }
-  .chapter-break { padding: 20px 24px; }
-  .cb-num { font-size: 32px; }
-}
-@media (max-width: 540px) {
-  .stage-grid { grid-template-columns: 1fr; }
-  .cover-kpis { grid-template-columns: 1fr 1fr; }
+  .section { padding: 60px 28px; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .side-nav { display: none; }
+  .footer { padding: 32px 28px; }
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-brand">이도형 <span>Portfolio</span></div>
-  <ul class="nav-links">
-    <li><a href="#profile">Profile</a></li>
-    <li><a href="#performance">Performance</a></li>
-    <li><a href="#stage01">S01</a></li>
-    <li><a href="#stage02">S02</a></li>
-    <li><a href="#stage03">S03</a></li>
-    <li><a href="#stage04">S04</a></li>
-    <li><a href="#stage05">S05</a></li>
-    <li><a href="#stage06">S06</a></li>
-    <li><a href="#closing">Contact</a></li>
-  </ul>
+<!-- SIDE NAV -->
+<nav class="side-nav" id="sideNav">
+  <a class="side-dot" data-target="cover" title="Cover"></a>
+  <a class="side-dot" data-target="metrics" title="Performance"></a>
+  <a class="side-dot" data-target="stage1" title="1단계"></a>
+  <a class="side-dot" data-target="stage2" title="2단계"></a>
+  <a class="side-dot" data-target="stage3" title="3단계"></a>
+  <a class="side-dot" data-target="stage4" title="4단계"></a>
+  <a class="side-dot" data-target="stage5" title="5단계"></a>
+  <a class="side-dot" data-target="stage6" title="6단계"></a>
 </nav>
 
-<!-- COVER -->
-<section id="cover">
-  <span class="sparkle" style="top:18%;right:6%;font-size:20px;">✦</span>
-  <span class="sparkle" style="top:65%;right:20%;font-size:12px;opacity:.4;">✦</span>
+<!-- ══════════════════════════════════════════
+     COVER
+════════════════════════════════════════════ -->
+<section class="cover" id="cover">
   <div class="cover-inner">
     <div class="cover-left">
-      <div class="eyebrow">Brand Accelerator · 5yr Growth Marketer</div>
-      <h1 class="cover-headline">
-        전 퍼널 리드로<br>
-        좋은 제품을 <span class="lime">매출 39배</span>로 키워낸,<br>
-        브랜드 엑셀러레이터<br>
-        <span class="lime">이도형</span>입니다.
-      </h1>
-      <p class="cover-sub">5년 차 그로스 마케터의 풀퍼널 실현 기록 — 콘텐츠부터 CRM·데이터·팀 빌딩까지, 한 사람이 끝냅니다.</p>
-      <div class="cover-ribbon-row">
-        <span class="ribbon">콘텐츠·CRM·데이터·팀 빌딩, 한 사람이 끝낸다</span>
-        <span class="ribbon" style="transform:rotate(.8deg)">B2C 월 매출 4,520만 → 17.6억</span>
-      </div>
+      <div class="cover-tag">Growth Marketing Portfolio · 2023–2025</div>
+      <h1 class="cover-name">이<span class="highlight">도</span>형</h1>
+      <p class="cover-role">
+        스타트업 <b>1인 마케터</b>로 시작해 소재 제작·퍼포먼스·CRM·팀 빌딩까지<br>
+        <b>전 채널 그로스를 0에서 직접 설계·실행</b>한 기록입니다.
+      </p>
       <div class="cover-kpis">
-        <div class="kpi-card"><div class="val">39배</div><div class="lbl">월 매출 성장<br>4,520만 → 17.6억</div></div>
-        <div class="kpi-card"><div class="val">27억</div><div class="lbl">누적 매출<br>커버링 B2C</div></div>
-        <div class="kpi-card"><div class="val">28.6배</div><div class="lbl">30DAU 성장<br>23개월</div></div>
-        <div class="kpi-card"><div class="val">+33.4%</div><div class="lbl">공헌이익률<br>-5.1% → +33.4% 흑자 전환</div></div>
+        <div class="cover-kpi">
+          <div class="cover-kpi-val">+330<span style="font-size:18px">%</span></div>
+          <div class="cover-kpi-label">매출 성장 (3개월)</div>
+        </div>
+        <div class="cover-kpi">
+          <div class="cover-kpi-val">-72<span style="font-size:18px">%</span></div>
+          <div class="cover-kpi-label">CPI 절감</div>
+        </div>
+        <div class="cover-kpi">
+          <div class="cover-kpi-val">18<span style="font-size:18px">×</span></div>
+          <div class="cover-kpi-label">LTV 개선</div>
+        </div>
+        <div class="cover-kpi">
+          <div class="cover-kpi-val">-66<span style="font-size:18px">%</span></div>
+          <div class="cover-kpi-label">인플루언서 CPA</div>
+        </div>
       </div>
     </div>
     <div class="cover-photo-wrap">
       <div class="cover-photo">
         <img src="profile.jpg" alt="이도형">
       </div>
-      <div class="cover-photo-badge">이도형 · Brand Accelerator</div>
     </div>
   </div>
 </section>
 
-<!-- CHAPTER BREAK: Profile -->
-<div class="chapter-break" data-num="👤">
-  <div class="cb-num">👤</div>
-  <div class="cb-content">
-    <div class="cb-label">About</div>
-    <div class="cb-title">이도형 · 커버링 마케팅 팀장</div>
-    <div class="cb-kpi">5년 4개월 · 퍼포먼스 · CRM · 콘텐츠 · 데이터 · 팀 빌딩</div>
-  </div>
-</div>
+<!-- ══════════════════════════════════════════
+     PERFORMANCE OVERVIEW (viewport-fit)
+════════════════════════════════════════════ -->
+<section class="section metrics-section" id="metrics">
+  <div class="section-inner">
+    <div class="sec-head">
+      <span class="sec-num">00 ·</span>
+      <h2 class="sec-title">Performance <span class="dim">Overview</span></h2>
+    </div>
 
-<!-- PROFILE -->
-<section id="profile">
-  <div class="container">
-    <div class="section-inner">
-      <div class="eyebrow">Profile</div>
-      <h2 class="section-title">콘텐츠·퍼포먼스·CRM·데이터·팀 빌딩,<br><span class="lime">한 사람이 끝내는</span> 그로스 마케터입니다.</h2>
-      <p class="section-sub">총 5년 4개월 경력 — 이도형 (1994년생)</p>
-      <div class="profile-grid">
-        <div>
-          <div class="profile-block-title">Experience</div>
-          <div class="career-item">
-            <div class="career-company">커버링</div>
-            <div class="career-role">마케팅 팀장</div>
-            <div class="career-period">2024.05 — 재직 중</div>
-            <ul class="career-bullets">
-              <li>퍼포먼스 마케팅 직접 운용 (Meta / Google / TikTok / ASA / 네이버SA)</li>
-              <li>그로스 전략 설계 및 실행 — 월 매출 39배 성장 주도</li>
-              <li>CRM 시나리오 기획 및 휴면 고객 재활성화</li>
-              <li>콘텐츠 기획·제작 및 상세페이지 전 과정 실행</li>
-              <li>5인 마케팅 팀 빌딩 및 인턴 4명 육성</li>
-            </ul>
-          </div>
-          <div class="career-item">
-            <div class="career-company">이삼오구</div>
-            <div class="career-role">파트장</div>
-            <div class="career-period">2021.08 — 2023.10</div>
-            <ul class="career-bullets">
-              <li>데일리원더 브랜드 퍼포먼스·콘텐츠·CRM 전 영역 주도</li>
-              <li>메타/틱톡/구글/GFA 퍼포먼스 집행</li>
-              <li>주간 매출 2,000만 → 1억 5,000만 (7.5배)</li>
-            </ul>
-          </div>
-          <div class="career-item">
-            <div class="career-company">나인투식스</div>
-            <div class="career-role">팀원</div>
-            <div class="career-period">2020.12 — 2021.04</div>
-            <ul class="career-bullets">
-              <li>스마트스토어 SEO 최적화 · 상세페이지 재기획</li>
-              <li>네이버 라이브 커머스 기획 및 촬영</li>
-            </ul>
-          </div>
-          <div class="career-item">
-            <div class="career-company">와이즈플래닛</div>
-            <div class="career-role">인턴</div>
-            <div class="career-period">2020.01 — 2020.07</div>
-            <ul class="career-bullets">
-              <li>영상 광고 소재 기획 및 제작</li>
-              <li>입사 2주 만에 ROAS 268% · 매출 5,063만 달성</li>
-            </ul>
+    <!-- Stage Nav -->
+    <div class="stage-nav">
+      <a class="stage-nav-item" href="#stage1">1단계 · CPI</a>
+      <a class="stage-nav-item" href="#stage2-1-1">2-1-1단계 · 등급제</a>
+      <a class="stage-nav-item" href="#stage2-1-2">2-1-2단계 · 휴면CRM</a>
+      <a class="stage-nav-item" href="#stage2-1-3">2-1-3단계 · CVR</a>
+      <a class="stage-nav-item" href="#stage2-2-1">2-2-1단계 · 재활성</a>
+      <a class="stage-nav-item" href="#stage3">3단계 · 멀티채널</a>
+      <a class="stage-nav-item" href="#stage4">4단계 · 인플루언서</a>
+      <a class="stage-nav-item" href="#stage5-1">5-1단계 · 확장</a>
+      <a class="stage-nav-item" href="#stage5-2">5-2단계 · 프로모</a>
+      <a class="stage-nav-item" href="#stage6">6단계 · 팀빌딩</a>
+    </div>
+
+    <!-- KPI Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-val">-72<span class="unit">%</span></div>
+        <div class="metric-delta">7,988 → 2,169원</div>
+        <div class="metric-label">CPI 절감 (1단계)</div>
+      </div>
+      <div class="metric-card lime">
+        <div class="metric-val">18<span class="unit">×</span></div>
+        <div class="metric-delta">9,743 → 176,121원</div>
+        <div class="metric-label">LTV 개선 (2-1-1단계)</div>
+      </div>
+      <div class="metric-card mint">
+        <div class="metric-val">+330<span class="unit">%</span></div>
+        <div class="metric-delta">1.28억 → 4.23억 (3개월)</div>
+        <div class="metric-label">매출 성장 (3단계)</div>
+      </div>
+      <div class="metric-card amber">
+        <div class="metric-val">-66<span class="unit">%</span></div>
+        <div class="metric-delta">35,233 → 12,042원</div>
+        <div class="metric-label">인플루언서 CPA (4단계)</div>
+      </div>
+    </div>
+
+    <!-- Growth Chart -->
+    <div class="chart-container">
+      <iframe src="charts/monthly-metrics.html" title="월별 성장 차트"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     1단계 — CPI 개선
+════════════════════════════════════════════ -->
+<section class="section section-bg-dark stage-section" id="stage1">
+  <div class="section-inner">
+    <div class="stage-header">
+      <span class="stage-badge">1단계</span>
+      <div>
+        <div class="stage-title-text">퍼포먼스 광고 — CPI 개선</div>
+        <div class="stage-subtitle">소구점 발굴·직접 촬영·집행 1주 내 완료 · 2023 Q3</div>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <!-- 병목 -->
+      <div class="action-row">
+        <div class="action-label bottleneck">병목</div>
+        <div class="action-content">
+          <div class="bottleneck-text">마케터도 소재도 없었다</div>
+          <div class="bottleneck-sub">예산 소진만 빠르고 CPI 7,988원 — 창업자가 직접 다 하던 상태에서 전략 부재</div>
+        </div>
+      </div>
+      <!-- 액션 -->
+      <div class="action-row">
+        <div class="action-label action">액션</div>
+        <div class="action-content">
+          <ul class="action-bullets">
+            <li>"<b>배달음식 분리 없이</b>" vs "<b>상한 반찬통</b>" — 소구점 6개 베리에이션 직접 기획</li>
+            <li>직접 촬영 + 편집, <b>1주일 내 광고 집행</b> 완료</li>
+            <li>성과 좋은 소구점에 예산 집중 — 반복 검증</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 결과물 -->
+      <div class="action-row">
+        <div class="action-label asset">결과물</div>
+        <div class="action-content">
+          <div class="video-grid">
+            <div class="video-item">
+              <div class="video-shorts">
+                <iframe src="https://www.youtube.com/embed/BA9oQFoKMMg"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen loading="lazy"></iframe>
+              </div>
+              <div class="video-label">소재 A</div>
+            </div>
+            <div class="video-item">
+              <div class="video-shorts">
+                <iframe src="https://www.youtube.com/embed/kziBejpsBRA"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen loading="lazy"></iframe>
+              </div>
+              <div class="video-label">소재 B</div>
+            </div>
+            <div style="flex:1; min-width:200px;">
+              <div class="asset-chart" style="height:200px;">
+                <iframe src="charts/stage1_cpi_comparison.html" title="CPI 비교" style="height:200px;"></iframe>
+              </div>
+            </div>
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:32px;">
-          <div>
-            <div class="profile-block-title">Education</div>
-            <div style="font-size:15px;font-weight:700;color:var(--white);">인하대학교</div>
-            <div style="font-size:13px;color:var(--lavender);margin-top:4px;">스포츠과학 / 경영학 복수전공</div>
-          </div>
-          <div>
-            <div class="profile-block-title">Awards &amp; Certs</div>
-            <div class="award-item"><div class="award-icon">🥇</div><div><div class="award-name">사회적기업 비즈니스 모델링</div><div class="award-sub">금상 · 사회적 기업 활성화 마케팅 경진대회</div></div></div>
-            <div class="award-item"><div class="award-icon">🥇</div><div><div class="award-name">뉴 비즈니스 모델링</div><div class="award-sub">금상 · 사기업 신사업 마케팅 전략 경진대회</div></div></div>
-            <div class="award-item"><div class="award-icon">🏅</div><div><div class="award-name">인하 K-MOOC UCC 콘테스트</div><div class="award-sub">장려상 · 온라인 고등교육 홍보 경진대회</div></div></div>
-            <div class="award-item"><div class="award-icon">📜</div><div><div class="award-name">GAIQ · 컴퓨터활용능력2급</div><div class="award-sub">2021.04 취득 · 2019.03 취득</div></div></div>
-          </div>
-          <div>
-            <div class="profile-block-title">Stack</div>
-            <div class="stack-row">
-              <div class="stack-item"><span class="stack-cat">콘텐츠</span><span class="stack-tools">Premiere · After Effects · Photoshop · Illustrator · Figma</span></div>
-              <div class="stack-item"><span class="stack-cat">광고</span><span class="stack-tools">Meta · Google · TikTok · ASA · Naver SA</span></div>
-              <div class="stack-item"><span class="stack-cat">분석</span><span class="stack-tools">BigQuery · Grafana · GA · GTM · PostgreSQL · AppsFlyer · Airbridge</span></div>
-              <div class="stack-item"><span class="stack-cat">CRM·AI</span><span class="stack-tools">Flarelane · 스냅푸시 · 알림톡 · Claude × Meta 자동화</span></div>
+      </div>
+      <!-- 데이터 -->
+      <div class="action-row">
+        <div class="action-label data">데이터</div>
+        <div class="action-content">
+          <div class="data-pills">
+            <div class="data-pill">
+              <div class="data-pill-val">-72.8%</div>
+              <div class="data-pill-label">CPI<br>7,988 → 2,169원</div>
+            </div>
+            <div class="data-pill">
+              <div class="data-pill-val">+222%</div>
+              <div class="data-pill-label">앱 설치 수</div>
+            </div>
+            <div class="data-pill">
+              <div class="data-pill-val">+64%</div>
+              <div class="data-pill-label">매출 성장</div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
-<!-- CHAPTER BREAK: Performance -->
-<div class="chapter-break" data-num="📈">
-  <div class="cb-num">📈</div>
-  <div class="cb-content">
-    <div class="cb-label">Work Performance</div>
-    <div class="cb-title">입사 후 23개월 · 6대 지표 전부 우상향</div>
-    <div class="cb-kpi">월 매출 39배 · 30DAU 28.6배 · 공헌이익률 -5.1% → +33.4%</div>
-  </div>
-</div>
-
-<!-- PERFORMANCE -->
-<section id="performance">
-  <div class="container">
-    <div class="section-inner">
-      <div class="eyebrow">Work Performance</div>
-      <h2 class="section-title">입사 시점 100을 기준으로,<br><span class="lime">6대 성장 지표가 어떻게 움직였는가</span></h2>
-      <p class="section-sub">2024.05 입사 후 23개월, 6개 지표 전부 우상향. 공헌이익률은 -5.1% → +33.4%로 흑자 전환.</p>
-      <div class="chart-wrapper">
-        <div class="chart-kpis">
-          <div class="chart-kpi"><div class="v">39배</div><div class="l">월 매출 성장</div></div>
-          <div class="chart-kpi"><div class="v">28.6배</div><div class="l">30DAU 증가</div></div>
-          <div class="chart-kpi"><div class="v">+38.5pp</div><div class="l">공헌이익률 개선</div></div>
-        </div>
-        <canvas id="growthChart" style="max-height:340px;"></canvas>
-        <div style="margin-top:16px;font-size:11.5px;color:var(--lavender-dim);line-height:1.6;">정규화 지수 — 2024-05 입사 시점 = 100. 공헌이익률은 우측 보조축(실제 %). 라임 점선 = 입사 기준선.</div>
-      </div>
-      <h3 style="font-size:17px;font-weight:800;color:var(--lavender);margin-bottom:18px;">이 성장은 <span style="color:var(--white);">6단계의 실행</span>이 만든 결과입니다.</h3>
-      <div class="stage-grid">
-        <a class="stage-card" href="#stage01"><div class="stage-num">01</div><div class="stage-name">소구점 발굴</div><div class="stage-desc">리뷰 한 줄에서 페인 포인트 찾아 직접 촬영·집행</div><span class="stage-kpi">CPI -72.8%</span></a>
-        <a class="stage-card" href="#stage02"><div class="stage-num">02</div><div class="stage-name">광고 체력 구조</div><div class="stage-desc">4축 흑자 전환 + 객단가 상향으로 광고 켤 수 있는 체력</div><span class="stage-kpi">공헌이익률 흑자 · AOV +17.6%</span></a>
-        <a class="stage-card" href="#stage03"><div class="stage-num">03</div><div class="stage-name">광고비 베팅</div><div class="stage-desc">5개 매체 직접 운용, 목표 CAC 내 광고비 확장</div><span class="stage-kpi">월 매출 +230% · 신규유저 +262%</span></a>
-        <a class="stage-card" href="#stage04"><div class="stage-num">04</div><div class="stage-name">인플루언서 PA</div><div class="stage-desc">4단계 진화로 CPA -66%, PA를 미디어 채널화</div><span class="stage-kpi">CPA -66%</span></a>
-        <a class="stage-card" href="#stage05"><div class="stage-num">05</div><div class="stage-name">광고 포화 돌파</div><div class="stage-desc">지역 확장 + 회고 기반 프로모션으로 새 성장 곡선</div><span class="stage-kpi">지역 CAC -32% · 사전등록 CVR 7.7배</span></a>
-        <a class="stage-card" href="#stage06"><div class="stage-num">06</div><div class="stage-name">팀 빌딩</div><div class="stage-desc">1인 마케터에서 5인 팀, 4명 전원 1,000만원 집행자로 육성</div><span class="stage-kpi">1인 → 5인</span></a>
+<!-- ══════════════════════════════════════════
+     2단계 — 리텐션 · CRM
+════════════════════════════════════════════ -->
+<section class="section section-bg-alt stage-section" id="stage2">
+  <div class="section-inner">
+    <div class="stage-header">
+      <span class="stage-badge">2단계</span>
+      <div>
+        <div class="stage-title-text">리텐션 · CRM 시스템 구축</div>
+        <div class="stage-subtitle">등급제 · 휴면 재활성 · CVR 개선 · 2023–2024</div>
       </div>
     </div>
+
+    <div class="multi-stage">
+
+      <!-- ── 2-1-1단계 : 등급제 ── -->
+      <div id="stage2-1-1">
+        <div class="sub-stage-label">2-1-1단계 · 등급제 설계</div>
+        <div class="action-grid">
+          <div class="action-row">
+            <div class="action-label bottleneck">병목</div>
+            <div class="action-content">
+              <div class="bottleneck-text">7·9~10회차 잔존율 급락</div>
+              <div class="bottleneck-sub">초기 이탈이 심각 — 헤비유저 도달 전에 대부분 이탈, LTV 9,743원</div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label action">액션</div>
+            <div class="action-content">
+              <ul class="action-bullets">
+                <li>회차별 이탈 구간 분석 후 <b>쿠폰 트리거</b> + <b>70일 주기 등급제</b> 설계</li>
+                <li>새싹(7–12회) → 묘목(13–20회) → 나무(21회+) <b>3등급 세분화</b></li>
+                <li>등급별 혜택 차등 — 이탈 직전 회차에 이벤트 집중</li>
+              </ul>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label asset">결과물</div>
+            <div class="action-content">
+              <div class="asset-text">등급제 상세 페이지 이미지 · S3 링크 (URL 만료됨)</div>
+              <div class="data-chart" style="margin-top:12px; height:220px;">
+                <iframe src="charts/stage2_1_1_retention.html" title="리텐션 개선" style="height:220px;"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label data">데이터</div>
+            <div class="action-content">
+              <div class="data-pills">
+                <div class="data-pill">
+                  <div class="data-pill-val">89%</div>
+                  <div class="data-pill-label">M1 잔존율<br>(45.9 → 86.9%)</div>
+                </div>
+                <div class="data-pill">
+                  <div class="data-pill-val">18.1×</div>
+                  <div class="data-pill-label">LTV<br>9,743 → 176,121원</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2-1-2단계 : 휴면 CRM ── -->
+      <div id="stage2-1-2">
+        <div class="sub-stage-label">2-1-2단계 · 휴면 재활성 CRM</div>
+        <div class="action-grid">
+          <div class="action-row">
+            <div class="action-label bottleneck">병목</div>
+            <div class="action-content">
+              <div class="bottleneck-text">이탈 유저 재활성화 체계 없음</div>
+              <div class="bottleneck-sub">잠든 유저 풀이 쌓이는데 재유입 구조가 전무 — 잠재 매출 방치</div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label action">액션</div>
+            <div class="action-content">
+              <ul class="action-bullets">
+                <li>휴면 기준 세그먼트별 <b>CRM 자동화</b> 설계 (알림톡·이메일·푸시)</li>
+                <li>재활성 흐름 — 쿠폰 지급 → 첫 재사용 → 정착 유도 시퀀스</li>
+                <li>발송 타이밍 A/B — 최적 D+N 결정</li>
+              </ul>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label asset">결과물</div>
+            <div class="action-content">
+              <div class="asset-chart" style="height:220px;">
+                <iframe src="charts/stage2_1_2_crm.html" title="CRM 결과" style="height:220px;"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label data">데이터</div>
+            <div class="action-content">
+              <div class="data-pills">
+                <div class="data-pill">
+                  <div class="data-pill-val">+12.3억</div>
+                  <div class="data-pill-label">CRM 추가 매출</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2-1-3단계 : CVR ── -->
+      <div id="stage2-1-3">
+        <div class="sub-stage-label">2-1-3단계 · 봉투→수거 CVR 개선</div>
+        <div class="action-grid">
+          <div class="action-row">
+            <div class="action-label bottleneck">병목</div>
+            <div class="action-content">
+              <div class="bottleneck-text">가입자 30%만 실이용 — 30일 이내 미이용 시 영구 이탈</div>
+              <div class="bottleneck-sub">봉투 신청까지 완료했는데 실제 서비스(수거) 전환이 61% 수준에 머뭄</div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label action">액션</div>
+            <div class="action-content">
+              <ul class="action-bullets">
+                <li><b>웰컴쿠폰 2,500원×8장</b> — 온보딩 초기 진입 장벽 제거</li>
+                <li>봉투 신청 후 <b>D+16 미이용 알림톡</b> (30% 할인쿠폰 동봉)</li>
+                <li>장기 미이용 <b>D+45 알림톡</b> (100% 할인쿠폰으로 재유입)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label asset">결과물</div>
+            <div class="action-content">
+              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <div style="flex:1; min-width:180px;">
+                  <div class="asset-chart" style="height:200px;">
+                    <iframe src="charts/stage2_1_3_welcome.html" title="웰컴쿠폰" style="height:200px;"></iframe>
+                  </div>
+                </div>
+                <div style="flex:1; min-width:180px;">
+                  <div class="asset-chart" style="height:200px;">
+                    <iframe src="charts/stage2_1_3_d16d45.html" title="D16·D45" style="height:200px;"></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label data">데이터</div>
+            <div class="action-content">
+              <div class="data-pills">
+                <div class="data-pill">
+                  <div class="data-pill-val">+99%</div>
+                  <div class="data-pill-label">D+16 알림톡<br>전환율</div>
+                </div>
+                <div class="data-pill">
+                  <div class="data-pill-val">+231%</div>
+                  <div class="data-pill-label">D+45 알림톡<br>전환율</div>
+                </div>
+                <div class="data-pill">
+                  <div class="data-pill-val">+9.5pp</div>
+                  <div class="data-pill-label">봉투→수거<br>61.4 → 70.9%</div>
+                </div>
+              </div>
+              <div class="data-chart" style="height:220px;">
+                <iframe src="charts/stage2_1_3_funnel.html" title="전환율 퍼널" style="height:220px;"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2-2-1단계 : 재활성 ── -->
+      <div id="stage2-2-1">
+        <div class="sub-stage-label">2-2-1단계 · 수거 재활성 CRM</div>
+        <div class="action-grid">
+          <div class="action-row">
+            <div class="action-label bottleneck">병목</div>
+            <div class="action-content">
+              <div class="bottleneck-text">수거 후 장기 미이용 유저 누적</div>
+              <div class="bottleneck-sub">첫 수거 완료 후 재이용하지 않는 유저 풀이 계속 쌓임</div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label action">액션</div>
+            <div class="action-content">
+              <ul class="action-bullets">
+                <li>수거 후 <b>체감 무게 기반</b> 재이용 시점 예측 → 타이밍 알림톡 발송</li>
+                <li>이탈 세그먼트별 <b>할인/혜택 차등</b> CRM 자동화</li>
+              </ul>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label asset">결과물</div>
+            <div class="action-content">
+              <div class="asset-chart" style="height:220px;">
+                <iframe src="charts/stage2_2_1_weight.html" title="체감 무게 기반 CRM" style="height:220px;"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label data">데이터</div>
+            <div class="action-content">
+              <div class="asset-chart" style="height:220px;">
+                <iframe src="charts/stage2_retention_crm.html" title="리텐션 CRM 결과" style="height:220px;"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /multi-stage -->
   </div>
 </section>
 
-<!-- CHAPTER BREAK 01 -->
-<div class="chapter-break" data-num="01">
-  <div class="cb-num">01</div>
-  <div class="cb-content">
-    <div class="cb-label">Stage 01 · 콘텐츠</div>
-    <div class="cb-title">소구점 발굴 — 리뷰 한 줄이 방향을 바꿨다</div>
-    <div class="cb-kpi">CPI 7,988원 → 2,169원 (-72.8%) · 설치 +222% · 2개월 매출 +64%</div>
-  </div>
-</div>
-
-<!-- STAGE 01 -->
-<section id="stage01" class="stage-section">
-  <div class="container">
-    <div class="section-inner">
-      <div class="stage-header">
-        <div class="stage-header-num">01</div>
-        <div class="stage-header-content">
-          <div class="stage-header-label">Stage 01 · 콘텐츠 · 소구점 발굴</div>
-          <h2 class="stage-title">리뷰 한 줄에서 소구점을 찾아<br><span class="lime">CPI를 72.8% 절감</span>했습니다.</h2>
-          <p class="stage-bottleneck">입사 당시 전담 마케터 없음. 외주 이미지 배너만 존재. 기존 광고는 "배달음식 분리 없이"를 내세웠지만, 앱스토어 리뷰 수백 개를 분석하니 진짜 페인 포인트는 달랐다 — <strong style="color:var(--white);">"상한 반찬통 때문에"</strong>, <strong style="color:var(--white);">"배달용기가 넘쳐서"</strong>. 소구점은 만드는 게 아니라 <em>찾는</em> 것이 먼저였다.</p>
-        </div>
-      </div>
-      <div class="three-col">
-        <div class="card">
-          <div class="result-block-title">병목</div>
-          <ul class="bullet-list">
-            <li>전담 마케터 없음, 외주 이미지 배너만 존재</li>
-            <li>기존 소구점 = <strong>"배달음식 분리 없이"</strong></li>
-            <li>앱스토어 리뷰 속 진짜 페인:<br><strong>"상한 반찬통" · "배달용기 쓰레기"</strong></li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="result-block-title">실행</div>
-          <ul class="bullet-list">
-            <li>입사 <strong>1주 만에</strong> 소구점 6개 베리에이션 도출</li>
-            <li>직접 기획·촬영·편집·집행 (AOS + iOS 동시)</li>
-            <li>핵심 2개: 상한반찬통 소구 / 배달용기 분리 소구</li>
-            <li>숏폼 세로형 포맷으로 CTR 극대화</li>
-          </ul>
-        </div>
-        <div class="card card-lime">
-          <div class="result-block-title">결과</div>
-          <div class="big-num" style="margin-bottom:12px;"><div class="val">-72.8%</div><div class="label">CPI (7,988원 → 2,169원)</div></div>
-          <div class="big-num" style="margin-bottom:12px;"><div class="val">+222%</div><div class="label">설치 건수 증가</div></div>
-          <div class="big-num"><div class="val">+64%</div><div class="label">2개월 만에 매출 성장</div></div>
-        </div>
-      </div>
-      <div style="margin-top:24px;">
-        <div class="result-block-title">Before vs After 상세</div>
-        <table class="result-table">
-          <thead><tr><th>구분</th><th>광고 지출</th><th>설치 수</th><th>CPI</th><th>CTR</th></tr></thead>
-          <tbody>
-            <tr><td>외주 이미지 (2023.11 iOS)</td><td>21.9M</td><td>2,743건</td><td>7,988원</td><td>1.94%</td></tr>
-            <tr class="highlight"><td><strong>직접 집행 (2024.05 AOS+iOS)</strong></td><td>19.2M</td><td>8,839건</td><td class="lime">2,169원</td><td class="lime">3.13%</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">CPI 비교 — 외주 vs 직접 집행</div>
-        <iframe src="charts/stage1_cpi_comparison.html" height="380"></iframe>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">광고 지출 대비 매출 추이</div>
-        <iframe src="charts/stage1_cpi_revenue.html" height="340"></iframe>
-      </div>
-      <div class="video-section-title">실제 집행 소재 — YouTube Shorts</div>
-      <div class="video-grid video-grid-2">
-        <div class="video-wrap">
-          <div class="video-wrap-inner">
-            <iframe src="https://www.youtube.com/embed/BA9oQFoKMMg" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="video-label">소구점 ① — 상한 반찬통</div>
-        </div>
-        <div class="video-wrap">
-          <div class="video-wrap-inner">
-            <iframe src="https://www.youtube.com/embed/kziBejpsBRA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="video-label">소구점 ② — 배달용기 분리 수거</div>
-        </div>
-      </div>
-      <div class="insight-box">
-        <div class="insight-icon">💡</div>
-        <div class="insight-text">"리뷰에서 발견한 한 줄이 방향을 바꿨습니다. 소구점은 만드는 게 아니라 <strong>찾는 것</strong>입니다."</div>
+<!-- ══════════════════════════════════════════
+     3단계 — 멀티채널 확장
+════════════════════════════════════════════ -->
+<section class="section section-bg-dark stage-section" id="stage3">
+  <div class="section-inner">
+    <div class="stage-header">
+      <span class="stage-badge">3단계</span>
+      <div>
+        <div class="stage-title-text">멀티채널 예산 확장</div>
+        <div class="stage-subtitle">구조는 갖췄으나 예산이 없던 상황 → Google·TikTok 신규 개척 · 2024 Q1</div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- CHAPTER BREAK 02 -->
-<div class="chapter-break" data-num="02">
-  <div class="cb-num">02</div>
-  <div class="cb-content">
-    <div class="cb-label">Stage 02 · CRM · 그로스 · 콘텐츠</div>
-    <div class="cb-title">광고 체력 구조 — 팔수록 적자였던 구조를 흑자로</div>
-    <div class="cb-kpi">공헌이익률 -5.1% → +33.4% · LTV 18배 · 잔존율 86.9% · AOV +17.6%</div>
-  </div>
-</div>
-
-<!-- STAGE 02 -->
-<section id="stage02" class="stage-section">
-  <div class="container">
-    <div class="section-inner">
-      <div class="stage-header">
-        <div class="stage-header-num">02</div>
-        <div class="stage-header-content">
-          <div class="stage-header-label">Stage 02 · CRM · 그로스 · 콘텐츠</div>
-          <h2 class="stage-title">팔수록 적자였던 구조를,<br><span class="lime">흑자로 뒤집은 4축 전략.</span></h2>
-          <p class="stage-bottleneck">공헌이익률 -39.27%. 광고를 늘릴수록 적자가 깊어지는 구조. 목표 CAC = 10,000원인데 실제 CAC는 14,260원. CAC를 낮추는 게 아니라 <strong style="color:var(--white);">LTV 천장을 높이는</strong> 전략으로 방향을 전환했다. 광고를 켜기 전에 체력부터 만들어야 했다.</p>
+    <div class="action-grid">
+      <div class="action-row">
+        <div class="action-label bottleneck">병목</div>
+        <div class="action-content">
+          <div class="bottleneck-text">구조는 갖춰졌으나 예산 없음 — Meta 단일 채널 의존</div>
+          <div class="bottleneck-sub">리텐션·CRM 설계 완료 후 신규 유입 채널 다각화 필요 → 성과 검증 후 예산 확보</div>
         </div>
       </div>
-
-      <div style="margin-bottom:10px;"><div class="result-block-title">2-1. 흑자 전환 4축 — CRM·그로스 전략</div></div>
-      <div class="two-col">
-        <div class="sub-card">
-          <div class="sub-card-title">2-1-1. 등급제 — 새싹·묘목·나무</div>
-          <div class="sub-card-sub">자주 이용할수록 혜택이 커지는 구조로 LTV 18배 달성</div>
-          <ul class="bullet-list">
-            <li>이용 횟수 기반 3단계: <strong>새싹 → 묘목 → 나무</strong></li>
-            <li>등급별 봉투 할인·우선배정·전용 혜택으로 재방문 유도</li>
-            <li>M1 잔존율 <strong>45.9% → 86.9%</strong> (+41pp)</li>
-            <li>LTV <strong>9,743원 → 176,121원</strong> (18.1배)</li>
-          </ul>
-          <table class="ret-table">
-            <thead><tr><th>구분</th><th>M1 잔존율</th><th>LTV</th></tr></thead>
-            <tbody>
-              <tr><td>도입 전</td><td class="dim">45.9%</td><td class="dim">9,743원</td></tr>
-              <tr><td>도입 후</td><td class="lime-cell">86.9%</td><td class="lime-cell">176,121원</td></tr>
-              <tr><td>개선</td><td class="lime-cell">+41pp</td><td class="lime-cell">18.1배</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="sub-card">
-          <div class="sub-card-title">2-1-2. 휴면 고객 재활성화</div>
-          <div class="sub-card-sub">CRM 자동화로 잠든 고객을 깨워 추가 매출 12.3억</div>
-          <ul class="bullet-list">
-            <li>휴면 기간별 세그먼트 분류 + 맞춤 알림 시나리오</li>
-            <li>Flarelane 푸시 + 알림톡 조합 자동화</li>
-            <li>재활성화 고객 재구매율 추적 및 세그먼트 개선 반복</li>
-            <li>추가 매출 <strong>12.3억 원</strong> 확보</li>
-          </ul>
-          <div class="result-pills"><span class="result-pill">추가 매출 12.3억</span></div>
-        </div>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">등급제 도입 전후 — 잔존율 비교</div>
-        <iframe src="charts/stage2_1_1_retention.html" height="360"></iframe>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">CRM 재활성화 매출 추이</div>
-        <iframe src="charts/stage2_1_2_crm.html" height="340"></iframe>
-      </div>
-
-      <hr class="sub-divider">
-      <div class="result-block-title">2-1-3. 알림톡 CVR 회복 — 미전환 유저를 수거 신청으로</div>
-      <div class="two-col">
-        <div class="sub-card">
-          <div class="sub-card-title">병목 → 실행</div>
-          <div class="sub-card-sub">봉투 신청 후 수거 신청까지 전환하지 않는 유저가 40%</div>
-          <ul class="bullet-list">
-            <li>봉투 신청 후 <strong>D+16</strong>일 미신청자에게 알림톡 발송</li>
-            <li><strong>D+45</strong>일 미신청자에게 2차 알림톡</li>
-            <li>웰컴 쿠폰 8장 2,500원 + 사용 방법 안내 조합</li>
-            <li>도입일: 2024-07-11</li>
-          </ul>
-        </div>
-        <div class="sub-card">
-          <div class="sub-card-title">결과 — 봉투 → 수거 전환율</div>
-          <div class="sub-card-sub">도입 전 3개월 vs 도입 후 3개월 코호트 비교</div>
-          <table class="ret-table">
-            <thead><tr><th>지표</th><th>도입 전</th><th>도입 후</th></tr></thead>
-            <tbody>
-              <tr><td>봉투 신청자</td><td class="dim">3,548명</td><td>5,138명</td></tr>
-              <tr><td>수거 전환자</td><td class="dim">2,177명</td><td>3,643명</td></tr>
-              <tr><td>전환율</td><td class="dim">61.4%</td><td class="lime-cell">70.9%</td></tr>
-              <tr><td>개선</td><td colspan="2" class="lime-cell">+9.5pp (+15.5%)</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">D+16 / D+45 알림톡 CVR 효과</div>
-        <iframe src="charts/stage2_1_3_cvr.html" height="360"></iframe>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">봉투 → 수거 전환 퍼널 — 도입 전/후</div>
-        <iframe src="charts/stage2_1_3_funnel.html" height="320"></iframe>
-      </div>
-
-      <hr class="sub-divider">
-      <div class="result-block-title">2-2. 객단가(AOV) 상향 — 한 번에 더 많이</div>
-      <div class="two-col">
-        <div class="sub-card">
-          <div class="sub-card-title">2-2-1. 배출량 정책 (중량 기준 과금)</div>
-          <div class="sub-card-sub">8kg 초과 배출 고객에게 할인 적용 → 대량 배출 유도</div>
-          <ul class="bullet-list">
-            <li>8kg 초과 시 추가 할인 혜택으로 대량 배출 유도</li>
-            <li>고중량 배출 고객 비율 증가 → AOV 자연 상승</li>
-            <li>AOV <strong>+17.6%</strong> 달성</li>
-          </ul>
-          <div class="result-pills"><span class="result-pill">AOV +17.6%</span></div>
-        </div>
-        <div class="sub-card">
-          <div class="sub-card-title">2-2-2. 인허가 확장 콘텐츠</div>
-          <div class="sub-card-sub">서비스 범위 확장으로 AOV 높은 고객군 모객</div>
-          <ul class="bullet-list">
-            <li>기존: 가정 폐기물 중심 → 확장: 사업장 소량 폐기물 포함</li>
-            <li>인허가 품목 확장 콘텐츠로 B2B 소규모 사업장 모객</li>
-            <li>단가 높은 고객군 유입으로 전체 AOV 개선</li>
+      <div class="action-row">
+        <div class="action-label action">액션</div>
+        <div class="action-content">
+          <ul class="action-bullets">
+            <li>Meta <b>CBO → ABO</b> 전환 — 예산 배분 최적화</li>
+            <li>Google <b>70만 → 1,200만원</b> 증액 — 검색·디스플레이 신규 개척</li>
+            <li>TikTok <b>10만 → 120만원</b> 증액 — 바이럴 소재 테스트</li>
           </ul>
         </div>
       </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">배출량 정책 도입 전후 — 중량 분포</div>
-        <iframe src="charts/stage2_2_1_weight.html" height="320"></iframe>
-      </div>
-      <div class="insight-box">
-        <div class="insight-icon">📈</div>
-        <div class="insight-text">공헌이익률 <strong>-5.1% → +33.4% 흑자 전환</strong>. CAC를 낮추려 싸우는 대신, LTV를 18배 키워 광고 체력을 만들었습니다. 이 체력이 Stage 03의 광고비 확장을 가능하게 했습니다.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CHAPTER BREAK 03 -->
-<div class="chapter-break" data-num="03">
-  <div class="cb-num">03</div>
-  <div class="cb-content">
-    <div class="cb-label">Stage 03 · 퍼포먼스</div>
-    <div class="cb-title">광고비 베팅 — 직원 월급이 걸린 돈으로 성장에 베팅</div>
-    <div class="cb-kpi">월 매출 +230% (1.28억→4.23억) · 신규유저 +262% · 5채널 셀프 서빙</div>
-  </div>
-</div>
-
-<!-- STAGE 03 -->
-<section id="stage03" class="stage-section">
-  <div class="container">
-    <div class="section-inner">
-      <div class="stage-header">
-        <div class="stage-header-num">03</div>
-        <div class="stage-header-content">
-          <div class="stage-header-label">Stage 03 · 퍼포먼스</div>
-          <h2 class="stage-title">직원들 월급이 걸린 돈으로,<br><span class="lime">성장에 베팅했습니다.</span></h2>
-          <p class="stage-bottleneck">흑자 구조 완성. 더 큰 매출은 광고비 자체를 키워야 가능. 목표 CAC = 10,000원 이하를 정의하고, 5개 매체를 직접 운용하며 확장. Meta CBO에서 ABO로 전환, Google ACI 일 예산 70만 → 1,200만원, TikTok 10만 → 120만원/day. 외부 대행 없이 전액 셀프 서빙.</p>
-        </div>
-      </div>
-      <div class="three-col">
-        <div class="card card-lime"><div class="big-num"><div class="val">+230%</div><div class="label">월 평균 매출<br>1.28억 → 4.23억</div></div></div>
-        <div class="card card-lime"><div class="big-num"><div class="val">+262%</div><div class="label">월 평균 신규유저<br>1,581명 → 5,725명</div></div></div>
-        <div class="card"><div class="big-num"><div class="val">5채널</div><div class="label">Meta · Google · TikTok · ASA · Naver SA<br>외부 의존도 0</div></div></div>
-      </div>
-      <div style="margin-top:24px;">
-        <div class="result-block-title">5개 매체 운용 방식 · 예산 확장 기록</div>
-        <table class="result-table">
-          <thead><tr><th>매체</th><th>운용 방식</th><th>주요 변화</th></tr></thead>
-          <tbody>
-            <tr><td><strong>Meta</strong></td><td>CBO → ABO 전환, 소구점 다변화, 리타게팅 자동화</td><td class="lime">주력 채널 · CVR 최고</td></tr>
-            <tr><td><strong>Google ACI</strong></td><td>앱 캠페인 자동화 + 키워드 검색 병행</td><td class="lime">일 70만 → 1,200만원</td></tr>
-            <tr><td><strong>TikTok</strong></td><td>숏폼 바이럴 소재 자체 제작·집행</td><td class="lime">일 10만 → 120만원</td></tr>
-            <tr><td><strong>ASA</strong></td><td>앱스토어 CPI 최적화 · 브랜드 검색 방어</td><td>고의도 유저 확보</td></tr>
-            <tr><td><strong>Naver SA</strong></td><td>브랜드 검색 방어 + 신규 키워드 모객</td><td>브랜드 점유율 확보</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">멀티채널 광고비 vs 신규유저 · 매출 추이</div>
-        <iframe src="charts/stage3_multichannel.html" height="400"></iframe>
-      </div>
-      <div class="insight-box">
-        <div class="insight-icon">💡</div>
-        <div class="insight-text">입사 후 동일 8개월 기준 비교. <strong>셀프 서빙 5채널, 목표 CAC 내 유지</strong>하며 규모를 키웠습니다. 체력 없이 광고비를 올리면 적자가 되지만, 체력을 먼저 만든 덕분에 베팅이 가능했습니다.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CHAPTER BREAK 04 -->
-<div class="chapter-break" data-num="04">
-  <div class="cb-num">04</div>
-  <div class="cb-content">
-    <div class="cb-label">Stage 04 · 인플루언서 PA</div>
-    <div class="cb-title">PA 진화 4단계 — Paid 한계를 인플루언서로 돌파</div>
-    <div class="cb-kpi">CPA 35,233원 → 12,042원 (-66%) · Paid 다음 매출 채널 확보</div>
-  </div>
-</div>
-
-<!-- STAGE 04 -->
-<section id="stage04" class="stage-section">
-  <div class="container">
-    <div class="section-inner">
-      <div class="stage-header">
-        <div class="stage-header-num">04</div>
-        <div class="stage-header-content">
-          <div class="stage-header-label">Stage 04 · 인플루언서 PA</div>
-          <h2 class="stage-title">PA로 <span class="lime">CPA -66%</span>,<br>Paid의 한계를 인플루언서 협업에서 풀었습니다.</h2>
-          <p class="stage-bottleneck">광고 채널별 CAC가 한계점 도달. 동일 타겟에 반복 노출로 피로도 증가, 신규 모수 확장 불가. Paid만으로는 닿을 수 없는 고객군 존재. 처음에는 단순 협업으로 시작했지만, <strong style="color:var(--white);">데이터 기반 4단계 진화</strong>로 CPA를 -66% 끌어내렸다.</p>
-        </div>
-      </div>
-      <div class="result-block-title">인플루언서 협업 4단계 진화</div>
-      <div class="phase-steps">
-        <div class="phase-step">
-          <div class="phase-step-num">1</div>
-          <div class="phase-step-content">
-            <div class="phase-step-title">단순 협업 <span class="phase-step-tag tag-risk">고위험</span></div>
-            <div class="phase-step-desc">고정 보수 지급, ROI 측정 불가. 인플루언서 1명에 수백만 원 베팅하는 구조. 데이터 없이 인상에 의존.</div>
-          </div>
-        </div>
-        <div class="phase-step">
-          <div class="phase-step-num">2</div>
-          <div class="phase-step-content">
-            <div class="phase-step-title">브랜디드 콘텐츠 <span class="phase-step-tag tag-ok">개선</span></div>
-            <div class="phase-step-desc">콘텐츠 기획 주도권을 가져와 브랜드 메시지 일관성 확보. UTM 심기 시작으로 유입 추적 가능.</div>
-          </div>
-        </div>
-        <div class="phase-step">
-          <div class="phase-step-num">3</div>
-          <div class="phase-step-content">
-            <div class="phase-step-title">PA (Performance Affiliate) <span class="phase-step-tag tag-ok">핵심</span></div>
-            <div class="phase-step-desc">인플루언서별 UTM + 딥링크로 1명 단위 ROI 측정. 상위 20%에만 재예산 투입. CPA 35,233원 → 12,042원 달성.</div>
-          </div>
-        </div>
-        <div class="phase-step">
-          <div class="phase-step-num">4</div>
-          <div class="phase-step-content">
-            <div class="phase-step-title">DM 바이럴 자동화 <span class="phase-step-tag tag-ok">확장</span></div>
-            <div class="phase-step-desc">Claude × Meta API 자동화로 DM 바이럴 구조 설계. 인플루언서 팔로워에게 맞춤 DM 발송 → 추가 유입 확보.</div>
+      <div class="action-row">
+        <div class="action-label asset">결과물</div>
+        <div class="action-content">
+          <div class="asset-chart" style="height:260px;">
+            <iframe src="charts/stage3_multichannel.html" title="멀티채널 결과" style="height:260px;"></iframe>
           </div>
         </div>
       </div>
-      <div class="three-col" style="margin-top:28px;">
-        <div class="card">
-          <div class="result-block-title">병목</div>
-          <ul class="bullet-list">
-            <li>Paid CAC 상승 한계</li>
-            <li>동일 타겟 피로도 증가</li>
-            <li>신규 모수 확장 불가</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="result-block-title">실행</div>
-          <ul class="bullet-list">
-            <li>UTM·딥링크로 1명 단위 ROI 측정</li>
-            <li>상위 20% 인플루언서 예산 집중</li>
-            <li>DM 바이럴 자동화 구조</li>
-          </ul>
-        </div>
-        <div class="card card-lime">
-          <div class="result-block-title">결과</div>
-          <div class="big-num"><div class="val">-66%</div><div class="label">CPA 개선<br>35,233 → 12,042원</div></div>
-        </div>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">인플루언서 PA CPA 추이</div>
-        <iframe src="charts/stage4_influencer.html" height="380"></iframe>
-      </div>
-      <div class="video-section-title">실제 PA 집행 콘텐츠 — YouTube Shorts</div>
-      <div class="video-grid video-grid-3">
-        <div class="video-wrap">
-          <div class="video-wrap-inner">
-            <iframe src="https://www.youtube.com/embed/wvRDxw3fsQ0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="video-label">PA 콘텐츠 ①</div>
-        </div>
-        <div class="video-wrap">
-          <div class="video-wrap-inner">
-            <iframe src="https://www.youtube.com/embed/G9Kad7XyB98" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="video-label">PA 콘텐츠 ②</div>
-        </div>
-        <div class="video-wrap">
-          <div class="video-wrap-inner">
-            <iframe src="https://www.youtube.com/embed/EpIkHZWtT8A" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="video-label">PA 콘텐츠 ③</div>
-        </div>
-      </div>
-      <div class="insight-box">
-        <div class="insight-icon">💡</div>
-        <div class="insight-text">성과 기반 PA 구조는 <strong>광고비 낭비 없이 인플루언서를 미디어 채널화</strong>하는 방법입니다. UTM과 딥링크로 인플루언서 1명 단위 ROI를 측정하고, 상위 20%에만 재투자했습니다.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CHAPTER BREAK 05 -->
-<div class="chapter-break" data-num="05">
-  <div class="cb-num">05</div>
-  <div class="cb-content">
-    <div class="cb-label">Stage 05 · 그로스 · CRM</div>
-    <div class="cb-title">광고 포화 돌파 — 지역 확장 + 회고 기반 프로모션</div>
-    <div class="cb-kpi">지역 CAC -32% · 사전등록 CVR 7.7배 · 브랜드 검색 +143%</div>
-  </div>
-</div>
-
-<!-- STAGE 05 -->
-<section id="stage05" class="stage-section">
-  <div class="container">
-    <div class="section-inner">
-      <div class="stage-header">
-        <div class="stage-header-num">05</div>
-        <div class="stage-header-content">
-          <div class="stage-header-label">Stage 05 · 그로스 · CRM</div>
-          <h2 class="stage-title">광고 포화를 뚫은 두 방향,<br><span class="lime">지역 확장과 프로모션.</span></h2>
-          <p class="stage-bottleneck">광고 채널·소재 다 돌렸지만 시장 자체가 포화되며 성장 둔화. CAC가 24.09 기준 11,849원이었다가 포화 시 19,250원으로 급등. 새로운 모수와 휴면 고객까지 활성화할 두 방향이 필요했다.</p>
-        </div>
-      </div>
-      <div class="two-col">
-        <div class="sub-card">
-          <div class="sub-card-title">5-1. 지역 확장 — 9개 도시로 새 모수</div>
-          <div class="sub-card-sub">데이터 기반 도시 우선순위 선정, 사전 CRM으로 CAC를 낮췄다</div>
-          <ul class="bullet-list">
-            <li>BigQuery 기반 도시별 수요·밀도 분석으로 우선순위 선정</li>
-            <li>신규 도시 진입 전 <strong>사전 CRM 모객</strong> 동시 집행</li>
-            <li>사전등록 CVR <strong>0.90% → 6.90%</strong> (7.7배 개선)</li>
-            <li>로컬 인플루언서 + 지역 타게팅 병행</li>
-          </ul>
-          <table class="ret-table" style="margin-top:16px;">
-            <thead><tr><th>시점</th><th>지역 CAC</th><th>비고</th></tr></thead>
-            <tbody>
-              <tr><td>24.09 (첫 확장)</td><td>11,849원</td><td class="dim">신규 모수 효과</td></tr>
-              <tr><td>포화 구간</td><td style="color:#FF7070;font-weight:700;">19,250원</td><td class="dim">시장 포화</td></tr>
-              <tr><td>25.03 (개선 후)</td><td class="lime-cell">12,553원</td><td class="lime-cell">-32% 달성</td></tr>
-            </tbody>
-          </table>
-          <div class="result-pills"><span class="result-pill">9개 도시 확장</span><span class="result-pill">CAC -32%</span><span class="result-pill">CVR 7.7배</span></div>
-        </div>
-        <div class="sub-card">
-          <div class="sub-card-title">5-2. 회고 기반 프로모션</div>
-          <div class="sub-card-sub">임팩트와 ROI를 모두 챙기는 구조로 재설계</div>
-          <ul class="bullet-list">
-            <li>기존 프로모션 회고 — 임팩트 있지만 ROI 낮은 이벤트 진단</li>
-            <li>임팩트(바이럴·브랜드 인지)와 ROI(직접 매출)를 동시 설계</li>
-            <li>계절성 저조 구간을 방어하는 프로모션 캘린더 운영</li>
-            <li>네이버 브랜드 검색량 <strong>1,810 → 4,400회 (+143%)</strong></li>
-          </ul>
-          <div class="result-pills"><span class="result-pill">브랜드 검색 +143%</span><span class="result-pill">ROI 동시 확보</span></div>
-        </div>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">지역 CAC 추이 — 확장 · 포화 · 개선</div>
-        <iframe src="charts/stage5_1_cac_timeline.html" height="360"></iframe>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">지역 확장 현황</div>
-        <iframe src="charts/stage5_expansion.html" height="320"></iframe>
-      </div>
-      <div class="chart-iframe-wrap">
-        <div class="chart-iframe-label">프로모션 효과 — 매출 vs 브랜드 검색량</div>
-        <iframe src="charts/stage5_2_promo.html" height="320"></iframe>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CHAPTER BREAK 06 -->
-<div class="chapter-break" data-num="06">
-  <div class="cb-num">06</div>
-  <div class="cb-content">
-    <div class="cb-label">Stage 06 · 팀 빌딩</div>
-    <div class="cb-title">팀 빌딩 — 1인에서 5인, 모두 1,000만원 집행자로</div>
-    <div class="cb-kpi">인턴 4명 온보딩 · 3명 정규직 전환 · 4개 시스템 직접 설계</div>
-  </div>
-</div>
-
-<!-- STAGE 06 -->
-<section id="stage06" class="stage-section">
-  <div class="container">
-    <div class="section-inner">
-      <div class="stage-header">
-        <div class="stage-header-num">06</div>
-        <div class="stage-header-content">
-          <div class="stage-header-label">Stage 06 · 팀 빌딩</div>
-          <h2 class="stage-title">성과는 팀원을 믿고, 맡기고,<br><span class="lime">그들의 아이디어를 성공시킬 때</span> 탄생합니다.</h2>
-          <p class="stage-bottleneck">1인 마케터의 실행 한계. 늘어난 채널·실험 빈도를 혼자 감당 불가. 채용·온보딩 시스템이 없는 상태에서 단순히 인원을 늘리면 오히려 혼란. <strong style="color:var(--white);">4개 시스템을 직접 설계</strong>해 인턴을 독립 집행자로 만들었다.</p>
-        </div>
-      </div>
-      <div class="three-col">
-        <div class="card card-lime"><div class="big-num"><div class="val">1 → 5</div><div class="label">인 팀으로 성장</div></div></div>
-        <div class="card card-lime"><div class="big-num"><div class="val">4명</div><div class="label">인턴 전원 온보딩<br>3명 정규직 전환</div></div></div>
-        <div class="card">
-          <div class="result-block-title">최종 목표</div>
-          <div style="font-size:16px;font-weight:800;color:var(--white);margin-bottom:8px;">월 1,000만원<br>독립 집행 가능 마케터</div>
-          <div style="font-size:12.5px;color:var(--lavender);">인턴 4명 전원이 이 기준에 도달</div>
-        </div>
-      </div>
-      <div style="margin-top:28px;">
-        <div class="result-block-title">4개 팀 빌딩 시스템</div>
-        <div class="two-col">
-          <div class="sub-card">
-            <div class="sub-card-title">① 온보딩 시스템</div>
-            <ul class="bullet-list">
-              <li>채용 기준·면접 프로세스 직접 설계</li>
-              <li>입사 첫 주: 브랜드 이해 → 툴 세팅 → 첫 실행까지</li>
-              <li>온보딩 가이드 문서화로 재현 가능한 구조 확보</li>
-            </ul>
-          </div>
-          <div class="sub-card">
-            <div class="sub-card-title">② 동기부여 시스템</div>
-            <ul class="bullet-list">
-              <li>팀원별 성장 목표 설정 + 달성 시 인정</li>
-              <li>아이디어 주도권 위임 — 팀원이 기획하고 실행하는 구조</li>
-              <li>실패해도 데이터로 배움이 남는 문화 설계</li>
-            </ul>
-          </div>
-          <div class="sub-card">
-            <div class="sub-card-title">③ 관리 시스템</div>
-            <ul class="bullet-list">
-              <li>월 1on1 — 퍼포먼스 리뷰 + 커리어 방향 논의</li>
-              <li>분기별 회고·효율화 주간 운영</li>
-              <li>주간 업무 공유 노션 대시보드 운영</li>
-            </ul>
-          </div>
-          <div class="sub-card">
-            <div class="sub-card-title">④ 성과 만들기 시스템</div>
-            <ul class="bullet-list">
-              <li>인턴 각자의 담당 채널·프로젝트 배정</li>
-              <li>월 1,000만원 집행 기준 트레이닝</li>
-              <li>팀원이 제안한 아이디어가 실제 캠페인으로 집행되는 구조</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="insight-box">
-        <div class="insight-icon">🌱</div>
-        <div class="insight-text">인턴 4명 전원이 독립적으로 <strong>월 1,000만원 이상 광고를 집행하는 마케터</strong>로 성장했습니다. 팀이 강해지면 실험 속도가 올라가고, 실험 속도가 올라가면 성장이 빨라집니다.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CHAPTER BREAK: Prev Career -->
-<div class="chapter-break" data-num="📁">
-  <div class="cb-num">📁</div>
-  <div class="cb-content">
-    <div class="cb-label">이전 경력</div>
-    <div class="cb-title">여기까지 오기 전에도, 매번 0을 1로 만들어왔습니다</div>
-    <div class="cb-kpi">이삼오구 · 나인투식스 · 와이즈플래닛</div>
-  </div>
-</div>
-
-<!-- PREVIOUS CAREER -->
-<section id="prev-career" style="background:rgba(0,0,0,.15);">
-  <div class="container">
-    <div class="section-inner">
-      <div class="eyebrow">이전 경력</div>
-      <h2 class="section-title">여기까지 오기 전에도,<br>매번 <span class="lime">0을 1로 만들어왔습니다.</span></h2>
-      <div class="three-col" style="margin-top:40px;">
-        <div class="prev-card">
-          <div class="prev-company">이삼오구</div>
-          <div class="prev-role-period">파트장 · 2021.08 — 2023.10</div>
-          <p style="font-size:13.5px;color:var(--lavender);margin-bottom:16px;line-height:1.6;">데일리원더 브랜드 퍼포먼스·콘텐츠·CRM 전 영역 주도. TikTok 구매 건수 8배, Google ROAS 289%.</p>
-          <div class="prev-kpis">
-            <div class="prev-kpi"><div class="v">7.5배</div><div class="l">주간 매출<br>2,000만 → 1억 5,000만</div></div>
-            <div class="prev-kpi"><div class="v">8배</div><div class="l">TikTok 구매<br>13건 → 109건</div></div>
-            <div class="prev-kpi"><div class="v">289%</div><div class="l">Google ROAS</div></div>
-            <div class="prev-kpi"><div class="v">100건</div><div class="l">신제품 런칭 첫날</div></div>
-          </div>
-        </div>
-        <div class="prev-card">
-          <div class="prev-company">나인투식스</div>
-          <div class="prev-role-period">팀원 · 2020.12 — 2021.04</div>
-          <p style="font-size:13.5px;color:var(--lavender);margin-bottom:16px;line-height:1.6;">스마트스토어 SEO 최적화, 상세페이지 재기획, 네이버 라이브 커머스 기획·촬영.</p>
-          <div class="prev-kpis"><div class="prev-kpi"><div class="v">3배</div><div class="l">월 매출<br>80만 → 230만</div></div></div>
-        </div>
-        <div class="prev-card">
-          <div class="prev-company">와이즈플래닛</div>
-          <div class="prev-role-period">인턴 · 2020.01 — 2020.07</div>
-          <p style="font-size:13.5px;color:var(--lavender);margin-bottom:16px;line-height:1.6;">광고 데이터로 영상 이탈 시간 2초 문제 발견 → 원테이크 후킹 컷으로 전환. 입사 2주 만에 성과.</p>
-          <div class="prev-kpis">
-            <div class="prev-kpi"><div class="v">268%</div><div class="l">ROAS · 입사 2주 만에</div></div>
-            <div class="prev-kpi"><div class="v">5,063만</div><div class="l">2주 만에 매출 달성</div></div>
+      <div class="action-row">
+        <div class="action-label data">데이터</div>
+        <div class="action-content">
+          <div class="data-pills">
+            <div class="data-pill">
+              <div class="data-pill-val">+330%</div>
+              <div class="data-pill-label">매출 (3개월)<br>1.28억 → 4.23억</div>
+            </div>
+            <div class="data-pill">
+              <div class="data-pill-val">+262%</div>
+              <div class="data-pill-label">신규 유저</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
-<!-- HOW I WORK -->
-<section id="how-i-work" style="border-top:1px solid rgba(255,255,255,.07);">
-  <div class="container">
-    <div class="section-inner">
-      <div class="eyebrow">How I Work</div>
-      <h2 class="section-title" style="margin-bottom:32px;">일하는 방식</h2>
-      <div class="how-grid">
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">성장 > 워라벨. 앞으로의 기대 가치가 그려진다면 일을 최우선으로 생각합니다.</div></div>
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">될까? 안될까? 고민하기보다는 일단 해보고 빠르게 결과를 확인하는 편입니다.</div></div>
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">설득할 때는 항상 정량적·정성적 근거를 갖추고 합리적으로 소통합니다.</div></div>
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">무조건적인 긍정은 지양하며, 동료 의견을 지지하더라도 반대 입장을 생각해본 후 수긍합니다.</div></div>
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">팀의 방향성이 정해지면 결정 전 입장이 어떠했든 결과를 위해 최대한 몰입합니다.</div></div>
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">협업에서 공유는 예의이므로 팀원들과 주기적으로 진행 상황을 공유합니다.</div></div>
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">소통 시 의도는 명확하게 전달하되 말은 예쁘게 표현합니다.</div></div>
-        <div class="how-item"><div class="how-dot"></div><div class="how-text">평소 하던 방식만 고집하기보다는 동료들과 해결책을 공유하며 발전시킵니다.</div></div>
+<!-- ══════════════════════════════════════════
+     4단계 — 인플루언서 마케팅
+════════════════════════════════════════════ -->
+<section class="section section-bg-alt stage-section" id="stage4">
+  <div class="section-inner">
+    <div class="stage-header">
+      <span class="stage-badge">4단계</span>
+      <div>
+        <div class="stage-title-text">인플루언서 마케팅 — 도달 + 신뢰 확보</div>
+        <div class="stage-subtitle">단순 협업 → PA(Product Ambassador) 4단계 진화 · 2024</div>
       </div>
     </div>
+
+    <div class="action-grid">
+      <div class="action-row">
+        <div class="action-label bottleneck">병목</div>
+        <div class="action-content">
+          <div class="bottleneck-text">도달 + 신뢰 동시 확보 불가 — 퍼포먼스 광고만으로 한계</div>
+          <div class="bottleneck-sub">CPA 35,233원 — 소비자 신뢰 없이 퍼포먼스만으론 CAC 개선에 한계</div>
+        </div>
+      </div>
+      <div class="action-row">
+        <div class="action-label action">액션</div>
+        <div class="action-content">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div>
+                <div class="tl-phase">Phase 1 · 단순 협업</div>
+                <div class="tl-text">소규모 인플루언서 콘텐츠 협업 — <b>도달 확인</b></div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div>
+                <div class="tl-phase">Phase 2 · 브랜디드 콘텐츠</div>
+                <div class="tl-text">브랜드 스토리텔링 영상 — <b>신뢰 구축</b></div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div>
+                <div class="tl-phase">Phase 3 · PA(Product Ambassador)</div>
+                <div class="tl-text">장기 파트너십 — <b>반복 노출 + 전환 최적화</b></div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div>
+                <div class="tl-phase">Phase 4 · DM 바이럴</div>
+                <div class="tl-text">팔로워 DM 직접 도달 — <b>고전환 바이럴 루프</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action-row">
+        <div class="action-label asset">결과물</div>
+        <div class="action-content">
+          <div class="video-grid">
+            <div class="video-item">
+              <div class="video-shorts">
+                <iframe src="https://www.youtube.com/embed/wvRDxw3fsQ0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen loading="lazy"></iframe>
+              </div>
+              <div class="video-label">PA 영상 1</div>
+            </div>
+            <div class="video-item">
+              <div class="video-shorts">
+                <iframe src="https://www.youtube.com/embed/G9Kad7XyB98"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen loading="lazy"></iframe>
+              </div>
+              <div class="video-label">PA 영상 2</div>
+            </div>
+            <div class="video-item">
+              <div class="video-shorts">
+                <iframe src="https://www.youtube.com/embed/EpIkHZWtT8A"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen loading="lazy"></iframe>
+              </div>
+              <div class="video-label">DM 바이럴</div>
+            </div>
+            <div style="flex:1; min-width:180px;">
+              <div class="asset-chart" style="height:220px;">
+                <iframe src="charts/stage4_influencer.html" title="인플루언서 단계별 CPA" style="height:220px;"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="action-row">
+        <div class="action-label data">데이터</div>
+        <div class="action-content">
+          <div class="data-pills">
+            <div class="data-pill">
+              <div class="data-pill-val">-66%</div>
+              <div class="data-pill-label">CPA<br>35,233 → 12,042원</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- CLOSING -->
-<section id="closing">
-  <div class="container">
-    <div class="section-inner">
-      <div class="eyebrow">Closing</div>
-      <h2 class="closing-headline">
-        이 6단계는 <span class="lime">한 번의 사이클</span>입니다.<br>
-        다음 회사에서, 처음부터<br>
-        다시 한 번 <span class="lime">가속화하겠습니다.</span>
-      </h2>
-      <p class="closing-sub">콘텐츠부터 CRM·데이터·팀 빌딩까지 — 풀퍼널을 그대로 옮겨, 다음 브랜드의 매출도 똑같이 키워내겠습니다. 지금까지 만든 성과를 귀사에 적용하여 다시 한번 액셀러레이팅 하겠습니다.</p>
-      <div class="contact-grid">
-        <a class="contact-card" href="mailto:cumdederitvivaldi@gmail.com"><div class="contact-icon">✉️</div><div class="contact-info"><div class="contact-label">Email</div><div class="contact-val">cumdederitvivaldi@gmail.com</div></div></a>
-        <a class="contact-card" href="tel:+821075899117"><div class="contact-icon">📱</div><div class="contact-info"><div class="contact-label">Phone</div><div class="contact-val">+82-10-7589-9117</div></div></a>
-        <div class="contact-card"><div class="contact-icon">💬</div><div class="contact-info"><div class="contact-label">KakaoTalk</div><div class="contact-val">hound600al</div></div></div>
-        <div class="contact-card"><div class="contact-icon">🏠</div><div class="contact-info"><div class="contact-label">Location</div><div class="contact-val">서울 동대문구</div></div></div>
-      </div>
-      <div class="footer-sig">
-        <span>— 이도형</span>
-        <span>브랜드 엑셀러레이터 포트폴리오 · 2026</span>
+<!-- ══════════════════════════════════════════
+     5단계 — 지역 확장 + 프로모션
+════════════════════════════════════════════ -->
+<section class="section section-bg-dark stage-section" id="stage5">
+  <div class="section-inner">
+    <div class="stage-header">
+      <span class="stage-badge">5단계</span>
+      <div>
+        <div class="stage-title-text">지역 확장 · 프로모션 최적화</div>
+        <div class="stage-subtitle">서울 포화 → 지역 확장 · Paid 한계 → 프로모 설계 · 2024</div>
       </div>
     </div>
+
+    <div class="multi-stage">
+
+      <!-- ── 5-1단계 ── -->
+      <div id="stage5-1">
+        <div class="sub-stage-label">5-1단계 · 단계적 지역 확장</div>
+        <div class="action-grid">
+          <div class="action-row">
+            <div class="action-label bottleneck">병목</div>
+            <div class="action-content">
+              <div class="bottleneck-text">서울 단독 포화 — 신규 획득 비용 급등</div>
+              <div class="bottleneck-sub">서울 지역 CAC 19,250원 → 더 이상 확장 어려운 수준</div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label action">액션</div>
+            <div class="action-content">
+              <ul class="action-bullets">
+                <li><b>단계적 지역 확장</b> — 밀도 높은 수도권부터 순차 개척</li>
+                <li>광고 집행 전 <b>사전 CRM 수요조사</b> — 기존 고객 DB 활용</li>
+                <li>사전 신청 CVR <b>6.90%</b> (기존 퍼포먼스 CVR 0.90% 대비 7.7배)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label asset">결과물</div>
+            <div class="action-content">
+              <div class="asset-chart" style="height:240px;">
+                <iframe src="charts/stage5_1_cac_timeline.html" title="CAC 타임라인" style="height:240px;"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label data">데이터</div>
+            <div class="action-content">
+              <div class="data-pills">
+                <div class="data-pill">
+                  <div class="data-pill-val">-32%</div>
+                  <div class="data-pill-label">CAC<br>19,250 → 12,553원</div>
+                </div>
+                <div class="data-pill">
+                  <div class="data-pill-val">7.7×</div>
+                  <div class="data-pill-label">사전신청 CVR<br>0.90 → 6.90%</div>
+                </div>
+              </div>
+              <div class="data-chart" style="height:220px;">
+                <iframe src="charts/stage5_expansion.html" title="확장 결과" style="height:220px;"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5-2단계 ── -->
+      <div id="stage5-2">
+        <div class="sub-stage-label">5-2단계 · 프로모션 설계 (식목일 페이백)</div>
+        <div class="action-grid">
+          <div class="action-row">
+            <div class="action-label bottleneck">병목</div>
+            <div class="action-content">
+              <div class="bottleneck-text">Paid만으로 목표 달성 어려움 — 브랜드 인지도 부족</div>
+              <div class="bottleneck-sub">퍼포먼스 광고 포화 상태에서 브랜드 검색량 자체가 낮음</div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label action">액션</div>
+            <div class="action-content">
+              <ul class="action-bullets">
+                <li>① <b>990원 이벤트</b> — 가격 장벽 제거, 첫 이용 유도</li>
+                <li>② <b>식목일 페이백 이벤트</b> — 환경 메시지 연계 바이럴 프로모션</li>
+                <li>회고 후 개선 — 페이백 대상 및 조건 최적화</li>
+              </ul>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label asset">결과물</div>
+            <div class="action-content">
+              <div class="asset-chart" style="height:240px;">
+                <iframe src="charts/stage5_2_promo.html" title="프로모션 결과" style="height:240px;"></iframe>
+              </div>
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="action-label data">데이터</div>
+            <div class="action-content">
+              <div class="data-pills">
+                <div class="data-pill">
+                  <div class="data-pill-val">+143%</div>
+                  <div class="data-pill-label">브랜드 검색량</div>
+                </div>
+                <div class="data-pill">
+                  <div class="data-pill-val">+52pp</div>
+                  <div class="data-pill-label">페이백 M1 잔존율<br>37.5 → 89.5%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /multi-stage -->
   </div>
 </section>
+
+<!-- ══════════════════════════════════════════
+     6단계 — 팀 빌딩
+════════════════════════════════════════════ -->
+<section class="section section-bg-alt stage-section" id="stage6">
+  <div class="section-inner">
+    <div class="stage-header">
+      <span class="stage-badge">6단계</span>
+      <div>
+        <div class="stage-title-text">팀 빌딩 — 1인 한계 극복</div>
+        <div class="stage-subtitle">4개 시스템 설계 → 4명 온보딩 · 3명 정규직 전환 · 2024–2025</div>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <div class="action-row">
+        <div class="action-label bottleneck">병목</div>
+        <div class="action-content">
+          <div class="bottleneck-text">1인 실행 한계 — 스케일 없이는 성장 정체</div>
+          <div class="bottleneck-sub">모든 채널을 혼자 운영 → 퀄리티와 속도 모두 한계 도달</div>
+        </div>
+      </div>
+      <div class="action-row">
+        <div class="action-label action">액션</div>
+        <div class="action-content">
+          <ul class="action-bullets">
+            <li><b>온보딩 시스템</b> — 신규 팀원 자율 적응 체계</li>
+            <li><b>동기부여 시스템</b> — OKR 기반 목표·인센티브 설계</li>
+            <li><b>관리 시스템</b> — 채널별 성과 추적·주간 리뷰 루틴</li>
+            <li><b>성과 만들기 시스템</b> — 팀원 독립 집행 역량 빌드</li>
+          </ul>
+        </div>
+      </div>
+      <div class="action-row">
+        <div class="action-label asset">결과물</div>
+        <div class="action-content">
+          <div class="asset-text">4개 시스템 문서 · 온보딩 가이드 · OKR 템플릿 (내부 자료)</div>
+        </div>
+      </div>
+      <div class="action-row">
+        <div class="action-label data">데이터</div>
+        <div class="action-content">
+          <div class="data-pills">
+            <div class="data-pill">
+              <div class="data-pill-val">4명</div>
+              <div class="data-pill-label">온보딩 완료</div>
+            </div>
+            <div class="data-pill">
+              <div class="data-pill-val">3명</div>
+              <div class="data-pill-label">정규직 전환</div>
+            </div>
+            <div class="data-pill">
+              <div class="data-pill-val">1,000만+</div>
+              <div class="data-pill-label">전원 월 독립 집행<br>(원/명)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>이도형 Growth Marketing Portfolio · 2023–2025 · hound600al@covering.app</p>
+</footer>
 
 <script>
+// Wake Lock
 if ('wakeLock' in navigator) {
-  (async () => { try { await navigator.wakeLock.request('screen'); } catch(e) {} })();
+  navigator.wakeLock.request('screen').catch(() => {});
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      navigator.wakeLock.request('screen').catch(() => {});
+    }
+  });
 }
-const ctx = document.getElementById('growthChart').getContext('2d');
-const labels = ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08','2024-09','2024-10','2024-11','2024-12','2025-01','2025-02','2025-03','2025-04','2025-05','2025-06','2025-07','2025-08','2025-09','2025-10','2025-11','2025-12','2026-01','2026-02','2026-03','2026-04'];
-const baseIdx = 4;
-function buildCurve(s,e,n,b){const a=[];for(let i=0;i<n;i++){if(i<b){const t=i/b;a.push(Math.round(s+(100-s)*t));}else{const t=(i-b)/(n-1-b);a.push(Math.round(100+(e-100)*Math.pow(t,.65)));}}return a;}
-const n=labels.length;
-const data30DAU=buildCurve(43,2858,n,baseIdx),dataNewUser=buildCurve(42,2329,n,baseIdx),dataNewReg=buildCurve(35,1796,n,baseIdx),dataFirstUse=buildCurve(42,2353,n,baseIdx),dataInstall=buildCurve(44,1000,n,baseIdx);
-function buildCM(n,b){const a=[];for(let i=0;i<n;i++){if(i<b){const t=i/b;a.push(parseFloat((-25.3+(-5.1-(-25.3))*t).toFixed(1)));}else{const t=(i-b)/(n-1-b);a.push(parseFloat((-5.1+(33.4-(-5.1))*Math.pow(t,.6)).toFixed(1)));}}return a;}
-const dataCM=buildCM(n,baseIdx);
-const vertLine={id:'vl',afterDraw(c){const x=c.scales.x,y=c.scales.y,px=x.getPixelForValue(baseIdx);c.ctx.save();c.ctx.beginPath();c.ctx.setLineDash([6,4]);c.ctx.strokeStyle='rgba(214,255,61,.6)';c.ctx.lineWidth=1.5;c.ctx.moveTo(px,y.top);c.ctx.lineTo(px,y.bottom);c.ctx.stroke();c.ctx.setLineDash([]);c.ctx.fillStyle='rgba(214,255,61,.9)';c.ctx.font='600 11px JetBrains Mono,monospace';c.ctx.fillText('입사 시점',px+6,y.top+16);c.ctx.restore();}};
-new Chart(ctx,{type:'line',plugins:[vertLine],data:{labels,datasets:[
-  {label:'신규 가입자',data:dataNewReg,borderColor:'#D6FF3D',backgroundColor:'rgba(214,255,61,.08)',borderWidth:2.5,pointRadius:0,fill:false,tension:.4,yAxisID:'y'},
-  {label:'30DAU',data:data30DAU,borderColor:'rgba(255,255,255,.7)',borderWidth:1.5,pointRadius:0,fill:false,tension:.4,yAxisID:'y'},
-  {label:'신규 유저',data:dataNewUser,borderColor:'rgba(255,255,255,.5)',borderWidth:1.5,pointRadius:0,fill:false,tension:.4,yAxisID:'y'},
-  {label:'첫 이용',data:dataFirstUse,borderColor:'rgba(199,203,227,.4)',borderWidth:1,pointRadius:0,fill:false,tension:.4,yAxisID:'y'},
-  {label:'앱 설치수',data:dataInstall,borderColor:'rgba(199,203,227,.3)',borderWidth:1,pointRadius:0,fill:false,tension:.4,yAxisID:'y'},
-  {label:'공헌이익률 (%)',data:dataCM,borderColor:'rgba(255,120,120,.8)',borderWidth:2,borderDash:[4,3],pointRadius:0,fill:false,tension:.4,yAxisID:'y2'},
-]},options:{responsive:true,maintainAspectRatio:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,labels:{color:'rgba(199,203,227,.8)',font:{size:11,family:'JetBrains Mono,monospace'},boxWidth:20,padding:14}},tooltip:{backgroundColor:'rgba(14,22,180,.9)',borderColor:'rgba(214,255,61,.3)',borderWidth:1,titleColor:'#D6FF3D',bodyColor:'#C7CBE3',padding:10}},scales:{x:{ticks:{color:'rgba(139,145,180,.7)',font:{size:10,family:'JetBrains Mono,monospace'},maxTicksLimit:14,maxRotation:0},grid:{color:'rgba(255,255,255,.04)'}},y:{position:'left',title:{display:true,text:'정규화 지수 (입사=100)',color:'rgba(199,203,227,.5)',font:{size:10}},ticks:{color:'rgba(139,145,180,.7)',font:{size:10,family:'JetBrains Mono,monospace'}},grid:{color:'rgba(255,255,255,.04)'},min:0,suggestedMax:3000},y2:{position:'right',title:{display:true,text:'공헌이익률 (%)',color:'rgba(255,120,120,.5)',font:{size:10}},ticks:{color:'rgba(255,120,120,.6)',font:{size:10,family:'JetBrains Mono,monospace'},callback:v=>v+'%'},grid:{drawOnChartArea:false},min:-40,max:40}}}});
+
+// Side nav scroll spy
+const sections = ['cover','metrics','stage1','stage2','stage3','stage4','stage5','stage6'];
+const dots = document.querySelectorAll('.side-dot');
+
+function updateNav() {
+  const vh = window.innerHeight;
+  let activeIdx = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= vh * 0.5) activeIdx = i;
+  });
+  dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+// Dot click scroll
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    const el = document.getElementById(sections[i]);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  });
+});
 </script>
 </body>
 </html>
