@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>첫 이용 22일 병목 — 재이용 가능성 급감 근거</title>
+<title>첫 이용 후 경과일 × 잔존율 — 22일 병목</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
@@ -15,8 +15,6 @@
     --blue-500:#2D5BFF; --blue-600:#1B45E0;
     --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB; --ink-400:#8B95A6;
     --ink-500:#5B6675; --ink-600:#3A4252; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
-    --mint-500:#10C390; --mint-100:#D5F5E8;
-    --sun-500:#F5B400; --sun-100:#FFF1C9;
     --rose-500:#EF4444; --rose-100:#FEE2E2;
     --font-sans:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',system-ui,sans-serif;
     --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
@@ -36,29 +34,11 @@
   h1.title{font-size:34px; font-weight:800; letter-spacing:-.02em; line-height:1.1;
     margin:0 0 12px; color:var(--ink-900);}
   h1.title .rose{color:var(--rose-500);}
-  h1.title .blue{color:var(--blue-500);}
   .sub{font-size:14.5px; color:var(--ink-500); line-height:1.6; max-width:880px; margin-bottom:28px;}
   .sub b{color:var(--ink-800); font-weight:700;}
 
-  .kpi-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px;}
-  .kpi{background:#fff; border:1px solid var(--ink-100); border-radius:12px;
-    padding:16px 18px; box-shadow:var(--shadow-sm);}
-  .kpi.accent{background:linear-gradient(180deg, var(--rose-500), #C72929); border-color:#C72929;}
-  .kpi-lab{font-family:var(--font-mono); font-size:9.5px; font-weight:600; letter-spacing:.12em;
-    text-transform:uppercase; color:var(--ink-400); margin-bottom:8px;}
-  .kpi.accent .kpi-lab{color:rgba(255,255,255,.75);}
-  .kpi-val{font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1; color:var(--ink-900);
-    font-variant-numeric:tabular-nums;}
-  .kpi.accent .kpi-val{color:#fff;}
-  .kpi-val .unit{font-size:13px; font-weight:600; color:var(--ink-400); margin-left:3px;}
-  .kpi.accent .kpi-val .unit{color:rgba(255,255,255,.85);}
-  .kpi-note{font-size:11px; color:var(--ink-500); margin-top:8px; line-height:1.5;}
-  .kpi.accent .kpi-note{color:rgba(255,255,255,.85);}
-  .kpi-note b{color:var(--ink-900);}
-  .kpi.accent .kpi-note b{color:#fff;}
-
   .card{background:#fff; border:1px solid var(--ink-100); border-radius:14px;
-    padding:24px 28px 22px; box-shadow:var(--shadow-sm); margin-bottom:24px;}
+    padding:24px 28px 22px; box-shadow:var(--shadow-sm);}
   .card-title{font-size:16px; font-weight:700; color:var(--ink-800); margin-bottom:4px;}
   .card-sub{font-size:12px; color:var(--ink-500); margin-bottom:18px;}
   .legend{display:flex; flex-wrap:wrap; gap:14px; row-gap:8px; font-size:11.5px;
@@ -67,12 +47,12 @@
   .lg-dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
   .lg-vline{width:2px; height:11px; display:inline-block;}
   .lg-sep{width:1px; height:12px; background:var(--ink-200);}
-  .chart-wrap{position:relative; height:520px;}
+  .chart-wrap{position:relative; height:540px;}
 
   /* D-day reference overlays */
   .ref-overlay{position:absolute; inset:0; pointer-events:none;}
   .ref-line{
-    position:absolute; top:0; bottom:30px;
+    position:absolute;
     border-left:1.8px dashed currentColor;
     transform:translateX(-50%);
   }
@@ -80,64 +60,43 @@
     position:absolute;
     transform:translateX(-50%);
     background:#fff; border:1.5px solid currentColor; border-radius:10px;
-    padding:7px 11px;
+    padding:9px 14px;
     box-shadow:0 6px 18px rgba(15,25,50,.10);
-    white-space:nowrap; line-height:1.2;
+    white-space:nowrap; line-height:1.25;
+    text-align:center;
   }
-  .ref-callout.right-anchor{ transform:translateX(-100%); }
   .ref-callout .ref-name{
-    font-family:var(--font-mono); font-size:10.5px; font-weight:700; letter-spacing:.06em;
-    color:currentColor; margin-bottom:2px; display:block;
+    font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.08em;
+    color:currentColor; margin-bottom:4px; display:block;
   }
   .ref-callout .ref-desc{
-    font-family:var(--font-sans); font-size:11.5px; font-weight:700; color:var(--ink-800);
+    font-family:var(--font-sans); font-size:13px; font-weight:700; color:var(--ink-800);
+    display:block; margin-bottom:2px;
   }
+  .ref-callout .ref-stat{
+    font-family:var(--font-mono); font-size:11.5px; font-weight:600;
+    color:var(--ink-500); display:block;
+  }
+  .ref-callout .ref-stat b{ color:currentColor; font-weight:700; font-size:12.5px; }
   .ref.rose{ color:#EF4444; }
-  .ref.sun { color:#F5B400; }
-  .ref.mint{ color:#10C390; }
 
-  /* Tier-style chips below chart */
-  .scenario-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px;}
-  .sc{background:#fff; border:1px solid var(--ink-100); border-left:4px solid currentColor;
-    border-radius:0 12px 12px 0; padding:16px 18px; box-shadow:var(--shadow-sm);}
-  .sc.rose{ color:#EF4444; }
-  .sc.sun { color:#F5B400; }
-  .sc.mint{ color:#10C390; }
-  .sc-head{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
-  .sc-badge{
-    background:currentColor; color:#fff;
-    font-family:var(--font-mono); font-weight:700; font-size:11px; letter-spacing:.06em;
-    padding:4px 10px; border-radius:999px;
+  .point-label{
+    position:absolute;
+    background:#EF4444; color:#fff;
+    font-family:var(--font-mono); font-size:11px; font-weight:700;
+    padding:3px 8px; border-radius:6px;
+    transform:translate(8px, -50%);
+    box-shadow:0 4px 10px rgba(239,68,68,.25);
+    white-space:nowrap;
   }
-  .sc-title{font-size:13px; font-weight:700; color:var(--ink-800);}
-  .sc-stats{display:flex; gap:14px; align-items:baseline; margin-bottom:6px;}
-  .sc-before{font-family:var(--font-mono); font-size:14px; color:var(--ink-400); font-weight:600;
-    text-decoration:line-through; text-decoration-color:rgba(139,149,166,.5);}
-  .sc-arrow{font-size:14px; color:var(--ink-400);}
-  .sc-after{font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--ink-900);
-    font-variant-numeric:tabular-nums;}
-  .sc-delta{font-family:var(--font-mono); font-size:11.5px; font-weight:700; color:currentColor;
-    background:#fff; padding:3px 8px; border-radius:6px; border:1px solid currentColor;
-    display:inline-block; margin-bottom:8px;}
-  .sc-note{font-size:11.5px; color:var(--ink-500); line-height:1.5;}
-
-  .summary-card{
-    background:linear-gradient(135deg, var(--ink-900), #1A2540);
-    border-radius:14px; padding:24px 28px; color:#fff;
-    display:flex; align-items:center; gap:24px;
+  .point-label::before{
+    content:''; position:absolute;
+    left:-4px; top:50%; transform:translateY(-50%);
+    width:0; height:0;
+    border-top:4px solid transparent;
+    border-bottom:4px solid transparent;
+    border-right:4px solid #EF4444;
   }
-  .summary-card .sum-num{
-    font-size:48px; font-weight:900; letter-spacing:-.03em;
-    color:#fff; line-height:1; font-variant-numeric:tabular-nums; flex-shrink:0;
-  }
-  .summary-card .sum-num .unit{font-size:20px; font-weight:700; color:rgba(255,255,255,.7); margin-left:4px;}
-  .summary-card .sum-body{flex:1;}
-  .summary-card .sum-eyebrow{
-    font-family:var(--font-mono); font-size:10.5px; font-weight:600; letter-spacing:.12em;
-    text-transform:uppercase; color:#5EE3B6; margin-bottom:6px;
-  }
-  .summary-card .sum-head{font-size:18px; font-weight:800; margin-bottom:6px; letter-spacing:-.01em;}
-  .summary-card .sum-note{font-size:12.5px; color:rgba(255,255,255,.7); line-height:1.6;}
 
   .foot{margin-top:24px; padding-top:18px; border-top:1px solid var(--ink-200);
     display:flex; justify-content:space-between; font-size:11px;
@@ -146,56 +105,27 @@
   @media (max-width: 900px){
     body{padding:24px 16px;} h1.title{font-size:24px;}
     .card{padding:18px;} .chart-wrap{height:440px;}
-    .kpi-grid{grid-template-columns:repeat(2,1fr);}
-    .scenario-row{grid-template-columns:1fr;}
-    .summary-card{flex-direction:column; align-items:flex-start;}
-    .summary-card .sum-num{font-size:36px;}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="eyebrow">BOTTLENECK ANALYSIS · D22 EVIDENCE</div>
+  <div class="eyebrow">BOTTLENECK ANALYSIS · D22</div>
   <h1 class="title">첫 이용 후 <span class="rose">22일</span>이 분기점 — 재이용 가능성 급감</h1>
   <p class="sub">
     코호트 638명의 회차별 잔존 데이터를 <b>일(日) 축</b>으로 환산한 결과,
-    첫 이용 후 <b>22일이 지나면 잔존율이 45.5%까지 하락</b>합니다.
-    실제 운영 데이터에서도 같은 시점의 <b>자연 재주문율은 12.7%</b>에 불과해, D22를 CRM 자동화 트리거로 설계했습니다.
+    첫 이용 후 <b>22일이 경과하면 잔존율이 45.5%까지 하락</b>합니다.
+    22일이 재이용 가능성의 분기점입니다.
   </p>
-
-  <div class="kpi-grid">
-    <div class="kpi">
-      <div class="kpi-lab">1→2회차 평균 간격</div>
-      <div class="kpi-val">8.4<span class="unit">일</span></div>
-      <div class="kpi-note">기대 재이용 사이클의 <b>2.6배</b> 경과 = 22일</div>
-    </div>
-    <div class="kpi accent">
-      <div class="kpi-lab">D22 자연 재주문율</div>
-      <div class="kpi-val">12.7<span class="unit">%</span></div>
-      <div class="kpi-note"><b>CRM 도입 전</b> · 22일 경과 시 자연 회수율</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-lab">D22 시점 누적 잔존율</div>
-      <div class="kpi-val">45.5<span class="unit">%</span></div>
-      <div class="kpi-note">3회차(53.4%)와 4회차(43.9%) 사이 보간값</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-lab">22일 동안 이탈</div>
-      <div class="kpi-val">-54.5<span class="unit">pp</span></div>
-      <div class="kpi-note">100% → 45.5% · 일평균 <b>-2.5pp/일</b></div>
-    </div>
-  </div>
 
   <div class="card">
     <div class="card-title">첫 이용 후 경과일 × 잔존율</div>
-    <div class="card-sub">코호트 638명의 누적 잔존율 곡선(일 단위 환산) · 빨간 점선 = D22 병목 · 노랑·민트 = CRM 추가 트리거(D29, D61)</div>
+    <div class="card-sub">코호트 638명의 누적 잔존율 곡선 (회차별 데이터를 일 단위로 환산)</div>
     <div class="legend">
       <span class="lg-item"><span class="lg-dot" style="background:#2D5BFF;"></span> 잔존율 곡선</span>
       <span class="lg-sep"></span>
-      <span class="lg-item"><span class="lg-vline" style="background:repeating-linear-gradient(180deg,#EF4444 0 3px,transparent 3px 6px);"></span> D22 병목 임계점</span>
-      <span class="lg-item"><span class="lg-vline" style="background:repeating-linear-gradient(180deg,#F5B400 0 3px,transparent 3px 6px);"></span> D29 알림톡 쿠폰</span>
-      <span class="lg-item"><span class="lg-vline" style="background:repeating-linear-gradient(180deg,#10C390 0 3px,transparent 3px 6px);"></span> D61 알림톡 쿠폰</span>
+      <span class="lg-item"><span class="lg-vline" style="background:repeating-linear-gradient(180deg,#EF4444 0 3px,transparent 3px 6px);"></span> 재이용 가능성 급감 임계점</span>
     </div>
     <div class="chart-wrap">
       <canvas id="c-curve"></canvas>
@@ -203,66 +133,14 @@
     </div>
   </div>
 
-  <div class="scenario-row">
-    <div class="sc rose">
-      <div class="sc-head">
-        <span class="sc-badge">D22</span>
-        <span class="sc-title">앱 푸시 (쿠폰 없음)</span>
-      </div>
-      <div class="sc-stats">
-        <span class="sc-before">12.70%</span>
-        <span class="sc-arrow">→</span>
-        <span class="sc-after">15.77%</span>
-      </div>
-      <span class="sc-delta">+3.07%p (+24%)</span>
-      <div class="sc-note">대상 11,602건 · 재주문 1,830건 · 쿠폰 없이 앱 푸시만으로 자연 재주문율 +24% 개선</div>
-    </div>
-    <div class="sc sun">
-      <div class="sc-head">
-        <span class="sc-badge">D29</span>
-        <span class="sc-title">30% 할인 쿠폰 (알림톡)</span>
-      </div>
-      <div class="sc-stats">
-        <span class="sc-before">23.57%</span>
-        <span class="sc-arrow">→</span>
-        <span class="sc-after">30.77%</span>
-      </div>
-      <span class="sc-delta">+7.20%p (+31%)</span>
-      <div class="sc-note">대상 9,772건 · 재활성화 3,007건 · D22 무응답자 대상 1차 할인 트리거</div>
-    </div>
-    <div class="sc mint">
-      <div class="sc-head">
-        <span class="sc-badge">D61</span>
-        <span class="sc-title">30% 할인 쿠폰 (알림톡)</span>
-      </div>
-      <div class="sc-stats">
-        <span class="sc-before">10.32%</span>
-        <span class="sc-arrow">→</span>
-        <span class="sc-after">15.13%</span>
-      </div>
-      <span class="sc-delta">+4.81%p (+47%)</span>
-      <div class="sc-note">대상 6,664건 · 재활성화 1,008건 · 장기 휴면 회수용 마지막 트리거</div>
-    </div>
-  </div>
-
-  <div class="summary-card">
-    <div class="sum-num">12.3<span class="unit">억</span></div>
-    <div class="sum-body">
-      <div class="sum-eyebrow">TOTAL IMPACT</div>
-      <div class="sum-head">재활성화 7,997명 → 90일 LTV 154,162원 · 추가 매출 12.3억원</div>
-      <div class="sum-note">D22/D29/D61 3단계 자동화 시나리오로 휴면 고객을 단계별로 회수. 무분별한 쿠폰 남발 없이 22일에는 앱 푸시, 무응답 시 29일·61일에 순차 할인 쿠폰을 발송하는 구조.</div>
-    </div>
-  </div>
-
   <div class="foot">
     <span>이도형 · GROWTH MARKETING LAB</span>
-    <span>BOTTLENECK · D22 EVIDENCE</span>
+    <span>BOTTLENECK · D22</span>
   </div>
 </div>
 
 <script>
   // 첫 이용(=1회차) 시점을 day 0으로 환산
-  // 누적 소요일 - 10.9 (1회차 누적값)
   const points = [
     {d:0,    r:100.0, n:'1회차'},
     {d:8.4,  r:70.2,  n:'2회차'},
@@ -280,12 +158,9 @@
     {d:72.5, r:0.9,   n:'21회차'},
   ];
 
-  // D-day reference markers (anchored on day axis)
-  const refs = [
-    { day:22, cls:'rose', name:'D22', desc:'재이용 가능성 급감 임계점', topPx:8,  anchor:'center' },
-    { day:29, cls:'sun',  name:'D29', desc:'30% 할인 쿠폰 발송',        topPx:8,  anchor:'center' },
-    { day:61, cls:'mint', name:'D61', desc:'장기 휴면 회수 쿠폰',        topPx:62, anchor:'right'  },
-  ];
+  // 22일 시점의 잔존율 보간값 (3회차 day 16.2 ↔ 4회차 day 23.2 사이 선형 보간)
+  const D22_DAY = 22;
+  const D22_RETENTION = 53.4 + (43.9 - 53.4) * (D22_DAY - 16.2) / (23.2 - 16.2); // ≈ 45.5
 
   Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
   Chart.defaults.font.size = 11;
@@ -295,28 +170,43 @@
   const chart = new Chart(document.getElementById('c-curve'), {
     type:'line',
     data:{
-      datasets:[{
-        label:'잔존율',
-        data: points.map(p => ({ x:p.d, y:p.r })),
-        borderColor:'#2D5BFF',
-        backgroundColor:(ctx)=>{
-          const {chart} = ctx;
-          const {ctx:c, chartArea} = chart;
-          if(!chartArea) return 'rgba(45,91,255,0.12)';
-          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          g.addColorStop(0, 'rgba(45,91,255,0.22)');
-          g.addColorStop(1, 'rgba(45,91,255,0.02)');
-          return g;
+      datasets:[
+        {
+          label:'잔존율',
+          data: points.map(p => ({ x:p.d, y:p.r })),
+          borderColor:'#2D5BFF',
+          backgroundColor:(ctx)=>{
+            const {chart} = ctx;
+            const {ctx:c, chartArea} = chart;
+            if(!chartArea) return 'rgba(45,91,255,0.12)';
+            const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            g.addColorStop(0, 'rgba(45,91,255,0.22)');
+            g.addColorStop(1, 'rgba(45,91,255,0.02)');
+            return g;
+          },
+          borderWidth:2.5,
+          tension:.3,
+          fill:true,
+          pointRadius:4,
+          pointHoverRadius:6,
+          pointBackgroundColor:'#2D5BFF',
+          pointBorderColor:'#fff',
+          pointBorderWidth:2,
+          order:2,
         },
-        borderWidth:2.5,
-        tension:.3,
-        fill:true,
-        pointRadius:4,
-        pointHoverRadius:6,
-        pointBackgroundColor:'#2D5BFF',
-        pointBorderColor:'#fff',
-        pointBorderWidth:2,
-      }]
+        {
+          // D22 highlight dot — 곡선 위 보간점 강조
+          label:'D22',
+          data: [{ x:D22_DAY, y:D22_RETENTION }],
+          showLine:false,
+          pointRadius:8,
+          pointHoverRadius:10,
+          pointBackgroundColor:'#EF4444',
+          pointBorderColor:'#fff',
+          pointBorderWidth:3,
+          order:1,
+        }
+      ]
     },
     options:{
       maintainAspectRatio:false,
@@ -326,6 +216,7 @@
         tooltip:{
           backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
           padding:12, cornerRadius:8, displayColors:false,
+          filter: (item) => item.datasetIndex === 0,
           callbacks:{
             title: (items)=> {
               const p = points[items[0].dataIndex];
@@ -369,33 +260,41 @@
     if(!overlay || !chart) return;
     overlay.innerHTML = '';
     const xScale = chart.scales.x;
+    const yScale = chart.scales.y;
     const area = chart.chartArea;
-    if(!xScale || !area) return;
+    if(!xScale || !yScale || !area) return;
 
-    refs.forEach(r => {
-      const x = xScale.getPixelForValue(r.day);
-      if(x == null || isNaN(x)) return;
+    const x = xScale.getPixelForValue(D22_DAY);
+    const yPoint = yScale.getPixelForValue(D22_RETENTION);
+    if(x == null || isNaN(x)) return;
 
-      // Vertical reference line
-      const line = document.createElement('div');
-      line.className = `ref-line ref ${r.cls}`;
-      line.style.left = `${x}px`;
-      line.style.top = `${area.top}px`;
-      line.style.height = `${area.bottom - area.top}px`;
-      line.style.bottom = 'auto';
-      overlay.appendChild(line);
+    // Vertical reference line at D22
+    const line = document.createElement('div');
+    line.className = 'ref-line ref rose';
+    line.style.left = `${x}px`;
+    line.style.top = `${area.top}px`;
+    line.style.height = `${area.bottom - area.top}px`;
+    overlay.appendChild(line);
 
-      // Callout
-      const callout = document.createElement('div');
-      callout.className = `ref-callout ref ${r.cls}` + (r.anchor==='right' ? ' right-anchor' : '');
-      callout.style.left = `${x}px`;
-      callout.style.top = `${r.topPx}px`;
-      callout.innerHTML = `
-        <span class="ref-name">${r.name}</span>
-        <span class="ref-desc">${r.desc}</span>
-      `;
-      overlay.appendChild(callout);
-    });
+    // Top callout at D22
+    const callout = document.createElement('div');
+    callout.className = 'ref-callout ref rose';
+    callout.style.left = `${x}px`;
+    callout.style.top = `8px`;
+    callout.innerHTML = `
+      <span class="ref-name">D22</span>
+      <span class="ref-desc">재이용 가능성 급감 임계점</span>
+      <span class="ref-stat">잔존율 <b>${D22_RETENTION.toFixed(1)}%</b></span>
+    `;
+    overlay.appendChild(callout);
+
+    // Inline label next to highlight dot
+    const inline = document.createElement('div');
+    inline.className = 'point-label';
+    inline.style.left = `${x}px`;
+    inline.style.top = `${yPoint}px`;
+    inline.textContent = `${D22_RETENTION.toFixed(1)}%`;
+    overlay.appendChild(inline);
   }
 
   let resizeT;
