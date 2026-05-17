@@ -3,133 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>봉투 신청 → 수거 신청 퍼널 전환율 — 도입 전/후 비교</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>봉투 신청 → 수거 신청 퍼널 — 도입 전/후 비교</title>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root{
     --blue-500:#2D5BFF; --blue-600:#1B45E0;
     --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB;
     --ink-400:#8B95A6; --ink-500:#5B6675; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
-    --mint-500:#10C390; --mint-100:#D5F5E8;
-    --rose-500:#EF4444; --rose-100:#FEE2E2;
+    --mint-500:#10C390;
+    --rose-500:#EF4444;
     --sun-500:#F5B400; --sun-100:#FFF1C9;
     --font-sans:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif;
     --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
-    --shadow-sm:0 2px 6px rgba(15,25,50,.06);
   }
   *,*::before,*::after{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{font-family:var(--font-sans); color:var(--ink-800); background:var(--ink-50);
     font-feature-settings:"ss01" 1,"tnum" 1;
-    -webkit-font-smoothing:antialiased; padding:40px 32px 56px;}
-  .wrap{max-width:1180px; margin:0 auto;}
-  .eyebrow{font-family:var(--font-mono); font-size:11px; font-weight:600;
-    letter-spacing:.14em; text-transform:uppercase; color:var(--blue-500); margin-bottom:14px;}
-  h1.title{font-size:32px; font-weight:800; letter-spacing:-.02em; line-height:1.1;
-    margin:0 0 12px; color:var(--ink-900);}
+    -webkit-font-smoothing:antialiased; padding:18px 20px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+  .eyebrow{font-family:var(--font-mono); font-size:10px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--blue-500); margin-bottom:6px;}
+  h1.title{font-size:20px; font-weight:800; letter-spacing:-.015em; line-height:1.25;
+    margin:0 0 6px; color:var(--ink-900);}
   h1.title .blue{color:var(--blue-500);}
-  .sub{font-size:14.5px; color:var(--ink-500); line-height:1.6; max-width:880px; margin-bottom:28px;}
+  .sub{font-size:12.5px; color:var(--ink-500); line-height:1.55; margin:0 0 12px;}
   .sub b{color:var(--ink-800); font-weight:700;}
 
-  .alert{background:#FFF8E1; border:1px solid #F5D77F; border-left:4px solid var(--sun-500);
-    border-radius:10px; padding:18px 22px; margin-bottom:24px;}
-  .alert-head{display:flex; align-items:center; gap:8px; margin-bottom:8px;}
-  .alert-tag{font-family:var(--font-mono); font-size:10.5px; font-weight:700; letter-spacing:.1em;
-    background:var(--sun-500); color:#fff; padding:3px 9px; border-radius:5px;}
-  .alert-title{font-size:14px; font-weight:700; color:var(--ink-900);}
-  .alert-body{font-size:13px; color:var(--ink-700); line-height:1.65;}
+  .alert{background:#FFF8E1; border:1px solid #F5D77F; border-left:3px solid var(--sun-500);
+    border-radius:8px; padding:10px 14px; margin-bottom:12px;
+    display:flex; align-items:flex-start; gap:10px;}
+  .alert-tag{font-family:var(--font-mono); font-size:9.5px; font-weight:700; letter-spacing:.08em;
+    background:var(--sun-500); color:#fff; padding:3px 7px; border-radius:4px; flex-shrink:0; margin-top:1px;}
+  .alert-body{font-size:11.5px; color:var(--ink-700); line-height:1.55;}
   .alert-body b{color:var(--ink-900);}
-  .alert-body code{font-family:var(--font-mono); background:#FFF1C9; padding:1px 6px;
-    border-radius:4px; font-size:12px; color:var(--ink-800);}
 
-  .card{background:#fff; border:1px solid var(--ink-100); border-radius:14px;
-    padding:24px 28px 22px; box-shadow:var(--shadow-sm); margin-bottom:24px;}
-  .card-title{font-size:15px; font-weight:700; color:var(--ink-800); margin-bottom:4px;}
-  .card-sub{font-size:12px; color:var(--ink-500); margin-bottom:18px;}
+  .card{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:14px 16px 12px; margin-bottom:10px;}
+  .card-title{font-size:13px; font-weight:700; color:var(--ink-800); margin-bottom:2px;}
+  .card-sub{font-size:11px; color:var(--ink-500); margin-bottom:10px;}
 
-  table.cmp{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.cmp{width:100%; border-collapse:collapse; font-size:12px;}
   table.cmp thead th{
-    text-align:left; padding:14px 18px; font-family:var(--font-mono); font-size:10px;
-    font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-400);
-    background:var(--ink-50); border-bottom:2px solid var(--ink-200);
+    text-align:left; padding:8px 10px; font-family:var(--font-mono); font-size:9px;
+    font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-400);
+    background:var(--ink-50); border-bottom:1.5px solid var(--ink-200);
   }
   table.cmp thead th.num{text-align:right;}
-  table.cmp tbody td{padding:14px 18px; border-bottom:1px solid var(--ink-100);
+  table.cmp tbody td{padding:8px 10px; border-bottom:1px solid var(--ink-100);
     color:var(--ink-700); font-variant-numeric:tabular-nums;}
   table.cmp tbody tr:last-child td{border-bottom:none;}
   table.cmp td.label{font-weight:700; color:var(--ink-800);}
   table.cmp td.num{text-align:right; font-family:var(--font-mono);}
-  table.cmp .placeholder{color:var(--ink-400); font-style:italic;}
+  table.cmp .placeholder{color:var(--ink-400); font-style:italic; font-size:11px;}
   table.cmp .placeholder::before{content:'⚠ '; color:var(--sun-500); font-style:normal;}
   table.cmp tr.improve td{background:var(--ink-50); font-weight:700;}
   table.cmp tr.improve td.label{color:var(--ink-900);}
-  table.cmp tr.improve td.num{color:var(--mint-500);}
 
-  .legend-key{display:inline-block; font-family:var(--font-mono); font-size:10.5px;
-    padding:2px 7px; border-radius:4px; margin-right:6px;}
+  .legend-key{display:inline-block; font-family:var(--font-mono); font-size:9.5px;
+    padding:1.5px 6px; border-radius:3px; margin-right:5px;}
   .key-before{background:#FEE2E2; color:#C32A2A;}
   .key-after{background:#D5F5E8; color:#067B5A;}
 
-  .ref-block{background:#FBFBFD; border:1px dashed var(--ink-200); border-radius:10px;
-    padding:16px 18px; margin-top:8px;}
-  .ref-title{font-family:var(--font-mono); font-size:10.5px; font-weight:700; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--ink-500); margin-bottom:10px;}
-  .ref-list{list-style:none; padding:0; margin:0; font-size:12.5px; color:var(--ink-600); line-height:1.7;}
-  .ref-list li{padding-left:18px; position:relative;}
-  .ref-list li::before{content:'•'; position:absolute; left:6px; color:var(--ink-400);}
-  .ref-list code{font-family:var(--font-mono); background:#EEF1F6; padding:1px 5px;
-    border-radius:3px; font-size:11.5px; color:var(--ink-700);}
-  .ref-list .why-bad{color:var(--rose-500); font-weight:600; font-size:11.5px; margin-left:6px;}
+  .needed{margin-top:8px; padding:10px 12px; background:#F7F9FD;
+    border-radius:8px; border:1px dashed var(--ink-200);}
+  .needed h4{margin:0 0 6px; font-size:11.5px; font-weight:700; color:var(--ink-800);
+    display:flex; align-items:center; gap:6px;}
+  .needed ol{margin:0; padding-left:18px; font-size:11.5px; color:var(--ink-700); line-height:1.65;}
+  .needed code{font-family:var(--font-mono); background:#EEF3FF; padding:0 5px;
+    border-radius:3px; font-size:10.5px; color:var(--blue-600);}
 
-  .needed{background:#fff; border:1px solid var(--ink-100); border-radius:12px;
-    padding:18px 22px; margin-top:14px;}
-  .needed h4{margin:0 0 10px; font-size:13px; font-weight:700; color:var(--ink-800);
-    display:flex; align-items:center; gap:8px;}
-  .needed h4::before{content:'📋'; font-size:14px;}
-  .needed ol{margin:0; padding-left:22px; font-size:12.5px; color:var(--ink-700); line-height:1.8;}
-  .needed ol li{margin-bottom:2px;}
-  .needed ol code{font-family:var(--font-mono); background:#EEF3FF; padding:1px 6px;
-    border-radius:4px; font-size:11.5px; color:var(--blue-600);}
-
-  .foot{margin-top:24px; padding-top:18px; border-top:1px solid var(--ink-200);
-    display:flex; justify-content:space-between; font-size:11px;
-    color:var(--ink-400); font-family:var(--font-mono); letter-spacing:.08em; text-transform:uppercase;}
-
-  @media (max-width: 900px){
-    body{padding:24px 16px;} h1.title{font-size:24px;}
-    .card{padding:18px;}
-    table.cmp{font-size:11.5px;} table.cmp thead th, table.cmp tbody td{padding:9px 10px;}
+  details.ref{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:0; margin-bottom:0;}
+  details.ref > summary{
+    list-style:none; cursor:pointer; padding:11px 14px;
+    font-size:12px; font-weight:700; color:var(--ink-700);
+    display:flex; align-items:center; gap:8px;
   }
+  details.ref > summary::-webkit-details-marker{display:none;}
+  details.ref > summary::after{content:'▾'; margin-left:auto; color:var(--ink-400); font-size:11px;}
+  details.ref[open] > summary::after{content:'▴';}
+  details.ref .ref-content{padding:0 14px 12px; font-size:11.5px; color:var(--ink-600); line-height:1.6;}
+  details.ref ul{margin:0; padding-left:18px;}
+  details.ref code{font-family:var(--font-mono); background:#EEF1F6; padding:0 5px;
+    border-radius:3px; font-size:10.5px; color:var(--ink-700);}
+  details.ref .why-bad{color:var(--rose-500); font-weight:600; font-size:10.5px; margin-left:4px;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="eyebrow">CVR · ENVELOPE → PICKUP FUNNEL</div>
-  <h1 class="title">봉투 신청 → 수거 신청 퍼널 — <span class="blue">알림톡 도입 전/후 3개월 비교</span></h1>
+  <h1 class="title">봉투 → 수거 퍼널 — <span class="blue">알림톡 도입 ±3개월 비교</span></h1>
   <p class="sub">
-    <b>봉투 사용 유도 알림</b>(봉투 신청 후 D+16일 미신청 시 발송)의 도입 효과를 측정하기 위해,
-    동일 정의로 <b>도입 전 3개월 vs 도입 후 3개월</b> 코호트의 <b>봉투 신청자 → 수거 신청자 전환율</b>을 비교.
+    봉투 사용 유도 알림(봉투 신청 후 D+16 미신청 시 발송) 도입 효과 측정 ·
+    <b>도입 전 3개월 vs 도입 후 3개월</b> 코호트의 봉투 신청자 → 수거 전환율 비교
   </p>
 
   <div class="alert">
-    <div class="alert-head">
-      <span class="alert-tag">DATA REQUIRED</span>
-      <span class="alert-title">현재 노션 표의 값은 도입 전/후 비교가 불가능한 구조</span>
-    </div>
+    <span class="alert-tag">DATA REQUIRED</span>
     <div class="alert-body">
-      기존 표에는 <code>90일 내 수거 전환율 59~66%</code>, <code>D+16 이내 자연 전환율 ~50%</code>,
-      <code>월 봉투 신청자 722명→2,162명</code>이 들어 있는데, 각 수치의 <b>관측 윈도우와 모집단 정의가 서로 다릅니다</b>.
-      도입 효과를 깨끗하게 측정하려면 <b>동일 정의</b>의 두 코호트 raw count가 필요합니다.
+      기존 노션 표의 값들은 <b>관측 윈도우와 모집단 정의가 서로 달라</b> 도입 전/후 비교 불가.
+      동일 정의의 두 코호트 raw count 필요.
     </div>
   </div>
 
   <div class="card">
     <div class="card-title">필요한 비교 표 구조</div>
-    <div class="card-sub">알림톡 도입일 기준 ±3개월 봉투 신청 코호트 · 분모: 봉투 신청자 · 분자: 90일 내 수거 신청 전환자</div>
+    <div class="card-sub">분모: 봉투 신청자 · 분자: 봉투 신청 후 90일 내 수거 신청 전환자</div>
     <table class="cmp">
       <thead>
         <tr>
@@ -162,43 +143,25 @@
     </table>
 
     <div class="needed">
-      <h4>이 표를 채우기 위해 필요한 raw 데이터</h4>
+      <h4>📋 채우기 위해 필요한 raw 데이터</h4>
       <ol>
         <li>봉투 사용 유도 알림 <b>정확한 도입일</b> (예: <code>2024-04-01</code>)</li>
-        <li>도입 전 3개월 (<code>도입일-90일 ~ 도입일-1일</code>) 기간 <b>봉투 신청자 수</b></li>
-        <li>위 코호트 중 <b>봉투 신청 후 90일 내 수거 신청한 인원 수</b></li>
-        <li>도입 후 3개월 (<code>도입일 ~ 도입일+89일</code>) 기간 <b>봉투 신청자 수</b></li>
-        <li>위 코호트 중 <b>봉투 신청 후 90일 내 수거 신청한 인원 수</b></li>
+        <li>도입 전 3개월 (<code>D-90 ~ D-1</code>) 봉투 신청자 수 / 그중 90일 내 수거 전환자 수</li>
+        <li>도입 후 3개월 (<code>D ~ D+89</code>) 봉투 신청자 수 / 그중 90일 내 수거 전환자 수</li>
       </ol>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">참고 — 노션에 기재된 기존 수치와 부적합 사유</div>
-    <div class="card-sub">아래 값은 모두 도입 후 코호트(2024-04~08)에만 한정된 관측치라 도입 전/후 비교에 사용 불가</div>
-    <div class="ref-block">
-      <div class="ref-title">현재 노션 표 (2024-04~08 코호트)</div>
-      <ul class="ref-list">
-        <li>
-          <code>90일 내 수거 전환율 59~66%</code>
-          <span class="why-bad">→ 도입 후 코호트 단일 측정값. 도입 전 대응 수치 없음</span>
-        </li>
-        <li>
-          <code>D+16 이내 자연 전환율 ~50%</code>
-          <span class="why-bad">→ "알림 발송 직전 자연 전환" 베이스라인. 90일 윈도우와 시간 축이 다름</span>
-        </li>
-        <li>
-          <code>월 봉투 신청자 722명 → 2,162명 (+3배)</code>
-          <span class="why-bad">→ 모수 성장 지표. 봉투→수거 전환 비율과 별개</span>
-        </li>
+  <details class="ref">
+    <summary>📎 노션 기존 수치와 부적합 사유 (펼치기)</summary>
+    <div class="ref-content">
+      <ul>
+        <li><code>90일 내 수거 전환율 59~66%</code><span class="why-bad">→ 도입 후 코호트 단일 측정값</span></li>
+        <li><code>D+16 이내 자연 전환율 ~50%</code><span class="why-bad">→ 알림 발송 직전 베이스라인 (90일 윈도우와 시간 축 다름)</span></li>
+        <li><code>월 봉투 신청자 722 → 2,162명</code><span class="why-bad">→ 모수 성장 지표 (전환율과 별개)</span></li>
       </ul>
     </div>
-  </div>
-
-  <div class="foot">
-    <span>이도형 · GROWTH MARKETING LAB</span>
-    <span>CVR · FUNNEL TEMPLATE (PENDING DATA)</span>
-  </div>
+  </details>
 </div>
 </body>
 </html>

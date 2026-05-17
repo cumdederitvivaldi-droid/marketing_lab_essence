@@ -3,124 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>웰컴쿠폰 효과 — 30일 활성화율 / 첫 주문 일수</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>웰컴쿠폰 효과</title>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root{
-    --blue-500:#2D5BFF; --blue-600:#1B45E0;
+    --blue-500:#2D5BFF; --blue-600:#1B45E0; --blue-700:#1432B0;
     --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB;
     --ink-400:#8B95A6; --ink-500:#5B6675; --ink-800:#131A26; --ink-900:#0A0E16;
     --mint-500:#10C390; --mint-100:#D5F5E8;
     --rose-500:#EF4444; --rose-100:#FEE2E2;
-    --sun-500:#F5B400;
     --font-sans:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif;
     --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
-    --shadow-sm:0 2px 6px rgba(15,25,50,.06);
   }
   *,*::before,*::after{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{font-family:var(--font-sans); color:var(--ink-800); background:var(--ink-50);
     font-feature-settings:"ss01" 1,"tnum" 1;
-    -webkit-font-smoothing:antialiased; padding:40px 32px 56px;}
-  .wrap{max-width:1180px; margin:0 auto;}
-  .eyebrow{font-family:var(--font-mono); font-size:11px; font-weight:600;
-    letter-spacing:.14em; text-transform:uppercase; color:var(--blue-500); margin-bottom:14px;}
-  h1.title{font-size:32px; font-weight:800; letter-spacing:-.02em; line-height:1.1;
-    margin:0 0 12px; color:var(--ink-900);}
+    -webkit-font-smoothing:antialiased; padding:18px 20px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+  .eyebrow{font-family:var(--font-mono); font-size:10px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--blue-500); margin-bottom:6px;}
+  h1.title{font-size:20px; font-weight:800; letter-spacing:-.015em; line-height:1.25;
+    margin:0 0 6px; color:var(--ink-900);}
   h1.title .blue{color:var(--blue-500);}
-  .sub{font-size:14.5px; color:var(--ink-500); line-height:1.6; max-width:880px; margin-bottom:28px;}
+  .sub{font-size:12.5px; color:var(--ink-500); line-height:1.55; margin:0 0 14px;}
   .sub b{color:var(--ink-800); font-weight:700;}
 
-  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
-  .card{background:#fff; border:1px solid var(--ink-100); border-radius:14px;
-    padding:22px 24px 18px; box-shadow:var(--shadow-sm);}
-  .card-title{font-size:15px; font-weight:700; color:var(--ink-800); margin-bottom:4px;}
-  .card-sub{font-size:12px; color:var(--ink-500); margin-bottom:18px;}
-  .chart-wrap{position:relative; height:300px;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .card{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:14px 16px 12px;}
+  .card-title{font-size:13px; font-weight:700; color:var(--ink-800); margin-bottom:2px;}
+  .card-sub{font-size:11px; color:var(--ink-500); margin-bottom:10px;}
+  .chart-wrap{position:relative; height:200px;}
+  .delta{display:inline-block; margin-top:8px; padding:5px 10px;
+    background:var(--mint-100); color:#067B5A;
+    border-radius:6px; font-family:var(--font-mono); font-weight:700; font-size:11.5px;}
+  .delta.time{background:#E7EEFF; color:var(--blue-700);}
 
-  .delta{display:inline-flex; align-items:center; gap:8px; margin-top:12px;
-    padding:8px 14px; background:var(--mint-100); color:#067B5A;
-    border-radius:8px; font-family:var(--font-mono); font-weight:700; font-size:12.5px;}
-  .delta.time{background:#E7EEFF; color:var(--blue-700, var(--blue-600));}
-
-  .foot{margin-top:24px; padding-top:18px; border-top:1px solid var(--ink-200);
-    display:flex; justify-content:space-between; font-size:11px;
-    color:var(--ink-400); font-family:var(--font-mono); letter-spacing:.08em; text-transform:uppercase;}
-
-  @media (max-width: 900px){
-    body{padding:24px 16px;} h1.title{font-size:24px;}
-    .grid-2{grid-template-columns:1fr;} .chart-wrap{height:260px;}
+  @media (max-width: 640px){
+    .grid-2{grid-template-columns:1fr;}
+    .chart-wrap{height:180px;}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="eyebrow">CVR · WELCOME COUPON</div>
-  <h1 class="title">웰컴쿠폰 도입 효과 — <span class="blue">활성화율 +35.5%</span> · 첫 주문 절반 단축</h1>
-  <p class="sub">
-    가입자의 <b>30%만 실이용, 30일 내 미이용 시 영구 이탈</b> 패턴 → 가입 직후 방문비 2,500원 쿠폰 8장(1달 유효)을 발급해
-    첫 주문 장벽을 제거. <b>2024 Q1 (도입 전) vs 2024 Q2 (도입 후)</b> 비교.
-  </p>
+  <h1 class="title">웰컴쿠폰 효과 — <span class="blue">활성화율 +35.5%</span> · 첫 주문 절반 단축</h1>
+  <p class="sub">가입 직후 방문비 2,500원 쿠폰 8장(1달 유효) 발급 · <b>2024 Q1 vs Q2</b> 비교</p>
 
   <div class="grid-2">
     <div class="card">
       <div class="card-title">30일 내 활성화율</div>
-      <div class="card-sub">가입 후 30일 이내 첫 주문 발생 비율</div>
+      <div class="card-sub">가입 후 30일 내 첫 주문 발생 비율</div>
       <div class="chart-wrap"><canvas id="c-active"></canvas></div>
       <span class="delta">+9.1%p (+35.5%)</span>
     </div>
-
     <div class="card">
       <div class="card-title">첫 주문까지 평균 일수</div>
-      <div class="card-sub">가입 → 첫 주문 발생 평균 소요일</div>
+      <div class="card-sub">가입 → 첫 주문 평균 소요일</div>
       <div class="chart-wrap"><canvas id="c-days"></canvas></div>
-      <span class="delta time">-1.4일 단축 (절반 이하)</span>
+      <span class="delta time">-1.4일 (절반 이하)</span>
     </div>
-  </div>
-
-  <div class="foot">
-    <span>이도형 · GROWTH MARKETING LAB</span>
-    <span>CVR · WELCOME COUPON</span>
   </div>
 </div>
 
 <script>
   Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
-  Chart.defaults.font.size = 11;
+  Chart.defaults.font.size = 10.5;
   Chart.defaults.color = '#5B6675';
   Chart.defaults.plugins.legend.display = false;
 
-  const tooltipOpts = {
+  const tip = {
     backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
-    padding:10, cornerRadius:8, displayColors:false,
+    padding:9, cornerRadius:7, displayColors:false,
   };
 
   new Chart(document.getElementById('c-active'), {
     type:'bar',
     data:{
-      labels:['도입 전 (Q1 · 1~3월)','도입 후 (Q2 · 4~6월)'],
+      labels:['도입 전 (Q1)','도입 후 (Q2)'],
       datasets:[{
         data:[25.53, 34.59],
         backgroundColor:['#FEE2E2','#D5F5E8'],
         borderColor:['#EF4444','#10C390'],
-        borderWidth:2, borderRadius:8, maxBarThickness:90,
+        borderWidth:1.5, borderRadius:6, maxBarThickness:68,
       }]
     },
     options:{
       maintainAspectRatio:false,
-      plugins:{ tooltip:{ ...tooltipOpts,
-        callbacks:{ label:(ctx)=> ` 30일 내 활성화율: ${ctx.parsed.y.toFixed(2)}%` } } },
+      plugins:{ tooltip:{ ...tip, callbacks:{ label:(c)=> ` ${c.parsed.y.toFixed(2)}%` } } },
       scales:{
-        x:{ grid:{ display:false }, ticks:{ font:{ size:11.5, weight:'600' } } },
-        y:{ beginAtZero:true, max:45,
-          grid:{ color:'#EEF1F6' },
-          ticks:{ callback:(v)=> v+'%', font:{ size:10 } },
-          title:{ display:true, text:'활성화율 (%)', color:'#8B95A6', font:{ size:11, weight:'600' } }
-        }
+        x:{ grid:{ display:false }, ticks:{ font:{ size:10.5, weight:'600' } } },
+        y:{ beginAtZero:true, max:42, grid:{ color:'#EEF1F6' },
+            ticks:{ callback:(v)=> v+'%', font:{ size:9.5 } } }
       }
     }
   });
@@ -133,20 +111,16 @@
         data:[2.6, 1.2],
         backgroundColor:['#FEE2E2','#D5F5E8'],
         borderColor:['#EF4444','#10C390'],
-        borderWidth:2, borderRadius:8, maxBarThickness:90,
+        borderWidth:1.5, borderRadius:6, maxBarThickness:68,
       }]
     },
     options:{
       maintainAspectRatio:false,
-      plugins:{ tooltip:{ ...tooltipOpts,
-        callbacks:{ label:(ctx)=> ` 첫 주문까지 평균 ${ctx.parsed.y.toFixed(1)}일` } } },
+      plugins:{ tooltip:{ ...tip, callbacks:{ label:(c)=> ` ${c.parsed.y.toFixed(1)}일` } } },
       scales:{
-        x:{ grid:{ display:false }, ticks:{ font:{ size:11.5, weight:'600' } } },
-        y:{ beginAtZero:true, max:3.5,
-          grid:{ color:'#EEF1F6' },
-          ticks:{ callback:(v)=> v+'일', font:{ size:10 } },
-          title:{ display:true, text:'일수', color:'#8B95A6', font:{ size:11, weight:'600' } }
-        }
+        x:{ grid:{ display:false }, ticks:{ font:{ size:10.5, weight:'600' } } },
+        y:{ beginAtZero:true, max:3.2, grid:{ color:'#EEF1F6' },
+            ticks:{ callback:(v)=> v+'일', font:{ size:9.5 } } }
       }
     }
   });
