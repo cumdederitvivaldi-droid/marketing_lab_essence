@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>990원 이벤트 효과 — 신규 +36% · 브랜드 검색 +143%</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --blue-500:#2D5BFF; --blue-600:#1B45E0;
+    --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB;
+    --ink-400:#8B95A6; --ink-500:#5B6675; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
+    --mint-500:#10C390; --mint-100:#D5F5E8;
+    --sun-500:#F5B400; --sun-100:#FFF1C9;
+    --rose-500:#EF4444; --rose-100:#FEE2E2;
+    --font-sans:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font-sans); color:var(--ink-800); background:var(--ink-50);
+    font-feature-settings:"ss01" 1,"tnum" 1;
+    -webkit-font-smoothing:antialiased; padding:18px 20px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+
+  .eyebrow{font-family:var(--font-mono); font-size:10px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:#A37300; margin-bottom:6px;}
+  h1.title{font-size:20px; font-weight:800; letter-spacing:-.015em; line-height:1.25;
+    margin:0 0 6px; color:var(--ink-900);}
+  h1.title .sun{color:#A37300;}
+  .sub{font-size:12.5px; color:var(--ink-500); line-height:1.55; margin:0 0 14px;}
+  .sub b{color:var(--ink-800); font-weight:700;}
+
+  .kpi-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px;}
+  .kpi{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:12px 14px; border-top:3px solid var(--sun-500);}
+  .kpi-lab{font-family:var(--font-mono); font-size:9.5px; font-weight:600; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-400); margin-bottom:6px;}
+  .kpi-vals{display:flex; align-items:baseline; gap:6px; margin-bottom:4px;}
+  .kpi-before{font-family:var(--font-mono); font-size:13px; color:var(--ink-400); font-weight:600;
+    text-decoration:line-through; text-decoration-color:rgba(139,149,166,.5);}
+  .kpi-arrow{color:var(--ink-400); font-size:13px;}
+  .kpi-after{font-family:var(--font-mono); font-size:17px; font-weight:800; color:var(--ink-900);
+    letter-spacing:-.01em; font-variant-numeric:tabular-nums;}
+  .kpi-delta{font-family:var(--font-mono); font-size:11px; font-weight:700;}
+  .kpi-delta.down{color:#067B5A;} /* CAC 감소가 good */
+  .kpi-delta.up{color:#067B5A;}
+
+  .card{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:14px 16px 12px;}
+  .card-title{font-size:13px; font-weight:700; color:var(--ink-800); margin-bottom:2px;}
+  .card-sub{font-size:11px; color:var(--ink-500); margin-bottom:10px;}
+  .legend{display:flex; flex-wrap:wrap; gap:12px; font-size:11px; color:var(--ink-600);
+    margin-bottom:8px; align-items:center;}
+  .lg-item{display:inline-flex; align-items:center; gap:5px;}
+  .lg-dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
+  .chart-wrap{position:relative; height:240px;}
+
+  @media (max-width: 640px){
+    .kpi-row{grid-template-columns:1fr;}
+    .chart-wrap{height:220px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">990 WON EVENT · 2024 YEAR-END PROMO</div>
+  <h1 class="title">990원 이벤트 — <span class="sun">신규 +36% · 브랜드 검색 +143%</span></h1>
+  <p class="sub">
+    2024 연말 감사 프로모션 · 신규 첫 이용 990원 쿠폰으로 <b>진입 장벽 제거</b> ·
+    11월(이벤트 전) vs 12월(이벤트 후) 핵심 지표 비교.
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-lab">CAC (실측)</div>
+      <div class="kpi-vals">
+        <span class="kpi-before">19,250원</span>
+        <span class="kpi-arrow">→</span>
+        <span class="kpi-after">19,056원</span>
+      </div>
+      <div class="kpi-delta down">↓ -194원 (-1.0%)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">월 신규 유저</div>
+      <div class="kpi-vals">
+        <span class="kpi-before">1,876명</span>
+        <span class="kpi-arrow">→</span>
+        <span class="kpi-after">2,545명</span>
+      </div>
+      <div class="kpi-delta up">↑ +669명 (+36%)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">네이버 브랜드 검색량</div>
+      <div class="kpi-vals">
+        <span class="kpi-before">1,810회</span>
+        <span class="kpi-arrow">→</span>
+        <span class="kpi-after">4,400회</span>
+      </div>
+      <div class="kpi-delta up">↑ +143% (×2.4)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">990원 유입 코호트 — 6개월 리텐션</div>
+    <div class="card-sub">2024-12 가입 코호트 · 990원 쿠폰 실사용 (579명) vs 동기간 비쿠폰 신규 (2,492명)</div>
+    <div class="legend">
+      <span class="lg-item"><span class="lg-dot" style="background:#F5B400;"></span> 990원 쿠폰 실사용 (579명)</span>
+      <span class="lg-item"><span class="lg-dot" style="background:#8B95A6;"></span> 비쿠폰 신규 (2,492명)</span>
+    </div>
+    <div class="chart-wrap"><canvas id="c-ret"></canvas></div>
+  </div>
+</div>
+
+<script>
+  Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
+  Chart.defaults.font.size = 10.5;
+  Chart.defaults.color = '#5B6675';
+  Chart.defaults.plugins.legend.display = false;
+
+  new Chart(document.getElementById('c-ret'), {
+    type:'line',
+    data:{
+      labels:['M1','M2','M3','M4','M5','M6'],
+      datasets:[
+        {
+          label:'990원 쿠폰 (579명)',
+          data:[37.7, 29.4, 25.2, 25.6, 23.8, 23.3],
+          borderColor:'#F5B400',
+          backgroundColor:'rgba(245,180,0,0.10)',
+          borderWidth:2.4, tension:.3, fill:true,
+          pointRadius:3.5, pointHoverRadius:5.5,
+          pointBackgroundColor:'#F5B400', pointBorderColor:'#fff', pointBorderWidth:1.5,
+        },
+        {
+          label:'비쿠폰 신규 (2,492명)',
+          data:[34.7, 26.5, 24.5, 23.4, 22.7, 23.2],
+          borderColor:'#8B95A6',
+          backgroundColor:'transparent',
+          borderWidth:1.8, tension:.3, borderDash:[5,4],
+          pointRadius:2.5, pointHoverRadius:4.5,
+          pointBackgroundColor:'#8B95A6', pointBorderColor:'#fff', pointBorderWidth:1,
+        }
+      ]
+    },
+    options:{
+      maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        tooltip:{
+          backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
+          padding:9, cornerRadius:7, displayColors:true, boxWidth:8, boxHeight:8,
+          callbacks:{ label:(c)=> ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` }
+        }
+      },
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } },
+        y:{
+          beginAtZero:true, max:45,
+          grid:{ color:'#EEF1F6', drawBorder:false },
+          ticks:{ callback:(v)=> v+'%', font:{ size:9.5 } },
+          title:{ display:true, text:'리텐션 (%)', color:'#8B95A6', font:{ size:10.5, weight:'600' } }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>

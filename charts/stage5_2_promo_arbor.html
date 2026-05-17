@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>식목일 페이백 RCT — M1 +52pp · LTV +11,285원</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --blue-500:#2D5BFF; --blue-600:#1B45E0;
+    --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB;
+    --ink-400:#8B95A6; --ink-500:#5B6675; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
+    --mint-500:#10C390; --mint-700:#067B5A; --mint-100:#D5F5E8;
+    --rose-500:#EF4444; --rose-100:#FEE2E2;
+    --sun-500:#F5B400; --sun-100:#FFF1C9;
+    --font-sans:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font-sans); color:var(--ink-800); background:var(--ink-50);
+    font-feature-settings:"ss01" 1,"tnum" 1;
+    -webkit-font-smoothing:antialiased; padding:18px 20px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+
+  .eyebrow{font-family:var(--font-mono); font-size:10px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--mint-700); margin-bottom:6px;}
+  h1.title{font-size:20px; font-weight:800; letter-spacing:-.015em; line-height:1.25;
+    margin:0 0 6px; color:var(--ink-900);}
+  h1.title .mint{color:var(--mint-700);}
+  .sub{font-size:12.5px; color:var(--ink-500); line-height:1.55; margin:0 0 14px;}
+  .sub b{color:var(--ink-800); font-weight:700;}
+
+  .kpi-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px;}
+  .kpi{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:12px 14px; border-top:3px solid var(--mint-500);}
+  .kpi-lab{font-family:var(--font-mono); font-size:9.5px; font-weight:600; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-400); margin-bottom:6px;}
+  .kpi-val{font-size:22px; font-weight:800; color:var(--ink-900); letter-spacing:-.02em;
+    line-height:1.05; font-variant-numeric:tabular-nums;}
+  .kpi-val .unit{font-size:12px; font-weight:600; color:var(--ink-400); margin-left:2px;}
+  .kpi-note{font-size:11px; color:var(--ink-500); margin-top:5px; line-height:1.45;}
+  .kpi-note b{color:var(--mint-700);}
+
+  .grid-2{display:grid; grid-template-columns:1.4fr 1fr; gap:10px;}
+  .card{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:14px 16px 12px;}
+  .card-title{font-size:13px; font-weight:700; color:var(--ink-800); margin-bottom:2px;}
+  .card-sub{font-size:11px; color:var(--ink-500); margin-bottom:10px;}
+  .legend{display:flex; flex-wrap:wrap; gap:12px; font-size:11px; color:var(--ink-600);
+    margin-bottom:8px; align-items:center;}
+  .lg-item{display:inline-flex; align-items:center; gap:5px;}
+  .lg-dot{width:9px; height:9px; border-radius:50%; display:inline-block;}
+  .chart-wrap{position:relative; height:220px;}
+  .chart-wrap.tall{height:240px;}
+
+  table.gap{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:8px;}
+  table.gap thead th{
+    text-align:right; padding:6px 8px; font-family:var(--font-mono); font-size:9.5px;
+    font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-400);
+    background:var(--ink-50); border-bottom:1.5px solid var(--ink-200);
+  }
+  table.gap thead th:first-child{text-align:left;}
+  table.gap tbody td{padding:6px 8px; border-bottom:1px solid var(--ink-100);
+    text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums;
+    color:var(--ink-700);}
+  table.gap tbody td:first-child{text-align:left; font-weight:700; color:var(--ink-800);
+    font-family:var(--font-sans);}
+  table.gap tbody tr:last-child td{border-bottom:none;}
+  table.gap td.gap-cell{color:var(--mint-700); font-weight:700;}
+
+  @media (max-width: 760px){
+    .kpi-row{grid-template-columns:1fr;}
+    .grid-2{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">ARBOR DAY PAYBACK · RCT · 2025-04</div>
+  <h1 class="title">식목일 페이백 RCT — <span class="mint">M1 리텐션 +52pp · LTV +11,285원</span></h1>
+  <p class="sub">
+    기존 <b>1~5회 이력 유저</b>를 대상으로 사용 직후 페이백 쿠폰 지급(처치) vs 미지급(대조) ·
+    무작위 RCT 설계 · M0 매출은 그대로 받고 M1 재방문 유도.
+  </p>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-lab">M1 리텐션 갭</div>
+      <div class="kpi-val">+52.0<span class="unit">%p</span></div>
+      <div class="kpi-note">처치 <b>89.5%</b> vs 대조 37.5%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">M6 리텐션 갭 (쿠폰 소멸 이후)</div>
+      <div class="kpi-val">+28.1<span class="unit">%p</span></div>
+      <div class="kpi-note">처치 <b>52.9%</b> vs 대조 24.8% · 습관 형성</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-lab">5개월 LTV 이득</div>
+      <div class="kpi-val">+11,285<span class="unit">원/유저</span></div>
+      <div class="kpi-note">집행 37,500원 vs 미집행 26,200원</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">RCT 6개월 리텐션 곡선</div>
+      <div class="card-sub">처치군 (페이백 지급, 874명) vs 대조군 (미지급, 6,564명)</div>
+      <div class="legend">
+        <span class="lg-item"><span class="lg-dot" style="background:#10C390;"></span> 처치 (874명)</span>
+        <span class="lg-item"><span class="lg-dot" style="background:#EF4444;"></span> 대조 (6,564명)</span>
+      </div>
+      <div class="chart-wrap tall"><canvas id="c-rct"></canvas></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">M1~M6 리텐션 갭</div>
+      <div class="card-sub">쿠폰 소멸 이후에도 28~37%p 격차 유지</div>
+      <table class="gap">
+        <thead>
+          <tr>
+            <th>월</th>
+            <th>처치</th>
+            <th>대조</th>
+            <th>갭</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>M1</td><td>89.5%</td><td>37.5%</td><td class="gap-cell">+52.0%p</td></tr>
+          <tr><td>M2</td><td>66.9%</td><td>30.4%</td><td class="gap-cell">+36.5%p</td></tr>
+          <tr><td>M3</td><td>61.1%</td><td>27.8%</td><td class="gap-cell">+33.3%p</td></tr>
+          <tr><td>M4</td><td>56.2%</td><td>26.4%</td><td class="gap-cell">+29.8%p</td></tr>
+          <tr><td>M5</td><td>54.7%</td><td>24.1%</td><td class="gap-cell">+30.6%p</td></tr>
+          <tr><td>M6</td><td>52.9%</td><td>24.8%</td><td class="gap-cell">+28.1%p</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:10px;">
+    <div class="card-title">5개월 누적 LTV 시뮬레이션 — 집행 의사결정 근거</div>
+    <div class="card-sub">M0 매출 그대로 + M1 재방문 페이백 → 5개월 LTV에서 11,285원 회수 · 집행 전 수익성 검증</div>
+    <div class="chart-wrap"><canvas id="c-ltv"></canvas></div>
+  </div>
+</div>
+
+<script>
+  Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
+  Chart.defaults.font.size = 10.5;
+  Chart.defaults.color = '#5B6675';
+  Chart.defaults.plugins.legend.display = false;
+
+  new Chart(document.getElementById('c-rct'), {
+    type:'line',
+    data:{
+      labels:['M1','M2','M3','M4','M5','M6'],
+      datasets:[
+        {
+          label:'처치 (874명)',
+          data:[89.5, 66.9, 61.1, 56.2, 54.7, 52.9],
+          borderColor:'#10C390',
+          backgroundColor:'rgba(16,195,144,0.12)',
+          borderWidth:2.4, tension:.3, fill:true,
+          pointRadius:3.5, pointHoverRadius:5.5,
+          pointBackgroundColor:'#10C390', pointBorderColor:'#fff', pointBorderWidth:1.5,
+        },
+        {
+          label:'대조 (6,564명)',
+          data:[37.5, 30.4, 27.8, 26.4, 24.1, 24.8],
+          borderColor:'#EF4444',
+          backgroundColor:'rgba(239,68,68,0.06)',
+          borderWidth:2, tension:.3, fill:true,
+          pointRadius:3, pointHoverRadius:5,
+          pointBackgroundColor:'#EF4444', pointBorderColor:'#fff', pointBorderWidth:1.5,
+        }
+      ]
+    },
+    options:{
+      maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        tooltip:{
+          backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
+          padding:9, cornerRadius:7, displayColors:true, boxWidth:8, boxHeight:8,
+          callbacks:{ label:(c)=> ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` }
+        }
+      },
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } },
+        y:{
+          beginAtZero:true, max:100,
+          grid:{ color:'#EEF1F6', drawBorder:false },
+          ticks:{ callback:(v)=> v+'%', font:{ size:9.5 } },
+          title:{ display:true, text:'리텐션 (%)', color:'#8B95A6', font:{ size:10.5, weight:'600' } }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('c-ltv'), {
+    type:'bar',
+    data:{
+      labels:['페이백 집행 (처치)','페이백 미집행 (대조)'],
+      datasets:[{
+        data:[37500, 26200],
+        backgroundColor:['#D5F5E8','#FEE2E2'],
+        borderColor:['#10C390','#EF4444'],
+        borderWidth:1.8, borderRadius:8, maxBarThickness:100,
+      }]
+    },
+    options:{
+      maintainAspectRatio:false, indexAxis:'y',
+      plugins:{
+        tooltip:{
+          backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
+          padding:9, cornerRadius:7, displayColors:false,
+          callbacks:{ label:(c)=> ` 5개월 누적 LTV: ${c.parsed.x.toLocaleString()}원` }
+        }
+      },
+      scales:{
+        x:{ beginAtZero:true,
+          grid:{ color:'#EEF1F6', drawBorder:false },
+          ticks:{ callback:(v)=> (v/1000)+'k원', font:{ size:9.5 } },
+          title:{ display:true, text:'5개월 누적 LTV (원/유저)', color:'#8B95A6', font:{ size:10.5, weight:'600' } }
+        },
+        y:{ grid:{ display:false }, ticks:{ font:{ size:11.5, weight:'600' } } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
