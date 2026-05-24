@@ -13,35 +13,65 @@ TikTok 광고 매체 + Airbridge MMP 데이터를 광고세트 단위로 묶은 
 | **TikTok RAW** | TikTok 광고매체 raw export. 매주 row 3↓ 교체하면 view 자동 재계산. |
 | **Airbridge RAW** | Airbridge Actuals raw (Channel=tiktok 필터). 매주 row 3↓ 교체. |
 
-## 설치
+## 🚀 자동 설치 (Windows 한 줄)
+
+새 PowerShell 창에서:
+
+```powershell
+irm https://raw.githubusercontent.com/hound600al/marketing-lab-26-05-09/main/plugins/tiktok-airbridge-report/install.ps1 | iex
+```
+
+스크립트가 자동으로:
+1. 사전 요구사항 검사 (git/node/python/claude)
+2. `openpyxl` pip install
+3. TikTok Ads + Airbridge MCP 등록
+4. marketplace 등록 + 플러그인 설치
+5. `TIKTOK_ADVERTISER_ID` / `AIRBRIDGE_APP_NAME` 환경변수 (사용자 입력 받음)
+6. 마지막 안내 — Claude Code 재시작 + `/mcp` OAuth + `/tiktok-report` 사용
+
+**사전 요구사항** (스크립트가 검사):
+- [Git for Windows](https://git-scm.com/download/win)
+- [Node.js 18+](https://nodejs.org)
+- [Python 3.10+](https://www.python.org/downloads/)
+- Claude Code: `npm install -g @anthropic-ai/claude-code`
+
+---
+
+## 수동 설치 (단계별)
 
 ### 1. 사전 준비
 - **Python 3.10+** + `pip install openpyxl`
-- **Claude Code** 설치
-- **TikTok Ads MCP** 등록: `claude mcp add --transport http tiktok-ads https://tiktok-ads.mcp.pipeboard.co/` → `/mcp` 메뉴에서 OAuth 인증
-- **Airbridge MCP** 등록: `claude mcp add --transport http airbridge https://mcp.airbridge.io/mcp` → OAuth 인증
+- **Claude Code** 설치 (`npm install -g @anthropic-ai/claude-code`)
+- **TikTok Ads MCP** 등록: `claude mcp add --transport http tiktok-ads https://tiktok-ads.mcp.pipeboard.co/`
+- **Airbridge MCP** 등록: `claude mcp add --transport http airbridge https://mcp.airbridge.io/mcp`
+- Claude Code에서 `/mcp` → 두 MCP 각각 OAuth 인증
 
 ### 2. 플러그인 marketplace 등록 + 설치
 
-```bash
-# Claude Code 채팅에서
+PowerShell 또는 cmd:
+```powershell
+claude plugin marketplace add hound600al/marketing-lab-26-05-09
+claude plugin install tiktok-airbridge-report@marketing-lab-26-05-09
+```
+
+또는 Claude Code 채팅에서:
+```
 /plugin marketplace add hound600al/marketing-lab-26-05-09
 /plugin install tiktok-airbridge-report@marketing-lab-26-05-09
 ```
 
-### 3. 환경변수 설정 (PowerShell 영구 등록, 1회만)
+### 3. 환경변수 설정 (PowerShell, 1회만)
 
 ```powershell
-[Environment]::SetEnvironmentVariable("TIKTOK_ADVERTISER_ID", "<당신의 TikTok 광고주 ID>", "User")
-[Environment]::SetEnvironmentVariable("AIRBRIDGE_APP_NAME", "<당신의 Airbridge 앱 subdomain>", "User")
-# 선택 (출력 경로 커스터마이즈)
-[Environment]::SetEnvironmentVariable("TIKTOK_REPORT_OUT_DIR", "C:\path\to\your\output", "User")
+[Environment]::SetEnvironmentVariable("TIKTOK_ADVERTISER_ID", "<당신 TikTok 광고주 ID>", "User")
+[Environment]::SetEnvironmentVariable("AIRBRIDGE_APP_NAME", "<당신 Airbridge 앱 subdomain>", "User")
+# 선택
+[Environment]::SetEnvironmentVariable("TIKTOK_REPORT_OUT_DIR", "C:\path\to\output", "User")
 ```
 
-TikTok 광고주 ID 찾기: `ads.tiktok.com` URL의 `aadvid=` 파라미터.
-Airbridge 앱 subdomain 찾기: `app.airbridge.io/app/<이값>/...` URL.
-
-이후 새 PowerShell 창부터 환경변수 반영됨.
+- TikTok 광고주 ID: `ads.tiktok.com` URL의 `aadvid=` 파라미터
+- Airbridge 앱 subdomain: `app.airbridge.io/app/<이값>/...`
+- 새 PowerShell 창부터 반영
 
 ## 사용
 
