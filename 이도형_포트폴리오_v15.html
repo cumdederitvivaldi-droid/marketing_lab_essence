@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>이도형 포트폴리오 v15 — Cobalt Edge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+/* ════════════════════════════════════════════════════════════
+ * Portfolio v14 — "Cobalt Edge"
+ * Hybrid: v7 cobalt/lime visual rituals × v13 light-base readability
+ * ════════════════════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  /* ─── Core palette (v7 cobalt+lime) ─── */
+  --cobalt:#1E29FF;
+  --cobalt-deep:#0F19D8;
+  --cobalt-rich:#14159F;
+  --cobalt-soft:#EEF1FF;
+  --cobalt-border:#C9D0FF;
+  --lime:#D6FF3D;
+  --lime-deep:#B3DA1C;
+  --lime-soft:#F4FFCC;
+  --ink:#0A0F2E;
+  --ink-2:#161B36;
+  --lavender:#C7CBE3;
+  --lavender-dim:#8B91B4;
+
+  /* ─── Light surfaces (v13 readability) ─── */
+  --bg:#F7F9FD;
+  --white:#FFFFFF;
+  --text:#0F172A;
+  --text2:#1F2837;
+  --sub:#5B6675;
+  --sub-2:#8B95A6;
+  --line:#E2E6EF;
+  --line-lt:#F1F4F9;
+
+  /* ─── Category code (v13 retained, tone-aligned) ─── */
+  --ca-growth:#10C390;
+  --ca-crm:#EF4444;
+  --ca-perf:#1E29FF;
+  --ca-content:#F5B400;
+  --ca-viral:#DB2777;
+  --ca-ai:#7C3AED;
+  --ca-team:#475569;
+
+  --font-display:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  --font-sans:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+
+  /* ─── Legacy compatibility (v13 inline styles → cobalt mapping) ─── */
+  --blue:var(--cobalt);
+  --blue-bright:var(--cobalt);
+  --blue-deep:var(--cobalt-deep);
+  --blue-navy:var(--ink);
+  --blue-soft:var(--cobalt-soft);
+  --blue-border:var(--cobalt-border);
+  --blue-mid:var(--lavender);
+}
+body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction:column;align-items:center;gap:3px;padding:3px 0;font-feature-settings:"ss01" 1,"tnum" 1;-webkit-font-smoothing:antialiased;}
+.slide{width:1920px;height:1080px;background:var(--bg);overflow:hidden;flex-shrink:0;position:relative;color:var(--text);}
+.slide.dark{background:var(--ink);color:#fff;}
+.slide.cobalt{background:var(--cobalt);color:#fff;}
+
+/* ─── v7 ritual: grid background ─── */
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(to right,rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.08) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.grid-bg.dim{background-image:linear-gradient(to right,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.04) 1px,transparent 1px);}
+.grid-bg.light{background-image:linear-gradient(to right,rgba(30,41,255,.045) 1px,transparent 1px),linear-gradient(to bottom,rgba(30,41,255,.045) 1px,transparent 1px);background-size:48px 48px;}
+
+/* ─── v7 ritual: sparkle ✦ ─── */
+.sparkle{position:absolute;color:var(--lime);line-height:1;pointer-events:none;z-index:2;text-shadow:0 0 24px rgba(214,255,61,.45);font-family:Arial,sans-serif;}
+.sparkle::before{content:'✦';}
+.sparkle.cobalt-tint{color:var(--cobalt);text-shadow:0 0 24px rgba(30,41,255,.18);}
+
+/* ─── v7 ritual: ribbon (cover/CTA only) ─── */
+.ribbon{position:absolute;background:var(--lime);color:var(--ink);font-family:var(--font-display);font-weight:900;letter-spacing:-.01em;padding:20px 64px;font-size:22px;line-height:1;box-shadow:0 18px 40px rgba(0,0,0,.25);white-space:nowrap;z-index:3;}
+.ribbon::before,.ribbon::after{content:'';position:absolute;width:22px;height:100%;top:0;background:var(--lime-deep);clip-path:polygon(0 0,100% 0,100% 100%,50% 100%);}
+.ribbon::before{left:-22px;transform:scaleX(-1);}
+.ribbon::after{right:-22px;}
+.ribbon-tr{top:88px;right:-55px;transform:rotate(8deg);transform-origin:right center;}
+.ribbon-bl{bottom:120px;left:-55px;transform:rotate(-8deg);transform-origin:left center;}
+
+/* ─── v7 ritual: kicker (mono eyebrow + lime underline) ─── */
+.kicker{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cobalt);display:inline-flex;align-items:center;gap:14px;}
+.kicker::before{content:'';width:40px;height:2.5px;background:var(--lime);}
+.kicker.dark{color:var(--lime);}
+.kicker.dark::before{background:var(--lime);}
+
+/* ─── v7 ritual: stage tag (lime solid chip) ─── */
+.stage-tag{display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);background:var(--lime);padding:8px 16px;border-radius:4px;line-height:1;}
+
+/* ─── v7 ritual: bignum (cobalt big metric) ─── */
+.bignum{font-family:var(--font-display);font-weight:900;color:var(--cobalt);line-height:.92;letter-spacing:-.04em;font-variant-numeric:tabular-nums;}
+.bignum.lime{color:var(--lime);}
+.bignum.ink{color:var(--ink);}
+.bignum .u{font-size:.45em;opacity:.85;margin-left:4px;}
+
+/* ─── v7 ritual: chrome (mono footer) ─── */
+.chrome{position:absolute;left:96px;right:96px;bottom:36px;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--sub);z-index:5;}
+.chrome b{color:var(--cobalt);font-weight:700;}
+.chrome.dark{color:rgba(255,255,255,.55);}
+.chrome.dark b{color:var(--lime);}
+
+/* ─── v7 ritual: result chip (lime + ink) ─── */
+.chip-result{display:inline-block;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;letter-spacing:.04em;}
+
+/* ─── v15: skill block (7-grid capability) ─── */
+.skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.skill-block{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;box-shadow:0 2px 6px rgba(15,25,50,.04);}
+.skill-block::before{content:'';position:absolute;top:0;left:0;width:44px;height:3px;background:var(--lime);}
+.skill-block .sb-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.skill-block .sb-name{font-family:var(--font-display);font-size:19px;font-weight:900;color:var(--text);letter-spacing:-.018em;line-height:1.1;}
+.skill-block .sb-en{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;color:var(--sub);text-transform:uppercase;margin-top:2px;}
+.skill-block .sb-desc{font-size:13px;color:var(--text2);line-height:1.55;}
+
+/* ─── v15: outro / CTA cards ─── */
+.outro-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:flex;align-items:center;gap:18px;box-shadow:0 2px 6px rgba(15,25,50,.04);position:relative;overflow:hidden;}
+.outro-card::before{content:'';position:absolute;top:0;left:0;width:42px;height:3px;background:var(--lime);}
+
+/* ─── v15: previous company card ─── */
+.pc-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;box-shadow:0 2px 6px rgba(15,25,50,.04);}
+.pc-card::before{content:'';position:absolute;top:0;left:0;width:42px;height:3px;background:var(--lime);}
+.pc-card.dark{background:var(--ink);color:#fff;border:none;}
+.pc-card.dark::before{background:var(--lime);}
+
+/* ─── v15: phone frame (bridge page preview) ─── */
+.phone-frame{background:#0A0F2E;border-radius:24px;padding:8px;box-shadow:0 12px 28px rgba(0,0,0,.18);overflow:hidden;}
+.phone-frame .scr{background:#fff;border-radius:18px;overflow:hidden;}
+
+/* ─── v15: header tight padding for content slides ─── */
+.hd-tight{padding:48px 96px 0;}
+
+
+/* ── Common header ── */
+.hd{display:flex;align-items:flex-end;justify-content:space-between;padding:56px 96px 0;}
+.eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cobalt);display:inline-flex;align-items:center;gap:14px;margin-bottom:14px;}
+.eyebrow::before{content:'';width:36px;height:2.5px;background:var(--lime);}
+.page-title{font-size:34px;font-weight:900;color:var(--text);letter-spacing:-.028em;line-height:1.18;}
+.page-title em{color:var(--cobalt);font-style:normal;}
+.slide-num{font-family:var(--font-mono);font-size:12px;color:var(--sub);font-weight:700;letter-spacing:.18em;}
+
+/* ── Two-column body ── */
+.body2{display:grid;grid-template-columns:800px 1fr;gap:48px;margin-top:28px;height:880px;padding:0 96px 56px;}
+.col-l{display:flex;flex-direction:column;}
+.col-r{display:flex;flex-direction:column;gap:12px;min-height:0;}
+
+/* ── Left content atoms ── */
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.c-badge{display:inline-block;padding:6px 13px;border-radius:4px;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;}
+.c-badge.outline{background:transparent;color:var(--sub);border:1px solid var(--line);background:#fff;}
+.p-title{font-size:28px;font-weight:900;color:var(--text);letter-spacing:-.028em;line-height:1.24;margin-bottom:14px;}
+.p-title em{color:var(--cobalt);font-style:normal;}
+.p-desc{font-size:17px;color:var(--text2);line-height:1.72;margin-bottom:18px;}
+.p-desc b,.p-desc strong{color:var(--cobalt);font-weight:700;}
+.sec-label{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sub);margin-bottom:8px;margin-top:14px;display:inline-flex;align-items:center;gap:8px;}
+.sec-label::before{content:'✦';color:var(--lime-deep);font-size:11px;}
+.sec ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.sec li{font-size:17px;color:var(--text2);line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.sec li::before{content:'';flex-shrink:0;width:5px;height:5px;border-radius:50%;background:var(--cobalt);margin-top:11px;}
+.sec li strong{color:var(--text);font-weight:700;}
+.result{margin-top:auto;background:var(--ink);border-radius:14px;padding:20px 26px;display:flex;gap:32px;position:relative;overflow:hidden;}
+.result::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime);}
+.kpi{display:flex;flex-direction:column;gap:4px;}
+.kpi-num{font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--lime);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-label{font-family:var(--font-mono);font-size:11px;color:var(--lavender);letter-spacing:.08em;text-transform:uppercase;font-weight:500;}
+
+/* ── Chart card ── */
+.chart-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:0 2px 6px rgba(15,25,50,.04);}
+.chart-title{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--sub);margin-bottom:12px;letter-spacing:.14em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;}
+.chart-title::before{content:'✦';color:var(--lime-deep);}
+
+/* ── Page badge (legacy, kept for compat) ── */
+.pg-badge{position:absolute;bottom:36px;right:96px;font-family:var(--font-mono);font-size:12px;color:var(--sub);font-weight:700;letter-spacing:.18em;}
+.pg-badge b{color:var(--cobalt);}
+
+/* ══════════ HERO (cover · dark cobalt with v7 rituals) ══════════ */
+.hero-wrap{display:grid;grid-template-columns:600px 1fr;height:100%;position:relative;}
+.hero-photo-panel{position:relative;background:var(--ink);overflow:hidden;}
+.hero-photo-panel img{width:100%;height:100%;object-fit:cover;object-position:top center;opacity:.86;}
+.hero-photo-panel::after{content:'';position:absolute;bottom:0;left:0;right:0;height:340px;background:linear-gradient(transparent,var(--ink) 90%);}
+.hero-photo-panel .lime-corner{position:absolute;top:56px;left:44px;width:56px;height:5px;background:var(--lime);z-index:3;}
+.hero-name-tag{position:absolute;bottom:44px;left:44px;right:44px;z-index:2;}
+.hero-name-tag .name{font-size:64px;font-weight:900;color:#fff;letter-spacing:-.035em;line-height:1;}
+.hero-name-tag .role{font-family:var(--font-mono);font-size:14px;color:var(--lavender);margin-top:14px;font-weight:500;letter-spacing:.04em;}
+.hero-num-badge{position:absolute;top:80px;left:44px;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);z-index:3;}
+.hero-right{display:flex;flex-direction:column;justify-content:center;padding:72px 88px;background:var(--cobalt);position:relative;overflow:hidden;color:#fff;}
+.hero-eyebrow{font-family:var(--font-mono);font-size:14px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);margin-bottom:28px;display:inline-flex;align-items:center;gap:14px;}
+.hero-eyebrow::before{content:'';width:48px;height:3px;background:var(--lime);}
+.hero-headline{font-family:var(--font-display);font-size:62px;font-weight:900;color:#fff;line-height:1.08;letter-spacing:-.035em;margin-bottom:32px;}
+.hero-headline em{color:var(--lime);font-style:normal;}
+.hero-headline span{color:#fff;}
+.hero-body{font-size:19px;color:var(--lavender);line-height:1.72;margin-bottom:44px;max-width:680px;}
+.hero-body b{color:#fff;font-weight:700;}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.hero-chip{padding:8px 16px;border:1px solid rgba(255,255,255,.22);border-radius:999px;font-size:13px;color:#fff;font-weight:600;background:rgba(255,255,255,.06);font-family:var(--font-mono);letter-spacing:.04em;}
+
+/* ══════════ PERF OVERVIEW ══════════ */
+.perf-layout{display:grid;grid-template-columns:640px 1fr;gap:44px;height:880px;padding:0 96px 56px;margin-top:28px;}
+.kpi-grid-6{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.kpi-card6{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 2px 6px rgba(15,25,50,.04);position:relative;overflow:hidden;}
+.kpi-card6::before{content:'';position:absolute;top:0;left:0;width:36px;height:3px;background:var(--lime);}
+.kpi-card6 .num{font-family:var(--font-display);font-size:40px;font-weight:900;color:var(--cobalt);letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-card6 .unit{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--cobalt);}
+.kpi-card6 .lbl{font-size:13px;color:var(--sub);margin-top:8px;line-height:1.5;}
+.dash-link{display:flex;align-items:center;gap:14px;background:var(--ink);border-radius:12px;padding:18px 22px;text-decoration:none;margin-top:16px;position:relative;overflow:hidden;}
+.dash-link::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime);}
+.dash-link .icon{width:40px;height:40px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dash-link .icon svg path{stroke:var(--ink);}
+.dash-link .t{font-family:var(--font-display);font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em;}
+.dash-link .u{font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);margin-top:3px;letter-spacing:.06em;}
+
+/* ══════════ PROFILE ══════════ */
+.profile-split{display:grid;grid-template-columns:520px 1fr;height:100%;}
+.profile-photo-panel{background:var(--ink);position:relative;overflow:hidden;}
+.profile-photo-panel img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+.profile-photo-panel::after{content:'';position:absolute;bottom:0;left:0;right:0;height:380px;background:linear-gradient(transparent,var(--ink) 85%);}
+.profile-photo-panel .lime-corner{position:absolute;top:48px;left:44px;width:48px;height:5px;background:var(--lime);z-index:3;}
+.profile-photo-info{position:absolute;bottom:48px;left:44px;right:44px;z-index:2;}
+.profile-photo-info .pname{font-size:48px;font-weight:900;color:#fff;letter-spacing:-.028em;}
+.profile-photo-info .prole{font-family:var(--font-mono);font-size:13px;color:var(--lime);margin-top:14px;letter-spacing:.08em;font-weight:600;text-transform:uppercase;}
+.profile-photo-info .pyear{font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);margin-top:6px;letter-spacing:.18em;text-transform:uppercase;}
+.profile-content{padding:64px 72px 56px;display:flex;flex-direction:column;gap:0;overflow:hidden;}
+.who-label{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cobalt);margin-bottom:18px;display:inline-flex;align-items:center;gap:14px;}
+.who-label::before{content:'';display:inline-block;width:36px;height:2.5px;background:var(--lime);}
+.who-headline{font-family:var(--font-display);font-size:30px;font-weight:900;color:var(--text);line-height:1.24;letter-spacing:-.028em;margin-bottom:20px;}
+.who-headline em{color:var(--cobalt);font-style:normal;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;flex:1;}
+.ps-block{display:flex;flex-direction:column;gap:0;}
+.ps-lbl{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--sub);margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--lime);display:inline-flex;align-items:center;gap:8px;align-self:flex-start;}
+.ps-lbl::before{content:'✦';color:var(--lime-deep);}
+.career-row{padding:10px 0;border-bottom:1px solid var(--line-lt);display:flex;flex-direction:column;gap:3px;}
+.career-row:last-child{border-bottom:none;}
+.cr-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.cr-co{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.01em;}
+.cr-period{font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.04em;}
+.cr-role{font-size:13px;color:var(--text2);}
+.cr-achieve{font-size:12px;color:var(--cobalt);font-weight:700;margin-top:2px;font-family:var(--font-mono);letter-spacing:.02em;}
+.edu-row{padding:8px 0;border-bottom:1px solid var(--line-lt);}
+.edu-row:last-child{border-bottom:none;}
+.edu-school{font-size:16px;font-weight:800;color:var(--text);}
+.edu-dept{font-size:13px;color:var(--sub);}
+.award-row{padding:7px 0;border-bottom:1px solid var(--line-lt);font-size:13px;color:var(--text2);}
+.award-row:last-child{border-bottom:none;}
+.award-row .aw-prize{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);margin-left:6px;letter-spacing:.06em;text-transform:uppercase;}
+.tool-row2{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line-lt);}
+.tool-row2:last-child{border-bottom:none;}
+.tool-cat2{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);min-width:54px;flex-shrink:0;letter-spacing:.12em;text-transform:uppercase;padding-top:2px;}
+.tool-val{font-size:13px;color:var(--text2);line-height:1.5;}
+</style>
+</head>
+<body>
+<!-- ══════════════════════════════════════════
+  v15  17-슬라이드 — Notion 피드백 반영
+══════════════════════════════════════════ -->
+
+<!-- ══════ p1  HERO (다크 코발트 · 사진 X · 텍스트 중심) ══════ -->
+<div class="slide cobalt" id="p1">
+  <div class="grid-bg"></div>
+  <span class="sparkle" style="top:200px;right:280px;font-size:56px;"></span>
+  <span class="sparkle" style="top:520px;right:120px;font-size:32px;"></span>
+  <span class="sparkle" style="bottom:300px;right:260px;font-size:28px;"></span>
+  <span class="sparkle" style="bottom:200px;right:480px;font-size:22px;"></span>
+
+  <!-- Up-arrow svg deco -->
+  <svg style="position:absolute;right:160px;bottom:240px;opacity:.18;" width="180" height="240" viewBox="0 0 180 240" fill="none">
+    <path d="M90 220 L90 30 M30 90 L90 30 L150 90" stroke="#D6FF3D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <!-- Small ribbon top-right -->
+  <div class="ribbon ribbon-tr" style="font-size:18px;padding:16px 56px;">풀 퍼널 그로스 · 4,520만 → 18.9억 · 40배</div>
+
+  <div style="position:absolute;inset:0;padding:80px 96px 100px;display:flex;flex-direction:column;">
+    <!-- Top kicker row -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
+      <div class="kicker dark">Portfolio · 2026.05</div>
+      <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:.22em;color:var(--lavender-dim);text-align:right;line-height:1.8;text-transform:uppercase;">
+        Lee Dohyeong<br>Brand Accelerator · 5Y 4M
+      </div>
+    </div>
+
+    <!-- Headline -->
+    <div style="margin:auto 0;">
+      <h1 style="font-family:var(--font-display);font-weight:900;color:#fff;letter-spacing:-.038em;line-height:1.08;font-size:96px;margin:0;">
+        풀 퍼널 그로스로<br>
+        <span style="color:var(--lime);">월 매출 4,520만 → 18.9억,</span><br>
+        <span style="color:var(--lime);">40배 성장</span>을 주도한<br>
+        브랜드 엑셀러레이터 <span style="color:var(--lime);">이도형</span>입니다.
+      </h1>
+
+      <p style="font-family:var(--font-mono);font-size:18px;letter-spacing:.16em;color:var(--lavender);margin:40px 0 0;text-transform:uppercase;font-weight:500;">
+        Growth Marketing Portfolio · 2024 – 2026
+      </p>
+
+      <!-- Sub ribbon-strip -->
+      <div style="margin-top:40px;display:inline-flex;align-items:center;gap:14px;background:var(--lime);color:var(--ink);padding:16px 28px;border-radius:4px;font-family:var(--font-display);font-weight:900;font-size:19px;letter-spacing:-.005em;box-shadow:0 14px 32px rgba(0,0,0,.20);">
+        <span style="font-family:var(--font-mono);font-size:13px;letter-spacing:.20em;opacity:.65;font-weight:700;">·</span>
+        소재 단위부터 CRM · 퍼포먼스 · 팀 빌딩까지, 전 채널 그로스를 직접 설계·실행
+        <span style="font-family:var(--font-mono);font-size:13px;letter-spacing:.20em;opacity:.65;font-weight:700;">·</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chrome dark">
+    <span><b>01</b> / 17</span>
+    <span>cumdederitvivaldi@gmail.com · 010-7589-9117</span>
+  </div>
+</div>
+
+
+<!-- ══════ p2  PROFILE (좌 사진+그라데이션 · 우 코발트 패널) ══════ -->
+<div class="slide cobalt" id="p2">
+  <div style="display:grid;grid-template-columns:600px 1fr;height:100%;position:relative;">
+    <!-- LEFT photo -->
+    <div style="position:relative;overflow:hidden;background:var(--ink);">
+      <img src="./assets/profile_dohyeong.jpg" alt="이도형" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 18%;">
+      <!-- gradient: subtle vignette + heavy right-edge fade to cobalt -->
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,15,46,0) 0%,rgba(10,15,46,0) 55%,rgba(30,41,255,.55) 80%,rgba(30,41,255,1) 100%);pointer-events:none;"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,41,255,.06) 0%,rgba(30,41,255,.18) 50%,rgba(30,41,255,.92) 100%);pointer-events:none;"></div>
+      <!-- lime accent corner -->
+      <div style="position:absolute;top:64px;left:64px;width:56px;height:5px;background:var(--lime);z-index:3;"></div>
+
+      <div style="position:absolute;left:64px;right:64px;bottom:64px;z-index:4;">
+        <div style="font-family:var(--font-mono);font-size:13px;letter-spacing:.22em;color:var(--lime);font-weight:700;text-transform:uppercase;margin-bottom:18px;">Profile · 2025</div>
+        <div style="font-family:var(--font-display);font-weight:900;font-size:64px;color:#fff;letter-spacing:-.028em;line-height:1;margin-bottom:14px;">이도형</div>
+        <div style="font-family:var(--font-mono);font-size:14px;letter-spacing:.12em;color:var(--lavender);margin-bottom:24px;text-transform:uppercase;">Lee Dohyeong · 1994</div>
+        <div style="border-top:1px solid rgba(255,255,255,.28);padding-top:18px;font-family:var(--font-mono);font-size:14px;line-height:2;color:#fff;font-weight:500;">
+          +82-10-7589-9117<br>
+          cumdederitvivaldi@gmail.com
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT cobalt panel -->
+    <div style="padding:64px 88px 88px;display:flex;flex-direction:column;color:#fff;">
+      <div class="kicker dark" style="margin-bottom:24px;">Who I Am</div>
+      <h2 style="font-family:var(--font-display);font-weight:900;font-size:38px;letter-spacing:-.028em;line-height:1.22;color:#fff;margin-bottom:20px;">
+        콘텐츠 · 퍼포먼스 · CRM ·<br>데이터 · 팀 빌딩,<br>
+        <span style="color:var(--lime);">한 사람이 끝내는</span> 그로스 마케터.
+      </h2>
+      <p style="font-size:17px;color:var(--lavender);line-height:1.7;margin-bottom:36px;">
+        5년 4개월, 4개 회사를 거치며 <b style="color:#fff;font-weight:700;">매번 0을 1로</b> 만들어왔습니다.
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px 52px;flex:1;min-height:0;">
+        <!-- EXPERIENCE -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#fff;padding-bottom:8px;border-bottom:2px solid var(--lime);margin-bottom:12px;display:inline-flex;align-items:center;gap:8px;"><span style="color:var(--lime);">✦</span> Experience · 5Y 4M</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:16px;font-weight:800;color:#fff;">커버링</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.04em;">2024.05~</span></div><div style="font-size:13px;color:var(--lavender);margin-top:2px;">마케팅 팀장 · 전 영역 주도</div></div>
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:16px;font-weight:800;color:#fff;">이삼오구</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.04em;">2021.08–2023.10</span></div><div style="font-size:13px;color:var(--lavender);margin-top:2px;">파트장 · 누적 매출 27억</div></div>
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:16px;font-weight:800;color:#fff;">나인투식스</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.04em;">2020.12–2021.04</span></div><div style="font-size:13px;color:var(--lavender);margin-top:2px;">스마트스토어 · 라이브커머스</div></div>
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:16px;font-weight:800;color:#fff;">와이즈플래닛</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.04em;">2020.01–2020.07</span></div><div style="font-size:13px;color:var(--lavender);margin-top:2px;">인턴 · 영상 광고 · Meta</div></div>
+          </div>
+        </div>
+
+        <!-- STACK -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#fff;padding-bottom:8px;border-bottom:2px solid var(--lime);margin-bottom:12px;display:inline-flex;align-items:center;gap:8px;"><span style="color:var(--lime);">✦</span> Stack</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--lime);letter-spacing:.18em;text-transform:uppercase;">콘텐츠</div><div style="font-size:13px;color:#fff;margin-top:2px;font-weight:600;">Premiere · AE · Photoshop · Illustrator · Figma</div></div>
+            <div><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--lime);letter-spacing:.18em;text-transform:uppercase;">광고</div><div style="font-size:13px;color:#fff;margin-top:2px;font-weight:600;">Meta · Google · TikTok · ASA · Naver SA</div></div>
+            <div><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--lime);letter-spacing:.18em;text-transform:uppercase;">분석</div><div style="font-size:13px;color:#fff;margin-top:2px;font-weight:600;">BigQuery · Grafana · GA · GTM · AppsFlyer · Airbridge</div></div>
+            <div><div style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--lime);letter-spacing:.18em;text-transform:uppercase;">CRM · AI</div><div style="font-size:13px;color:#fff;margin-top:2px;font-weight:600;">Flarelane · 알림톡 · Claude × Meta 자동화</div></div>
+          </div>
+        </div>
+
+        <!-- EDUCATION -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#fff;padding-bottom:8px;border-bottom:2px solid var(--lime);margin-bottom:12px;display:inline-flex;align-items:center;gap:8px;"><span style="color:var(--lime);">✦</span> Education</div>
+          <div><div style="font-size:18px;font-weight:800;color:#fff;">인하대학교</div><div style="font-size:13px;color:var(--lavender);margin-top:3px;">스포츠과학 · 경영학 복수전공</div></div>
+        </div>
+
+        <!-- AWARDS -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#fff;padding-bottom:8px;border-bottom:2px solid var(--lime);margin-bottom:12px;display:inline-flex;align-items:center;gap:8px;"><span style="color:var(--lime);">✦</span> Awards · Cert.</div>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--lavender);">
+            <div>사회적기업 비즈니스 모델링 <span style="color:var(--lime);font-family:var(--font-mono);font-size:11px;font-weight:700;margin-left:4px;">(금상)</span></div>
+            <div>인하 K-MOOC UCC 콘테스트 <span style="color:var(--lime);font-family:var(--font-mono);font-size:11px;font-weight:700;margin-left:4px;">(장려상)</span></div>
+            <div>뉴 비즈니스 모델링 <span style="color:var(--lime);font-family:var(--font-mono);font-size:11px;font-weight:700;margin-left:4px;">(금상)</span></div>
+            <div style="color:#fff;font-weight:600;">GAIQ · 컴퓨터활용능력 2급</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome dark" style="left:632px;"><span><b>02</b> / 17</span><span>Profile · Lee Dohyeong</span></div>
+</div>
+
+
+<!-- ══════ p3  CAPABILITY (7개 역량 블록 + 매출 18.9억 차트) ══════ -->
+<div class="slide" id="p3">
+  <div class="grid-bg light"></div>
+  <span class="sparkle cobalt-tint" style="top:120px;right:200px;font-size:24px;"></span>
+
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Performance Overview</div>
+      <div class="page-title">만들어낸 <em>성과</em></div>
+    </div>
+    <span class="slide-num">03 / 17</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:760px 1fr;gap:44px;height:880px;padding:0 96px 56px;margin-top:24px;">
+    <!-- LEFT: 7 capability blocks (2-col grid, 4 rows; last row 1-col centered) -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="skill-grid">
+        <div class="skill-block">
+          <div class="sb-icon" style="background:var(--mint-100,#D5F5E8);color:#10C390;">📈</div>
+          <div><div class="sb-name">그로스</div><div class="sb-en">Growth</div></div>
+          <div class="sb-desc">병목 정의 → 실험 설계 → 측정. M1 리텐션 41%p · LTV ×18.1</div>
+        </div>
+        <div class="skill-block">
+          <div class="sb-icon" style="background:#FFF1C9;color:#F5B400;">🎬</div>
+          <div><div class="sb-name">콘텐츠</div><div class="sb-en">Content</div></div>
+          <div class="sb-desc">기획·촬영·편집·세팅까지 1인 제작. 구매 이벤트 40,499건</div>
+        </div>
+        <div class="skill-block">
+          <div class="sb-icon" style="background:#FEE2E2;color:#EF4444;">📬</div>
+          <div><div class="sb-name">CRM</div><div class="sb-en">Retention</div></div>
+          <div class="sb-desc">D22·D29·D61 시퀀스로 휴면 7,997명 회수 · 12.3억</div>
+        </div>
+        <div class="skill-block">
+          <div class="sb-icon" style="background:#EEF1FF;color:#1E29FF;">🎯</div>
+          <div><div class="sb-name">퍼포먼스</div><div class="sb-en">Performance</div></div>
+          <div class="sb-desc">Web2App 브릿지 · T-ROAS 정적가치. AOS CVR 19.47%</div>
+        </div>
+        <div class="skill-block">
+          <div class="sb-icon" style="background:#FCE7F3;color:#DB2777;">🤝</div>
+          <div><div class="sb-name">바이럴</div><div class="sb-en">Viral</div></div>
+          <div class="sb-desc">인플루언서 PA 사이클로 CPA -66% · 콘텐츠 0원에 수렴</div>
+        </div>
+        <div class="skill-block">
+          <div class="sb-icon" style="background:#F5F3FF;color:#7C3AED;">🤖</div>
+          <div><div class="sb-name">AI 활용</div><div class="sb-en">AI Utility</div></div>
+          <div class="sb-desc">Claude CLI 데이터 분석 · Meta 광고 세팅 자동화 · 대시보드</div>
+        </div>
+      </div>
+      <div class="skill-grid" style="grid-template-columns:1fr;">
+        <div class="skill-block" style="flex-direction:row;align-items:center;gap:18px;">
+          <div class="sb-icon" style="background:#F1F5F9;color:#475569;">👥</div>
+          <div style="flex:1;"><div class="sb-name">팀 리딩 <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--sub);font-weight:600;margin-left:8px;">TEAM LEADING</span></div><div class="sb-desc" style="margin-top:4px;">1인 마케터 → 5인 팀까지. 동기부여 · 본질 정의 · R&R 조정 · 전사 관점 의사결정</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: revenue chart + KPI strip -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="chart-card" style="flex:1;display:flex;flex-direction:column;">
+        <div class="chart-title">커버링 월 매출 성장 추이 · 4,520만 → 18.9억 (40배)</div>
+        <svg viewBox="0 0 600 480" width="100%" style="display:block;flex:1;">
+          <defs>
+            <linearGradient id="v15Grow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1E29FF" stop-opacity=".22"/>
+              <stop offset="100%" stop-color="#1E29FF" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <line x1="55" y1="30" x2="590" y2="30" stroke="#F1F4F9" stroke-width="1"/>
+          <line x1="55" y1="110" x2="590" y2="110" stroke="#F1F4F9" stroke-width="1"/>
+          <line x1="55" y1="200" x2="590" y2="200" stroke="#F1F4F9" stroke-width="1"/>
+          <line x1="55" y1="290" x2="590" y2="290" stroke="#F1F4F9" stroke-width="1"/>
+          <line x1="55" y1="360" x2="590" y2="360" stroke="#E2E6EF" stroke-width="1.5"/>
+          <text x="50" y="34" font-size="11" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">18.9억</text>
+          <text x="50" y="114" font-size="11" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">10억</text>
+          <text x="50" y="204" font-size="11" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">5억</text>
+          <text x="50" y="294" font-size="11" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">1억</text>
+          <polygon points="60,350 140,344 220,336 300,316 380,270 460,190 520,100 590,30 590,360 60,360" fill="url(#v15Grow)"/>
+          <polyline points="60,350 140,344 220,336 300,316 380,270 460,190 520,100 590,30" fill="none" stroke="#1E29FF" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="60" cy="350" r="5" fill="#1E29FF" stroke="#fff" stroke-width="2"/>
+          <circle cx="300" cy="316" r="5" fill="#1E29FF" stroke="#fff" stroke-width="2"/>
+          <circle cx="460" cy="190" r="5" fill="#1E29FF" stroke="#fff" stroke-width="2"/>
+          <circle cx="590" cy="30" r="8" fill="#D6FF3D" stroke="#1E29FF" stroke-width="3"/>
+          <text x="60" y="378" font-size="11" fill="#8B95A6" text-anchor="middle" font-family="JetBrains Mono">2024.05</text>
+          <text x="220" y="378" font-size="11" fill="#8B95A6" text-anchor="middle" font-family="JetBrains Mono">2024.09</text>
+          <text x="380" y="378" font-size="11" fill="#8B95A6" text-anchor="middle" font-family="JetBrains Mono">2025.04</text>
+          <text x="520" y="378" font-size="11" fill="#8B95A6" text-anchor="middle" font-family="JetBrains Mono">2025.12</text>
+          <text x="590" y="378" font-size="11" fill="#1E29FF" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">2026.04</text>
+          <text x="58" y="344" font-size="11" fill="#5B6675" font-family="JetBrains Mono">4,520만</text>
+          <rect x="494" y="12" width="98" height="32" rx="4" fill="#0A0F2E"/>
+          <rect x="494" y="12" width="98" height="3" fill="#D6FF3D"/>
+          <text x="543" y="33" font-size="14" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">18.9억</text>
+          <text x="325" y="455" font-size="13" fill="#1E29FF" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">★ 입사 24개월 만에 40배 성장 달성 · 26.04 기준</text>
+        </svg>
+      </div>
+      <!-- Dashboard link -->
+      <a class="dash-link" href="https://hound600al.github.io/marketing-lab-26-05-09/" target="_blank" style="text-decoration:none;">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="t">실시간 성과 대시보드 →</div><div class="u">hound600al.github.io/marketing-lab-26-05-09</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="chrome"><span><b>03</b> / 17</span><span>Capability · 7 Domains · Revenue ×40</span></div>
+</div>
+
+
+<!-- ══════ p4  GROWTH ① RETENTION (등급제 → M1 86.9%, LTV ×18.1) ══════ -->
+<div class="slide" id="p4">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Growth · 01 / 03 · Retention</div>
+      <div class="page-title">등급제 도입으로 <em>M1 리텐션 41%p</em> 개선</div>
+    </div>
+    <span class="slide-num">04 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-growth);">Growth · CRM</span>
+        <span class="c-badge outline">커버링 · 2024.07~ (24개월)</span>
+      </div>
+      <div class="p-title">7·9~10회차 잔존율 급락 구간에<br><em>70일 주기 등급제</em>로 사이클을 다시 짜다</div>
+      <p class="p-desc">회차별 잔존율을 분해해 <strong>7·9~10회차 이탈 급증 구간</strong>을 특정. 그 시점에 쿠폰 트리거 + 70일 누적 이용 등급 유지 조건을 결합해 <strong>한 구조에 이탈 방어 + 이용 주기 단축</strong> 두 목표를 동시에 담았습니다.</p>
+
+      <div class="sec-label">실행: 새싹·묘목·나무 3단계 등급 (미달성은 "씨앗"으로 표기)</div>
+      <div class="sec"><ul>
+        <li><strong>새싹</strong> (70일 7~12회) — 10% 할인 쿠폰 매주 1장</li>
+        <li><strong>묘목</strong> (70일 13~20회) — 10% 할인 쿠폰 매주 2장</li>
+        <li><strong>나무</strong> (70일 21회 이상) — 20% 할인 쿠폰 매주 2장</li>
+        <li>미달성 사용자는 앱 내 <strong>"씨앗"</strong> 상태로 진척도 시각화 → 게임화 적용</li>
+      </ul></div>
+
+      <div class="sec-label">결과 (코호트 12,312명 vs 11,711명)</div>
+      <div class="sec"><ul>
+        <li>등급 달성 M1 리텐션 <strong>86.9%</strong> (도입 전 45.9%)</li>
+        <li>등급 달성 M2 리텐션 <strong>84.4%</strong> (도입 전 38.0%)</li>
+        <li>180일 LTV <strong>176,121원</strong> vs 미달성 9,743원 → <strong>×18.1배</strong></li>
+        <li>BigQuery 실측 LTV 격차 18.6배 (노션 산정치 18.1과 0.2% 이내 일치)</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">+41%p</span><span class="kpi-label">M1 리텐션 (45.9 → 86.9%)</span></div>
+        <div class="kpi"><span class="kpi-num">×18.1</span><span class="kpi-label">180일 LTV 차이</span></div>
+        <div class="kpi"><span class="kpi-num">12,312명</span><span class="kpi-label">등급 달성 코호트</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- top: real UI images (씨앗/나무) cropped naturally -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0;">
+        <div class="phone-frame">
+          <div class="scr">
+            <div style="background:#F1F5F9;padding:7px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:var(--sub);letter-spacing:.08em;text-align:center;text-transform:uppercase;">씨앗 · 미달성 단계</div>
+            <img src="./assets/covering_tier_ssiat.png" alt="씨앗 단계 화면" style="width:100%;display:block;background:#F8FAFF;">
+          </div>
+        </div>
+        <div class="phone-frame" style="background:var(--cobalt);">
+          <div class="scr">
+            <div style="background:var(--cobalt);padding:7px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;">나무 · 최상위 단계</div>
+            <img src="./assets/covering_tier_nahmoo.png" alt="나무 단계 화면" style="width:100%;display:block;background:#EFF1FF;">
+          </div>
+        </div>
+      </div>
+      <!-- bottom: LTV chart -->
+      <div class="chart-card" style="flex:none;">
+        <div class="chart-title">등급 달성 여부별 180일 LTV (×18.1배 차이)</div>
+        <svg viewBox="0 0 540 90" width="100%" style="display:block;">
+          <rect x="20" y="20" width="320" height="40" rx="6" fill="#1E29FF"/>
+          <text x="32" y="44" font-size="13" fill="#fff" font-weight="800" font-family="JetBrains Mono">등급 달성</text>
+          <text x="328" y="44" font-size="14" fill="#fff" font-weight="900" text-anchor="end" font-family="JetBrains Mono">176,121원</text>
+          <rect x="20" y="64" width="18" height="14" rx="3" fill="#CBD5E1"/>
+          <text x="44" y="76" font-size="12" fill="#5B6675" font-family="JetBrains Mono">미달성</text>
+          <text x="120" y="76" font-size="12" fill="#5B6675" font-weight="700" font-family="JetBrains Mono">9,743원 (1/18.1)</text>
+          <text x="520" y="44" font-size="13" fill="#1E29FF" text-anchor="end" font-weight="800" font-family="JetBrains Mono">★ ×18.1</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>04</b> / 17</span><span>Growth · Retention · M1 +41%p</span></div>
+</div>
+
+
+<!-- ══════ p5  GROWTH ② ARPU (8kg 정책 → 객단가 +17.6%) ══════ -->
+<div class="slide" id="p5">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Growth · 02 / 03 · ARPU</div>
+      <div class="page-title">8kg 초과 배출 혜택으로 <em>객단가 17.6%</em> 개선</div>
+    </div>
+    <span class="slide-num">05 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-growth);">Growth · Pricing</span>
+        <span class="c-badge outline">커버링 · 2024.11~2025.03</span>
+      </div>
+      <div class="p-title">4kg 미만 절반·5kg 초과부터 수익,<br><em>가격 임계점</em>을 시뮬레이션으로 옮기다</div>
+      <p class="p-desc">무게별 이용 분포를 분석한 결과 대부분 <strong>4kg 미만 배출</strong>인데 물류는 <strong>5kg 초과부터 회수</strong>되는 구조. <strong>시뮬레이션으로 8kg 임계점</strong>을 찾아 초과 배출 시 <strong>방문비 20%·기본요금 25% 할인</strong> 정책을 설계, '적게 자주'에서 '많이 한 번에' 배출 패턴으로 이동시켰습니다.</p>
+
+      <div class="sec-label">실행: 8kg 초과 배출 시 할인 정책 직접 설계</div>
+      <div class="sec"><ul>
+        <li>무게 시뮬레이션으로 <strong>할인 비용 대비 수익 개선 효과가 가장 큰 8kg 임계점</strong>을 도출</li>
+        <li>방문비 <strong>20% 할인</strong> + 기본요금 <strong>25% 할인</strong> 이중 인센티브로 운영</li>
+        <li>이벤트 페이지 + 수거 신청 화면에 "8kg 초과 시 혜택" 안내 직접 디자인·노출</li>
+        <li>Figma 디자인 기여도 100% · 정책 설계부터 노출까지 1인 운영</li>
+      </ul></div>
+
+      <div class="sec-label">결과 (도입 전 6개월 vs 도입 후 5개월)</div>
+      <div class="sec"><ul>
+        <li>8kg 초과 배출 비율 <strong>20.75% → 27.07%</strong> (+6.32%p)</li>
+        <li>객단가 <strong>7,205원 → 8,474원</strong> (+1,269원, <strong>+17.6%</strong>)</li>
+        <li>ARPU 20,099원 → 20,569원 (+470원, +2.3%)</li>
+        <li>배출 빈도는 줄어도 1회당 매출이 더 큰 구조로 전환</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">+17.6%</span><span class="kpi-label">객단가 (7,205 → 8,474원)</span></div>
+        <div class="kpi"><span class="kpi-num">+6.32%p</span><span class="kpi-label">8kg 초과 배출 비율</span></div>
+        <div class="kpi"><span class="kpi-num">+2.3%</span><span class="kpi-label">ARPU 동반 상승</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- pricing detail page image (crop top portion for naturalness) -->
+      <div style="background:var(--white);border:1px solid var(--line);border-radius:14px;overflow:hidden;flex:1;min-height:0;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div style="padding:10px 16px;background:#F8FAFF;font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);"><span style="color:var(--lime-deep);">✦</span> 실제 설계·집행한 상세 페이지</div>
+        <div style="flex:1;min-height:0;overflow:hidden;background:#F1F4F9;display:flex;align-items:flex-start;justify-content:center;">
+          <img src="./assets/covering_pricing.png" alt="8kg 초과 혜택 상세페이지" style="width:auto;height:100%;max-width:100%;object-fit:contain;object-position:top center;display:block;">
+        </div>
+      </div>
+      <!-- KPI delta chart strip -->
+      <div class="chart-card" style="flex:none;">
+        <div class="chart-title">수거 무게 분포 변화 (도입 전 → 후)</div>
+        <svg viewBox="0 0 540 110" width="100%" style="display:block;">
+          <text x="20" y="22" font-size="11" fill="#5B6675" font-family="JetBrains Mono">8kg 초과</text>
+          <rect x="100" y="14" width="170" height="14" rx="3" fill="#CBD5E1"/>
+          <text x="278" y="25" font-size="11" fill="#5B6675" font-family="JetBrains Mono">20.75%</text>
+          <text x="20" y="50" font-size="11" fill="#1E29FF" font-family="JetBrains Mono" font-weight="700">8kg 초과 ★</text>
+          <rect x="100" y="42" width="222" height="18" rx="3" fill="#1E29FF"/>
+          <text x="330" y="56" font-size="12" fill="#1E29FF" font-weight="800" font-family="JetBrains Mono">27.07% (+6.32%p)</text>
+          <line x1="20" y1="74" x2="520" y2="74" stroke="#E2E6EF" stroke-width="1"/>
+          <text x="20" y="94" font-size="11" fill="#5B6675" font-family="JetBrains Mono">객단가</text>
+          <text x="100" y="94" font-size="13" fill="#5B6675" font-family="JetBrains Mono">7,205원</text>
+          <text x="200" y="94" font-size="13" fill="#0F172A" font-family="JetBrains Mono">→</text>
+          <text x="230" y="94" font-size="14" fill="#1E29FF" font-weight="900" font-family="JetBrains Mono">8,474원</text>
+          <rect x="350" y="80" width="130" height="22" rx="4" fill="#D6FF3D"/>
+          <text x="415" y="95" font-size="12" fill="#0A0F2E" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">★ +17.6%</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>05</b> / 17</span><span>Growth · ARPU · 객단가 +17.6%</span></div>
+</div>
+
+
+<!-- ══════ p6  GROWTH ③ CVR (CRM 시나리오 → D45 CVR +231%) ══════ -->
+<div class="slide" id="p6">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Growth · 03 / 03 · CVR</div>
+      <div class="page-title">CRM 시나리오 구축으로 <em>D45 CVR 3배</em> 개선</div>
+    </div>
+    <span class="slide-num">06 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-growth);">Growth · CRM</span>
+        <span class="c-badge outline">커버링 · 2024.08~2025.01</span>
+      </div>
+      <div class="p-title">가입 후 30일 미이용 = 영구 이탈,<br><em>웰컴쿠폰 + D16·D45 개입</em>으로 첫 전환 가속</div>
+      <p class="p-desc">가입자의 <strong>30%만 실이용</strong>, 그조차 <strong>D30 내 미이용 시 사실상 영구 이탈</strong>. 빈 구간이던 가입~30일 사이에 ① 웰컴쿠폰 + 봉투→수거 퍼널 ② D16·D45 미전환 유저 알림톡 두 액션으로 첫 결제까지의 거리를 줄였습니다.</p>
+
+      <div class="sec-label">실행 ①: 웰컴쿠폰 + 봉투→수거 퍼널</div>
+      <div class="sec"><ul>
+        <li>회원가입 시 <strong>방문비 2,500원 쿠폰 8장 무료 지급</strong> · 1달 만료</li>
+        <li>봉투 신청 → 수거 신청 퍼널 분석 후 <strong>봉투 미사용 시 수거 유도 알림톡</strong> 자동화</li>
+      </ul></div>
+
+      <div class="sec-label">실행 ②: D16·D45 미전환 알림톡</div>
+      <div class="sec"><ul>
+        <li>일자별 첫 주문 전환율 분석 → <strong>D16·D45</strong> 두 범퍼 구간 발견</li>
+        <li><strong>D16</strong> — 30% 할인 쿠폰 / <strong>D45</strong> — 100% 할인(무료 이용권)</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">+231%</span><span class="kpi-label">D45 CVR (0.83 → 2.75%)</span></div>
+        <div class="kpi"><span class="kpi-num">+99%</span><span class="kpi-label">D16 CVR</span></div>
+        <div class="kpi"><span class="kpi-num">+10pp</span><span class="kpi-label">활성화율 즉시 점프</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- top: scenario flow -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div class="chart-title">가입 후 첫 전환까지 — 4단계 시나리오</div>
+        <svg viewBox="0 0 520 380" width="100%" style="display:block;">
+          <line x1="60" y1="40" x2="60" y2="340" stroke="#E2E6EF" stroke-width="2" stroke-dasharray="5,4"/>
+          <!-- Step 1 -->
+          <circle cx="60" cy="56" r="20" fill="#1E29FF"/>
+          <text x="60" y="61" font-size="10" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">D0</text>
+          <rect x="98" y="36" width="410" height="50" rx="10" fill="#EEF1FF" stroke="#C9D0FF"/>
+          <text x="116" y="58" font-size="13" fill="#0F19D8" font-weight="800">웰컴쿠폰 8장 · 1달 만료</text>
+          <text x="116" y="76" font-size="12" fill="#5B6675">방문비 2,500원 × 8장 · 즉시 자동 지급</text>
+          <!-- Step 2 -->
+          <circle cx="60" cy="130" r="20" fill="#1E29FF"/>
+          <text x="60" y="135" font-size="10" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">봉투</text>
+          <rect x="98" y="110" width="410" height="50" rx="10" fill="#EEF1FF" stroke="#C9D0FF"/>
+          <text x="116" y="132" font-size="13" fill="#0F19D8" font-weight="800">봉투 신청 후 미사용 → 수거 유도 알림톡</text>
+          <text x="116" y="150" font-size="12" fill="#5B6675">활성화율 즉시 +10pp · 첫 주문 속도 1/2</text>
+          <!-- Step 3 -->
+          <circle cx="60" cy="204" r="20" fill="#0F19D8"/>
+          <text x="60" y="209" font-size="10" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">D16</text>
+          <rect x="98" y="184" width="410" height="50" rx="10" fill="#EEF1FF" stroke="#1E29FF" stroke-width="1.5"/>
+          <text x="116" y="206" font-size="13" fill="#0F19D8" font-weight="800">D16 · 30% 할인 쿠폰 알림톡</text>
+          <text x="116" y="224" font-size="12" fill="#5B6675">미전환 유저 첫 결제 유도 · D16 CVR <tspan font-weight="800" fill="#1E29FF" font-family="JetBrains Mono">+99%</tspan></text>
+          <!-- Step 4 WIN -->
+          <circle cx="60" cy="280" r="20" fill="#D6FF3D"/>
+          <text x="60" y="285" font-size="10" fill="#0A0F2E" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">D45</text>
+          <rect x="98" y="260" width="410" height="50" rx="10" fill="#D6FF3D" stroke="#B3DA1C" stroke-width="1.5"/>
+          <text x="116" y="282" font-size="13" fill="#0A0F2E" font-weight="900">D45 · 100% 할인(무료) 알림톡 ★ WINNER</text>
+          <text x="116" y="300" font-size="12" fill="#14159F" font-weight="600">마지막 리텐션 윈도우 · D45 CVR <tspan font-weight="900" font-family="JetBrains Mono">0.83% → 2.75% (+231%)</tspan></text>
+          <!-- bottom summary -->
+          <rect x="20" y="334" width="488" height="36" rx="8" fill="#0A0F2E"/>
+          <text x="264" y="357" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">"첫 전환이 곧 LTV의 시작점"이라는 명제로 시나리오 설계</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>06</b> / 17</span><span>Growth · CVR · D45 +231%</span></div>
+</div>
+
+
+<!-- ══════ p7  CONTENT (페인포인트 공략 · 1인 제작 · 40,499건) ══════ -->
+<div class="slide" id="p7">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Content Production</div>
+      <div class="page-title">페인포인트를 공략해 <em>구매 이벤트 40,499건</em>을 만든 콘텐츠</div>
+    </div>
+    <span class="slide-num">07 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-content);color:#0A0F2E;">Content</span>
+        <span class="c-badge outline">기획 · 촬영 · 편집 · 세팅 1인 운영</span>
+      </div>
+      <div class="p-title">"왜 사야 하는가"를 한 줄로 꽂는,<br><em>구매할 수 밖에 없는</em> 광고 소재</div>
+      <p class="p-desc">기획부터 컷 편집·모션·디자인까지 <strong>외주 없이 직접</strong> 만듭니다. 광고 소재 한 편을 회의 → 촬영 → 편집 → 세팅까지 같은 사람이 끌고 갈 수 있다는 게 가장 큰 무기입니다.</p>
+
+      <div class="sec-label">다룰 수 있는 도구 · 페인포인트 공략 방식</div>
+      <div class="sec"><ul>
+        <li><strong>Premiere · After Effects</strong> — 30초 영상 광고 직접 완성 (편집·자막·간단 모션)</li>
+        <li><strong>Photoshop · Illustrator · Figma</strong> — 배너·상세페이지·CRM 배너 직접 제작</li>
+        <li>매주 광고 소재별 CTR·CPI·CAC 분석 → <strong>성과 기반 소재 교체·신규 기획</strong></li>
+        <li>외주 콘텐츠 마케터 채용 스펙 직접 설계 · 메타 광고 세팅 자동화 도구 제작</li>
+      </ul></div>
+
+      <div class="sec-label">대표 성과 — 페인포인트 공략 모먼트</div>
+      <div class="sec"><ul>
+        <li>"<strong>상한 반찬통 버릴 때 정말 유용해요</strong>" — 앱스토어 리뷰 1줄에서 발견한 소구점 → CPI 7,988 → 2,169원 (<strong>-72.8%</strong>)</li>
+        <li>"<strong>언제까지 쓰레기랑 같이 살래?</strong>" — 친구 소구 브릿지 → AOS CVR <strong>19.47%</strong></li>
+        <li>"<strong>미용실 매직 대체재</strong>" — 카테고리 재정의로 헤어핌 주간 매출 ×8</li>
+        <li>등급제·연말 청소·8kg 가격·친구 초대 등 <strong>전 영역 캠페인 LP를 직접 기획·디자인</strong></li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">40,499건</span><span class="kpi-label">총 구매 이벤트 (전 채널)</span></div>
+        <div class="kpi"><span class="kpi-num">-72.8%</span><span class="kpi-label">소구점 1줄로 CPI 절감</span></div>
+        <div class="kpi"><span class="kpi-num">100%</span><span class="kpi-label">1인 운영 (기획 → 세팅)</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- thumbnails grid 2x2 cropped naturally -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0;">
+        <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <div style="padding:8px 14px;background:var(--cobalt-soft);font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.14em;text-transform:uppercase;">✦ 등급제 LP</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F1F4F9;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/covering_tier_system.png" style="width:100%;height:100%;object-fit:cover;object-position:top center;"></div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <div style="padding:8px 14px;background:var(--cobalt-soft);font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.14em;text-transform:uppercase;">✦ 등급제 혜택</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F1F4F9;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/covering_tier_benefits.png" style="width:100%;height:100%;object-fit:cover;object-position:top center;"></div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <div style="padding:8px 14px;background:var(--cobalt-soft);font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.14em;text-transform:uppercase;">✦ 연말 청소 결산</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F1F4F9;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/covering_promo_year_end.png" style="width:100%;height:100%;object-fit:cover;object-position:top center;"></div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <div style="padding:8px 14px;background:var(--cobalt-soft);font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.14em;text-transform:uppercase;">✦ Lucky Clover 친구초대</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F1F4F9;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/covering_promo_lucky_clover.png" style="width:100%;height:100%;object-fit:cover;object-position:top center;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>07</b> / 17</span><span>Content · 40,499 Purchases · 1-Person Production</span></div>
+</div>
+
+
+<!-- ══════ p8  CRM ① 휴면 12.3억 (D22 · D29 · D61) ══════ -->
+<div class="slide" id="p8">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">CRM · 01 / 02 · Reactivation</div>
+      <div class="page-title">D22·D29·D61 시퀀스로 <em>휴면 매출 12.3억 회수</em></div>
+    </div>
+    <span class="slide-num">08 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-crm);">CRM</span>
+        <span class="c-badge outline">커버링 · 2024.10~11</span>
+      </div>
+      <div class="p-title">"첫 이용 22일 지나면 고객은 잊는다",<br><em>3단계 시퀀스</em>로 강도를 달리하다</div>
+      <p class="p-desc">데이터에서 직접 발견한 패턴: <strong>첫 이용 후 22일이 지나면 재이용 확률이 급락</strong>. 무분별한 쿠폰은 마진만 빠지니까 세 시점으로 끊어, 푸시 → 쿠폰 → 마지막 쿠폰으로 강도를 달리하는 구조를 설계했습니다.</p>
+
+      <div class="sec-label">시퀀스 설계 (강도 점증)</div>
+      <div class="sec"><ul>
+        <li><strong>D22 · 앱 푸시 (쿠폰 X)</strong> — 잊지 않게, 쿠폰을 일찍 태우지 않음</li>
+        <li><strong>D29 · 30% 할인 쿠폰</strong> — 푸시로도 안 돌아온 고객에게 비용을 씀 (만료 72h · 오픈율 38.2% · CVR 21.4%)</li>
+        <li><strong>D61 · 30% 할인 쿠폰 1회 더</strong> — 마지막 리텐션 윈도우 (전환율 9.1%)</li>
+        <li>미반응 세그먼트 → <strong>광고 리타겟팅</strong> 자동 전환</li>
+      </ul></div>
+
+      <div class="sec-label">왜 강도를 달리했나</div>
+      <div class="sec"><ul>
+        <li>D22에 푸시로 한 번 거른 뒤에 쿠폰을 태우는 구조 → <strong>쿠폰 없이도 돌아올 고객에게 불필요한 할인이 나가는 일</strong>을 피함</li>
+        <li>재활성화 7,997명이 90일간 평균 7.3건 추가 주문 → 1인당 LTV 154,162원</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">12.3억</span><span class="kpi-label">단일 캠페인 추가 매출</span></div>
+        <div class="kpi"><span class="kpi-num">7,997명</span><span class="kpi-label">재활성화 고객</span></div>
+        <div class="kpi"><span class="kpi-num">21.4%</span><span class="kpi-label">D29 알림톡 CVR</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div class="chart-title">리텐션 시퀀스 플로우</div>
+        <svg viewBox="0 0 520 480" width="100%" style="display:block;">
+          <line x1="80" y1="55" x2="80" y2="420" stroke="#E2E6EF" stroke-width="2.5" stroke-dasharray="6,4"/>
+          <circle cx="80" cy="72" r="24" fill="#EF4444"/>
+          <text x="80" y="78" font-size="13" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">D22</text>
+          <rect x="118" y="50" width="390" height="60" rx="12" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1.5"/>
+          <text x="138" y="75" font-size="14" fill="#991B1B" font-weight="700">앱 푸시 · 쿠폰 X</text>
+          <text x="138" y="96" font-size="13" fill="#5B6675">"오랜만이에요" — 잊지 않게, 쿠폰은 아끼기</text>
+          <circle cx="80" cy="210" r="24" fill="#EF4444"/>
+          <text x="80" y="216" font-size="13" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">D29</text>
+          <rect x="118" y="188" width="390" height="60" rx="12" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1.5"/>
+          <text x="138" y="213" font-size="14" fill="#991B1B" font-weight="700">알림톡 · 30% 할인 쿠폰</text>
+          <text x="138" y="234" font-size="13" fill="#5B6675">만료 72h · 오픈 38.2% · <tspan font-weight="800" fill="#EF4444" font-family="JetBrains Mono">CVR 21.4%</tspan></text>
+          <circle cx="80" cy="348" r="24" fill="#991B1B"/>
+          <text x="80" y="354" font-size="13" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">D61</text>
+          <rect x="118" y="326" width="390" height="60" rx="12" fill="#FEF2F2" stroke="#EF4444" stroke-width="2"/>
+          <text x="138" y="351" font-size="14" fill="#991B1B" font-weight="700">마지막 알림톡 · 30% 쿠폰</text>
+          <text x="138" y="372" font-size="13" fill="#5B6675">전환율 9.1% · 미반응 → 광고 리타겟팅 자동 전환</text>
+          <rect x="35" y="405" width="473" height="60" rx="14" fill="#0A0F2E"/>
+          <rect x="35" y="405" width="473" height="3" fill="#D6FF3D"/>
+          <text x="272" y="431" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">7,997명 × 90일 LTV 154,162원</text>
+          <text x="272" y="455" font-size="20" fill="#D6FF3D" text-anchor="middle" font-weight="900" font-family="JetBrains Mono">= 12.3억원 추가 매출 창출</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>08</b> / 17</span><span>CRM · D22·29·61 · 12.3억</span></div>
+</div>
+
+
+<!-- ══════ p9  CRM ② 식목일 페이백 RCT (M1 +52pp · M6 +28pp) ══════ -->
+<div class="slide" id="p9">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">CRM · 02 / 02 · RCT</div>
+      <div class="page-title">식목일 페이백 RCT — <em>쿠폰 만료 후에도 M6 +28pp</em> 유지</div>
+    </div>
+    <span class="slide-num">09 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-crm);">CRM · 실험</span>
+        <span class="c-badge outline">커버링 · 2025.04~10 (RCT 6개월)</span>
+      </div>
+      <div class="p-title">"쓰며 습관이 생겼다"를 RCT로 증명,<br><em>처치군 vs 대조군</em>으로 단순 할인 효과를 분리</div>
+      <p class="p-desc">990원 회고에서 도출한 두 문제 — M0 매출 희생 + 쿠폰 실사용률 33% — 를 풀기 위해 <strong>M0는 정상가로 받고 사용 직후 페이백 쿠폰을 자동 지급</strong>하는 구조로 재설계. <strong>무작위 처치군 RCT</strong>로 6개월 트래킹했습니다.</p>
+
+      <div class="sec-label">실험 설계</div>
+      <div class="sec"><ul>
+        <li>사전 시뮬레이션: 페이백 시나리오 5개월 누적 LTV <strong>+11,285원/유저</strong> 검증 후 GO</li>
+        <li>처치군 <strong>874명</strong> (페이백 쿠폰 지급) vs 대조군 <strong>6,564명</strong> (동기간 결제, 미지급)</li>
+        <li>FlareLane 알림톡 + 웹훅 쿠폰 발급 연동 · end-to-end QA</li>
+      </ul></div>
+
+      <div class="sec-label">결과 — 쿠폰 소멸 후에도 갭이 유지됨</div>
+      <div class="sec"><ul>
+        <li>M1: 처치 <strong>89.5%</strong> vs 대조 37.5% — <strong>+52.0pp</strong> (쿠폰 만료 압력)</li>
+        <li>M3: 61.1% vs 27.8% — +33.3pp (쿠폰 사용 종료)</li>
+        <li>M6: <strong>52.9%</strong> vs 24.8% — <strong>+28.1pp</strong> (만료 후에도 갭 유지)</li>
+        <li>처치군 M4 이후 50%대 평탄화 → <strong>"한 번 더 쓴 경험"이 습관으로 굳어진 신호</strong></li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">+52pp</span><span class="kpi-label">M1 리텐션 갭</span></div>
+        <div class="kpi"><span class="kpi-num">+28pp</span><span class="kpi-label">M6 갭 (쿠폰 만료 후)</span></div>
+        <div class="kpi"><span class="kpi-num">874:6,564</span><span class="kpi-label">RCT 처치:대조</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;flex:1;min-height:0;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div class="chart-title">RCT M1~M6 리텐션 궤적 (처치군 vs 대조군)</div>
+        <svg viewBox="0 0 520 380" width="100%" style="display:block;flex:1;">
+          <defs>
+            <linearGradient id="tArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10C390" stop-opacity=".22"/><stop offset="100%" stop-color="#10C390" stop-opacity="0"/></linearGradient>
+            <linearGradient id="cArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#94A3B8" stop-opacity=".18"/><stop offset="100%" stop-color="#94A3B8" stop-opacity="0"/></linearGradient>
+          </defs>
+          <!-- Grid lines (0/25/50/75/100) -->
+          <line x1="50" y1="40" x2="510" y2="40" stroke="#F1F4F9"/>
+          <line x1="50" y1="110" x2="510" y2="110" stroke="#F1F4F9"/>
+          <line x1="50" y1="180" x2="510" y2="180" stroke="#F1F4F9"/>
+          <line x1="50" y1="250" x2="510" y2="250" stroke="#F1F4F9"/>
+          <line x1="50" y1="320" x2="510" y2="320" stroke="#E2E6EF" stroke-width="1.5"/>
+          <text x="44" y="44" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">100</text>
+          <text x="44" y="114" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">75</text>
+          <text x="44" y="184" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">50</text>
+          <text x="44" y="254" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">25</text>
+          <text x="44" y="324" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">0%</text>
+          <!-- Coords: M1..M6 at x=86,158,230,302,374,446 ; y = 320 - (val * 2.8) (val/100*280) -->
+          <!-- 처치: 89.5,66.9,61.1,56.2,54.7,52.9 → y: 320 - val*2.8 -->
+          <polygon points="86,69.4 158,132.7 230,149.9 302,162.6 374,166.8 446,171.9 446,320 86,320" fill="url(#tArea)"/>
+          <polyline points="86,69.4 158,132.7 230,149.9 302,162.6 374,166.8 446,171.9" fill="none" stroke="#10C390" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- 대조: 37.5,30.4,27.8,26.4,24.1,24.8 -->
+          <polygon points="86,215 158,234.9 230,242.2 302,246.1 374,252.5 446,250.6 446,320 86,320" fill="url(#cArea)"/>
+          <polyline points="86,215 158,234.9 230,242.2 302,246.1 374,252.5 446,250.6" fill="none" stroke="#94A3B8" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6,4"/>
+          <!-- Dots -->
+          <circle cx="86" cy="69.4" r="6" fill="#10C390" stroke="#fff" stroke-width="2"/>
+          <circle cx="446" cy="171.9" r="6" fill="#10C390" stroke="#fff" stroke-width="2"/>
+          <!-- Value labels at start and end -->
+          <text x="86" y="58" font-size="13" fill="#10C390" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">89.5%</text>
+          <text x="446" y="161" font-size="13" fill="#10C390" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">52.9%</text>
+          <text x="86" y="206" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">37.5%</text>
+          <text x="446" y="266" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">24.8%</text>
+          <!-- X labels -->
+          <text x="86" y="338" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">M1</text>
+          <text x="158" y="338" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">M2</text>
+          <text x="230" y="338" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">M3</text>
+          <text x="302" y="338" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">M4</text>
+          <text x="374" y="338" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">M5</text>
+          <text x="446" y="338" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">M6</text>
+          <!-- Legend top right -->
+          <rect x="320" y="14" width="14" height="3" fill="#10C390"/>
+          <text x="340" y="20" font-size="11" fill="#10C390" font-weight="700" font-family="JetBrains Mono">처치군 (874명)</text>
+          <line x1="320" y1="30" x2="334" y2="30" stroke="#94A3B8" stroke-width="2" stroke-dasharray="3,2"/>
+          <text x="340" y="34" font-size="11" fill="#5B6675" font-family="JetBrains Mono">대조군 (6,564명)</text>
+          <!-- Annotation -->
+          <rect x="80" y="354" width="380" height="22" rx="4" fill="#0A0F2E"/>
+          <text x="270" y="370" font-size="12" fill="#D6FF3D" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">★ M2~M6 쿠폰 만료 후에도 +28~37pp 갭 유지</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>09</b> / 17</span><span>CRM · RCT · 식목일 페이백</span></div>
+</div>
+
+
+<!-- ══════ p10  PERFORMANCE ① Web2App 브릿지 (CVR 19.47%) ══════ -->
+<div class="slide" id="p10">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Performance · 01 / 02 · Web2App</div>
+      <div class="page-title">브릿지 페이지 + 구매 최적화로 <em>AOS CVR 19.47%</em></div>
+    </div>
+    <span class="slide-num">10 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-perf);">Performance</span>
+        <span class="c-badge outline">커버링 · 2026.02.03~05.24 (Meta 광고 실측)</span>
+      </div>
+      <div class="p-title">앱스토어 직링크를 버리고,<br><em>10종 브릿지 LP</em>로 가치를 먼저 설득하다</div>
+      <p class="p-desc">앱스토어 직링크는 설득 없이 설치만 요구하는데 저의향 유저까지 떠안아 머신러닝 학습이 느렸습니다. <strong>브릿지 페이지로 서비스 가치를 먼저 설득</strong>하고 캠페인 최적화 이벤트를 <strong>구매(purchase)로 격상</strong>해 두 레버를 결합했습니다.</p>
+
+      <div class="sec-label">결과 (Meta 광고 관리자 실측)</div>
+      <div class="sec"><ul>
+        <li>AOS CVR <strong>19.47%</strong> · iOS CVR <strong>8.82%</strong> (업계 평균 1~3% 대비 3~19배)</li>
+        <li>누적 구매 <strong>7,534건</strong> (AOS 5,330 + iOS 2,204)</li>
+        <li>CPA: AOS ₩28,101 · iOS ₩40,648</li>
+        <li><strong>웹 등록 완료가 앱 설치를 상회</strong> — Web2App이 웹 유입 전환까지 복합 작동</li>
+      </ul></div>
+
+      <div class="sec-label">브릿지 라인업 (총 10종)</div>
+      <div class="sec"><ul>
+        <li><strong>bimil.covering.app</strong> — 비밀 서비스 · 전국 범용</li>
+        <li><strong>covering-friends</strong> — "언제까지 쓰레기랑 같이 살래?" 친구 소구</li>
+        <li><strong>지역 특화</strong> — cna50/100 · asn100 · dcj 천안·아산·대세종 7종</li>
+        <li><strong>bulk30 · moving</strong> — 대형 봉투 · 이사 지원</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">19.47%</span><span class="kpi-label">AOS CVR (구매/클릭)</span></div>
+        <div class="kpi"><span class="kpi-num">7,534건</span><span class="kpi-label">누적 구매</span></div>
+        <div class="kpi"><span class="kpi-num">10종</span><span class="kpi-label">브릿지 LP 설계·운영</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- 4 thumbnails of bridge URLs via thum.io -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0;">
+        <div class="phone-frame">
+          <div class="scr" style="display:flex;flex-direction:column;height:100%;">
+            <div style="padding:7px 12px;background:#F1F5F9;font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.12em;text-align:center;text-transform:uppercase;border-bottom:1px solid var(--line);">bimil.covering.app · 범용</div>
+            <div style="flex:1;min-height:0;overflow:hidden;background:#fff;"><img src="https://image.thum.io/get/viewportWidth/414/width/600/wait/3/https://bimil.covering.app/" alt="bimil LP" style="width:100%;display:block;" onerror="this.style.display='none'"></div>
+          </div>
+        </div>
+        <div class="phone-frame">
+          <div class="scr" style="display:flex;flex-direction:column;height:100%;">
+            <div style="padding:7px 12px;background:#F1F5F9;font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.12em;text-align:center;text-transform:uppercase;border-bottom:1px solid var(--line);">covering-friends · 친구 소구</div>
+            <div style="flex:1;min-height:0;overflow:hidden;background:#fff;"><img src="https://image.thum.io/get/viewportWidth/414/width/600/wait/3/https://covering-friends.figma.site/" alt="friends LP" style="width:100%;display:block;" onerror="this.style.display='none'"></div>
+          </div>
+        </div>
+        <div class="phone-frame">
+          <div class="scr" style="display:flex;flex-direction:column;height:100%;">
+            <div style="padding:7px 12px;background:#F1F5F9;font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.12em;text-align:center;text-transform:uppercase;border-bottom:1px solid var(--line);">cna50.covering.app · 지역</div>
+            <div style="flex:1;min-height:0;overflow:hidden;background:#fff;"><img src="https://image.thum.io/get/viewportWidth/414/width/600/wait/3/https://cna50.covering.app/" alt="cna50 LP" style="width:100%;display:block;" onerror="this.style.display='none'"></div>
+          </div>
+        </div>
+        <div class="phone-frame">
+          <div class="scr" style="display:flex;flex-direction:column;height:100%;">
+            <div style="padding:7px 12px;background:#F1F5F9;font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);letter-spacing:.12em;text-align:center;text-transform:uppercase;border-bottom:1px solid var(--line);">bulk30.covering.app · 대형</div>
+            <div style="flex:1;min-height:0;overflow:hidden;background:#fff;"><img src="https://image.thum.io/get/viewportWidth/414/width/600/wait/3/https://bulk30.covering.app/" alt="bulk30 LP" style="width:100%;display:block;" onerror="this.style.display='none'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>10</b> / 17</span><span>Performance · Web2App · CVR 19.47%</span></div>
+</div>
+
+
+<!-- ══════ p11  PERFORMANCE ② T-ROAS 정적가치 (AOS CVR 30.7%) ══════ -->
+<div class="slide" id="p11">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Performance · 02 / 02 · T-ROAS</div>
+      <div class="page-title">정적가치로 우회한 T-ROAS — <em>AOS CVR 30.7%</em></div>
+    </div>
+    <span class="slide-num">11 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-perf);">Performance · Google Ads</span>
+        <span class="c-badge outline">커버링 · 2025.04~ (캠페인 론칭)</span>
+      </div>
+      <div class="p-title">매출 신호가 비어 있는 상태에서,<br><em>정적가치(static value)</em>로 알고리즘을 학습시키다</div>
+      <p class="p-desc">CPA 최적화는 '전환 가능성', T-ROAS는 '<strong>더 많이 쓸 가능성</strong>'에 입찰합니다. 자사 DB 매출이 Airbridge로 안 흘러가는 상태에서, <strong>구글애즈 정적 가치 기능으로 회원가입 5,000원·구매 33,000원</strong>을 부여해 우회 집행했습니다.</p>
+
+      <div class="sec-label">실행</div>
+      <div class="sec"><ul>
+        <li>구글 AE의 T-ROAS 제안 → 가치 신호 부재 진단 → <strong>static value 우회 설계</strong></li>
+        <li>회원가입 이벤트 5,000원 · 구매 이벤트 33,000원 (당시 평균 주문가) 부여</li>
+        <li>캠페인 <code style="font-family:var(--font-mono);font-size:13px;background:#F1F4F9;padding:1px 6px;border-radius:3px;">uac_aos_purchase_aim_(복합소구)_25.04.23</code> T-ROAS 론칭</li>
+      </ul></div>
+
+      <div class="sec-label">결과 (25.03 → 25.04 → 25.05)</div>
+      <div class="sec"><ul>
+        <li>AOS CVR: 25.9% → <strong>30.7%</strong> → 26.8% (연간 최고)</li>
+        <li>AOS M+1 리텐션: 47.9% → <strong>49.1%</strong> → 46.1% (연간 최고)</li>
+        <li>T-ROAS 예산 비중 41%인 26.01에 M+1 리텐션 <strong>40.0%</strong> (비교 가능 구간 최고)</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">30.7%</span><span class="kpi-label">AOS CVR · 25.04 연간 최고</span></div>
+        <div class="kpi"><span class="kpi-num">49.1%</span><span class="kpi-label">AOS M+1 리텐션 · 연간 최고</span></div>
+        <div class="kpi"><span class="kpi-num">5,000/33,000</span><span class="kpi-label">정적가치 (가입/구매)</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- top: tCPA vs T-ROAS comparison -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;box-shadow:0 2px 6px rgba(15,25,50,.04);flex:none;">
+        <div class="chart-title">tCPA vs T-ROAS · 입찰 알고리즘 차이</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;">
+          <div style="background:#F1F4F9;border-radius:10px;padding:14px;">
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--sub);font-weight:700;letter-spacing:.14em;text-transform:uppercase;">tCPA</div>
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:4px;">전환 건수 최대화</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:6px;line-height:1.55;">전환 가능성 높은 유저에 노출 · CVR 중심</div>
+          </div>
+          <div style="background:var(--cobalt);color:#fff;border-radius:10px;padding:14px;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;width:36px;height:3px;background:var(--lime);"></div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--lime);font-weight:700;letter-spacing:.14em;text-transform:uppercase;">T-ROAS ★</div>
+            <div style="font-size:14px;font-weight:700;margin-top:4px;">전환 가치 최대화</div>
+            <div style="font-size:12px;color:var(--lavender);margin-top:6px;line-height:1.55;"><b style="color:#fff;">더 많이 쓸 가능성</b> 높은 유저에 노출 · CVR + 리텐션 + 재구매</div>
+          </div>
+        </div>
+      </div>
+      <!-- bottom: monthly chart -->
+      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;">
+        <div class="chart-title">캠페인 론칭 전후 AOS CVR · M+1 리텐션 (25.03~05)</div>
+        <svg viewBox="0 0 520 280" width="100%" style="display:block;flex:1;">
+          <!-- horizontal grid -->
+          <line x1="60" y1="40" x2="500" y2="40" stroke="#F1F4F9"/>
+          <line x1="60" y1="100" x2="500" y2="100" stroke="#F1F4F9"/>
+          <line x1="60" y1="160" x2="500" y2="160" stroke="#F1F4F9"/>
+          <line x1="60" y1="220" x2="500" y2="220" stroke="#E2E6EF"/>
+          <text x="54" y="44" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">50%</text>
+          <text x="54" y="104" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">40</text>
+          <text x="54" y="164" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">30</text>
+          <text x="54" y="224" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">20</text>
+          <!-- CVR bars: 25.9, 30.7, 26.8 at x 110/250/390 -->
+          <rect x="100" y="155" width="60" height="65" rx="4" fill="#C9D0FF"/>
+          <rect x="240" y="126" width="60" height="94" rx="4" fill="#1E29FF"/>
+          <rect x="240" y="123" width="60" height="3" fill="#D6FF3D"/>
+          <rect x="380" y="151" width="60" height="69" rx="4" fill="#C9D0FF"/>
+          <text x="130" y="148" font-size="12" fill="#0F19D8" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">25.9</text>
+          <text x="270" y="119" font-size="14" fill="#1E29FF" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">30.7</text>
+          <text x="410" y="144" font-size="12" fill="#0F19D8" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">26.8</text>
+          <text x="130" y="240" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.03</text>
+          <text x="270" y="240" font-size="11" fill="#1E29FF" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">25.04 ★</text>
+          <text x="410" y="240" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.05</text>
+          <!-- M+1 line: 47.9 → 49.1 → 46.1 (scale: 50% = y40 / 20 = y220 / lin) -->
+          <polyline points="130,68.6 270,61.4 410,79.4" fill="none" stroke="#10C390" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="270" cy="61.4" r="5" fill="#10C390" stroke="#fff" stroke-width="2"/>
+          <text x="280" y="56" font-size="11" fill="#10C390" font-weight="800" font-family="JetBrains Mono">M+1 49.1%</text>
+          <!-- launch flag -->
+          <line x1="270" y1="20" x2="270" y2="220" stroke="#D6FF3D" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <rect x="218" y="2" width="104" height="18" rx="3" fill="#0A0F2E"/>
+          <text x="270" y="15" font-size="10" fill="#D6FF3D" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">★ T-ROAS 론칭</text>
+          <!-- legend -->
+          <rect x="60" y="258" width="14" height="14" rx="2" fill="#1E29FF"/>
+          <text x="78" y="270" font-size="11" fill="#5B6675" font-family="JetBrains Mono">CVR</text>
+          <line x1="130" y1="265" x2="146" y2="265" stroke="#10C390" stroke-width="3"/>
+          <text x="152" y="270" font-size="11" fill="#5B6675" font-family="JetBrains Mono">M+1 리텐션</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>11</b> / 17</span><span>Performance · T-ROAS · 30.7% / 49.1%</span></div>
+</div>
+
+
+<!-- ══════ p12  VIRAL ① 단순 협업 (오가닉 +59% · 4중 신호) ══════ -->
+<div class="slide" id="p12">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Viral · 01 / 02 · Simple Collab</div>
+      <div class="page-title">광고 도달 밖 고객을 깨운 첫 시도 — <em>오가닉 +59%</em> 동시 점프</div>
+    </div>
+    <span class="slide-num">12 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-viral);">Viral · Influencer</span>
+        <span class="c-badge outline">커버링 · 2025.04~07 (8명)</span>
+      </div>
+      <div class="p-title">2인 팀 + 대행사 운영으로<br><em>8명 인플루언서 단순 협업</em>을 동시 운용</div>
+      <p class="p-desc">메타·구글 퍼포먼스 광고로 닿지 못한 영역을 처음 두드린 시도. 마케팅팀 2명(그로스 리드 + 바이럴/콘텐츠)이 <strong>슈퍼차트·야호엔터·크리플래닛 3개 대행사</strong>와 분담해 8개 협업을 동시에 굴리는 운영 모델을 확립했습니다.</p>
+
+      <div class="sec-label">대표 협업 라인업</div>
+      <div class="sec"><ul>
+        <li><strong>미미짱</strong> · 발행 직후 5일 평균 980명/일 (baseline +85%)</li>
+        <li><strong>유하맘</strong> · 1,011명/일 (+91%) · 쿠폰 사용률 61.6%</li>
+        <li>땡스맘 · 청산유수현 · 살림토끼 · 송미니 · 민델리 · 원룸만들기</li>
+        <li>쿠폰 사용 직접 매출 <strong>638건 / 9.35M원</strong> · 평균 사용률 40.9%</li>
+      </ul></div>
+
+      <div class="sec-label">결과 — 4중 신호 동시 점프 (BigQuery 실측)</div>
+      <div class="sec"><ul>
+        <li>일평균 회원가입 532 → 859명 (<strong>+61%</strong>)</li>
+        <li>일평균 <strong>오가닉 가입</strong> 208 → 331명 (<strong>+59%</strong>) · 광고 도달 밖 인입</li>
+        <li>일평균 구매 1,845 → 2,582건 (<strong>+40%</strong>) · 매출 +41%</li>
+        <li>피크 7/06 1,182명 · 7/13 1,092명 · 베이스의 2배 이상</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">+59%</span><span class="kpi-label">오가닉 가입 동시 점프</span></div>
+        <div class="kpi"><span class="kpi-num">+61%</span><span class="kpi-label">전체 회원가입</span></div>
+        <div class="kpi"><span class="kpi-num">8명</span><span class="kpi-label">동시 운용 (2인+대행사)</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;flex:1;min-height:0;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div class="chart-title">4중 신호 동시 점프 — Baseline / Collab / Post 비교</div>
+        <svg viewBox="0 0 520 380" width="100%" style="display:block;flex:1;">
+          <!-- 4 horizontal grouped bars: 회원가입 532→859, 오가닉 208→331, 구매 1845→2582 (/3 scale), 매출 1577→2218 (/2.5 scale) -->
+          <!-- baseline/collab/post = grey/cobalt/lavender -->
+          <text x="20" y="40" font-size="12" fill="#0F172A" font-weight="800">회원가입 (명/일)</text>
+          <rect x="170" y="22" width="80" height="14" rx="2" fill="#CBD5E1"/><text x="256" y="34" font-size="11" fill="#5B6675" font-family="JetBrains Mono">532</text>
+          <rect x="170" y="40" width="129" height="14" rx="2" fill="#1E29FF"/><text x="305" y="52" font-size="12" fill="#1E29FF" font-weight="800" font-family="JetBrains Mono">859 (+61%)</text>
+          <rect x="170" y="58" width="111" height="10" rx="2" fill="#C9D0FF"/><text x="287" y="68" font-size="10" fill="#0F19D8" font-family="JetBrains Mono">738 (Post)</text>
+          <line x1="20" y1="84" x2="500" y2="84" stroke="#F1F4F9"/>
+
+          <text x="20" y="108" font-size="12" fill="#0F172A" font-weight="800">오가닉 가입 (≠ADS)</text>
+          <rect x="170" y="90" width="62" height="14" rx="2" fill="#CBD5E1"/><text x="238" y="102" font-size="11" fill="#5B6675" font-family="JetBrains Mono">208</text>
+          <rect x="170" y="108" width="99" height="14" rx="2" fill="#10C390"/><text x="275" y="120" font-size="12" fill="#10C390" font-weight="800" font-family="JetBrains Mono">331 (+59%)</text>
+          <rect x="170" y="126" width="96" height="10" rx="2" fill="#5EE3B6"/><text x="272" y="136" font-size="10" fill="#10C390" font-family="JetBrains Mono">321 (Post)</text>
+          <line x1="20" y1="152" x2="500" y2="152" stroke="#F1F4F9"/>
+
+          <text x="20" y="176" font-size="12" fill="#0F172A" font-weight="800">구매 건수 (B2C)</text>
+          <rect x="170" y="158" width="123" height="14" rx="2" fill="#CBD5E1"/><text x="299" y="170" font-size="11" fill="#5B6675" font-family="JetBrains Mono">1,845</text>
+          <rect x="170" y="176" width="172" height="14" rx="2" fill="#1E29FF"/><text x="348" y="188" font-size="12" fill="#1E29FF" font-weight="800" font-family="JetBrains Mono">2,582 (+40%)</text>
+          <rect x="170" y="194" width="180" height="10" rx="2" fill="#C9D0FF"/><text x="356" y="204" font-size="10" fill="#0F19D8" font-family="JetBrains Mono">2,709 (Post)</text>
+          <line x1="20" y1="220" x2="500" y2="220" stroke="#F1F4F9"/>
+
+          <text x="20" y="244" font-size="12" fill="#0F172A" font-weight="800">매출 (만원/일)</text>
+          <rect x="170" y="226" width="126" height="14" rx="2" fill="#CBD5E1"/><text x="302" y="238" font-size="11" fill="#5B6675" font-family="JetBrains Mono">1,577</text>
+          <rect x="170" y="244" width="177" height="14" rx="2" fill="#1E29FF"/><text x="353" y="256" font-size="12" fill="#1E29FF" font-weight="800" font-family="JetBrains Mono">2,218 (+41%)</text>
+          <rect x="170" y="262" width="190" height="10" rx="2" fill="#C9D0FF"/><text x="366" y="272" font-size="10" fill="#0F19D8" font-family="JetBrains Mono">2,373 (Post)</text>
+
+          <!-- legend -->
+          <rect x="20" y="296" width="12" height="10" rx="2" fill="#CBD5E1"/><text x="38" y="305" font-size="11" fill="#5B6675" font-family="JetBrains Mono">Baseline (05.15~06.09)</text>
+          <rect x="200" y="296" width="12" height="10" rx="2" fill="#1E29FF"/><text x="218" y="305" font-size="11" fill="#1E29FF" font-weight="700" font-family="JetBrains Mono">Collab (06.26~07.31)</text>
+          <rect x="380" y="296" width="12" height="10" rx="2" fill="#C9D0FF"/><text x="398" y="305" font-size="11" fill="#5B6675" font-family="JetBrains Mono">Post (08.01~15)</text>
+
+          <!-- bottom annotation -->
+          <rect x="20" y="328" width="480" height="40" rx="6" fill="#0A0F2E"/>
+          <text x="260" y="354" font-size="13" fill="#D6FF3D" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">★ 광고 도달 밖 잠재 고객 깨움 + 광고 효율 동시 개선</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>12</b> / 17</span><span>Viral · Simple Collab · 오가닉 +59%</span></div>
+</div>
+
+
+<!-- ══════ p13  VIRAL ② PA 그로스 사이클 (CPA -66% · 비용 0에 수렴) ══════ -->
+<div class="slide" id="p13">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Viral · 02 / 02 · PA Cycle</div>
+      <div class="page-title">PA로 <em>CPA -66%</em>, 그리고 <em>콘텐츠 비용 0에 수렴</em>하는 사이클</div>
+    </div>
+    <span class="slide-num">13 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-viral);">Viral · PA</span>
+        <span class="c-badge outline">커버링 · 2025.11~ (오순의집 케이스)</span>
+      </div>
+      <div class="p-title">1천만원 협업을 <em>30만원 PA로</em>,<br>오순의집 사례에서 발견한 새 그로스 사이클</div>
+      <p class="p-desc">PA의 -66% CPA 자체보다 더 큰 자산은, <strong>인플루언서 협업이 한 번의 캠페인이 아니라 사이클이 됐다는 점</strong>. 단순협업으로 핏 발견 → PA로 자동 추적 + 단가 1/30 → 장기 협업 승격 → 자체 콘텐츠 자산화. 비용은 점점 0에 수렴, 효율은 검증된 핏 위에서 누적됩니다.</p>
+
+      <div class="sec-label">오순의집 케이스 — 5단계 진화</div>
+      <div class="sec"><ul>
+        <li><strong>① 단순 협업</strong> (25.10) — UNATTRIBUTED/쿠폰/가입 4가지 신호로 핏 발견</li>
+        <li><strong>② PA 전환</strong> (25.11.28) — 자동 추적 + 단가 5만/1천만 → 30~50만원</li>
+        <li><strong>③ 효율 검증 + 재업로드</strong> (25.12) — 일 예산 94만원 운용</li>
+        <li><strong>④ 장기 협업</strong> (26.04.27) — 3개월 정액 승격</li>
+        <li><strong>⑤ 자체 콘텐츠 자산화</strong> (26.05) — 오순의집st 자취생 직접 촬영</li>
+      </ul></div>
+
+      <div class="sec-label">CPA 추이 — 1천만 → 0원에 수렴</div>
+      <div class="sec"><ul>
+        <li>단순 협업: 5백~1천만원/건 · 핏 발견</li>
+        <li>PA 집행: 35,233 → <strong>12,042원 (-66%)</strong> · 자동 추적</li>
+        <li>PA 2차: 15~20만원/건 · 검증된 콘텐츠 재활용</li>
+        <li>자체 제작: 인건비만 · 동일 효율 구조 사내 자산화</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">-66%</span><span class="kpi-label">CPA (35,233 → 12,042원)</span></div>
+        <div class="kpi"><span class="kpi-num">1/30</span><span class="kpi-label">콘텐츠 단가 (1천만 → 30만)</span></div>
+        <div class="kpi"><span class="kpi-num">0원</span><span class="kpi-label">자체 제작 단계 (인건비 only)</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div class="chart-title">그로스 사이클 — 콘텐츠 1건당 비용 진화</div>
+        <svg viewBox="0 0 520 460" width="100%" style="display:block;flex:1;">
+          <!-- 5 horizontal flow blocks -->
+          <line x1="60" y1="38" x2="60" y2="420" stroke="#E2E6EF" stroke-width="2" stroke-dasharray="6,4"/>
+          <!-- Stage 1 -->
+          <circle cx="60" cy="56" r="20" fill="#FECACA"/>
+          <text x="60" y="61" font-size="10" fill="#991B1B" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">1</text>
+          <rect x="100" y="36" width="412" height="48" rx="10" fill="#FEF2F2" stroke="#FCA5A5"/>
+          <text x="118" y="58" font-size="13" fill="#991B1B" font-weight="800">단순 협업 — 핏 발견</text>
+          <text x="118" y="76" font-size="11" fill="#5B6675" font-family="JetBrains Mono">5백만~1천만원/건 · 25.04~07 · UNATTRIBUTED·쿠폰·가입 4중 신호</text>
+          <!-- Stage 2 -->
+          <circle cx="60" cy="130" r="20" fill="#C9D0FF"/>
+          <text x="60" y="135" font-size="10" fill="#0F19D8" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">2</text>
+          <rect x="100" y="110" width="412" height="48" rx="10" fill="#EEF1FF" stroke="#C9D0FF"/>
+          <text x="118" y="132" font-size="13" fill="#0F19D8" font-weight="800">PA 전환 — 자동 추적 + 단가 1/30</text>
+          <text x="118" y="150" font-size="11" fill="#5B6675" font-family="JetBrains Mono">30~50만원/건 · CPA <tspan font-weight="800" fill="#1E29FF">35,233 → 12,042원 (-66%)</tspan></text>
+          <!-- Stage 3 -->
+          <circle cx="60" cy="204" r="20" fill="#1E29FF"/>
+          <text x="60" y="209" font-size="10" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">3</text>
+          <rect x="100" y="184" width="412" height="48" rx="10" fill="#EEF1FF" stroke="#1E29FF" stroke-width="1.5"/>
+          <text x="118" y="206" font-size="13" fill="#0F19D8" font-weight="800">효율 검증 + PA 재업로드</text>
+          <text x="118" y="224" font-size="11" fill="#5B6675" font-family="JetBrains Mono">15~20만원/건 · 25.12 일 예산 94만원 · 검증된 콘텐츠 재활용</text>
+          <!-- Stage 4 -->
+          <circle cx="60" cy="278" r="20" fill="#0F19D8"/>
+          <text x="60" y="283" font-size="10" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">4</text>
+          <rect x="100" y="258" width="412" height="48" rx="10" fill="#EEF1FF" stroke="#0F19D8" stroke-width="1.5"/>
+          <text x="118" y="280" font-size="13" fill="#0F19D8" font-weight="800">장기 협업 승격</text>
+          <text x="118" y="298" font-size="11" fill="#5B6675" font-family="JetBrains Mono">월 정액 · 26.04 오순의집 3개월·이천커플 1개월 · 검증된 핏 확보</text>
+          <!-- Stage 5 -->
+          <circle cx="60" cy="352" r="20" fill="#D6FF3D"/>
+          <text x="60" y="357" font-size="10" fill="#0A0F2E" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">5</text>
+          <rect x="100" y="332" width="412" height="48" rx="10" fill="#D6FF3D" stroke="#B3DA1C" stroke-width="1.5"/>
+          <text x="118" y="354" font-size="13" fill="#0A0F2E" font-weight="900">자체 콘텐츠 자산화 ★</text>
+          <text x="118" y="372" font-size="11" fill="#14159F" font-weight="700" font-family="JetBrains Mono">인건비만 · 26.05 오순의집st 자취생 직접 촬영 · 비용 0에 수렴</text>
+          <!-- bottom summary -->
+          <rect x="20" y="406" width="492" height="36" rx="8" fill="#0A0F2E"/>
+          <text x="266" y="429" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">"한 번의 캠페인"이 아니라 "사이클" — 다음 PA·장기·자체 제작이 검증된 핏 위에서 누적</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>13</b> / 17</span><span>Viral · PA Cycle · CPA -66%</span></div>
+</div>
+
+
+<!-- ══════ p14  AI Utilization (Claude CLI 어디까지) ══════ -->
+<div class="slide" id="p14">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">AI Utilization</div>
+      <div class="page-title">Claude CLI를 <em>자동화 인프라</em>로, 반복 업무를 대체하다</div>
+    </div>
+    <span class="slide-num">14 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-ai);">AI Utility</span>
+        <span class="c-badge outline">커버링 · 2025.06~현재</span>
+      </div>
+      <div class="p-title">AI를 보조 도구가 아닌,<br><em>분석·세팅·배포를 끌고 가는 인프라</em>로</div>
+      <p class="p-desc">사람이 직접 하던 작업을 AI가 끌고 가도록 구조를 짭니다. <strong>터미널에서 SQL·데이터 처리를 직접 요청</strong>해 분석 속도를 단축하고, Claude × Meta로 광고 세팅 반복을 자동화, Figma 디자인을 코드로 전환해 실제 웹 배포까지 완료합니다.</p>
+
+      <div class="sec-label">실제 적용 영역</div>
+      <div class="sec"><ul>
+        <li><strong>CLI 기반 데이터 분석</strong> — 터미널에서 AI에게 SQL·BigQuery 직접 요청, 분석 속도 단축</li>
+        <li><strong>픽셀 세팅 자동화</strong> — AI 보조로 픽셀 설치·디버깅 가속</li>
+        <li><strong>Figma → 웹 배포</strong> — Figma 디자인을 AI로 코드 전환, 실제 웹 배포까지 완료 (브릿지 LP 10종)</li>
+        <li><strong>Claude × Meta 광고 자동화</strong> — 메타 광고 세팅 반복 작업 자동화 도구 직접 제작 · 팀 전체에 공유</li>
+        <li><strong>대시보드 자동화</strong> — Grafana × AI로 매체 데이터 자동 수집·시각화</li>
+      </ul></div>
+
+      <div class="sec-label">팀 단위 임팩트</div>
+      <div class="sec"><ul>
+        <li>마케팅팀 Claude AI 온보딩 세션 직접 기획·진행 (26.05.15)</li>
+        <li>"mcp 없이 AI가 이상한 짓을 할 일 없는" 자동화 도구로 신뢰성 확보</li>
+        <li>이 포트폴리오도 Claude Code로 직접 제작</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">5개</span><span class="kpi-label">영역에 AI 운영 통합</span></div>
+        <div class="kpi"><span class="kpi-num">10종</span><span class="kpi-label">Figma → 실제 배포</span></div>
+        <div class="kpi"><span class="kpi-num">팀 단위</span><span class="kpi-label">자동화 도구 공유</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div class="chart-title">AI 자동화 파이프라인 구조</div>
+        <svg viewBox="0 0 520 440" width="100%" style="display:block;flex:1;">
+          <!-- Data sources -->
+          <rect x="14" y="20" width="100" height="34" rx="8" fill="#1877F2"/>
+          <text x="64" y="42" font-size="11" fill="#fff" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">Meta Ads</text>
+          <rect x="14" y="62" width="100" height="34" rx="8" fill="#EA4335"/>
+          <text x="64" y="84" font-size="11" fill="#fff" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">Google Ads</text>
+          <rect x="14" y="104" width="100" height="34" rx="8" fill="#0F1117"/>
+          <text x="64" y="126" font-size="11" fill="#fff" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">TikTok Ads</text>
+          <rect x="14" y="146" width="100" height="34" rx="8" fill="#FF6B47"/>
+          <text x="64" y="168" font-size="11" fill="#fff" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">Airbridge</text>
+          <!-- arrow -->
+          <line x1="114" y1="100" x2="160" y2="100" stroke="#7C3AED" stroke-width="2.5"/>
+          <polygon points="158,95 170,100 158,105" fill="#7C3AED"/>
+          <!-- BigQuery -->
+          <rect x="172" y="76" width="118" height="56" rx="12" fill="#7C3AED"/>
+          <text x="231" y="102" font-size="13" fill="#fff" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">BigQuery</text>
+          <text x="231" y="120" font-size="11" fill="#E9D5FF" text-anchor="middle">자동 적재</text>
+          <!-- arrow -->
+          <line x1="290" y1="104" x2="338" y2="104" stroke="#7C3AED" stroke-width="2.5"/>
+          <polygon points="336,99 348,104 336,109" fill="#7C3AED"/>
+          <!-- Claude CLI -->
+          <rect x="350" y="62" width="158" height="84" rx="12" fill="#0A0F2E"/>
+          <rect x="350" y="62" width="158" height="3" fill="#D6FF3D"/>
+          <text x="429" y="92" font-size="14" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">Claude CLI</text>
+          <text x="429" y="112" font-size="11" fill="#D6FF3D" text-anchor="middle" font-family="JetBrains Mono">SQL · 분석 · 자동화</text>
+          <text x="429" y="130" font-size="11" fill="#94A3B8" text-anchor="middle">+ Claude Code MCP</text>
+          <!-- arrow down -->
+          <line x1="429" y1="146" x2="429" y2="186" stroke="#7C3AED" stroke-width="2.5"/>
+          <polygon points="424,184 429,194 434,184" fill="#7C3AED"/>
+          <!-- outputs row -->
+          <rect x="14" y="200" width="155" height="56" rx="10" fill="#10C390"/>
+          <text x="91" y="222" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">Notion 리포트</text>
+          <text x="91" y="240" font-size="11" fill="#D5F5E8" text-anchor="middle">자동 작성·매일 발송</text>
+          <rect x="180" y="200" width="155" height="56" rx="10" fill="#F5B400"/>
+          <text x="257" y="222" font-size="12" fill="#0A0F2E" text-anchor="middle" font-weight="700">Slack 알림</text>
+          <text x="257" y="240" font-size="11" fill="#0A0F2E" text-anchor="middle">이상 즉시 감지·발송</text>
+          <rect x="346" y="200" width="160" height="56" rx="10" fill="#475569"/>
+          <text x="426" y="222" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">Grafana 대시보드</text>
+          <text x="426" y="240" font-size="11" fill="#CBD5E1" text-anchor="middle">자동 시각화</text>
+          <!-- divider -->
+          <line x1="14" y1="276" x2="508" y2="276" stroke="#E2E6EF" stroke-dasharray="4,3"/>
+          <text x="260" y="298" font-size="12" fill="#5B6675" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">+ Meta 광고 세팅 자동화 / Figma → 웹 배포 자동 변환</text>
+          <!-- Bottom 5 area chips -->
+          <rect x="14" y="316" width="92" height="38" rx="6" fill="#EEF1FF"/>
+          <text x="60" y="341" font-size="11" fill="#1E29FF" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">CLI · SQL</text>
+          <rect x="114" y="316" width="92" height="38" rx="6" fill="#EEF1FF"/>
+          <text x="160" y="341" font-size="11" fill="#1E29FF" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">픽셀 자동화</text>
+          <rect x="214" y="316" width="92" height="38" rx="6" fill="#EEF1FF"/>
+          <text x="260" y="341" font-size="11" fill="#1E29FF" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">Figma→웹</text>
+          <rect x="314" y="316" width="92" height="38" rx="6" fill="#EEF1FF"/>
+          <text x="360" y="341" font-size="11" fill="#1E29FF" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">Meta 자동화</text>
+          <rect x="414" y="316" width="92" height="38" rx="6" fill="#EEF1FF"/>
+          <text x="460" y="341" font-size="11" fill="#1E29FF" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">대시보드</text>
+          <!-- Bottom callout -->
+          <rect x="14" y="378" width="492" height="42" rx="8" fill="#0A0F2E"/>
+          <text x="260" y="404" font-size="13" fill="#D6FF3D" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">★ 이 포트폴리오도 Claude Code로 직접 제작했습니다</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>14</b> / 17</span><span>AI · Claude CLI · 5 Domains</span></div>
+</div>
+
+
+<!-- ══════ p15  TEAM LEADING (1인 → 5인 · 4가지 리더십 역량) ══════ -->
+<div class="slide" id="p15">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Team Leading</div>
+      <div class="page-title">1인 마케터에서 <em>5인 팀까지</em>, 의사결정의 무게중심을 직접 잡다</div>
+    </div>
+    <span class="slide-num">15 / 17</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-team);">Team Leading</span>
+        <span class="c-badge outline">커버링 · 2024.05~ (18개월)</span>
+      </div>
+      <div class="p-title">관리하는 팀이 아니라,<br><em>제안하고 실행하는</em> 팀으로</div>
+      <p class="p-desc">팀원의 아이디어를 실현시키는 환경을 설계합니다. 부서 간 R&R 회색지대를 먼저 짚고, 마케팅 KPI를 넘어 <strong>전사 매출·비용 관점에서 의사결정</strong>을 제안합니다.</p>
+
+      <div class="sec-label">4가지 리더십 역량 — 실제 사례</div>
+      <div class="sec"><ul>
+        <li>🔥 <strong>동기부여</strong> — Claude AI 온보딩 세션 직접 기획·진행 (26.05.15), 신규 입사자 온보딩 직접 조율</li>
+        <li>🎯 <strong>본질 정의</strong> — 표면 증상이 아닌 진짜 병목을 정의하고 행동 단위로 연결 (등급제·CRM·정적가치 전부)</li>
+        <li>🤝 <strong>R&R 조정</strong> — 마케팅↔제품팀 CRM R&R 3유형 분류 직접 정리(26.04.13), CX팀 응대 R&R 분리(26.03.25)</li>
+        <li>🧭 <strong>전사 관점</strong> — 전환율 하락 원인 제품팀 협업 요청(26.05.19), Acquisition 회의록 직접 작성·공유</li>
+      </ul></div>
+
+      <div class="sec-label">팀 빌딩 — 채용 기준 직접 설계</div>
+      <div class="sec"><ul>
+        <li>"경력직보다 가르쳐 키우는 방향" 상급자에게 먼저 제안 · <strong>온보딩 책임 자청</strong></li>
+        <li>외주 콘텐츠 마케터 스펙 직접 설계: 기획·촬영·세팅 독립 운영 가능자 (26.04.09)</li>
+        <li>리더 공백기 R&R 재편 직접 주도 (26.05.09)</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">1 → 5인</span><span class="kpi-label">팀 빌딩 완료</span></div>
+        <div class="kpi"><span class="kpi-num">18개월</span><span class="kpi-label">구축 기간</span></div>
+        <div class="kpi"><span class="kpi-num">4유형</span><span class="kpi-label">R&R 직접 정리·합의</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 28px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+        <div class="chart-title">팀 빌딩 타임라인 · 1인 → 5인 18개월</div>
+        <svg viewBox="0 0 520 480" width="100%" style="display:block;">
+          <line x1="40" y1="40" x2="40" y2="380" stroke="#E2E6EF" stroke-width="2" stroke-dasharray="6,4"/>
+          <!-- 24.05: 1인 -->
+          <circle cx="40" cy="60" r="18" fill="#1E29FF"/>
+          <text x="40" y="66" font-size="11" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">1인</text>
+          <rect x="74" y="42" width="436" height="50" rx="10" fill="#EEF1FF" stroke="#C9D0FF"/>
+          <text x="90" y="62" font-size="13" fill="#0F19D8" font-weight="800">2024.05 — 마케터 1인 (도형 본인)</text>
+          <text x="90" y="80" font-size="12" fill="#5B6675">퍼포먼스 · 콘텐츠 · CRM · 분석 · 팀빌딩 전부 단독 수행</text>
+          <!-- 24.09: +콘텐츠 -->
+          <circle cx="40" cy="140" r="18" fill="#1E29FF"/>
+          <text x="40" y="146" font-size="11" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">+1</text>
+          <rect x="74" y="122" width="436" height="50" rx="10" fill="#EEF1FF" stroke="#C9D0FF"/>
+          <text x="90" y="142" font-size="13" fill="#0F19D8" font-weight="800">2024.09 — 콘텐츠 담당 1명 채용</text>
+          <text x="90" y="160" font-size="12" fill="#5B6675">소재 제작 분리 · 광고 운영 집중 가능</text>
+          <!-- 25.03: +3 -->
+          <circle cx="40" cy="220" r="18" fill="#0F19D8"/>
+          <text x="40" y="226" font-size="11" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">+3</text>
+          <rect x="74" y="202" width="436" height="50" rx="10" fill="#EEF1FF" stroke="#1E29FF" stroke-width="1.5"/>
+          <text x="90" y="222" font-size="13" fill="#0F19D8" font-weight="800">2025.03 — 퍼포먼스·CRM·분석 추가 채용 완료</text>
+          <text x="90" y="240" font-size="12" fill="#5B6675">4축 5인 팀 구조 완성 · 영역별 KPI 체계 설계</text>
+          <!-- 26.04: 외주 + 신입 채용 -->
+          <circle cx="40" cy="300" r="18" fill="#D6FF3D"/>
+          <text x="40" y="306" font-size="11" fill="#0A0F2E" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">5+</text>
+          <rect x="74" y="282" width="436" height="50" rx="10" fill="#D6FF3D" stroke="#B3DA1C" stroke-width="1.5"/>
+          <text x="90" y="302" font-size="13" fill="#0A0F2E" font-weight="900">2026.04 — 외주 퍼포먼스 마케터 채용 직접 리드 ★</text>
+          <text x="90" y="320" font-size="12" fill="#14159F" font-weight="600">"경력직보다 가르쳐 키우는 방향" 직접 제안 · 온보딩 자청</text>
+          <!-- 4 leadership chips -->
+          <rect x="20" y="358" width="116" height="44" rx="8" fill="#FEF2F2" stroke="#FCA5A5"/>
+          <text x="78" y="375" font-size="11" fill="#991B1B" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">🔥 동기부여</text>
+          <text x="78" y="392" font-size="10" fill="#991B1B" text-anchor="middle">AI 온보딩</text>
+          <rect x="146" y="358" width="116" height="44" rx="8" fill="#EEF1FF" stroke="#C9D0FF"/>
+          <text x="204" y="375" font-size="11" fill="#0F19D8" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">🎯 본질 정의</text>
+          <text x="204" y="392" font-size="10" fill="#0F19D8" text-anchor="middle">병목 식별</text>
+          <rect x="272" y="358" width="116" height="44" rx="8" fill="#FFF7ED" stroke="#FDBA74"/>
+          <text x="330" y="375" font-size="11" fill="#92400E" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">🤝 R&R 조정</text>
+          <text x="330" y="392" font-size="10" fill="#92400E" text-anchor="middle">제품팀·CX팀</text>
+          <rect x="398" y="358" width="112" height="44" rx="8" fill="#F5F3FF" stroke="#C4B5FD"/>
+          <text x="454" y="375" font-size="11" fill="#7C3AED" text-anchor="middle" font-weight="700" font-family="JetBrains Mono">🧭 전사 관점</text>
+          <text x="454" y="392" font-size="10" fill="#7C3AED" text-anchor="middle">매출·비용</text>
+          <!-- Bottom callout -->
+          <rect x="20" y="420" width="490" height="42" rx="8" fill="#0A0F2E"/>
+          <text x="265" y="446" font-size="13" fill="#D6FF3D" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">★ 1인 → 5인, 인턴을 월 1,000만원 집행 가능한 마케터로 육성</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>15</b> / 17</span><span>Team Leading · 1→5인 · 18M</span></div>
+</div>
+
+
+<!-- ══════ p16  지난 이력 (이삼오구 27억 + 이전 3사 요약) ══════ -->
+<div class="slide" id="p16">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="eyebrow">Previous Companies</div>
+      <div class="page-title">커버링 합류 이전에도, <em>매번 0을 1로</em> 만들어왔습니다</div>
+    </div>
+    <span class="slide-num">16 / 17</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:18px;margin-top:28px;height:880px;padding:0 96px 56px;">
+
+    <!-- (주)이삼오구 -->
+    <div class="pc-card">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:42px;height:42px;background:var(--cobalt);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:900;font-family:var(--font-display);">2</div>
+        <div><div style="font-size:18px;font-weight:900;color:var(--text);">(주)이삼오구</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.08em;">2021.08–2023.10 · 파트장</div></div>
+      </div>
+      <div style="background:#EEF1FF;border-radius:10px;padding:14px 16px;border-left:3px solid var(--lime);">
+        <div style="font-family:var(--font-display);font-size:38px;font-weight:900;color:var(--cobalt);letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums;">27<span style="font-size:18px;font-weight:700;">억+</span></div>
+        <div style="font-size:13px;color:var(--text2);margin-top:5px;">2년 누적 매출 기여 · 4개 브랜드 동시 운영</div>
+      </div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;flex:1;">
+        <strong>헤어핌</strong> "매직 대체재" 포지셔닝 → 주간 매출 ×8 · 누적 7.5억<br>
+        <strong>스윗밤</strong> 타겟 재정의 + 소재 A/B → 전환 ×8 · ROAS 240%<br>
+        <strong>코르릉</strong> 펫 케어 신규 런칭 → 3개월 1.6억
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="c-badge" style="background:var(--ca-content);font-size:10px;color:#0A0F2E;">콘텐츠</span>
+        <span class="c-badge" style="background:var(--ca-perf);font-size:10px;">퍼포먼스</span>
+        <span class="c-badge" style="background:var(--ca-growth);font-size:10px;">그로스</span>
+      </div>
+    </div>
+
+    <!-- (주)나인투식스 -->
+    <div class="pc-card">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:42px;height:42px;background:#475569;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:900;font-family:var(--font-display);">9</div>
+        <div><div style="font-size:18px;font-weight:900;color:var(--text);">주식회사나인투식스</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.08em;">2020.12–2021.04 · 마케터</div></div>
+      </div>
+      <div style="background:#F1F4F9;border-radius:10px;padding:14px 16px;border-left:3px solid var(--lime);">
+        <div style="font-family:var(--font-display);font-size:30px;font-weight:900;color:var(--text);letter-spacing:-.03em;line-height:1;">스마트스토어</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:5px;">SEO 최적화 + 라이브커머스 운영</div>
+      </div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;flex:1;">
+        스마트스토어 SEO 키워드 직접 발굴 · 상위 노출 다수 확보<br>
+        라이브커머스 진행자 직접 출연 · 콘텐츠 기획·운영<br>
+        커머스 풀스택 운영 경험 축적
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="c-badge" style="background:var(--ca-content);font-size:10px;color:#0A0F2E;">콘텐츠</span>
+        <span class="c-badge" style="background:var(--ca-perf);font-size:10px;">퍼포먼스</span>
+      </div>
+    </div>
+
+    <!-- (주)와이즈플래닛 -->
+    <div class="pc-card">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:42px;height:42px;background:#7C3AED;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:900;font-family:var(--font-display);">W</div>
+        <div><div style="font-size:18px;font-weight:900;color:var(--text);">(주)와이즈플래닛</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.08em;">2020.01–2020.07 · 인턴</div></div>
+      </div>
+      <div style="background:#F5F3FF;border-radius:10px;padding:14px 16px;border-left:3px solid var(--lime);">
+        <div style="font-family:var(--font-display);font-size:30px;font-weight:900;color:#7C3AED;letter-spacing:-.03em;line-height:1;">영상 광고</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:5px;">메타 퍼포먼스 광고 소재 제작</div>
+      </div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;flex:1;">
+        영상 광고 소재 직접 기획·편집 (Premiere · After Effects)<br>
+        메타 광고 매니저 운영 보조 · 소재 A/B 테스트 학습<br>
+        커머스/뷰티 다수 클라이언트 경험
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="c-badge" style="background:var(--ca-content);font-size:10px;color:#0A0F2E;">콘텐츠</span>
+        <span class="c-badge" style="background:var(--ca-perf);font-size:10px;">퍼포먼스</span>
+      </div>
+    </div>
+
+    <!-- 종합 카드 (dark cobalt) -->
+    <div class="pc-card dark">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:42px;height:42px;background:var(--lime);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0A0F2E;font-weight:900;font-family:var(--font-display);">∑</div>
+        <div><div style="font-size:18px;font-weight:900;color:#fff;">5년 4개월 합산</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.08em;">All Companies</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
+        <div style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.16);"><div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.12em;text-transform:uppercase;">관리 브랜드</div><div style="font-size:22px;font-weight:900;color:#fff;margin-top:3px;font-family:var(--font-display);">5개+ 동시</div></div>
+        <div style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.16);"><div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.12em;text-transform:uppercase;">누적 매출 기여</div><div style="font-family:var(--font-display);font-size:36px;font-weight:900;color:var(--lime);letter-spacing:-.035em;line-height:1;margin-top:3px;font-variant-numeric:tabular-nums;">45억+</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender);margin-top:4px;">커버링 18.9억 + 이삼오구 27억+</div></div>
+        <div><div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);letter-spacing:.12em;text-transform:uppercase;">핵심 패턴</div><div style="font-size:13px;color:#fff;line-height:1.7;margin-top:5px;font-weight:500;">매번 같은 사이클 — <b style="color:var(--lime);">병목 정의 → 1인 실행 → 데이터 검증 → 시스템화</b></div></div>
+      </div>
+      <div style="background:var(--lime);border-radius:10px;padding:12px;text-align:center;"><div style="font-family:var(--font-display);font-size:13px;color:#0A0F2E;font-weight:900;">이 경험이 커버링 40배 성장의 기반</div></div>
+    </div>
+  </div>
+
+  <div class="chrome"><span><b>16</b> / 17</span><span>Previous · 4 Companies · 45억+</span></div>
+</div>
+
+
+<!-- ══════ p17  OUTRO + CONTACT (후킹 + 컨택) ══════ -->
+<div class="slide cobalt" id="p17">
+  <div class="grid-bg"></div>
+  <div class="ribbon ribbon-bl">0 to 1 · 풀 퍼널 그로스 · 18.9억 (40배)</div>
+  <span class="sparkle" style="top:160px;right:200px;font-size:42px;"></span>
+  <span class="sparkle" style="top:480px;left:160px;font-size:28px;"></span>
+  <span class="sparkle" style="bottom:280px;right:380px;font-size:36px;"></span>
+
+  <div style="position:absolute;inset:0;padding:88px 96px 100px;display:flex;flex-direction:column;justify-content:space-between;">
+    <!-- top kicker -->
+    <div class="kicker dark">Why Me · End</div>
+
+    <!-- center: hook headline -->
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;margin:24px 0;">
+      <h2 style="font-family:var(--font-display);font-size:62px;font-weight:900;color:#fff;letter-spacing:-.038em;line-height:1.08;margin-bottom:24px;">
+        <span style="color:var(--lime);">0 to 1</span>을 귀사에서도 실현할<br>
+        브랜드 엑셀러레이터 <span style="color:var(--lime);">이도형</span>입니다.
+      </h2>
+      <p style="font-size:19px;color:var(--lavender);line-height:1.72;max-width:1180px;margin:0;">
+        커버링에서 <b style="color:#fff;font-weight:700;">월 4,520만원을 18.9억으로</b>, 이삼오구에서 <b style="color:#fff;font-weight:700;">누적 27억</b>을 만든 방법은 특정 회사에만 유효한 것이 아닙니다. <b style="color:var(--lime);font-weight:700;">병목 정의 → 1인 실행 → 데이터 검증 → 시스템화</b> — 매번 같은 사이클을, 다음 브랜드에서도 처음부터 다시 한 번 가속화하겠습니다.
+      </p>
+    </div>
+
+    <!-- bottom: contact strip -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;">
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(214,255,61,.32);border-radius:12px;padding:22px 26px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;width:42px;height:3px;background:var(--lime);"></div>
+        <div style="width:44px;height:44px;background:var(--lime);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="#0A0F2E" stroke-width="2.2"/><polyline points="22,6 12,13 2,6" stroke="#0A0F2E" stroke-width="2.2"/></svg></div>
+        <div><div style="font-family:var(--font-mono);font-size:10px;color:var(--lime);font-weight:700;letter-spacing:.18em;text-transform:uppercase;">Email</div><div style="font-size:15px;font-weight:700;color:#fff;margin-top:5px;">cumdederitvivaldi@gmail.com</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(214,255,61,.32);border-radius:12px;padding:22px 26px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;width:42px;height:3px;background:var(--lime);"></div>
+        <div style="width:44px;height:44px;background:var(--lime);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 01-.45 2.11L8.09 10.91a16 16 0 006 6l2.02-2.29a2 2 0 012.11-.45c.99.35 2.01.59 3.06.72A2 2 0 0122 16.92z" stroke="#0A0F2E" stroke-width="2.2"/></svg></div>
+        <div><div style="font-family:var(--font-mono);font-size:10px;color:var(--lime);font-weight:700;letter-spacing:.18em;text-transform:uppercase;">Phone · KakaoTalk</div><div style="font-size:15px;font-weight:700;color:#fff;margin-top:5px;">010-7589-9117 · hound600al</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(214,255,61,.32);border-radius:12px;padding:22px 26px;display:flex;align-items:center;gap:16px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;width:42px;height:3px;background:var(--lime);"></div>
+        <div style="width:44px;height:44px;background:var(--lime);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke="#0A0F2E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div style="font-family:var(--font-mono);font-size:10px;color:var(--lime);font-weight:700;letter-spacing:.18em;text-transform:uppercase;">Performance Dashboard</div><div style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:#fff;margin-top:5px;">hound600al.github.io/marketing-lab-26-05-09</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chrome dark"><span><b>17</b> / 17</span><span>END · Lee Dohyeong · 서울 동대문구</span></div>
+</div>
+
+</body>
+</html>
