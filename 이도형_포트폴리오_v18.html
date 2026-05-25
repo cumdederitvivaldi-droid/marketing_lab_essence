@@ -589,9 +589,9 @@ body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction
           </div>
         </div>
         <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-          <div style="background:var(--cobalt);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">등급제 상세 · 등급별 혜택 + 산정 일정</div>
-          <!-- 등급 혜택 표 + 산정 일정 부분이 보이도록 위쪽 크롭 -->
-          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;position:relative;"><img src="./assets/covering_tier_detail.png" alt="등급제 상세페이지" style="position:absolute;top:0;left:0;width:100%;height:auto;display:block;"></div>
+          <div style="background:var(--cobalt);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">등급별 혜택 · 직접 기획·제작</div>
+          <!-- 사용자 첨부 캡쳐: 새싹·묘목·나무 등급별 혜택 표 -->
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/nb_p4_tier_table.png" alt="등급별 혜택 표 (새싹·묘목·나무)" style="width:100%;height:auto;display:block;object-fit:contain;object-position:top center;"></div>
         </div>
       </div>
 
@@ -666,12 +666,19 @@ body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction
     </div>
 
     <div class="col-r">
-      <!-- 결과물: 상세페이지 좌측 모바일 부분만 크롭 확대 (가독성 확보, 레이아웃 유지) -->
-      <div style="background:var(--white);border:1px solid var(--line);border-radius:14px;overflow:hidden;flex:1;min-height:0;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-        <div style="padding:10px 16px;background:var(--cobalt);font-family:var(--font-mono);font-size:12px;font-weight:800;color:#fff;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px;flex-shrink:0;"><span style="color:var(--lime);">✦</span> 실제 설계·집행한 상세페이지 · 직접 디자인</div>
-        <!-- 좌측 모바일 부분 크롭 확대: width 240%로 좌측만 보이게 -->
-        <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;position:relative;">
-          <img src="./assets/covering_pricing.png" alt="8kg 초과 혜택 상세페이지" style="position:absolute;top:0;left:0;width:240%;height:auto;display:block;">
+      <!-- 결과물: 사용자 첨부 ARPU 상세페이지 3장 그리드 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex:1;min-height:0;">
+        <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <div style="background:var(--cobalt);padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">8kg 정책 #1</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/nb_p5_arpu_1.png" alt="8kg 정책 상세 1" style="width:100%;height:auto;display:block;object-fit:contain;object-position:top center;"></div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <div style="background:var(--cobalt);padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">8kg 정책 #2</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/nb_p5_arpu_2.png" alt="8kg 정책 상세 2" style="width:100%;height:auto;display:block;object-fit:contain;object-position:top center;"></div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <div style="background:var(--cobalt);padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">8kg 정책 #3</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/nb_p5_arpu_3.png" alt="8kg 정책 상세 3" style="width:100%;height:auto;display:block;object-fit:contain;object-position:top center;"></div>
         </div>
       </div>
       <!-- 지표: 도입 전 vs 도입 후 표 -->
@@ -770,22 +777,12 @@ body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction
         </div>
       </div>
 
-      <!-- 지표: D16·D45 알림톡 도입 전후 핵심 지표 -->
-      <div class="chart-card" style="flex:none;">
-        <div class="chart-title">D16·D45 알림톡 도입 전 vs 도입 후 <small>2024 6개월 코호트 비교</small></div>
-        <table class="cmp-table">
-          <thead>
-            <tr><th>구간 (D<sub>n</sub>=가입 후 경과일)</th><th class="r">도입 전 CVR</th><th class="r">도입 후 CVR</th><th class="r">개선</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>D16 미전환 유저 · 30% 할인 쿠폰</td><td class="r">기준</td><td class="r" style="color:var(--cobalt);">2× 수준</td><td class="r" style="color:var(--cobalt);font-weight:800;">+99%</td></tr>
-            <tr class="hl"><td>★ D45 미전환 유저 · 100% 할인(무료)</td><td class="r">0.83%</td><td class="r">2.75%</td><td class="r" style="color:var(--cobalt);">+231%</td></tr>
-          </tbody>
-        </table>
-        <div style="margin-top:10px;padding:12px 16px;background:var(--ink);border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <span style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);font-weight:600;letter-spacing:.06em;">핵심 인사이트</span>
-          <span style="font-family:var(--font-display);font-size:17px;color:var(--lime);font-weight:900;letter-spacing:-.02em;">D45 전환율 0.83% → 2.75% · 3배 이상 상승</span>
-        </div>
+      <!-- 지표: 사용자 첨부 — D16/D45 도입 전후 정확한 지표 표 -->
+      <div class="chart-card" style="flex:none;padding:0;overflow:hidden;">
+        <div class="chart-title" style="margin:18px 22px 12px;">D16·D45 알림톡 도입 전 vs 도입 후 <small>코호트 6개월 비교</small></div>
+        <div style="padding:0 14px 14px;"><img src="./assets/nb_p6_cvr_metrics.png" alt="D16·D45 CVR 도입 전후 표" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
+        <!-- 핵심 인사이트 다크 배너 (사용자 첨부) -->
+        <div style="padding:0 14px 14px;"><img src="./assets/nb_p6_cvr_insight.png" alt="핵심 인사이트 +231% +99% +10pp" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
       </div>
     </div>
   </div>
@@ -825,22 +822,8 @@ body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction
 
       <div style="margin-top:14px;padding:10px 14px;background:var(--cobalt-soft);border-left:3px solid var(--cobalt);border-radius:4px;font-size:15px;color:var(--cobalt);font-weight:700;display:inline-flex;align-items:center;gap:8px;">▶ 각 영상은 <b style="background:var(--lime);padding:1px 6px;border-radius:3px;color:var(--ink);">PLAY 버튼</b> 클릭 시 재생됩니다</div>
 
-      <!-- 결과: 9 지표 표 (사용자 피드백 — 가독성 강화) -->
-      <div style="background:var(--ink);border-radius:14px;padding:22px 26px;position:relative;overflow:hidden;margin-top:auto;">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--lime);"></div>
-        <div style="font-family:var(--font-mono);font-size:13px;font-weight:800;color:var(--lime);letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;">★ 콘텐츠 누적 성과 · Meta + Google + TikTok + ASA</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">노출</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">52,180K</div></div>
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">클릭</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">1,254K</div></div>
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">지출비</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">3.47억</div></div>
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">설치수</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">119,720</div></div>
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">가입수</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">84,810</div></div>
-          <div style="background:rgba(214,255,61,.16);border:1.5px solid rgba(214,255,61,.45);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;font-weight:800;">★ 구매수</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:var(--lime);letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">40,499</div></div>
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">CPI</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">₩2,898</div></div>
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">회원가입 CPA</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">₩4,092</div></div>
-          <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:12px 14px;"><div style="font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.1em;text-transform:uppercase;font-weight:600;">구매 CPA</div><div style="font-family:var(--font-display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:3px;">₩8,566</div></div>
-        </div>
-      </div>
+      <!-- 결과: 사용자 첨부 콘텐츠 누적 9 지표 표 (META+GOOGLE+TIKTOK+ASA) -->
+      <div style="border-radius:14px;overflow:hidden;margin-top:auto;box-shadow:0 4px 14px rgba(10,15,46,.18);"><img src="./assets/nb_p7_content_metrics.png" alt="콘텐츠 누적 성과 — 노출/클릭/지출비/설치수/가입수/구매수/CPI/가입CPA/구매CPA" style="width:100%;height:auto;display:block;"></div>
     </div>
 
     <div class="col-r">
@@ -945,20 +928,10 @@ body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction
         </div>
       </div>
 
-      <!-- 지표: 휴면 CRM 도입 전 vs 도입 후 핵심 지표 -->
-      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;">
-        <div class="chart-title">휴면 CRM 도입 전 vs 도입 후 <small>2024.10~11 단일 캠페인 · 90일 트래킹</small></div>
-        <table class="cmp-table">
-          <thead>
-            <tr><th>지표</th><th class="r">도입 전</th><th class="r">도입 후</th></tr>
-          </thead>
-          <tbody>
-            <tr class="hl"><td>★ 재활성화 휴면 고객</td><td class="r">0명 (방치)</td><td class="r">7,997명</td></tr>
-            <tr><td>1인당 90일 추가 주문</td><td class="r">—</td><td class="r" style="color:var(--cobalt);font-weight:800;">평균 7.3건</td></tr>
-            <tr><td>1인당 90일 LTV</td><td class="r">—</td><td class="r" style="color:var(--cobalt);font-weight:800;">154,162원</td></tr>
-            <tr class="hl"><td>★ 추가 매출 창출</td><td class="r">0원</td><td class="r">12.3억원</td></tr>
-          </tbody>
-        </table>
+      <!-- 지표: 사용자 첨부 — 휴면 CRM D22·D29·D61 도입 전후 효과 -->
+      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;padding:0;overflow:hidden;">
+        <div class="chart-title" style="margin:18px 22px 8px;">휴면 CRM 도입 전 vs 도입 후 <small>D22·D29·D61 시나리오 효과</small></div>
+        <div style="padding:0 14px 14px;"><img src="./assets/nb_p8_dormant_metrics.png" alt="휴면 CRM 도입 전후 — 재주문율/재활성화율 + 7,997명/7.3건/12.3억" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
         <div style="margin-top:auto;padding:14px 18px;background:var(--ink);border-radius:8px;position:relative;overflow:hidden;">
           <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--lime);"></div>
           <div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender);font-weight:600;letter-spacing:.08em;">7,997명 × 90일 LTV 154,162원</div>
@@ -1015,35 +988,26 @@ body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction
     </div>
 
     <div class="col-r">
-      <!-- 결과물: 발송 알림톡 + 페이백 LP (사용자 피드백) -->
+      <!-- 결과물: 사용자 첨부 페이백 LP 캡쳐 2장 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:none;height:340px;">
         <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-          <div style="background:var(--cobalt);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">발송 알림톡 · 페이백 쿠폰</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/payback_detail.png" alt="페이백 발송 알림톡" style="width:auto;height:100%;object-fit:cover;object-position:top center;"></div>
+          <div style="background:var(--cobalt);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">페이백 캠페인 LP #1</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/nb_p9_payback_lp1.png" alt="페이백 LP 1" style="width:100%;height:auto;object-fit:contain;object-position:top center;display:block;"></div>
         </div>
         <div style="background:#fff;border:1.5px solid var(--lime);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 14px rgba(214,255,61,.22);">
-          <div style="background:var(--lime);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:var(--ink);letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">★ Lucky Clover 페이백 LP</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#FFFCE6;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/payback_main.png" alt="식목일 페이백 LP" style="width:100%;height:auto;display:block;object-fit:contain;object-position:top center;"></div>
+          <div style="background:var(--lime);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:var(--ink);letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">★ 페이백 캠페인 LP #2</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#FFFCE6;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/nb_p9_payback_lp2.png" alt="페이백 LP 2" style="width:100%;height:auto;display:block;object-fit:contain;object-position:top center;"></div>
         </div>
       </div>
 
-      <!-- 지표: 쿠폰 사용 vs 미사용 M1~M6 리텐션 표 -->
-      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;">
-        <div class="chart-title">페이백 쿠폰 사용 vs 미사용 · M1~M6 리텐션 비교 <small>동일 가입 기간 코호트</small></div>
-        <table class="cmp-table">
-          <thead>
-            <tr><th>구분 (모수)</th><th class="r">M1</th><th class="r">M2</th><th class="r">M3</th><th class="r">M4</th><th class="r">M5</th><th class="r">M6</th></tr>
-          </thead>
-          <tbody>
-            <tr class="hl"><td>★ 쿠폰 사용 (874명)</td><td class="r">89.5%</td><td class="r">66.9%</td><td class="r">61.1%</td><td class="r">56.2%</td><td class="r">54.7%</td><td class="r">52.9%</td></tr>
-            <tr><td>쿠폰 미사용 (6,564명)</td><td class="r">37.5%</td><td class="r">30.4%</td><td class="r">27.8%</td><td class="r">26.4%</td><td class="r">24.1%</td><td class="r">24.8%</td></tr>
-            <tr><td style="color:var(--cobalt);font-weight:800;">갭 (사용 − 미사용)</td><td class="r" style="color:var(--cobalt);font-weight:800;">+52.0%p</td><td class="r" style="color:var(--cobalt);font-weight:800;">+36.5%p</td><td class="r" style="color:var(--cobalt);font-weight:800;">+33.3%p</td><td class="r" style="color:var(--cobalt);font-weight:800;">+29.8%p</td><td class="r" style="color:var(--cobalt);font-weight:800;">+30.6%p</td><td class="r" style="color:var(--cobalt);font-weight:800;">+28.1%p</td></tr>
-          </tbody>
-        </table>
-        <div style="margin-top:auto;padding:14px 18px;background:var(--ink);border-radius:8px;position:relative;overflow:hidden;">
+      <!-- 지표: 사용자 첨부 — 페이백 사용 vs 미사용 M1~M6 표 -->
+      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;padding:0;overflow:hidden;">
+        <div class="chart-title" style="margin:18px 22px 10px;">페이백 쿠폰 사용 vs 미사용 · M1~M6 리텐션 <small>동일 가입 기간 코호트</small></div>
+        <div style="padding:0 14px 14px;"><img src="./assets/nb_p9_payback_table.png" alt="페이백 사용 874명 vs 미사용 6,564명 M1~M6 표 (+52pp ~ +28pp 갭 유지)" style="width:100%;height:auto;display:block;border-radius:6px;"></div>
+        <div style="margin-top:auto;padding:14px 18px;background:var(--ink);border-radius:8px;position:relative;overflow:hidden;margin:0 14px 14px;">
           <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--lime);"></div>
           <div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender);font-weight:600;letter-spacing:.08em;">핵심 인사이트</div>
-          <div style="font-family:var(--font-display);font-size:16px;color:#fff;font-weight:800;letter-spacing:-.018em;margin-top:3px;line-height:1.4;">쿠폰 사용 그룹이 <span style="color:var(--lime);">M1~M6 전 구간에서 28~52%p 더 높은 리텐션</span>을 유지</div>
+          <div style="font-family:var(--font-display);font-size:16px;color:#fff;font-weight:800;letter-spacing:-.018em;margin-top:3px;line-height:1.4;">페이백 쿠폰을 쓴 사람들의 리텐션이 <span style="color:var(--lime);">M1~M6 전 구간에서 28~52%p 더 높음</span></div>
         </div>
       </div>
     </div>
