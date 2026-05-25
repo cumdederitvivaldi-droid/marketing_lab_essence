@@ -284,7 +284,79 @@ body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction
 .tool-row2:last-child{border-bottom:none;}
 .tool-cat2{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);min-width:54px;flex-shrink:0;letter-spacing:.12em;text-transform:uppercase;padding-top:2px;}
 .tool-val{font-size:13px;color:var(--text2);line-height:1.5;}
+
+/* ════════════════════════════════════════════════════════════
+ * v19 DEV HELPER · 활성 조건: URL 쿼리에 ?edit=1
+ * 일반 미리보기는 그대로, 편집 시에만 outline + 라벨 + 핸들 노출
+ * ════════════════════════════════════════════════════════════ */
+body.edit-mode .slide{outline:2px dashed rgba(30,41,255,.35);outline-offset:-2px;position:relative;}
+body.edit-mode .slide::before{content:attr(id);position:absolute;top:4px;left:4px;background:var(--cobalt);color:#fff;font-family:var(--font-mono);font-size:14px;font-weight:800;padding:4px 10px;border-radius:4px;z-index:1000;letter-spacing:.08em;text-transform:uppercase;}
+body.edit-mode .col-l,body.edit-mode .col-r,body.edit-mode .chart-card,body.edit-mode .body2,body.edit-mode .phone-frame,body.edit-mode [class*="phone-"]{outline:1.5px dashed rgba(214,255,61,.7);outline-offset:-1px;transition:outline-color .15s;cursor:pointer;}
+body.edit-mode .col-l:hover,body.edit-mode .col-r:hover,body.edit-mode .chart-card:hover,body.edit-mode .body2:hover,body.edit-mode .phone-frame:hover{outline:2.5px solid var(--lime);outline-offset:-2px;}
+body.edit-mode .edit-toolbar{position:fixed;top:20px;right:20px;background:#0A0F2E;color:#fff;padding:14px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:99999;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;max-width:380px;border:2px solid var(--lime);}
+body.edit-mode .edit-toolbar h4{font-family:'Pretendard Variable',sans-serif;font-size:14px;color:var(--lime);margin:0 0 8px;font-weight:900;letter-spacing:-.01em;}
+body.edit-mode .edit-toolbar code{background:rgba(214,255,61,.15);color:var(--lime);padding:1px 5px;border-radius:3px;font-size:11px;}
+body.edit-mode .edit-toolbar .row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+body.edit-mode .edit-toolbar .row:last-child{border:none;}
+body.edit-mode .edit-toolbar kbd{background:#1F2837;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;color:var(--lavender);}
+body.edit-mode .edit-pick{position:fixed;bottom:20px;right:20px;background:var(--lime);color:var(--ink);padding:14px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(214,255,61,.42);z-index:99999;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;max-width:480px;max-height:340px;overflow:auto;border:2px solid var(--ink);}
+body.edit-mode .edit-pick h4{font-family:'Pretendard Variable',sans-serif;font-size:13px;margin:0 0 6px;font-weight:900;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;}
+body.edit-mode .edit-pick pre{margin:6px 0 0;font-size:11px;background:var(--ink);color:var(--lime);padding:8px 10px;border-radius:6px;white-space:pre-wrap;word-break:break-all;}
 </style>
+<script>
+// v19 dev helper · ?edit=1 활성화
+document.addEventListener('DOMContentLoaded', function(){
+  if(!new URLSearchParams(location.search).has('edit')) return;
+  document.body.classList.add('edit-mode');
+
+  // Helper toolbar (top-right)
+  const tb = document.createElement('div');
+  tb.className = 'edit-toolbar';
+  tb.innerHTML = `
+    <h4>★ EDIT MODE</h4>
+    <div class="row"><span>요소 클릭</span><span>현재 CSS 추출</span></div>
+    <div class="row"><span>F12 → Styles</span><span>마우스로 값 드래그</span></div>
+    <div class="row"><span>핵심 selector</span><code>.col-l</code> / <code>.col-r</code></div>
+    <div class="row"><span>레이아웃 비율</span><code>.body2</code> grid</div>
+    <div class="row"><span>이미지 컨테이너</span><code>.phone-frame</code></div>
+    <div class="row" style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.15);"><span>이 모드 끄기</span><kbd>?edit=1</kbd> 제거</div>
+  `;
+  document.body.appendChild(tb);
+
+  // Pick panel (bottom-right) — 클릭한 요소의 현재 적용 CSS 추출
+  const pick = document.createElement('div');
+  pick.className = 'edit-pick';
+  pick.style.display = 'none';
+  pick.innerHTML = `<h4>SELECTED · 클릭한 요소</h4><div id="pick-info"></div><pre id="pick-css"></pre>`;
+  document.body.appendChild(pick);
+  const info = pick.querySelector('#pick-info');
+  const css = pick.querySelector('#pick-css');
+
+  function selectorOf(el){
+    if(el.id) return '#' + el.id;
+    const cls = (el.className || '').toString().trim().split(/\s+/).filter(c=>c).slice(0,3).map(c=>'.'+c).join('');
+    const slide = el.closest('.slide');
+    const sid = slide ? '#' + slide.id + ' ' : '';
+    return sid + (cls || el.tagName.toLowerCase());
+  }
+
+  function attach(el){
+    el.addEventListener('click', function(e){
+      if(!document.body.classList.contains('edit-mode')) return;
+      e.stopPropagation();
+      const cs = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+      info.textContent = selectorOf(el) + ` · ${Math.round(r.width)}×${Math.round(r.height)}px`;
+      const keys = ['width','height','padding','margin','grid-template-columns','grid-template-rows','gap','flex','display','font-size','color','background','border-radius'];
+      const out = keys.map(k => `${k}: ${cs.getPropertyValue(k)};`).filter(l => !l.endsWith(': ;') && !l.endsWith(': auto;') && !l.endsWith(': normal;')).join('\n');
+      css.textContent = out;
+      pick.style.display = 'block';
+    }, true);
+  }
+
+  document.querySelectorAll('.slide, .col-l, .col-r, .chart-card, .body2, .phone-frame').forEach(attach);
+});
+</script>
 </head>
 <body>
 <!-- ══════════════════════════════════════════
