@@ -1216,22 +1216,47 @@ document.addEventListener('DOMContentLoaded', function(){
       <!-- 지표: 브릿지 도입 전/후 111일 증분 (Airbridge 실측 — Notion 페이지 데이터) -->
       <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;">
         <div class="chart-title">브릿지 도입 전 vs 도입 후 · 동일 111일 증분 <small>Airbridge 실측, Meta 채널</small></div>
-        <table class="cmp-table">
-          <thead>
-            <tr><th>지표</th><th class="r">Before (25.10.15~26.02.02)</th><th class="r">After (26.02.03~05.24)</th><th class="r">증분</th></tr>
-          </thead>
+        <table style="width:100%;border-collapse:separate;border-spacing:0;font-family:var(--font-sans);font-variant-numeric:tabular-nums;">
+          <thead><tr>
+            <th style="text-align:left;padding:9px 12px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;letter-spacing:.04em;border-radius:8px 0 0 0;">구분</th>
+            <th style="text-align:right;padding:7px 12px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;">BEFORE<span style="display:block;font-weight:400;font-size:9px;color:var(--lavender);letter-spacing:.02em;margin-top:1px;">2025-10-15 ~ 2026-02-02</span></th>
+            <th style="text-align:right;padding:7px 12px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;">AFTER<span style="display:block;font-weight:400;font-size:9px;color:var(--lavender);letter-spacing:.02em;margin-top:1px;">2026-02-03 ~ 05-24</span></th>
+            <th style="text-align:right;padding:9px 14px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;border-radius:0 8px 0 0;">증분</th>
+          </tr></thead>
           <tbody>
-            <tr class="hl"><td>★ 구매</td><td class="r">17,504건</td><td class="r">31,613건</td><td class="r" style="color:var(--cobalt);">+80.6%</td></tr>
-            <tr class="hl"><td>★ 매출</td><td class="r">175.1억</td><td class="r">502.4억</td><td class="r" style="color:var(--cobalt);">+187%</td></tr>
-            <tr><td>CPA (구매당 비용)</td><td class="r">₩20,681</td><td class="r">₩20,371</td><td class="r" style="color:var(--cobalt);font-weight:800;">-1.5% (유지)</td></tr>
-            <tr><td>ROAS</td><td class="r">4,836%</td><td class="r">7,802%</td><td class="r" style="color:var(--cobalt);font-weight:800;">+61.3%p</td></tr>
-            <tr><td>광고비 (Meta)</td><td class="r">3.62억</td><td class="r">6.44억</td><td class="r" style="color:var(--cobalt);font-weight:800;">+77.9%</td></tr>
+            <tr style="background:#F4FBF7;border-bottom:1px solid var(--line-lt);">
+              <td style="text-align:left;padding:11px 12px;font-size:13px;font-weight:800;color:var(--text);">★ 구매</td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;color:var(--text2);font-family:var(--font-mono);">17,504건</td>
+              <td style="text-align:right;padding:11px 12px;font-size:14px;font-weight:800;color:#0E9E76;font-family:var(--font-mono);">31,613건</td>
+              <td style="text-align:right;padding:9px 14px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:12px;font-weight:800;padding:3px 9px;border-radius:12px;">+80.6%</span></td>
+            </tr>
+            <tr style="background:#F4FBF7;border-bottom:1px solid var(--line-lt);">
+              <td style="text-align:left;padding:11px 12px;font-size:13px;font-weight:800;color:var(--text);">★ 매출</td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;color:var(--text2);font-family:var(--font-mono);">175.1억</td>
+              <td style="text-align:right;padding:11px 12px;font-size:14px;font-weight:800;color:#0E9E76;font-family:var(--font-mono);">502.4억</td>
+              <td style="text-align:right;padding:9px 14px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:12px;font-weight:800;padding:3px 9px;border-radius:12px;">+187%</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line-lt);">
+              <td style="text-align:left;padding:11px 12px;font-size:12px;font-weight:600;color:var(--text2);">CPA <span style="font-size:10px;color:var(--sub);">구매당 비용</span></td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;color:var(--text2);font-family:var(--font-mono);">₩20,681</td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;font-weight:700;color:var(--text);font-family:var(--font-mono);">₩20,371</td>
+              <td style="text-align:right;padding:9px 14px;"><span style="display:inline-block;background:#EEF1FF;color:var(--cobalt);font-family:var(--font-mono);font-size:12px;font-weight:800;padding:3px 9px;border-radius:12px;">-1.5% 유지</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line-lt);">
+              <td style="text-align:left;padding:11px 12px;font-size:12px;font-weight:600;color:var(--text2);">ROAS</td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;color:var(--text2);font-family:var(--font-mono);">4,836%</td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;font-weight:700;color:var(--text);font-family:var(--font-mono);">7,802%</td>
+              <td style="text-align:right;padding:9px 14px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:12px;font-weight:800;padding:3px 9px;border-radius:12px;">+61.3%p</span></td>
+            </tr>
+            <tr>
+              <td style="text-align:left;padding:11px 12px;font-size:12px;font-weight:600;color:var(--text2);">광고비 <span style="font-size:10px;color:var(--sub);">Meta</span></td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;color:var(--text2);font-family:var(--font-mono);">3.62억</td>
+              <td style="text-align:right;padding:11px 12px;font-size:13px;font-weight:700;color:var(--text);font-family:var(--font-mono);">6.44억</td>
+              <td style="text-align:right;padding:9px 14px;"><span style="display:inline-block;background:#FBF1D6;color:#9A7B1A;font-family:var(--font-mono);font-size:12px;font-weight:800;padding:3px 9px;border-radius:12px;">+77.9%</span></td>
+            </tr>
           </tbody>
         </table>
-        <div style="margin-top:auto;padding:12px 16px;background:var(--ink);border-radius:6px;">
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender);font-weight:600;letter-spacing:.08em;">증분 해석</div>
-          <div style="font-family:var(--font-display);font-size:15px;color:#fff;font-weight:700;letter-spacing:-.018em;margin-top:3px;line-height:1.45;">광고비를 +77.9% 증액했음에도 <span style="color:var(--lime);">CPA는 사실상 유지</span>되며 구매 +80.6%, 매출 +187% 확장 — <span style="color:var(--lime);">동일 단가로 더 높은 LTV 유저 모객</span></div>
-        </div>
+        <div style="margin-top:auto;padding:11px 16px;background:#F1F4F9;border-radius:8px;font-size:13px;color:var(--text2);font-weight:600;line-height:1.45;">광고비 <b style="color:#9A7B1A;">+77.9%</b> 증액에도 <b style="color:var(--cobalt);">CPA 사실상 유지</b> — 동일 단가로 구매 +80.6%·매출 +187% 확장, 더 높은 LTV 유저 모객</div>
       </div>
     </div>
   </div>
