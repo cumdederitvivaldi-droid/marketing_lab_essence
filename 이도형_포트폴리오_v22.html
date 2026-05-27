@@ -793,25 +793,10 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
       </div>
       <!-- 지표: 도입 전후 분석 행 (차트 + 지표 카드 + 비교 표) — node 2766-2 반영 -->
-      <div style="display:flex;gap:12px;flex:none;height:286px;">
-        <!-- ① 8kg 초과 배출 비율 도입 전후 막대 -->
-        <div class="chart-card" style="flex:1;display:flex;flex-direction:column;padding:14px 16px;min-width:0;">
-          <div class="chart-title" style="font-size:13px;margin-bottom:8px;">8kg 초과 배출 비율 <small>도입 전 → 후</small></div>
-          <svg viewBox="0 0 240 196" width="100%" style="display:block;flex:1;">
-            <line x1="20" y1="172" x2="228" y2="172" stroke="#E2E6EF" stroke-width="1.5"/>
-            <!-- 도입 전 20.75% -->
-            <rect x="46" y="68" width="62" height="104" rx="4" fill="#CBD5E1"/>
-            <text x="77" y="60" font-size="14" fill="#5B6675" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">20.75%</text>
-            <text x="77" y="188" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">도입 전</text>
-            <!-- 도입 후 27.07% -->
-            <rect x="132" y="35" width="62" height="137" rx="4" fill="#10C390"/>
-            <rect x="132" y="35" width="62" height="4" fill="#0A0F2E" opacity=".18"/>
-            <text x="163" y="27" font-size="15" fill="#0E9E76" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">27.07%</text>
-            <text x="163" y="188" font-size="11" fill="#10C390" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">도입 후</text>
-            <!-- +6.32%p 배지 -->
-            <rect x="120" y="92" width="86" height="24" rx="12" fill="#0A0F2E"/>
-            <text x="163" y="108" font-size="12" fill="#D6FF3D" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">+6.32%p</text>
-          </svg>
+      <div style="display:flex;gap:12px;flex:none;height:316px;">
+        <!-- ① 수거 무게 분포 변화 (도입 전/후) — 사용자 첨부 자료 -->
+        <div class="chart-card" style="flex:1.4;display:flex;flex-direction:column;padding:10px;min-width:0;overflow:hidden;">
+          <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;"><img src="./assets/p5_weight_dist_chart.png" alt="수거 무게 분포 변화 도입 전/후 — 8kg 초과 비율 20.75→27.07% (+6.32%p)" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;object-fit:contain;"></div>
         </div>
         <!-- ② 핵심 지표 카드 스택 -->
         <div style="flex:.82;display:flex;flex-direction:column;gap:8px;min-width:0;">
@@ -865,20 +850,21 @@ document.addEventListener('DOMContentLoaded', function(){
 
       <div class="phase b1"><span class="ptag">병목</span>가입 후 30일 골든타임을 놓치면 영구 이탈</div>
       <div class="sec tight"><ul>
-        <li>가입자 <em>30%만 실이용</em> — D16·D45에 CVR 급락, 개입 없이 방치</li>
-        <li><strong>D<sub style="font-size:.7em;">n</sub> = 회원가입 후 경과한 일수</strong></li>
+        <li>회원가입 고객 중 <em>실이용 30%</em>, 그조차 30일 내 첫 이용이 없으면 이탈 — 당시 앱은 이 구간에 아무 개입이 없었음</li>
       </ul></div>
 
       <div class="phase b2"><span class="ptag">실행</span>D16·D45 범퍼 구간에 쿠폰 알림톡 자동 발송</div>
       <div class="sec tight"><ul>
-        <li><strong>D16 · 30% 쿠폰</strong> → 가벼운 인센티브로 1차 회수</li>
-        <li><strong>D45 · 100% 무료 이용권</strong> → 마지막 리텐션 윈도우</li>
+        <li>가입일 기준 1일씩 누적 분석 → <strong>16·45일차 전환율 급감 구간</strong> 발견</li>
+        <li><strong>D16 30% 쿠폰</strong> · <strong>D45 100% 무료 이용권</strong>으로 첫 이용 유도</li>
       </ul></div>
 
       <div class="phase b3"><span class="ptag">결과</span>알림톡만으로 D45 CVR <b>3배(+231%)</b></div>
       <div class="sec tight"><ul>
-        <li>D45 CVR <strong>0.83% → 2.75%</strong>, D16 CVR +99% → CAC 하락</li>
+        <li>D16 CVR <strong>+99% (1.94→3.86%)</strong> · D45 CVR <strong>+231% (0.83→2.75%)</strong></li>
+        <li>급락 구간 전환율 개선 → CAC 하락으로 더 큰 성장에 베팅</li>
       </ul></div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--sub);margin-top:7px;">* D<sub>n</sub> = 회원가입 후 n일이 경과한 시점</div>
 
       <div class="result">
         <div class="kpi"><span class="kpi-num">+231%</span><span class="kpi-label">D45 CVR (0.83 → 2.75%)</span></div>
