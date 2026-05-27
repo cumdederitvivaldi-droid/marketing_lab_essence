@@ -1395,63 +1395,69 @@ document.addEventListener('DOMContentLoaded', function(){
     </div>
 
     <div class="col-r">
-      <!-- 인플루언서 콘텐츠 결과물 (실제 발행 쇼츠) -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:none;height:300px;">
-        <a class="yt-card" href="https://www.youtube.com/shorts/wvRDxw3fsQ0" target="_blank" rel="noopener">
-          <div class="thumb">
-            <span class="live-badge">YT Shorts</span>
-            <img src="./assets/inf_mimi.jpg" alt="미미짱 협업 쇼츠 — 자취방 대청소 10분컷">
-            <div class="play"></div>
-            <span class="perf-badge">발행 5일 +85%</span>
+      <!-- 인플루언서 콘텐츠 결과물 (협업 발행 쇼츠 4종) -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:none;height:300px;">
+        <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;box-shadow:0 4px 12px rgba(10,15,46,.18);display:flex;flex-direction:column;border:1.5px solid rgba(214,255,61,.18);">
+          <div style="position:relative;flex:1;min-height:0;overflow:hidden;">
+            <img src="./assets/collab1.jpg" alt="자취방 대청소 10분컷" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <span style="position:absolute;top:8px;left:8px;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-size:9px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:3px;">협업 쇼츠</span>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(214,255,61,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.3);"><span style="color:var(--ink);font-size:17px;margin-left:3px;">▶</span></div>
           </div>
-          <div class="meta-strip"><div class="title">리뷰하는 미미짱</div><div class="url">5일 평균 980명/일 가입</div></div>
-        </a>
-        <a class="yt-card" href="https://www.youtube.com/shorts/yF1cSz1h-MU" target="_blank" rel="noopener">
-          <div class="thumb">
-            <span class="live-badge">YT Shorts</span>
-            <img src="./assets/inf_yuha.jpg" alt="유하맘 협업 쇼츠">
-            <div class="play"></div>
-            <span class="perf-badge">발행 5일 +91%</span>
+          <div style="background:var(--ink);padding:8px 10px;"><div style="font-size:12px;font-weight:800;color:#fff;line-height:1.25;">자취방 대청소 10분컷</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--lime);margin-top:2px;">미미짱 · +85%</div></div>
+        </div>
+        <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;box-shadow:0 4px 12px rgba(10,15,46,.18);display:flex;flex-direction:column;border:1.5px solid rgba(214,255,61,.18);">
+          <div style="position:relative;flex:1;min-height:0;overflow:hidden;">
+            <img src="./assets/collab2.jpg" alt="광고코너 협업 쇼츠" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <span style="position:absolute;top:8px;left:8px;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-size:9px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:3px;">협업 쇼츠</span>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(214,255,61,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.3);"><span style="color:var(--ink);font-size:17px;margin-left:3px;">▶</span></div>
           </div>
-          <div class="meta-strip"><div class="title">유하맘</div><div class="url">5일 평균 1,011명/일 · 쿠폰 사용률 61.6%</div></div>
-        </a>
+          <div style="background:var(--ink);padding:8px 10px;"><div style="font-size:12px;font-weight:800;color:#fff;line-height:1.25;">광고코너</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--lavender);margin-top:2px;">인플루언서 협업</div></div>
+        </div>
+        <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;box-shadow:0 4px 12px rgba(10,15,46,.18);display:flex;flex-direction:column;border:1.5px solid rgba(214,255,61,.18);">
+          <div style="position:relative;flex:1;min-height:0;overflow:hidden;">
+            <img src="./assets/collab3.jpg" alt="여름철 대청소 초간편 꿀팁" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <span style="position:absolute;top:8px;left:8px;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-size:9px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:3px;">협업 쇼츠</span>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(214,255,61,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.3);"><span style="color:var(--ink);font-size:17px;margin-left:3px;">▶</span></div>
+          </div>
+          <div style="background:var(--ink);padding:8px 10px;"><div style="font-size:12px;font-weight:800;color:#fff;line-height:1.25;">여름철 대청소 꿀팁</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--lavender);margin-top:2px;">인플루언서 협업</div></div>
+        </div>
+        <div style="position:relative;border-radius:12px;overflow:hidden;background:#000;box-shadow:0 4px 12px rgba(10,15,46,.18);display:flex;flex-direction:column;border:1.5px solid rgba(214,255,61,.18);">
+          <div style="position:relative;flex:1;min-height:0;overflow:hidden;">
+            <img src="./assets/collab4.jpg" alt="삶의 질 수직상승 워킹맘 구세주" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <span style="position:absolute;top:8px;left:8px;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-size:9px;font-weight:800;letter-spacing:.06em;padding:3px 7px;border-radius:3px;">협업 쇼츠</span>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(214,255,61,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.3);"><span style="color:var(--ink);font-size:17px;margin-left:3px;">▶</span></div>
+          </div>
+          <div style="background:var(--ink);padding:8px 10px;"><div style="font-size:12px;font-weight:800;color:#fff;line-height:1.25;">워킹맘 구세주</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--lavender);margin-top:2px;">인플루언서 협업</div></div>
+        </div>
       </div>
       <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 24px;flex:1;min-height:0;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-        <div class="chart-title">4중 신호 동시 점프 — Baseline / Collab / Post 비교</div>
-        <svg viewBox="0 0 520 380" width="100%" style="display:block;flex:1;">
-          <!-- 4 horizontal grouped bars: 회원가입 532→859, 오가닉 208→331, 구매 1845→2582 (/3 scale), 매출 1577→2218 (/2.5 scale) -->
-          <!-- baseline/collab/post = grey/cobalt/lavender -->
-          <text x="20" y="40" font-size="12" fill="#0F172A" font-weight="800">회원가입 (명/일)</text>
-          <rect x="170" y="22" width="80" height="14" rx="2" fill="#CBD5E1"/><text x="256" y="34" font-size="11" fill="#5B6675" font-family="JetBrains Mono">532</text>
-          <rect x="170" y="40" width="129" height="14" rx="2" fill="#1E29FF"/><text x="305" y="52" font-size="12" fill="#1E29FF" font-weight="800" font-family="JetBrains Mono">859 (+61%)</text>
-          <rect x="170" y="58" width="111" height="10" rx="2" fill="#C9D0FF"/><text x="287" y="68" font-size="10" fill="#0F19D8" font-family="JetBrains Mono">738 (Post)</text>
-          <line x1="20" y1="84" x2="500" y2="84" stroke="#F1F4F9"/>
-
-          <text x="20" y="108" font-size="12" fill="#0F172A" font-weight="800">오가닉 가입 (≠ADS)</text>
-          <rect x="170" y="90" width="62" height="14" rx="2" fill="#CBD5E1"/><text x="238" y="102" font-size="11" fill="#5B6675" font-family="JetBrains Mono">208</text>
-          <rect x="170" y="108" width="99" height="14" rx="2" fill="#10C390"/><text x="275" y="120" font-size="12" fill="#10C390" font-weight="800" font-family="JetBrains Mono">331 (+59%)</text>
-          <rect x="170" y="126" width="96" height="10" rx="2" fill="#5EE3B6"/><text x="272" y="136" font-size="10" fill="#10C390" font-family="JetBrains Mono">321 (Post)</text>
-          <line x1="20" y1="152" x2="500" y2="152" stroke="#F1F4F9"/>
-
-          <text x="20" y="176" font-size="12" fill="#0F172A" font-weight="800">구매 건수 (B2C)</text>
-          <rect x="170" y="158" width="123" height="14" rx="2" fill="#CBD5E1"/><text x="299" y="170" font-size="11" fill="#5B6675" font-family="JetBrains Mono">1,845</text>
-          <rect x="170" y="176" width="172" height="14" rx="2" fill="#1E29FF"/><text x="348" y="188" font-size="12" fill="#1E29FF" font-weight="800" font-family="JetBrains Mono">2,582 (+40%)</text>
-          <rect x="170" y="194" width="180" height="10" rx="2" fill="#C9D0FF"/><text x="356" y="204" font-size="10" fill="#0F19D8" font-family="JetBrains Mono">2,709 (Post)</text>
-          <line x1="20" y1="220" x2="500" y2="220" stroke="#F1F4F9"/>
-
-          <text x="20" y="244" font-size="12" fill="#0F172A" font-weight="800">매출 (만원/일)</text>
-          <rect x="170" y="226" width="126" height="14" rx="2" fill="#CBD5E1"/><text x="302" y="238" font-size="11" fill="#5B6675" font-family="JetBrains Mono">1,577</text>
-          <rect x="170" y="244" width="177" height="14" rx="2" fill="#1E29FF"/><text x="353" y="256" font-size="12" fill="#1E29FF" font-weight="800" font-family="JetBrains Mono">2,218 (+41%)</text>
-          <rect x="170" y="262" width="190" height="10" rx="2" fill="#C9D0FF"/><text x="366" y="272" font-size="10" fill="#0F19D8" font-family="JetBrains Mono">2,373 (Post)</text>
-
-          <!-- legend -->
-          <rect x="20" y="296" width="12" height="10" rx="2" fill="#CBD5E1"/><text x="38" y="305" font-size="11" fill="#5B6675" font-family="JetBrains Mono">Baseline (05.15~06.09)</text>
-          <rect x="200" y="296" width="12" height="10" rx="2" fill="#1E29FF"/><text x="218" y="305" font-size="11" fill="#1E29FF" font-weight="700" font-family="JetBrains Mono">Collab (06.26~07.31)</text>
-          <rect x="380" y="296" width="12" height="10" rx="2" fill="#C9D0FF"/><text x="398" y="305" font-size="11" fill="#5B6675" font-family="JetBrains Mono">Post (08.01~15)</text>
-
-          <!-- bottom annotation -->
-          <rect x="20" y="328" width="480" height="40" rx="6" fill="#0A0F2E"/>
-          <text x="260" y="354" font-size="13" fill="#D6FF3D" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">★ 광고 도달 밖 잠재 고객 깨움 + 광고 효율 동시 개선</text>
+        <div class="chart-title">일평균 가입 — 협업 본격화 시기 회원가입 +61% · 오가닉 +59% 동시 점프</div>
+        <svg viewBox="0 0 520 300" width="100%" style="display:block;flex:1;">
+          <!-- 범례 -->
+          <rect x="140" y="6" width="13" height="13" rx="2" fill="#5B9BD5"/><text x="158" y="17" font-size="11" fill="#5B6675" font-family="JetBrains Mono">회원가입 (전체)</text>
+          <rect x="300" y="6" width="13" height="13" rx="2" fill="#6FBF73"/><text x="318" y="17" font-size="11" fill="#5B6675" font-family="JetBrains Mono">오가닉 (≠ADS)</text>
+          <!-- y 그리드 -->
+          <line x1="56" y1="40" x2="500" y2="40" stroke="#F1F4F9"/><text x="50" y="44" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">1000</text>
+          <line x1="56" y1="84" x2="500" y2="84" stroke="#F1F4F9"/><text x="50" y="88" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">800</text>
+          <line x1="56" y1="128" x2="500" y2="128" stroke="#F1F4F9"/><text x="50" y="132" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">600</text>
+          <line x1="56" y1="172" x2="500" y2="172" stroke="#F1F4F9"/><text x="50" y="176" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">400</text>
+          <line x1="56" y1="216" x2="500" y2="216" stroke="#F1F4F9"/><text x="50" y="220" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">200</text>
+          <line x1="56" y1="260" x2="500" y2="260" stroke="#E2E6EF" stroke-width="1.5"/>
+          <!-- Baseline -->
+          <rect x="106" y="143" width="40" height="117" rx="3" fill="#5B9BD5"/><text x="126" y="137" font-size="11" fill="#3E73A8" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">532</text>
+          <rect x="154" y="214" width="40" height="46" rx="3" fill="#6FBF73"/><text x="174" y="208" font-size="11" fill="#4E9E55" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">208</text>
+          <text x="150" y="276" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">Baseline</text>
+          <!-- Collab 본격화 -->
+          <rect x="246" y="71" width="40" height="189" rx="3" fill="#5B9BD5"/><text x="266" y="65" font-size="13" fill="#3E73A8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">859</text>
+          <rect x="294" y="187" width="40" height="73" rx="3" fill="#6FBF73"/><text x="314" y="181" font-size="13" fill="#4E9E55" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">331</text>
+          <text x="290" y="276" font-size="10" fill="#0F172A" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">Collab 본격화</text>
+          <!-- Post -->
+          <rect x="386" y="98" width="40" height="162" rx="3" fill="#5B9BD5"/><text x="406" y="92" font-size="11" fill="#3E73A8" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">738</text>
+          <rect x="434" y="189" width="40" height="71" rx="3" fill="#6FBF73"/><text x="454" y="183" font-size="11" fill="#4E9E55" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">321</text>
+          <text x="430" y="276" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">Post</text>
+          <!-- 증감 배지 -->
+          <rect x="232" y="44" width="50" height="19" rx="9.5" fill="#0A0F2E"/><text x="257" y="57" font-size="11" fill="#fff" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">+61%</text>
+          <rect x="356" y="160" width="50" height="19" rx="9.5" fill="#0A0F2E"/><text x="381" y="173" font-size="11" fill="#D6FF3D" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">+59%</text>
         </svg>
       </div>
     </div>
@@ -1506,59 +1512,33 @@ document.addEventListener('DOMContentLoaded', function(){
     </div>
 
     <div class="col-r">
-      <div style="display:flex;gap:16px;flex:1;min-height:0;">
-      <!-- 인플루언서 콘텐츠 결과물 (메타 구매 볼륨 1~3위 소재) -->
-      <a class="reel-card" href="https://www.instagram.com/reel/DRbvLDSj1fT/" target="_blank" rel="noopener" style="width:248px;flex-shrink:0;">
-        <div class="rc-top">
-          <span class="rc-ig">▣ Instagram Reels · PA</span>
-          <div class="rc-play">▶</div>
-          <div class="rc-handle">오순의집</div>
-          <div style="background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-size:12px;font-weight:800;padding:6px 12px;border-radius:6px;text-align:center;">메타 구매 볼륨<br>1~3위 소재</div>
-          <span style="font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.9);">+ 지지팀장 PA 동시 집행</span>
+      <!-- 인플루언서 PA 결과물 (Instagram Reels 2종) — 사용자 첨부 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:none;height:430px;">
+        <div style="background:#000;border:1.5px solid rgba(219,39,119,.35);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(10,15,46,.18);">
+          <div style="background:linear-gradient(135deg,#B5258F,#F58529);padding:6px 12px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.06em;text-align:center;">▣ timemaker_zee · PA</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#000;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/pa_reel1.jpg" alt="timemaker_zee PA 릴스" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;"></div>
         </div>
-        <div class="meta-strip"><div class="title">브랜디드 콘텐츠 (PA)</div><div class="url">instagram.com/reel/DRbvLDSj1fT</div></div>
-      </a>
-      <!-- 그로스 사이클 다이어그램 -->
-      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-        <div class="chart-title">그로스 사이클 — 콘텐츠 1건당 비용 진화</div>
-        <svg viewBox="0 0 520 460" width="100%" style="display:block;flex:1;">
-          <!-- 5 horizontal flow blocks -->
-          <line x1="60" y1="38" x2="60" y2="420" stroke="#E2E6EF" stroke-width="2" stroke-dasharray="6,4"/>
-          <!-- Stage 1 -->
-          <circle cx="60" cy="56" r="20" fill="#FECACA"/>
-          <text x="60" y="61" font-size="10" fill="#991B1B" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">1</text>
-          <rect x="100" y="36" width="412" height="48" rx="10" fill="#FEF2F2" stroke="#FCA5A5"/>
-          <text x="118" y="58" font-size="13" fill="#991B1B" font-weight="800">단순 협업 — 핏 발견</text>
-          <text x="118" y="76" font-size="11" fill="#5B6675" font-family="JetBrains Mono">5백만~1천만원/건 · 25.04~07 · UNATTRIBUTED·쿠폰·가입 4중 신호</text>
-          <!-- Stage 2 -->
-          <circle cx="60" cy="130" r="20" fill="#C9D0FF"/>
-          <text x="60" y="135" font-size="10" fill="#0F19D8" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">2</text>
-          <rect x="100" y="110" width="412" height="48" rx="10" fill="#EEF1FF" stroke="#C9D0FF"/>
-          <text x="118" y="132" font-size="13" fill="#0F19D8" font-weight="800">PA 전환 — 자동 추적 + 단가 1/30</text>
-          <text x="118" y="150" font-size="11" fill="#5B6675" font-family="JetBrains Mono">30~50만원/건 · CPA <tspan font-weight="800" fill="#1E29FF">35,233 → 12,042원 (-66%)</tspan></text>
-          <!-- Stage 3 -->
-          <circle cx="60" cy="204" r="20" fill="#1E29FF"/>
-          <text x="60" y="209" font-size="10" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">3</text>
-          <rect x="100" y="184" width="412" height="48" rx="10" fill="#EEF1FF" stroke="#1E29FF" stroke-width="1.5"/>
-          <text x="118" y="206" font-size="13" fill="#0F19D8" font-weight="800">효율 검증 + PA 재업로드</text>
-          <text x="118" y="224" font-size="11" fill="#5B6675" font-family="JetBrains Mono">15~20만원/건 · 25.12 일 예산 94만원 · 검증된 콘텐츠 재활용</text>
-          <!-- Stage 4 -->
-          <circle cx="60" cy="278" r="20" fill="#0F19D8"/>
-          <text x="60" y="283" font-size="10" fill="#fff" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">4</text>
-          <rect x="100" y="258" width="412" height="48" rx="10" fill="#EEF1FF" stroke="#0F19D8" stroke-width="1.5"/>
-          <text x="118" y="280" font-size="13" fill="#0F19D8" font-weight="800">장기 협업 승격</text>
-          <text x="118" y="298" font-size="11" fill="#5B6675" font-family="JetBrains Mono">월 정액 · 26.04 오순의집 3개월·이천커플 1개월 · 검증된 핏 확보</text>
-          <!-- Stage 5 -->
-          <circle cx="60" cy="352" r="20" fill="#D6FF3D"/>
-          <text x="60" y="357" font-size="10" fill="#0A0F2E" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">5</text>
-          <rect x="100" y="332" width="412" height="48" rx="10" fill="#D6FF3D" stroke="#B3DA1C" stroke-width="1.5"/>
-          <text x="118" y="354" font-size="13" fill="#0A0F2E" font-weight="900">자체 콘텐츠 자산화 ★</text>
-          <text x="118" y="372" font-size="11" fill="#14159F" font-weight="700" font-family="JetBrains Mono">인건비만 · 26.05 오순의집st 자취생 직접 촬영 · 비용 0에 수렴</text>
-          <!-- bottom summary -->
-          <rect x="20" y="406" width="492" height="36" rx="8" fill="#0A0F2E"/>
-          <text x="266" y="429" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">"한 번의 캠페인"이 아니라 "사이클" — 다음 PA·장기·자체 제작이 검증된 핏 위에서 누적</text>
-        </svg>
+        <div style="background:#000;border:1.5px solid var(--lime);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(214,255,61,.22);">
+          <div style="background:var(--lime);padding:6px 12px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--ink);letter-spacing:.06em;text-align:center;">★ osoon.zip · 메타 구매 1~3위 소재</div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#000;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/pa_reel2.jpg" alt="osoon.zip(오순의집) PA 릴스" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;"></div>
+        </div>
       </div>
+      <!-- PA 소재 월별 구매수 (사용자 첨부 그래프) -->
+      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;">
+        <div class="chart-title">PA 소재 월별 구매수 <small>도입 전 월 4건 → 도입 후 월 2,400~3,500건</small></div>
+        <svg viewBox="0 0 520 226" width="100%" style="display:block;flex:1;">
+          <line x1="56" y1="30" x2="500" y2="30" stroke="#F1F4F9"/><text x="50" y="34" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">4,000</text>
+          <line x1="56" y1="70" x2="500" y2="70" stroke="#F1F4F9"/><text x="50" y="74" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">3,000</text>
+          <line x1="56" y1="110" x2="500" y2="110" stroke="#F1F4F9"/><text x="50" y="114" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">2,000</text>
+          <line x1="56" y1="150" x2="500" y2="150" stroke="#F1F4F9"/><text x="50" y="154" font-size="9" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">1,000</text>
+          <line x1="56" y1="190" x2="500" y2="190" stroke="#E2E6EF" stroke-width="1.5"/>
+          <rect x="76" y="52" width="56" height="138" rx="3" fill="#6FBF73"/><text x="104" y="46" font-size="12" fill="#3F8E55" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">3,455</text><text x="104" y="205" font-size="10" fill="#0F172A" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">25.11</text>
+          <rect x="164" y="91" width="56" height="99" rx="3" fill="#6FBF73"/><text x="192" y="85" font-size="12" fill="#3F8E55" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">2,481</text><text x="192" y="205" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.12</text>
+          <rect x="252" y="64" width="56" height="126" rx="3" fill="#6FBF73"/><text x="280" y="58" font-size="12" fill="#3F8E55" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">3,157</text><text x="280" y="205" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">26.01</text>
+          <rect x="340" y="96" width="56" height="94" rx="3" fill="#6FBF73"/><text x="368" y="90" font-size="12" fill="#3F8E55" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">2,350</text><text x="368" y="205" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">26.02</text>
+          <rect x="428" y="148" width="56" height="42" rx="3" fill="#A8D5AC"/><text x="456" y="142" font-size="12" fill="#5B6675" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">1,048</text><text x="456" y="205" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">26.03</text>
+          <rect x="70" y="208" width="92" height="15" rx="3" fill="#0A0F2E"/><text x="116" y="219" font-size="9" fill="#D6FF3D" text-anchor="middle" font-weight="800" font-family="JetBrains Mono">PA 도입</text>
+        </svg>
       </div>
     </div>
   </div>
