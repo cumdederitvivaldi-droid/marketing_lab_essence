@@ -658,8 +658,8 @@ document.addEventListener('DOMContentLoaded', function(){
     </div>
 
     <div class="col-r">
-      <!-- 결과물: 좌 1/3 씨앗 모바일 + 우 2/3 등급별 혜택 표 (사용자 첨부) -->
-      <div style="display:grid;grid-template-columns:280px 1fr;gap:14px;flex:1;min-height:0;">
+      <!-- 결과물: 좌 씨앗 모바일 + 우 등급 상세 카드(혜택표 + 산정 일정 2-패널) — 4.png 반영 -->
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:14px;flex:1;min-height:0;">
         <div class="phone-frame">
           <div class="scr" style="display:flex;flex-direction:column;height:100%;">
             <div style="background:#F1F5F9;padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--sub);letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">씨앗 · 미달성</div>
@@ -667,9 +667,12 @@ document.addEventListener('DOMContentLoaded', function(){
           </div>
         </div>
         <div style="background:#fff;border:1.5px solid var(--cobalt);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 14px rgba(30,41,255,.18);">
-          <div style="background:var(--cobalt);padding:10px 18px;font-family:var(--font-mono);font-size:12px;font-weight:800;color:#fff;letter-spacing:.12em;text-align:center;text-transform:uppercase;flex-shrink:0;">★ 등급별 혜택 · 직접 기획·제작</div>
-          <!-- 등급표 거의 풀로 보이도록 contain + center -->
-          <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;display:flex;align-items:center;justify-content:center;padding:8px;"><img src="./assets/nb_p4_tier_table.png" alt="등급별 혜택 표 (새싹·묘목·나무)" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;object-fit:contain;"></div>
+          <div style="background:var(--cobalt);padding:10px 18px;font-family:var(--font-mono);font-size:12px;font-weight:800;color:#fff;letter-spacing:.1em;text-align:center;text-transform:uppercase;flex-shrink:0;">★ 등급별 혜택 · 산정 일정 · 직접 기획·제작</div>
+          <!-- 2-패널: 좌 혜택표 + 우 등급 산정 일정 (4.png 구조) -->
+          <div style="flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#F8FAFF;padding:10px;">
+            <div style="min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:8px;padding:6px;"><img src="./assets/nb_p4_tier_table.png" alt="등급별 혜택 표 (새싹·묘목·나무)" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;object-fit:contain;"></div>
+            <div style="min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:8px;padding:6px;"><img src="./assets/nb_p4_tier_schedule.png" alt="등급 산정 일정 (매주 월·최근 70일 기준)" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;object-fit:contain;"></div>
+          </div>
         </div>
       </div>
 
