@@ -1133,23 +1133,19 @@ document.addEventListener('DOMContentLoaded', function(){
     </div>
 
     <div class="col-r">
-      <!-- v25: composite를 2장 카드로 분리 (LP + 5만원 페이백 광고), Card #2 클릭 시 YouTube Shorts 재생 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:none;height:580px;">
-        <!-- Card #1: 페이백 캠페인 LP -->
-        <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-          <div style="background:var(--cobalt);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">페이백 캠페인 LP #1</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#FAFBE7;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/v25_split/p7_card1_lp.png" alt="페이백 캠페인 LP — 처음인 친구를 위한 특별한 혜택 · 최대 5만원 쿠폰" style="width:100%;height:auto;display:block;"></div>
+      <!-- v25 fix: composite 크롭 이미지 자체에 헤더가 포함돼 있어 외부 헤더 중복 제거. 자연 높이로 표시 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:none;">
+        <!-- Card #1: 페이백 캠페인 LP (헤더는 이미지 내장) -->
+        <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 6px rgba(15,25,50,.04);">
+          <img src="./assets/v25_split/p7_card1_lp.png" alt="페이백 캠페인 LP #1 — 처음인 친구를 위한 특별한 혜택 · 최대 5만원 쿠폰" style="width:100%;height:auto;display:block;">
         </div>
-        <!-- Card #2: 5만원 페이백 영상 광고 (YouTube Shorts 링크) -->
+        <!-- Card #2: 5만원 페이백 영상 (헤더는 이미지 내장 · 클릭 시 YouTube Shorts 재생) -->
         <a href="https://www.youtube.com/shorts/xTGtM7uacZ0" target="_blank" rel="noopener" title="▶ 5만원 페이백 YouTube Shorts 재생"
-           style="background:#fff;border:1.5px solid var(--lime);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 14px rgba(214,255,61,.22);text-decoration:none;color:inherit;position:relative;">
-          <div style="background:var(--lime);padding:8px 14px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:var(--ink);letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">★ 유입 최대화 프로모션 · 5만원 페이백 광고</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#000;display:flex;align-items:flex-start;justify-content:center;position:relative;">
-            <img src="./assets/v25_split/p7_card2_video.png" alt="5만원 페이백 인플루언서 영상 광고 소재 — YouTube Shorts 재생" style="width:100%;height:auto;display:block;">
-            <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:66px;height:66px;background:rgba(0,0,0,0.72);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.35);">
-              <span style="display:inline-block;width:0;height:0;border-left:21px solid #fff;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px;"></span>
-            </span>
-          </div>
+           style="display:block;background:#000;border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(214,255,61,.22);position:relative;text-decoration:none;">
+          <img src="./assets/v25_split/p7_card2_video.png" alt="5만원 페이백 인플루언서 영상 광고 소재 — YouTube Shorts 재생" style="width:100%;height:auto;display:block;">
+          <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:66px;height:66px;background:rgba(0,0,0,0.72);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.35);">
+            <span style="display:inline-block;width:0;height:0;border-left:21px solid #fff;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px;"></span>
+          </span>
         </a>
       </div>
 
@@ -1369,19 +1365,16 @@ document.addEventListener('DOMContentLoaded', function(){
     </div>
 
     <div class="col-r">
-      <!-- v25: composite를 3장 카드로 분리 (브릿지 LP #1·#2·#3 모바일 캡처) -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;flex:none;height:470px;">
-        <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-          <div style="background:var(--cobalt);padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">브릿지 LP #1 · 20% 할인</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#0A0F2E;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/v25_split/p9_card1.png" alt="브릿지 LP #1 — 비밀 쿠폰 코드 + 20% 할인" style="width:100%;height:auto;display:block;"></div>
+      <!-- v25 fix: 외부 헤더 제거 (크롭 이미지에 헤더 내장) + height 고정해 하단 표 overflow 방지 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;flex:none;height:464px;">
+        <div style="background:#0A0F2E;border-radius:14px;overflow:hidden;box-shadow:0 2px 6px rgba(15,25,50,.04);display:flex;align-items:flex-start;justify-content:center;">
+          <img src="./assets/v25_split/p9_card1.png" alt="브릿지 LP #1 — 비밀 쿠폰 코드 + 20% 할인" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;">
         </div>
-        <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 6px rgba(15,25,50,.04);">
-          <div style="background:var(--cobalt);padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">브릿지 LP #2 · COVERING 50%</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#0A0F2E;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/v25_split/p9_card2.png" alt="브릿지 LP #2 — 대전·세종·청주 확장 50% 할인쿠폰" style="width:100%;height:auto;display:block;"></div>
+        <div style="background:#0A0F2E;border-radius:14px;overflow:hidden;box-shadow:0 2px 6px rgba(15,25,50,.04);display:flex;align-items:flex-start;justify-content:center;">
+          <img src="./assets/v25_split/p9_card2.png" alt="브릿지 LP #2 — 대전·세종·청주 확장 50% 할인쿠폰" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;">
         </div>
-        <div style="background:#fff;border:1.5px solid var(--cobalt);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 14px rgba(30,41,255,.18);">
-          <div style="background:var(--cobalt);padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">★ 브릿지 LP #3 · 첫구매 가격 50%</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#0A0F2E;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/v25_split/p9_card3.png" alt="브릿지 LP #3 — 오백명 한정 첫구매 가격이 50%" style="width:100%;height:auto;display:block;"></div>
+        <div style="background:#0A0F2E;border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(30,41,255,.18);display:flex;align-items:flex-start;justify-content:center;">
+          <img src="./assets/v25_split/p9_card3.png" alt="브릿지 LP #3 — 오백명 한정 첫구매 가격이 50%" style="max-width:100%;max-height:100%;width:auto;height:auto;display:block;">
         </div>
       </div>
 
@@ -1750,11 +1743,11 @@ document.addEventListener('DOMContentLoaded', function(){
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:none;height:430px;">
         <div style="background:#000;border:1.5px solid rgba(219,39,119,.35);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(10,15,46,.18);">
           <div style="background:linear-gradient(135deg,#B5258F,#F58529);padding:6px 12px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:#fff;letter-spacing:.06em;text-align:center;">▣ timemaker_zee · PA</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#000;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/v24_notion/p12_new_1.png" alt="timemaker_zee PA 릴스 (v24 신규 썸네일)" style="width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#000;"></div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#000;"><img src="./assets/v24_notion/p12_new_1.png" alt="timemaker_zee PA 릴스 — 핸드폰 콘텐츠" style="width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block;"></div>
         </div>
         <div style="background:#000;border:1.5px solid var(--lime);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(214,255,61,.22);">
           <div style="background:var(--lime);padding:6px 12px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--ink);letter-spacing:.06em;text-align:center;">★ osoon.zip · 메타 구매 1~3위 소재</div>
-          <div style="flex:1;min-height:0;overflow:hidden;background:#000;display:flex;align-items:flex-start;justify-content:center;"><img src="./assets/v24_notion/p12_new_2.png" alt="osoon.zip(오순의집) PA 릴스 (v24 신규 썸네일)" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></div>
+          <div style="flex:1;min-height:0;overflow:hidden;background:#000;"><img src="./assets/v24_notion/p12_new_2.png" alt="osoon.zip(오순의집) PA 릴스 — 자취생 현실 공감" style="width:100%;height:100%;object-fit:cover;object-position:center 75%;display:block;"></div>
         </div>
       </div>
       <!-- PA 소재 월별 구매수 (사용자 첨부 그래프) -->
@@ -2115,7 +2108,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- ══════ p17  OUTRO + CONTACT (후킹 + 컨택) ══════ -->
 <div class="slide cobalt" id="p17">
   <div class="grid-bg"></div>
-  <div class="ribbon ribbon-bl">0 to 1 · 풀 퍼널 그로스 · 18.9억 (40배)</div>
+  <div class="ribbon ribbon-bl" style="bottom:auto;top:60px;left:-55px;">0 to 1 · 풀 퍼널 그로스 · 18.9억 (40배)</div>
   <span class="sparkle" style="top:160px;right:200px;font-size:42px;"></span>
   <span class="sparkle" style="top:480px;left:160px;font-size:28px;"></span>
   <span class="sparkle" style="bottom:280px;right:380px;font-size:36px;"></span>
