@@ -365,11 +365,57 @@ ENTRY990_SLIDE = '''<div class="slide" id="p990">
     </div>
 
     <div class="col-r">
-      <!-- KPI 비교 표 (11월 vs 12월) -->
-      <div class="chart-card" style="flex:none;display:flex;flex-direction:column;padding:14px 18px;">
+      <!-- 결과물: 좌 연말 청소결산 LP + 우 3-track 프로모션 구조 카드 -->
+      <div style="display:grid;grid-template-columns:230px 1fr;gap:14px;flex:none;height:432px;">
+        <!-- Card #1: 연말 청소결산 LP (직접 기획) -->
+        <div class="phone-frame" style="height:100%;">
+          <div class="scr" style="display:flex;flex-direction:column;height:100%;">
+            <div style="background:#F1F5F9;padding:7px 10px;font-family:var(--font-mono);font-size:10px;font-weight:800;color:var(--sub);letter-spacing:.08em;text-align:center;text-transform:uppercase;flex-shrink:0;">연말 청소결산 · 990원 LP</div>
+            <div style="flex:1;min-height:0;overflow:hidden;background:#F8FAFF;position:relative;"><img src="./assets/covering_promo_year_end.png" alt="연말 청소결산 · 990원 진입 이벤트 상세페이지 (직접 기획·제작)" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"></div>
+          </div>
+        </div>
+
+        <!-- Card #2: 3-track 프로모션 + CRM 자동화 구조 -->
+        <div style="background:var(--ink);border:1.5px solid var(--lime);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(214,255,61,.18);">
+          <div style="background:var(--lime);padding:9px 18px;font-family:var(--font-mono);font-size:11px;font-weight:800;color:var(--ink);letter-spacing:.1em;text-align:center;text-transform:uppercase;flex-shrink:0;">★ 3-track 프로모션 + CRM 자동화 — 단일 LP 한 장에 동시 집행</div>
+          <div style="flex:1;padding:14px 18px;display:flex;flex-direction:column;gap:11px;justify-content:space-between;">
+            <div style="display:flex;align-items:flex-start;gap:11px;">
+              <div style="width:32px;height:32px;background:var(--cobalt);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:900;flex-shrink:0;">①</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--lime);font-weight:800;letter-spacing:.12em;text-transform:uppercase;">메인 · 신규 모객</div>
+                <div style="font-size:13.5px;color:#fff;font-weight:700;line-height:1.4;margin-top:2px;">첫 이용 <strong style="color:var(--lime);">990원 쿠폰</strong> 자동 발급 · 정상가 무시 · 최대 ₩50,000</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:11px;">
+              <div style="width:32px;height:32px;background:var(--cobalt);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:900;flex-shrink:0;">②</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--lime);font-weight:800;letter-spacing:.12em;text-transform:uppercase;">기존 고객 참여</div>
+                <div style="font-size:13.5px;color:#fff;font-weight:700;line-height:1.4;margin-top:2px;">다배출 리워드 (1등 <strong style="color:var(--lime);">290kg</strong>) — 기존 매출 보호</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:11px;">
+              <div style="width:32px;height:32px;background:var(--cobalt);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:900;flex-shrink:0;">③</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--lime);font-weight:800;letter-spacing:.12em;text-transform:uppercase;">바이럴</div>
+                <div style="font-size:13.5px;color:#fff;font-weight:700;line-height:1.4;margin-top:2px;">인스타 친구 태그 챌린지 · <strong style="color:var(--lime);">6,471명 노출</strong> (12/11~12/31)</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:11px;padding-top:9px;border-top:1px dashed rgba(214,255,61,.32);">
+              <div style="width:32px;height:32px;background:#7C3AED;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:#fff;font-weight:900;flex-shrink:0;">CRM</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-family:var(--font-mono);font-size:10px;color:#E9D5FF;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">알림톡 자동화 — 첫 이용·결산·만료 직전 3-step</div>
+                <div style="font-size:12.5px;color:#fff;font-weight:600;line-height:1.4;margin-top:2px;">첫 이용 쿠폰 <strong>14,315명</strong> · 12/27 결산 <strong>5,601명</strong> · 12/31 18시 만료 직전 추가 푸시</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI 비교 표 (11월 vs 12월) + 핵심 인사이트 -->
+      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 18px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
           <div class="chart-title" style="margin-bottom:0;">핵심 KPI — 11월 vs 12월 (3-track 프로모션 전후)</div>
-          <span style="font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.08em;">2024.11–12</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.08em;">2024.11–12 · 모수 동일</span>
         </div>
         <table style="width:100%;border-collapse:separate;border-spacing:0;font-variant-numeric:tabular-nums;">
           <thead><tr>
@@ -380,80 +426,34 @@ ENTRY990_SLIDE = '''<div class="slide" id="p990">
           </tr></thead>
           <tbody>
             <tr style="border-bottom:1px solid var(--line-lt);">
-              <td style="padding:10px 10px;font-size:12px;color:var(--text);">월 신규 유저</td>
-              <td style="text-align:right;padding:10px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">1,876명</td>
-              <td style="text-align:right;padding:10px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">2,545명</td>
-              <td style="text-align:right;padding:10px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+36% (+669명)</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--line-lt);">
-              <td style="padding:10px 10px;font-size:12px;color:var(--text);">네이버 브랜드 검색량</td>
-              <td style="text-align:right;padding:10px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">1,810회</td>
-              <td style="text-align:right;padding:10px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">4,400회</td>
-              <td style="text-align:right;padding:10px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+143% (2.4×)</span></td>
+              <td style="padding:9px 10px;font-size:12px;color:var(--text);">월 신규 유저</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">1,876명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">2,545명</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+36% (+669명)</span></td>
             </tr>
             <tr style="background:#F4FBF7;border-bottom:1px solid var(--line-lt);">
-              <td style="padding:10px 10px;font-size:12px;font-weight:800;color:var(--text);">CAC (실측)</td>
-              <td style="text-align:right;padding:10px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">₩19,250</td>
-              <td style="text-align:right;padding:10px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">₩19,056</td>
-              <td style="text-align:right;padding:10px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">-₩194 ↓</span></td>
+              <td style="padding:9px 10px;font-size:12px;font-weight:800;color:var(--text);">네이버 브랜드 검색량</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">1,810회</td>
+              <td style="text-align:right;padding:9px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">4,400회</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+143% (2.4×)</span></td>
+            </tr>
+            <tr style="background:#F4FBF7;border-bottom:1px solid var(--line-lt);">
+              <td style="padding:9px 10px;font-size:12px;font-weight:800;color:var(--text);">CAC (실측)</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">₩19,250</td>
+              <td style="text-align:right;padding:9px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">₩19,056</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">-₩194 ↓</span></td>
             </tr>
             <tr>
-              <td style="padding:10px 10px;font-size:12px;color:var(--text);">기존 고객 매출</td>
-              <td style="text-align:right;padding:10px 10px;font-size:12px;font-family:var(--font-mono);color:var(--sub);">하락 예상</td>
-              <td style="text-align:right;padding:10px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">오히려 상승</td>
-              <td style="text-align:right;padding:10px 10px;"><span style="display:inline-block;background:#EEF1FF;color:#1E29FF;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">예상 역전</span></td>
+              <td style="padding:9px 10px;font-size:12px;color:var(--text);">990원 코호트 vs 비쿠폰 <span style="color:var(--sub);font-size:10px;">M1~M6 잔존</span></td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--sub);" colspan="2">37.7% / 29.4% / 25.2% / 25.6% / 23.8% / 23.3% <span style="color:var(--text2);">vs</span> 34.7% / 26.5% / 24.5% / 23.4% / 22.7% / 23.2%</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#EEF1FF;color:#1E29FF;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">M1~M6 우위</span></td>
             </tr>
           </tbody>
         </table>
-        <div style="margin-top:12px;padding:12px 14px;background:var(--ink);border-radius:8px;position:relative;overflow:hidden;">
+        <div style="margin-top:10px;padding:12px 14px;background:var(--ink);border-radius:8px;position:relative;overflow:hidden;">
           <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--lime);"></div>
           <div style="font-family:var(--font-mono);font-size:11px;color:var(--lavender);font-weight:600;letter-spacing:.08em;">핵심 인사이트</div>
-          <div style="font-family:var(--font-display);font-size:15px;color:#fff;font-weight:800;letter-spacing:-.018em;margin-top:3px;line-height:1.4;">신규 +36%·브랜드 검색 2.4×·CAC 하락 — 세 축이 <span style="color:var(--lime);">동시에 움직였다</span>는 점이 핵심. 브랜드 검색 급증은 광고 도달 밖 입소문 신호.</div>
-        </div>
-      </div>
-
-      <!-- 코호트 잔존 검증 -->
-      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 18px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <div class="chart-title" style="margin-bottom:0;">코호트 검증 — 990원 유입 vs 비쿠폰 신규 (M1~M6 잔존율)</div>
-          <span style="font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.08em;">2024-12 가입 코호트</span>
-        </div>
-        <table style="width:100%;border-collapse:separate;border-spacing:0;font-variant-numeric:tabular-nums;">
-          <thead><tr>
-            <th style="text-align:left;padding:7px 8px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:#fff;border-radius:6px 0 0 0;">구분</th>
-            <th style="text-align:right;padding:7px 6px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--lavender);">모수</th>
-            <th style="text-align:right;padding:7px 6px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:#fff;">M1</th>
-            <th style="text-align:right;padding:7px 6px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:#fff;">M2</th>
-            <th style="text-align:right;padding:7px 6px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:#fff;">M3</th>
-            <th style="text-align:right;padding:7px 6px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:#fff;">M4</th>
-            <th style="text-align:right;padding:7px 6px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:#fff;">M5</th>
-            <th style="text-align:right;padding:7px 8px;background:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;color:#fff;border-radius:0 6px 0 0;">M6</th>
-          </tr></thead>
-          <tbody>
-            <tr style="background:#F4FBF7;border-bottom:1px solid var(--line-lt);">
-              <td style="padding:9px 8px;font-size:11px;font-weight:800;color:var(--text);">★ 990원 코호트</td>
-              <td style="text-align:right;padding:9px 6px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">579명</td>
-              <td style="text-align:right;padding:9px 6px;font-size:12px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">37.7%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:12px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">29.4%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:12px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">25.2%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:12px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">25.6%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:12px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">23.8%</td>
-              <td style="text-align:right;padding:9px 8px;font-size:12px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">23.3%</td>
-            </tr>
-            <tr>
-              <td style="padding:9px 8px;font-size:11px;color:var(--text2);">비쿠폰 신규</td>
-              <td style="text-align:right;padding:9px 6px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">2,492명</td>
-              <td style="text-align:right;padding:9px 6px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">34.7%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">26.5%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">24.5%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">23.4%</td>
-              <td style="text-align:right;padding:9px 6px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">22.7%</td>
-              <td style="text-align:right;padding:9px 8px;font-size:11px;font-family:var(--font-mono);color:var(--text2);">23.2%</td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="margin-top:auto;padding-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--sub);line-height:1.5;">
-          ✅ "저가 진입 = 저품질 유저" 통념을 <strong style="color:var(--text);">코호트 데이터로 직접 깸</strong> — M1~M6 전 구간 우위. 진입 비용을 낮춰도 잔존 품질은 떨어지지 않음.
+          <div style="font-family:var(--font-display);font-size:15.5px;color:#fff;font-weight:800;letter-spacing:-.018em;margin-top:3px;line-height:1.4;">신규 +36%·브랜드 검색 2.4×·CAC 동시 하락 — 세 축이 <span style="color:var(--lime);">함께 움직임</span>. 브랜드 검색 급증 = 광고 도달 밖 입소문 신호, CAC 하락 = 쿠폰이 Paid 효율까지 견인.</div>
         </div>
       </div>
     </div>
