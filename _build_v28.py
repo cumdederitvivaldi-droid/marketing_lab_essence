@@ -625,21 +625,23 @@ WEB2APP_SLIDE = '''<div class="slide" id="p10">
 slide_blocks["p10"] = WEB2APP_SLIDE
 
 
-# v26 had p3 chrome="<b>03</b> / 16". The other chromes are unique strings we
-# rewrite per slide via slide-num + chrome page substitution.
+# 슬라이드 총수가 NEW_ORDER에 따라 결정되므로 "NN / MM" → "NN / TOTAL" 로 동적.
+# (v26 source가 다른 deck 빌드(_patch_v26.py)로 17 슬라이드 형태가 되어도 호환)
+TOTAL = len(NEW_ORDER)
+TOTAL_STR = page2(TOTAL)
 for sid, new_pos in NEW_ORDER:
     block = slide_blocks[sid]
 
-    # (a) slide-num pill: <span class="slide-num">NN / 16</span>
+    # (a) slide-num pill: NN / MM → new_pos / TOTAL
     block = re.sub(
-        r'(<span class="slide-num">)\d{2}( / 16</span>)',
-        rf"\g<1>{page2(new_pos)}\g<2>",
+        r'(<span class="slide-num">)\d{2} / \d{2}(</span>)',
+        rf"\g<1>{page2(new_pos)} / {TOTAL_STR}\g<2>",
         block,
     )
-    # (b) chrome page number: <b>NN</b> / 16
+    # (b) chrome page number: <b>NN</b> / MM → <b>new_pos</b> / TOTAL
     block = re.sub(
-        r"(<b>)\d{2}(</b> / 16</span>)",
-        rf"\g<1>{page2(new_pos)}\g<2>",
+        r"(<b>)\d{2}(</b> / )\d{2}(</span>)",
+        rf"\g<1>{page2(new_pos)}\g<2>{TOTAL_STR}\g<3>",
         block,
     )
 

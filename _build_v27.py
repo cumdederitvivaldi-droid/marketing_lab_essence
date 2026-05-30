@@ -80,28 +80,29 @@ assert set(slide_blocks) == EXPECTED_V26_IDS, (
 # 2. New order — performance marketer first
 # --------------------------------------------------------------------------
 NEW_ORDER = [
-    ("p1",       1),   # Cover
-    ("p2",       2),   # Profile
-    ("p3",       3),   # Performance Capability
-    ("p10",      4),   # Web2App Bridge        (perf 01/03)
-    ("p11",      5),   # T-ROAS                (perf 02/03)
-    ("ptiktok",  6),   # NEW: TikTok 매체 확장 (perf 03/03)
-    ("p13",      7),   # PA 그로스 사이클      (viral 01/01)
-    ("p7",       8),   # 영상 콘텐츠           (content 01/01)
-    ("p6",       9),   # CVR +231%             (growth 01/02)
-    ("p4",      10),   # M1 리텐션 +41%p        (CRM  01/02) ← 카테고리 변경
-    ("p990",    11),   # 990원 진입 이벤트     (growth 02/02)
-    ("p9",      12),   # 페이백 RCT             (CRM  02/02)
-    ("p14",     13),   # Claude CLI
-    ("p15",     14),   # 팀 리딩
-    ("p16",     15),   # 이전 경력
-    ("p17",     16),   # OUTRO
+    ("p1",         1),   # Cover
+    ("p2",         2),   # Profile
+    ("p3",         3),   # Performance Capability
+    ("p10",        4),   # Web2App Bridge          (perf 01/04)
+    ("p11",        5),   # T-ROAS                  (perf 02/04)
+    ("p_ios_odm",  6),   # NEW: iOS ODM 연동       (perf 03/04)
+    ("ptiktok",    7),   # TikTok 매체 확장        (perf 04/04)
+    ("p13",        8),   # PA 그로스 사이클        (viral 01/01)
+    ("p7",         9),   # 영상 콘텐츠             (content 01/01)
+    ("p6",        10),   # CVR +231%               (growth·CRM 01/02)
+    ("p4",        11),   # M1 리텐션 +41%p          (growth·CRM 02/02)
+    ("p990",      12),   # 990원 진입 이벤트       (growth 01/01)
+    ("p9",        13),   # 페이백 RCT               (CRM 01/01)
+    ("p14",       14),   # Claude CLI
+    ("p15",       15),   # 팀 리딩
+    ("p16",       16),   # 이전 경력
+    ("p17",       17),   # OUTRO
 ]
-assert len(NEW_ORDER) == 16
+assert len(NEW_ORDER) == 17
 
 # Slide IDs in NEW_ORDER that are NOT present in v26 (we synthesize them below
 # and inject into slide_blocks before per-slide substitution).
-EXTRA_SLIDE_IDS = {"ptiktok", "p990"}
+EXTRA_SLIDE_IDS = {"ptiktok", "p990", "p_ios_odm"}
 
 # --------------------------------------------------------------------------
 # 3. Per-slide text substitutions (slide-num + chrome page number + sub-counters)
@@ -121,9 +122,14 @@ def page2(n: int) -> str:
 # v26 sub-counter values per id (cat-meta `<b>NN / MM</b>` strings) and the
 # replacement we want for v27.
 SUBCOUNTER_REWRITES: dict[str, tuple[str, str]] = {
-    # 퍼포먼스 카테고리에 TikTok 슬라이드를 추가했으므로 02/02 → 02/03
-    # (p10 Web2App은 본문 자체를 새 수치로 교체하면서 01/03을 이미 박아둠)
-    "p11": ("<b>02 / 02</b> · T-ROAS", "<b>02 / 03</b> · T-ROAS"),
+    # 퍼포먼스 카테고리 4개 (Web2App, T-ROAS, iOS ODM, TikTok) — v26 02/02 → v27 02/04
+    # (p10 Web2App / p_ios_odm은 본문 자체 인라인에서 01/04, 03/04 박음)
+    "p11": ("<b>02 / 02</b> · T-ROAS", "<b>02 / 04</b> · T-ROAS"),
+    # TikTok 슬라이드 본문 인라인 cat-meta는 "03 / 03" — iOS ODM 추가로 04/04로 갱신
+    "ptiktok": (
+        "<b>03 / 03</b> · TikTok 매체 확장",
+        "<b>04 / 04</b> · TikTok 매체 확장",
+    ),
     # 단순 협업 제거 → PA가 단독 바이럴 슬라이드. 02/02 → 01/01
     "p13": (
         "<b>02 / 02</b> · PA 그로스 사이클",
@@ -516,7 +522,7 @@ WEB2APP_SLIDE = '''<div class="slide" id="p10">
     <div>
       <div class="cat-row">
         <span class="cat-chip" style="background:var(--ca-perf);"><span class="ko">퍼포먼스</span><span class="en">Performance</span></span>
-        <span class="cat-meta"><b>01 / 03</b> · Web2App</span>
+        <span class="cat-meta"><b>01 / 04</b> · Web2App</span>
       </div>
       <div class="page-title">Web2App 브릿지로 — <em>CPA -51.8% · 구매 CVR 2배 · ROAS 2.1배</em></div>
     </div>
@@ -662,21 +668,189 @@ WEB2APP_SLIDE = '''<div class="slide" id="p10">
 slide_blocks["p10"] = WEB2APP_SLIDE
 
 
-# v26 had p3 chrome="<b>03</b> / 16". The other chromes are unique strings we
-# rewrite per slide via slide-num + chrome page substitution.
+# --------------------------------------------------------------------------
+# 3.8 Synthesize the new iOS ODM 슬라이드 (퍼포먼스 03/04)
+#     Notion 인사이트: ODM 연동으로 막혔던 구글애즈 iOS 채널 가동.
+#     변곡점 25.12 전후 6개월 — iOS 구매 유저 +86.5%, 구글애즈 ×106배.
+# --------------------------------------------------------------------------
+IOS_ODM_SLIDE = '''<div class="slide" id="p_ios_odm">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="cat-row">
+        <span class="cat-chip" style="background:var(--ca-perf);"><span class="ko">퍼포먼스</span><span class="en">Performance · iOS UA</span></span>
+        <span class="cat-meta"><b>03 / 04</b> · iOS ODM</span>
+      </div>
+      <div class="page-title">막혔던 구글애즈 iOS를 다시 연 <em>ODM 연동</em> — 구매 유저 <em>+86.5%</em> · 구글애즈 <em>×106배</em></div>
+    </div>
+    <span class="slide-num">06 / 16</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-perf);">Performance · Google Ads · iOS UA</span>
+        <span class="c-badge outline">커버링 · 2026.03 ODM 연동 · 변곡점 25.12 · 12개월 추세</span>
+      </div>
+      <div class="p-title">iOS는 AOS 대비 LTV 최대 <em>4.6배</em>인데<br>가장 큰 채널에서 한 명도 데려올 수 없었다</div>
+
+      <div class="phase b1"><span class="ptag">병목</span>ATT 이후 IDFA 막힘 + 구글 ODM 미설정 — iOS 학습 신호 0</div>
+      <div class="sec tight"><ul>
+        <li>구글애즈 머신러닝이 학습할 <em>iOS 전환 신호</em>가 없어 <strong>iOS 모객 전면 불가</strong> · 매월 수천만원 기회손실</li>
+        <li>마케팅 단독으로는 못 푸는 <strong>앱 단 개발 작업</strong>이라 백로그에 계속 밀림 → 손실 비용을 데이터로 제시해 개발·제품팀 설득</li>
+      </ul></div>
+
+      <div class="phase b2"><span class="ptag">실행</span>① ODM 정식 연동 + ② iOS 고효율 소재 핏</div>
+      <div class="sec tight"><ul>
+        <li><strong>① 구글애즈 ODM 연동 (2026.03)</strong> — 개발·제품팀 협업으로 정식 연동, 막혔던 구글애즈 iOS 캠페인 가동</li>
+        <li><strong>② iOS 고효율 소재 핏 (25.09~)</strong> — 대형폐기물·가구·가전·엄마 소구를 채널 간 이식 · 30초 숏폼 위주 <strong>2주 단위 교체</strong></li>
+        <li>준비/진행 중인 다음 레버 — ③ 측정 인프라(딥링크 포스트백·SKAN) · ④ ATT 동의 프리보딩 · ⑤ 유튜브 직접 컨택</li>
+      </ul></div>
+
+      <div class="phase b3"><span class="ptag">결과</span>변곡점(25.12) 전후 6개월 — 구매 유저 <b>+86.5%</b>, 구매 건수 <b>+82.3%</b></div>
+      <div class="sec tight"><ul>
+        <li>월평균 iOS 구매 유저 <strong>17,400 → 32,451명 (+86.5%)</strong> · 구매 건수 합계 <strong>251,539 → 458,460건 (+82.3%)</strong></li>
+        <li>현재(26.05) <strong>41,833명 — 역대 최고치</strong> (출시 저점 9,280명 대비 4.5배), 계속 우상향</li>
+        <li>같은 기간 신규 설치는 +36.3% → <strong>구매 유저가 설치보다 2.4배 빠르게</strong> 늘었다 (질이 함께 좋아짐)</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">+86.5%</span><span class="kpi-label">iOS 구매 유저 월평균 (17,400 → 32,451명)</span></div>
+        <div class="kpi"><span class="kpi-num">×106</span><span class="kpi-label">구글애즈 iOS 구매 유저 (15 → 1,595명)</span></div>
+        <div class="kpi"><span class="kpi-num">41,833명</span><span class="kpi-label">26.05 역대 최고치 · 저점 대비 4.5배</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- 상단: 12개월 막대 차트 (25.06 ~ 26.05) — 변곡점(25.12) 강조 -->
+      <div class="chart-card" style="flex:none;display:flex;flex-direction:column;padding:14px 18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <div class="chart-title" style="margin-bottom:0;">iOS 월별 구매 유저 — 25.06 9,280명 → 26.05 41,833명 · 4.5배 성장</div>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.06em;">★ 변곡점 25.12 · ODM 26.03</span>
+        </div>
+        <svg viewBox="0 0 720 280" width="100%" style="display:block;">
+          <defs>
+            <linearGradient id="b_pre" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B95A6"/><stop offset="100%" stop-color="#C7CBE3"/></linearGradient>
+            <linearGradient id="b_post" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1E29FF"/><stop offset="100%" stop-color="#7C90FF"/></linearGradient>
+          </defs>
+          <line x1="60" y1="30" x2="700" y2="30" stroke="#F1F4F9"/><text x="55" y="34" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">45K</text>
+          <line x1="60" y1="80" x2="700" y2="80" stroke="#F1F4F9"/><text x="55" y="84" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">33K</text>
+          <line x1="60" y1="130" x2="700" y2="130" stroke="#F1F4F9"/><text x="55" y="134" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">22K</text>
+          <line x1="60" y1="180" x2="700" y2="180" stroke="#F1F4F9"/><text x="55" y="184" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">11K</text>
+          <line x1="60" y1="230" x2="700" y2="230" stroke="#E2E6EF" stroke-width="1.5"/>
+
+          <rect x="70"  y="188.7" width="38" height="41.3"  rx="3" fill="url(#b_pre)"/>
+          <rect x="122" y="156.3" width="38" height="73.7"  rx="3" fill="url(#b_pre)"/>
+          <rect x="174" y="149.3" width="38" height="80.7"  rx="3" fill="url(#b_pre)"/>
+          <rect x="226" y="147.6" width="38" height="82.4"  rx="3" fill="url(#b_pre)"/>
+          <rect x="278" y="136.9" width="38" height="93.1"  rx="3" fill="url(#b_pre)"/>
+          <rect x="330" y="136.8" width="38" height="93.2"  rx="3" fill="url(#b_pre)"/>
+          <rect x="382" y="117.1" width="38" height="112.9" rx="3" fill="url(#b_post)"/>
+          <rect x="434" y="110.3" width="38" height="119.7" rx="3" fill="url(#b_post)"/>
+          <rect x="486" y="101.8" width="38" height="128.2" rx="3" fill="url(#b_post)"/>
+          <rect x="538" y="78.9"  width="38" height="151.1" rx="3" fill="url(#b_post)"/>
+          <rect x="590" y="62.2"  width="38" height="167.8" rx="3" fill="url(#b_post)"/>
+          <rect x="642" y="44.1"  width="38" height="185.9" rx="3" fill="#0F19D8"/>
+
+          <line x1="376" y1="26" x2="376" y2="230" stroke="#B3DA1C" stroke-width="1.4" stroke-dasharray="3,4"/>
+          <rect x="334" y="9" width="84" height="16" rx="3" fill="#0A0F2E"/>
+          <text x="376" y="21" font-size="10" fill="#D6FF3D" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">★ 25.12 변곡점</text>
+          <line x1="532" y1="26" x2="532" y2="230" stroke="#1E29FF" stroke-width="1.4" stroke-dasharray="3,4"/>
+          <rect x="492" y="9" width="80" height="16" rx="3" fill="#1E29FF"/>
+          <text x="532" y="21" font-size="10" fill="#fff" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">↑ 26.03 ODM</text>
+
+          <text x="89"  y="184" font-size="9"    fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">9.3K</text>
+          <text x="349" y="132" font-size="9"    fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">21K</text>
+          <text x="401" y="112" font-size="10.5" fill="#0F19D8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">25.4K</text>
+          <text x="557" y="73"  font-size="10.5" fill="#0F19D8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">34.0K</text>
+          <text x="661" y="38"  font-size="12"   fill="#0F19D8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">41.8K ★</text>
+
+          <text x="89"  y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.06</text>
+          <text x="141" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">07</text>
+          <text x="193" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">08</text>
+          <text x="245" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">09</text>
+          <text x="297" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">10</text>
+          <text x="349" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">11</text>
+          <text x="401" y="248" font-size="10" fill="#0F172A" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">25.12</text>
+          <text x="453" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">26.01</text>
+          <text x="505" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">02</text>
+          <text x="557" y="248" font-size="10" fill="#0F172A" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">03</text>
+          <text x="609" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">04</text>
+          <text x="661" y="248" font-size="10" fill="#0F19D8" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">05</text>
+
+          <rect x="60" y="258" width="640" height="18" rx="4" fill="#0A0F2E"/>
+          <text x="380" y="271" font-size="11" fill="#D6FF3D" text-anchor="middle" font-family="JetBrains Mono" font-weight="800">★ 가속 전 6개월 평균 17,400명 → 가속 후 6개월 평균 32,451명 (+86.5%) · 신규 설치는 +36% 만큼만 → 질이 함께 좋아짐</text>
+        </svg>
+      </div>
+
+      <!-- 하단: 채널별 비교 표 -->
+      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="chart-title" style="margin-bottom:0;">채널별 iOS 구매 유저 — 변곡점 전후 6개월 (Airbridge 실측)</div>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.08em;">25.06~11 vs 25.12~26.05</span>
+        </div>
+        <table style="width:100%;border-collapse:separate;border-spacing:0;font-variant-numeric:tabular-nums;">
+          <thead><tr>
+            <th style="text-align:left;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;border-radius:6px 0 0 0;">채널 (iOS)</th>
+            <th style="text-align:right;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;">가속 전 6개월</th>
+            <th style="text-align:right;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;">가속 후 6개월</th>
+            <th style="text-align:right;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;border-radius:0 6px 0 0;">증감</th>
+          </tr></thead>
+          <tbody>
+            <tr style="background:#F4FBF7;border-bottom:1px solid var(--line-lt);">
+              <td style="padding:9px 10px;font-size:13px;font-weight:800;color:var(--text);">★ 구글애즈 <span style="font-size:11px;color:var(--sub);font-weight:500;">(ODM 연동)</span></td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">15명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">1,595명</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">×106 (약 106배)</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line-lt);">
+              <td style="padding:9px 10px;font-size:13px;color:var(--text);">애플 서치애즈 (ASA)</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">3,398명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">9,660명</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+184%</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line-lt);">
+              <td style="padding:9px 10px;font-size:13px;color:var(--text);">인스타그램</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">172명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">1,578명</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+817%</span></td>
+            </tr>
+            <tr>
+              <td style="padding:9px 10px;font-size:13px;color:var(--text);">메타 (페이스북)</td>
+              <td style="text-align:right;padding:9px 10px;font-size:11px;font-family:var(--font-mono);color:var(--sub);">비교 제한*</td>
+              <td style="text-align:right;padding:9px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">13,516명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:11px;font-family:var(--font-mono);color:var(--sub);">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:auto;padding-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--text2);line-height:1.5;">
+          ✅ <strong style="color:var(--text);">ODM은 "광고를 더 쓴 것"이 아니라 "쓸 수 없던 채널을 쓸 수 있게 만든" 액션.</strong> 메타 단일 의존 → 4채널 분산. <span style="color:var(--sub);">*메타 페이스북은 매체 정책상 180일 이전 데이터가 0으로 집계되어 전 기간 비교 불가.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>06</b> / 16</span><span>Performance · iOS UA · ODM · 구매 유저 +86.5% · 구글애즈 ×106</span></div>
+</div>'''
+
+slide_blocks["p_ios_odm"] = IOS_ODM_SLIDE
+
+
+# 슬라이드 총수가 늘었으므로 "NN / 16" → "NN / TOTAL" 로 dynamic 처리.
+TOTAL = len(NEW_ORDER)
+TOTAL_STR = page2(TOTAL)
 for sid, new_pos in NEW_ORDER:
     block = slide_blocks[sid]
 
-    # (a) slide-num pill: <span class="slide-num">NN / 16</span>
+    # (a) slide-num pill: <span class="slide-num">NN / 16</span> → NN / TOTAL
     block = re.sub(
-        r'(<span class="slide-num">)\d{2}( / 16</span>)',
-        rf"\g<1>{page2(new_pos)}\g<2>",
+        r'(<span class="slide-num">)\d{2} / \d{2}(</span>)',
+        rf"\g<1>{page2(new_pos)} / {TOTAL_STR}\g<2>",
         block,
     )
-    # (b) chrome page number: <b>NN</b> / 16
+    # (b) chrome page number: <b>NN</b> / 16 → <b>NN</b> / TOTAL
     block = re.sub(
-        r"(<b>)\d{2}(</b> / 16</span>)",
-        rf"\g<1>{page2(new_pos)}\g<2>",
+        r"(<b>)\d{2}(</b> / )\d{2}(</span>)",
+        rf"\g<1>{page2(new_pos)}\g<2>{TOTAL_STR}\g<3>",
         block,
     )
 
