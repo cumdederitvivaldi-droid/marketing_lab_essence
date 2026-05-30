@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet">
+<title>iOS ODM 연동으로 구매 유저 +86% — v26/v27 포트폴리오용 신규 슬라이드 미리보기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+/* ════════════════════════════════════════════════════════════
+ * Portfolio v14 — "Cobalt Edge"
+ * Hybrid: v7 cobalt/lime visual rituals × v13 light-base readability
+ * ════════════════════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+/* ─── Responsive scale: 1920×1080 디자인을 viewport 너비에 맞춰 비례 축소 ─── */
+/* 1920px 이상 viewport: scale 1.0 유지 (디자인 원본 크기 그대로) */
+/* 1920px 미만 viewport: 가로 너비에 맞춰 슬라이드 통째로 축소 (16:9 비율 유지) */
+:root{
+  --slide-scale: min(1, calc(100vw / 1920px));
+}
+@media (max-width: 1920px){
+  html,body{
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  body{align-items:flex-start !important;}
+}
+
+:root{
+  /* ─── Core palette (v7 cobalt+lime) ─── */
+  --cobalt:#1E29FF;
+  --cobalt-deep:#0F19D8;
+  --cobalt-rich:#14159F;
+  --cobalt-soft:#EEF1FF;
+  --cobalt-border:#C9D0FF;
+  --lime:#D6FF3D;
+  --lime-deep:#B3DA1C;
+  --lime-soft:#F4FFCC;
+  --ink:#0A0F2E;
+  --ink-2:#161B36;
+  --lavender:#C7CBE3;
+  --lavender-dim:#8B91B4;
+
+  /* ─── Light surfaces (v13 readability) ─── */
+  --bg:#F7F9FD;
+  --white:#FFFFFF;
+  --text:#0F172A;
+  --text2:#1F2837;
+  --sub:#5B6675;
+  --sub-2:#8B95A6;
+  --line:#E2E6EF;
+  --line-lt:#F1F4F9;
+
+  /* ─── Category code (v13 retained, tone-aligned) ─── */
+  --ca-growth:#10C390;
+  --ca-crm:#EF4444;
+  --ca-perf:#1E29FF;
+  --ca-content:#F5B400;
+  --ca-viral:#DB2777;
+  --ca-ai:#7C3AED;
+  --ca-team:#475569;
+
+  --font-display:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  --font-sans:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+
+  /* ─── Legacy compatibility (v13 inline styles → cobalt mapping) ─── */
+  --blue:var(--cobalt);
+  --blue-bright:var(--cobalt);
+  --blue-deep:var(--cobalt-deep);
+  --blue-navy:var(--ink);
+  --blue-soft:var(--cobalt-soft);
+  --blue-border:var(--cobalt-border);
+  --blue-mid:var(--lavender);
+}
+body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction:column;align-items:center;gap:3px;padding:3px 0;font-feature-settings:"ss01" 1,"tnum" 1;-webkit-font-smoothing:antialiased;}
+.slide{width:1920px;height:1080px;background:var(--bg);overflow:hidden;flex-shrink:0;position:relative;color:var(--text);transform:scale(var(--slide-scale));transform-origin:top left;margin-bottom:calc(-1080px * (1 - var(--slide-scale)));}
+.slide.dark{background:var(--ink);color:#fff;}
+.slide.cobalt{background:var(--cobalt);color:#fff;}
+
+/* ─── v7 ritual: grid background ─── */
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(to right,rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.08) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.grid-bg.dim{background-image:linear-gradient(to right,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.04) 1px,transparent 1px);}
+.grid-bg.light{background-image:linear-gradient(to right,rgba(30,41,255,.045) 1px,transparent 1px),linear-gradient(to bottom,rgba(30,41,255,.045) 1px,transparent 1px);background-size:48px 48px;}
+
+/* ─── v7 ritual: sparkle ✦ ─── */
+.sparkle{position:absolute;color:var(--lime);line-height:1;pointer-events:none;z-index:2;text-shadow:0 0 24px rgba(214,255,61,.45);font-family:Arial,sans-serif;}
+.sparkle::before{content:'✦';}
+.sparkle.cobalt-tint{color:var(--cobalt);text-shadow:0 0 24px rgba(30,41,255,.18);}
+
+/* ─── v7 ritual: ribbon (cover/CTA only) ─── */
+.ribbon{position:absolute;background:var(--lime);color:var(--ink);font-family:var(--font-display);font-weight:900;letter-spacing:-.01em;padding:20px 64px;font-size:22px;line-height:1;box-shadow:0 18px 40px rgba(0,0,0,.25);white-space:nowrap;z-index:3;}
+.ribbon::before,.ribbon::after{content:'';position:absolute;width:22px;height:100%;top:0;background:var(--lime-deep);clip-path:polygon(0 0,100% 0,100% 100%,50% 100%);}
+.ribbon::before{left:-22px;transform:scaleX(-1);}
+.ribbon::after{right:-22px;}
+.ribbon-tr{top:88px;right:-55px;transform:rotate(8deg);transform-origin:right center;}
+.ribbon-bl{bottom:120px;left:-55px;transform:rotate(-8deg);transform-origin:left center;}
+
+/* ─── v7 ritual: kicker (mono eyebrow + lime underline) ─── */
+.kicker{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cobalt);display:inline-flex;align-items:center;gap:14px;}
+.kicker::before{content:'';width:40px;height:2.5px;background:var(--lime);}
+.kicker.dark{color:var(--lime);}
+.kicker.dark::before{background:var(--lime);}
+
+/* ─── v7 ritual: stage tag (lime solid chip) ─── */
+.stage-tag{display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);background:var(--lime);padding:8px 16px;border-radius:4px;line-height:1;}
+
+/* ─── v7 ritual: bignum (cobalt big metric) ─── */
+.bignum{font-family:var(--font-display);font-weight:900;color:var(--cobalt);line-height:.92;letter-spacing:-.04em;font-variant-numeric:tabular-nums;}
+.bignum.lime{color:var(--lime);}
+.bignum.ink{color:var(--ink);}
+.bignum .u{font-size:.45em;opacity:.85;margin-left:4px;}
+
+/* ─── v7 ritual: chrome (mono footer) ─── */
+.chrome{position:absolute;left:96px;right:96px;bottom:36px;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--sub);z-index:5;}
+.chrome b{color:var(--cobalt);font-weight:700;}
+.chrome.dark{color:rgba(255,255,255,.55);}
+.chrome.dark b{color:var(--lime);}
+
+/* ─── v7 ritual: result chip (lime + ink) ─── */
+.chip-result{display:inline-block;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;letter-spacing:.04em;}
+
+/* ─── v15: skill block (7-grid capability) ─── */
+.skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.skill-block{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;box-shadow:0 2px 6px rgba(15,25,50,.04);}
+.skill-block::before{content:'';position:absolute;top:0;left:0;width:44px;height:3px;background:var(--lime);}
+.skill-block .sb-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.skill-block .sb-name{font-family:var(--font-display);font-size:19px;font-weight:900;color:var(--text);letter-spacing:-.018em;line-height:1.1;}
+.skill-block .sb-en{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;color:var(--sub);text-transform:uppercase;margin-top:2px;}
+.skill-block .sb-desc{font-size:13px;color:var(--text2);line-height:1.55;}
+
+/* ─── v15: outro / CTA cards ─── */
+.outro-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px 28px;display:flex;align-items:center;gap:18px;box-shadow:0 2px 6px rgba(15,25,50,.04);position:relative;overflow:hidden;}
+.outro-card::before{content:'';position:absolute;top:0;left:0;width:42px;height:3px;background:var(--lime);}
+
+/* ─── v15: previous company card ─── */
+.pc-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;box-shadow:0 2px 6px rgba(15,25,50,.04);}
+.pc-card::before{content:'';position:absolute;top:0;left:0;width:42px;height:3px;background:var(--lime);}
+.pc-card.dark{background:var(--ink);color:#fff;border:none;}
+.pc-card.dark::before{background:var(--lime);}
+
+/* ─── v15: phone frame (bridge page preview) ─── */
+.phone-frame{background:#0A0F2E;border-radius:24px;padding:8px;box-shadow:0 12px 28px rgba(0,0,0,.18);overflow:hidden;}
+.phone-frame .scr{background:#fff;border-radius:18px;overflow:hidden;}
+
+/* ─── v15: header tight padding for content slides ─── */
+.hd-tight{padding:48px 96px 0;}
+
+/* ─── v16: category readability — big chip + meta ─── */
+.cat-row{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+.cat-chip{display:inline-flex;align-items:center;gap:10px;padding:10px 20px;border-radius:6px;font-family:var(--font-display);font-weight:900;color:#fff;letter-spacing:-.005em;line-height:1;}
+.cat-chip::before{content:'';display:inline-block;width:10px;height:10px;background:var(--lime);border-radius:50%;}
+.cat-chip .ko{font-size:19px;font-weight:900;}
+.cat-chip .en{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-left:4px;}
+.cat-meta{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sub);display:inline-flex;align-items:center;gap:8px;}
+.cat-meta b{color:var(--text);font-weight:800;}
+.cat-meta::before{content:'';display:inline-block;width:22px;height:2px;background:var(--line);}
+
+/* ─── v16: video thumbnail card (YouTube Shorts) ─── */
+.yt-card{position:relative;background:#000;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:#fff;box-shadow:0 6px 18px rgba(10,15,46,.16);border:1.5px solid rgba(214,255,61,.18);transition:transform .2s ease;}
+.yt-card:hover{transform:translateY(-2px);border-color:var(--lime);}
+.yt-card .thumb{position:relative;overflow:hidden;background:#000;aspect-ratio:4/5;}
+.yt-card .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.yt-card .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.yt-card .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:24px;box-shadow:0 12px 28px rgba(214,255,61,.42);}
+.yt-card .play::before{content:'▶';margin-left:3px;}
+.yt-card .live-badge{position:absolute;top:10px;left:10px;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.18em;padding:4px 8px;border-radius:3px;text-transform:uppercase;z-index:2;box-shadow:0 4px 10px rgba(0,0,0,.30);}
+.yt-card .meta-strip{padding:12px 16px;background:rgba(0,0,0,.92);}
+.yt-card .meta-strip .title{font-family:var(--font-display);font-size:16px;font-weight:800;line-height:1.32;letter-spacing:-.01em;color:#fff;}
+.yt-card .meta-strip .url{font-family:var(--font-mono);font-size:10px;color:var(--lime);margin-top:5px;letter-spacing:.06em;}
+
+
+/* ── Common header (v16: 더 또렷한 위계) ── */
+.hd{display:flex;align-items:flex-end;justify-content:space-between;padding:56px 96px 0;}
+.eyebrow{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cobalt);display:inline-flex;align-items:center;gap:14px;margin-bottom:14px;}
+.eyebrow::before{content:'';width:36px;height:2.5px;background:var(--lime);}
+.page-title{font-size:36px;font-weight:900;color:var(--text);letter-spacing:-.028em;line-height:1.18;}
+.page-title em{color:var(--cobalt);font-style:normal;}
+.slide-num{font-family:var(--font-mono);font-size:13px;color:var(--sub);font-weight:700;letter-spacing:.18em;}
+
+/* ── Two-column body (v19: 좌 720 / 우 ~970 으로 우측 이미지 확장) ── */
+.body2{display:grid;grid-template-columns:720px 1fr;gap:40px;margin-top:24px;height:880px;padding:0 96px 56px;}
+.col-l{display:flex;flex-direction:column;}
+.col-r{display:flex;flex-direction:column;gap:12px;min-height:0;}
+
+/* ── Left content atoms (v16: 가독성 한 단계 위로) ── */
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.c-badge{display:inline-block;padding:6px 13px;border-radius:4px;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;}
+.c-badge.outline{background:transparent;color:var(--sub);border:1px solid var(--line);background:#fff;}
+.p-title{font-size:30px;font-weight:900;color:var(--text);letter-spacing:-.028em;line-height:1.24;margin-bottom:14px;}
+.p-title em{color:var(--cobalt);font-style:normal;background:linear-gradient(180deg,transparent 70%,rgba(214,255,61,.55) 70%);padding:0 4px;}
+.p-desc{font-size:17px;color:var(--text);line-height:1.62;margin-bottom:16px;font-weight:500;}
+.p-desc b,.p-desc strong{color:var(--cobalt);font-weight:800;background:linear-gradient(180deg,transparent 65%,rgba(214,255,61,.5) 65%);padding:0 3px;}
+.sec-label{font-family:var(--font-display);font-size:20px;font-weight:900;letter-spacing:-.018em;color:var(--text);margin-bottom:10px;margin-top:16px;display:inline-flex;align-items:center;gap:10px;padding-bottom:6px;border-bottom:3px solid var(--lime);}
+.sec-label::before{content:'✦';color:var(--cobalt);font-size:15px;}
+.sec-label b{color:var(--cobalt);font-weight:900;}
+.sec ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.sec li{font-size:17px;color:var(--text);line-height:1.55;padding-left:18px;position:relative;font-weight:500;}
+.sec li::before{content:'';position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%;background:var(--cobalt);box-shadow:0 0 0 3px rgba(30,41,255,.14);}
+.sec li strong,.sec li b{color:var(--cobalt);font-weight:800;background:linear-gradient(180deg,transparent 65%,rgba(214,255,61,.55) 65%);padding:0 3px;}
+.sec li em{color:var(--text);font-style:normal;font-weight:800;}
+
+/* ─── v22: 병목 → 실행 → 결과 3단계 스토리 구조 ─── */
+.phase{font-family:var(--font-display);font-size:21px;font-weight:900;letter-spacing:-.02em;color:var(--text);line-height:1.28;margin:15px 0 9px;display:flex;align-items:center;gap:11px;padding-bottom:7px;border-bottom:2.5px solid var(--line);}
+.phase .ptag{font-family:var(--font-mono);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:5px;color:#fff;flex-shrink:0;line-height:1;}
+.phase.b1{border-bottom-color:#EF4444;}
+.phase.b1 .ptag{background:#EF4444;}
+.phase.b2{border-bottom-color:var(--cobalt);}
+.phase.b2 .ptag{background:var(--cobalt);}
+.phase.b3{border-bottom-color:var(--lime-deep);}
+.phase.b3 .ptag{background:var(--lime);color:var(--ink);}
+.phase b{color:var(--cobalt);font-weight:900;}
+.phase em{color:#EF4444;font-style:normal;font-weight:900;}
+.sec.tight ul{gap:6px;}
+.sec.tight li{font-size:16px;line-height:1.5;}
+/* v22: 인플루언서 콘텐츠 결과물 카드 (바이럴 슬라이드) */
+.perf-badge{position:absolute;bottom:10px;left:10px;background:var(--lime);color:var(--ink);font-family:var(--font-mono);font-size:12px;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:5px;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.3);}
+.reel-card{position:relative;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:#fff;box-shadow:0 6px 18px rgba(10,15,46,.18);border:1.5px solid rgba(219,39,119,.3);background:linear-gradient(150deg,#3B1578 0%,#B5258F 55%,#F58529 110%);transition:transform .2s ease;}
+.reel-card:hover{transform:translateY(-2px);border-color:#DB2777;}
+.reel-card .rc-top{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:22px 16px;position:relative;}
+.reel-card .rc-ig{position:absolute;top:12px;left:12px;font-family:var(--font-mono);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;opacity:.92;}
+.reel-card .rc-play{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;color:#B5258F;font-size:24px;box-shadow:0 12px 28px rgba(0,0,0,.35);}
+.reel-card .rc-handle{font-family:var(--font-display);font-size:19px;font-weight:900;letter-spacing:-.02em;color:#fff;text-align:center;}
+.reel-card .meta-strip{background:var(--ink);padding:11px 14px;}
+.reel-card .meta-strip .title{font-size:13px;font-weight:800;color:#fff;}
+.reel-card .meta-strip .url{font-family:var(--font-mono);font-size:10.5px;color:var(--lavender);margin-top:2px;}
+/* insight 슬라이드 본문 가독성 (실행·결과 라벨이 본문보다 크게) */
+.body2 .col-l .phase{font-size:21px;}
+.body2 .col-l .sec li{font-size:16.5px;line-height:1.52;}
+
+/* ─── v16: comparison table (도입 전/후) ─── */
+.cmp-table{width:100%;border-collapse:collapse;font-family:var(--font-sans);}
+.cmp-table th{text-align:left;padding:10px 12px;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sub);background:#F1F4F9;border-bottom:2px solid var(--line);}
+.cmp-table th.r{text-align:right;}
+.cmp-table td{padding:13px 12px;font-size:15px;color:var(--text2);border-bottom:1px solid var(--line-lt);font-variant-numeric:tabular-nums;}
+.cmp-table td.r{text-align:right;font-family:var(--font-mono);}
+.cmp-table tr.hl td{background:linear-gradient(90deg,rgba(30,41,255,.06) 0%,rgba(214,255,61,.12) 100%);font-weight:800;color:var(--cobalt);font-size:16px;}
+.cmp-table tr.hl td.r{font-family:var(--font-mono);font-weight:900;}
+.result{margin-top:auto;background:var(--ink);border-radius:14px;padding:22px 28px;display:flex;gap:32px;position:relative;overflow:hidden;}
+.result::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--lime);}
+.kpi{display:flex;flex-direction:column;gap:6px;}
+.kpi-num{font-family:var(--font-display);font-size:34px;font-weight:900;color:var(--lime);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-label{font-family:var(--font-mono);font-size:12px;color:var(--lavender);letter-spacing:.08em;text-transform:uppercase;font-weight:500;}
+
+/* p4 col-l 텍스트 약간 확대 (플래그십 슬라이드) */
+#p4 .col-l .phase{font-size:23px;}
+#p4 .col-l .sec li{font-size:18px;line-height:1.55;}
+#p4 .col-l .kpi-num{font-size:40px;}
+#p4 .col-l .kpi-label{font-size:14px;}
+
+/* ── Chart card (v16: 차트 제목 가독성 대폭 향상) ── */
+.chart-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 2px 6px rgba(15,25,50,.04);}
+.chart-title{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--text);margin-bottom:14px;letter-spacing:-.018em;display:inline-flex;align-items:center;gap:10px;line-height:1.3;}
+.chart-title::before{content:'';display:inline-block;width:6px;height:18px;background:var(--lime);border-radius:2px;}
+.chart-title small{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--sub);text-transform:uppercase;}
+
+/* ── Page badge (legacy, kept for compat) ── */
+.pg-badge{position:absolute;bottom:36px;right:96px;font-family:var(--font-mono);font-size:12px;color:var(--sub);font-weight:700;letter-spacing:.18em;}
+.pg-badge b{color:var(--cobalt);}
+
+/* ══════════ HERO (cover · dark cobalt with v7 rituals) ══════════ */
+.hero-wrap{display:grid;grid-template-columns:600px 1fr;height:100%;position:relative;}
+.hero-photo-panel{position:relative;background:var(--ink);overflow:hidden;}
+.hero-photo-panel img{width:100%;height:100%;object-fit:cover;object-position:top center;opacity:.86;}
+.hero-photo-panel::after{content:'';position:absolute;bottom:0;left:0;right:0;height:340px;background:linear-gradient(transparent,var(--ink) 90%);}
+.hero-photo-panel .lime-corner{position:absolute;top:56px;left:44px;width:56px;height:5px;background:var(--lime);z-index:3;}
+.hero-name-tag{position:absolute;bottom:44px;left:44px;right:44px;z-index:2;}
+.hero-name-tag .name{font-size:64px;font-weight:900;color:#fff;letter-spacing:-.035em;line-height:1;}
+.hero-name-tag .role{font-family:var(--font-mono);font-size:14px;color:var(--lavender);margin-top:14px;font-weight:500;letter-spacing:.04em;}
+.hero-num-badge{position:absolute;top:80px;left:44px;font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);z-index:3;}
+.hero-right{display:flex;flex-direction:column;justify-content:center;padding:72px 88px;background:var(--cobalt);position:relative;overflow:hidden;color:#fff;}
+.hero-eyebrow{font-family:var(--font-mono);font-size:14px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);margin-bottom:28px;display:inline-flex;align-items:center;gap:14px;}
+.hero-eyebrow::before{content:'';width:48px;height:3px;background:var(--lime);}
+.hero-headline{font-family:var(--font-display);font-size:62px;font-weight:900;color:#fff;line-height:1.08;letter-spacing:-.035em;margin-bottom:32px;}
+.hero-headline em{color:var(--lime);font-style:normal;}
+.hero-headline span{color:#fff;}
+.hero-body{font-size:19px;color:var(--lavender);line-height:1.72;margin-bottom:44px;max-width:680px;}
+.hero-body b{color:#fff;font-weight:700;}
+.hero-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.hero-chip{padding:8px 16px;border:1px solid rgba(255,255,255,.22);border-radius:999px;font-size:13px;color:#fff;font-weight:600;background:rgba(255,255,255,.06);font-family:var(--font-mono);letter-spacing:.04em;}
+
+/* ══════════ PERF OVERVIEW ══════════ */
+.perf-layout{display:grid;grid-template-columns:640px 1fr;gap:44px;height:880px;padding:0 96px 56px;margin-top:28px;}
+.kpi-grid-6{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.kpi-card6{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 2px 6px rgba(15,25,50,.04);position:relative;overflow:hidden;}
+.kpi-card6::before{content:'';position:absolute;top:0;left:0;width:36px;height:3px;background:var(--lime);}
+.kpi-card6 .num{font-family:var(--font-display);font-size:40px;font-weight:900;color:var(--cobalt);letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums;}
+.kpi-card6 .unit{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--cobalt);}
+.kpi-card6 .lbl{font-size:13px;color:var(--sub);margin-top:8px;line-height:1.5;}
+.dash-link{display:flex;align-items:center;gap:14px;background:var(--ink);border-radius:12px;padding:18px 22px;text-decoration:none;margin-top:16px;position:relative;overflow:hidden;}
+.dash-link::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime);}
+.dash-link .icon{width:40px;height:40px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dash-link .icon svg path{stroke:var(--ink);}
+.dash-link .t{font-family:var(--font-display);font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em;}
+.dash-link .u{font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);margin-top:3px;letter-spacing:.06em;}
+
+/* ══════════ PROFILE ══════════ */
+.profile-split{display:grid;grid-template-columns:520px 1fr;height:100%;}
+.profile-photo-panel{background:var(--ink);position:relative;overflow:hidden;}
+.profile-photo-panel img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+.profile-photo-panel::after{content:'';position:absolute;bottom:0;left:0;right:0;height:380px;background:linear-gradient(transparent,var(--ink) 85%);}
+.profile-photo-panel .lime-corner{position:absolute;top:48px;left:44px;width:48px;height:5px;background:var(--lime);z-index:3;}
+.profile-photo-info{position:absolute;bottom:48px;left:44px;right:44px;z-index:2;}
+.profile-photo-info .pname{font-size:48px;font-weight:900;color:#fff;letter-spacing:-.028em;}
+.profile-photo-info .prole{font-family:var(--font-mono);font-size:13px;color:var(--lime);margin-top:14px;letter-spacing:.08em;font-weight:600;text-transform:uppercase;}
+.profile-photo-info .pyear{font-family:var(--font-mono);font-size:11px;color:var(--lavender-dim);margin-top:6px;letter-spacing:.18em;text-transform:uppercase;}
+.profile-content{padding:64px 72px 56px;display:flex;flex-direction:column;gap:0;overflow:hidden;}
+.who-label{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--cobalt);margin-bottom:18px;display:inline-flex;align-items:center;gap:14px;}
+.who-label::before{content:'';display:inline-block;width:36px;height:2.5px;background:var(--lime);}
+.who-headline{font-family:var(--font-display);font-size:30px;font-weight:900;color:var(--text);line-height:1.24;letter-spacing:-.028em;margin-bottom:20px;}
+.who-headline em{color:var(--cobalt);font-style:normal;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;flex:1;}
+.ps-block{display:flex;flex-direction:column;gap:0;}
+.ps-lbl{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--sub);margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--lime);display:inline-flex;align-items:center;gap:8px;align-self:flex-start;}
+.ps-lbl::before{content:'✦';color:var(--lime-deep);}
+.career-row{padding:10px 0;border-bottom:1px solid var(--line-lt);display:flex;flex-direction:column;gap:3px;}
+.career-row:last-child{border-bottom:none;}
+.cr-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+.cr-co{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.01em;}
+.cr-period{font-family:var(--font-mono);font-size:11px;color:var(--sub);letter-spacing:.04em;}
+.cr-role{font-size:13px;color:var(--text2);}
+.cr-achieve{font-size:12px;color:var(--cobalt);font-weight:700;margin-top:2px;font-family:var(--font-mono);letter-spacing:.02em;}
+.edu-row{padding:8px 0;border-bottom:1px solid var(--line-lt);}
+.edu-row:last-child{border-bottom:none;}
+.edu-school{font-size:16px;font-weight:800;color:var(--text);}
+.edu-dept{font-size:13px;color:var(--sub);}
+.award-row{padding:7px 0;border-bottom:1px solid var(--line-lt);font-size:13px;color:var(--text2);}
+.award-row:last-child{border-bottom:none;}
+.award-row .aw-prize{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);margin-left:6px;letter-spacing:.06em;text-transform:uppercase;}
+.tool-row2{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--line-lt);}
+.tool-row2:last-child{border-bottom:none;}
+.tool-cat2{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--cobalt);min-width:54px;flex-shrink:0;letter-spacing:.12em;text-transform:uppercase;padding-top:2px;}
+.tool-val{font-size:13px;color:var(--text2);line-height:1.5;}
+
+/* ════════════════════════════════════════════════════════════
+ * v19 DEV HELPER · 활성 조건: URL 쿼리에 ?edit=1
+ * 일반 미리보기는 그대로, 편집 시에만 outline + 라벨 + 핸들 노출
+ * ════════════════════════════════════════════════════════════ */
+body.edit-mode .slide{outline:2px dashed rgba(30,41,255,.35);outline-offset:-2px;position:relative;}
+body.edit-mode .slide::before{content:attr(id);position:absolute;top:4px;left:4px;background:var(--cobalt);color:#fff;font-family:var(--font-mono);font-size:14px;font-weight:800;padding:4px 10px;border-radius:4px;z-index:1000;letter-spacing:.08em;text-transform:uppercase;}
+body.edit-mode .col-l,body.edit-mode .col-r,body.edit-mode .chart-card,body.edit-mode .body2,body.edit-mode .phone-frame,body.edit-mode [class*="phone-"]{outline:1.5px dashed rgba(214,255,61,.7);outline-offset:-1px;transition:outline-color .15s;cursor:pointer;}
+body.edit-mode .col-l:hover,body.edit-mode .col-r:hover,body.edit-mode .chart-card:hover,body.edit-mode .body2:hover,body.edit-mode .phone-frame:hover{outline:2.5px solid var(--lime);outline-offset:-2px;}
+body.edit-mode .edit-toolbar{position:fixed;top:20px;right:20px;background:#0A0F2E;color:#fff;padding:14px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:99999;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;max-width:380px;border:2px solid var(--lime);}
+body.edit-mode .edit-toolbar h4{font-family:'Pretendard Variable',sans-serif;font-size:14px;color:var(--lime);margin:0 0 8px;font-weight:900;letter-spacing:-.01em;}
+body.edit-mode .edit-toolbar code{background:rgba(214,255,61,.15);color:var(--lime);padding:1px 5px;border-radius:3px;font-size:11px;}
+body.edit-mode .edit-toolbar .row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+body.edit-mode .edit-toolbar .row:last-child{border:none;}
+body.edit-mode .edit-toolbar kbd{background:#1F2837;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;color:var(--lavender);}
+body.edit-mode .edit-pick{position:fixed;bottom:20px;right:20px;background:var(--lime);color:var(--ink);padding:14px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(214,255,61,.42);z-index:99999;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;max-width:480px;max-height:340px;overflow:auto;border:2px solid var(--ink);}
+body.edit-mode .edit-pick h4{font-family:'Pretendard Variable',sans-serif;font-size:13px;margin:0 0 6px;font-weight:900;color:var(--ink);text-transform:uppercase;letter-spacing:.06em;}
+body.edit-mode .edit-pick pre{margin:6px 0 0;font-size:11px;background:var(--ink);color:var(--lime);padding:8px 10px;border-radius:6px;white-space:pre-wrap;word-break:break-all;}
+</style>
+<script>
+// v19 dev helper · ?edit=1 활성화
+document.addEventListener('DOMContentLoaded', function(){
+  if(!new URLSearchParams(location.search).has('edit')) return;
+  document.body.classList.add('edit-mode');
+
+  // Helper toolbar (top-right)
+  const tb = document.createElement('div');
+  tb.className = 'edit-toolbar';
+  tb.innerHTML = `
+    <h4>★ EDIT MODE</h4>
+    <div class="row"><span>요소 클릭</span><span>현재 CSS 추출</span></div>
+    <div class="row"><span>F12 → Styles</span><span>마우스로 값 드래그</span></div>
+    <div class="row"><span>핵심 selector</span><code>.col-l</code> / <code>.col-r</code></div>
+    <div class="row"><span>레이아웃 비율</span><code>.body2</code> grid</div>
+    <div class="row"><span>이미지 컨테이너</span><code>.phone-frame</code></div>
+    <div class="row" style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.15);"><span>이 모드 끄기</span><kbd>?edit=1</kbd> 제거</div>
+  `;
+  document.body.appendChild(tb);
+
+  // Pick panel (bottom-right) — 클릭한 요소의 현재 적용 CSS 추출
+  const pick = document.createElement('div');
+  pick.className = 'edit-pick';
+  pick.style.display = 'none';
+  pick.innerHTML = `<h4>SELECTED · 클릭한 요소</h4><div id="pick-info"></div><pre id="pick-css"></pre>`;
+  document.body.appendChild(pick);
+  const info = pick.querySelector('#pick-info');
+  const css = pick.querySelector('#pick-css');
+
+  function selectorOf(el){
+    if(el.id) return '#' + el.id;
+    const cls = (el.className || '').toString().trim().split(/\s+/).filter(c=>c).slice(0,3).map(c=>'.'+c).join('');
+    const slide = el.closest('.slide');
+    const sid = slide ? '#' + slide.id + ' ' : '';
+    return sid + (cls || el.tagName.toLowerCase());
+  }
+
+  function attach(el){
+    el.addEventListener('click', function(e){
+      if(!document.body.classList.contains('edit-mode')) return;
+      e.stopPropagation();
+      const cs = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+      info.textContent = selectorOf(el) + ` · ${Math.round(r.width)}×${Math.round(r.height)}px`;
+      const keys = ['width','height','padding','margin','grid-template-columns','grid-template-rows','gap','flex','display','font-size','color','background','border-radius'];
+      const out = keys.map(k => `${k}: ${cs.getPropertyValue(k)};`).filter(l => !l.endsWith(': ;') && !l.endsWith(': auto;') && !l.endsWith(': normal;')).join('\n');
+      css.textContent = out;
+      pick.style.display = 'block';
+    }, true);
+  }
+
+  document.querySelectorAll('.slide, .col-l, .col-r, .chart-card, .body2, .phone-frame').forEach(attach);
+});
+</script>
+</head>
+<body>
+<div class="slide" id="p_ios_odm">
+  <div class="grid-bg light"></div>
+  <div class="hd-tight">
+    <div>
+      <div class="cat-row">
+        <span class="cat-chip" style="background:var(--ca-perf);"><span class="ko">퍼포먼스</span><span class="en">Performance · iOS UA</span></span>
+        <span class="cat-meta"><b>NEW</b> · iOS ODM</span>
+      </div>
+      <div class="page-title">막혔던 구글애즈 iOS를 다시 연 <em>ODM 연동</em> — 구매 유저 <em>+86.5%</em> · 구글애즈 <em>×106배</em></div>
+    </div>
+    <span class="slide-num">NEW / 16</span>
+  </div>
+
+  <div class="body2">
+    <div class="col-l">
+      <div class="tag-row">
+        <span class="c-badge" style="background:var(--ca-perf);">Performance · Google Ads · iOS UA</span>
+        <span class="c-badge outline">커버링 · 2026.03 ODM 연동 · 변곡점 25.12 · 12개월 추세</span>
+      </div>
+      <div class="p-title">iOS는 AOS 대비 LTV 최대 <em>4.6배</em>인데<br>가장 큰 채널에서 한 명도 데려올 수 없었다</div>
+
+      <div class="phase b1"><span class="ptag">병목</span>ATT 이후 IDFA 막힘 + 구글 ODM 미설정 — iOS 학습 신호 0</div>
+      <div class="sec tight"><ul>
+        <li>구글애즈 머신러닝이 학습할 <em>iOS 전환 신호</em>가 없어 <strong>iOS 모객 전면 불가</strong> · 매월 수천만원 기회손실</li>
+        <li>마케팅 단독으로는 못 푸는 <strong>앱 단 개발 작업</strong>이라 백로그에 계속 밀림 → 손실 비용을 데이터로 제시해 개발·제품팀 설득</li>
+      </ul></div>
+
+      <div class="phase b2"><span class="ptag">실행</span>① ODM 정식 연동 + ② iOS 고효율 소재 핏</div>
+      <div class="sec tight"><ul>
+        <li><strong>① 구글애즈 ODM 연동 (2026.03)</strong> — 개발·제품팀 협업으로 정식 연동, 막혔던 구글애즈 iOS 캠페인 가동</li>
+        <li><strong>② iOS 고효율 소재 핏 (25.09~)</strong> — 대형폐기물·가구·가전·엄마 소구를 채널 간 이식 · 30초 숏폼 위주 <strong>2주 단위 교체</strong></li>
+        <li>준비/진행 중인 다음 레버 — ③ 측정 인프라(딥링크 포스트백·SKAN) · ④ ATT 동의 프리보딩 · ⑤ 유튜브 직접 컨택</li>
+      </ul></div>
+
+      <div class="phase b3"><span class="ptag">결과</span>변곡점(25.12) 전후 6개월 — 구매 유저 <b>+86.5%</b>, 구매 건수 <b>+82.3%</b></div>
+      <div class="sec tight"><ul>
+        <li>월평균 iOS 구매 유저 <strong>17,400 → 32,451명 (+86.5%)</strong> · 구매 건수 합계 <strong>251,539 → 458,460건 (+82.3%)</strong></li>
+        <li>현재(26.05) <strong>41,833명 — 역대 최고치</strong> (출시 저점 9,280명 대비 4.5배), 계속 우상향</li>
+        <li>같은 기간 신규 설치는 +36.3% → <strong>구매 유저가 설치보다 2.4배 빠르게</strong> 늘었다 (질이 함께 좋아짐)</li>
+      </ul></div>
+
+      <div class="result">
+        <div class="kpi"><span class="kpi-num">+86.5%</span><span class="kpi-label">iOS 구매 유저 월평균 (17,400 → 32,451명)</span></div>
+        <div class="kpi"><span class="kpi-num">×106</span><span class="kpi-label">구글애즈 iOS 구매 유저 (15 → 1,595명)</span></div>
+        <div class="kpi"><span class="kpi-num">41,833명</span><span class="kpi-label">26.05 역대 최고치 · 저점 대비 4.5배</span></div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <!-- 상단: 12개월 막대 차트 (25.06 ~ 26.05) — 변곡점(25.12) 강조 -->
+      <div class="chart-card" style="flex:none;display:flex;flex-direction:column;padding:14px 18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <div class="chart-title" style="margin-bottom:0;">iOS 월별 구매 유저 — 25.06 9,280명 → 26.05 41,833명 · 4.5배 성장</div>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.06em;">★ 변곡점 25.12 · ODM 26.03</span>
+        </div>
+        <svg viewBox="0 0 720 280" width="100%" style="display:block;">
+          <defs>
+            <linearGradient id="b_pre" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B95A6"/><stop offset="100%" stop-color="#C7CBE3"/></linearGradient>
+            <linearGradient id="b_post" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1E29FF"/><stop offset="100%" stop-color="#7C90FF"/></linearGradient>
+          </defs>
+          <!-- y grid (max 45000, y range 30-230 = 200) -->
+          <line x1="60" y1="30" x2="700" y2="30" stroke="#F1F4F9"/><text x="55" y="34" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">45K</text>
+          <line x1="60" y1="80" x2="700" y2="80" stroke="#F1F4F9"/><text x="55" y="84" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">33K</text>
+          <line x1="60" y1="130" x2="700" y2="130" stroke="#F1F4F9"/><text x="55" y="134" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">22K</text>
+          <line x1="60" y1="180" x2="700" y2="180" stroke="#F1F4F9"/><text x="55" y="184" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">11K</text>
+          <line x1="60" y1="230" x2="700" y2="230" stroke="#E2E6EF" stroke-width="1.5"/>
+
+          <!-- variables: each bar width 38, gap 14, total 12 bars from x=70 to x=694
+               y = 230 - val * (200/45000) = 230 - val * 0.004444
+               25-06 9280 → y=188.7
+               25-07 16519 → y=156.3
+               25-08 18166 → y=149.3
+               25-09 18531 → y=147.6
+               25-10 20943 → y=136.9
+               25-11 20960 → y=136.8
+               25-12 25387 → y=117.1 (★ 변곡점)
+               26-01 26915 → y=110.3
+               26-02 28821 → y=101.8
+               26-03 33993 → y=78.9 (ODM 연동)
+               26-04 37755 → y=62.2
+               26-05 41833 → y=44.1 -->
+          <rect x="70" y="188.7" width="38" height="41.3" rx="3" fill="url(#b_pre)"/>
+          <rect x="122" y="156.3" width="38" height="73.7" rx="3" fill="url(#b_pre)"/>
+          <rect x="174" y="149.3" width="38" height="80.7" rx="3" fill="url(#b_pre)"/>
+          <rect x="226" y="147.6" width="38" height="82.4" rx="3" fill="url(#b_pre)"/>
+          <rect x="278" y="136.9" width="38" height="93.1" rx="3" fill="url(#b_pre)"/>
+          <rect x="330" y="136.8" width="38" height="93.2" rx="3" fill="url(#b_pre)"/>
+          <!-- 변곡점 25-12 -->
+          <rect x="382" y="117.1" width="38" height="112.9" rx="3" fill="url(#b_post)"/>
+          <rect x="434" y="110.3" width="38" height="119.7" rx="3" fill="url(#b_post)"/>
+          <rect x="486" y="101.8" width="38" height="128.2" rx="3" fill="url(#b_post)"/>
+          <!-- ODM 연동 26-03 -->
+          <rect x="538" y="78.9" width="38" height="151.1" rx="3" fill="url(#b_post)"/>
+          <rect x="590" y="62.2" width="38" height="167.8" rx="3" fill="url(#b_post)"/>
+          <rect x="642" y="44.1" width="38" height="185.9" rx="3" fill="#0F19D8"/>
+
+          <!-- vertical markers -->
+          <line x1="376" y1="26" x2="376" y2="230" stroke="#B3DA1C" stroke-width="1.4" stroke-dasharray="3,4"/>
+          <rect x="334" y="9" width="84" height="16" rx="3" fill="#0A0F2E"/>
+          <text x="376" y="21" font-size="10" fill="#D6FF3D" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">★ 25.12 변곡점</text>
+          <line x1="532" y1="26" x2="532" y2="230" stroke="#1E29FF" stroke-width="1.4" stroke-dasharray="3,4"/>
+          <rect x="492" y="9" width="80" height="16" rx="3" fill="#1E29FF"/>
+          <text x="532" y="21" font-size="10" fill="#fff" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">↑ 26.03 ODM</text>
+
+          <!-- value labels (key bars) -->
+          <text x="89" y="184" font-size="9" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">9.3K</text>
+          <text x="349" y="132" font-size="9" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">21K</text>
+          <text x="401" y="112" font-size="10.5" fill="#0F19D8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">25.4K</text>
+          <text x="557" y="73" font-size="10.5" fill="#0F19D8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">34.0K</text>
+          <text x="661" y="38" font-size="12" fill="#0F19D8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">41.8K ★</text>
+
+          <!-- x labels -->
+          <text x="89" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.06</text>
+          <text x="141" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">07</text>
+          <text x="193" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">08</text>
+          <text x="245" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">09</text>
+          <text x="297" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">10</text>
+          <text x="349" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">11</text>
+          <text x="401" y="248" font-size="10" fill="#0F172A" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">25.12</text>
+          <text x="453" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">26.01</text>
+          <text x="505" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">02</text>
+          <text x="557" y="248" font-size="10" fill="#0F172A" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">03</text>
+          <text x="609" y="248" font-size="10" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">04</text>
+          <text x="661" y="248" font-size="10" fill="#0F19D8" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">05</text>
+
+          <!-- bottom legend -->
+          <rect x="60" y="258" width="640" height="18" rx="4" fill="#0A0F2E"/>
+          <text x="380" y="271" font-size="11" fill="#D6FF3D" text-anchor="middle" font-family="JetBrains Mono" font-weight="800">★ 가속 전 6개월 평균 17,400명 → 가속 후 6개월 평균 32,451명 (+86.5%) · 신규 설치는 +36% 만큼만 → 질이 함께 좋아짐</text>
+        </svg>
+      </div>
+
+      <!-- 하단: 채널별 비교 표 — ODM 효과의 또렷한 증거 -->
+      <div class="chart-card" style="flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="chart-title" style="margin-bottom:0;">채널별 iOS 구매 유저 — 변곡점 전후 6개월 (Airbridge 실측)</div>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--sub);letter-spacing:.08em;">25.06~11 vs 25.12~26.05</span>
+        </div>
+        <table style="width:100%;border-collapse:separate;border-spacing:0;font-variant-numeric:tabular-nums;">
+          <thead><tr>
+            <th style="text-align:left;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;border-radius:6px 0 0 0;">채널 (iOS)</th>
+            <th style="text-align:right;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;">가속 전 6개월</th>
+            <th style="text-align:right;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;">가속 후 6개월</th>
+            <th style="text-align:right;padding:8px 10px;background:var(--ink);font-family:var(--font-mono);font-size:11px;font-weight:700;color:#fff;border-radius:0 6px 0 0;">증감</th>
+          </tr></thead>
+          <tbody>
+            <tr style="background:#F4FBF7;border-bottom:1px solid var(--line-lt);">
+              <td style="padding:9px 10px;font-size:13px;font-weight:800;color:var(--text);">★ 구글애즈 <span style="font-size:11px;color:var(--sub);font-weight:500;">(ODM 연동)</span></td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">15명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">1,595명</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">×106 (약 106배)</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line-lt);">
+              <td style="padding:9px 10px;font-size:13px;color:var(--text);">애플 서치애즈 (ASA)</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">3,398명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">9,660명</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+184%</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--line-lt);">
+              <td style="padding:9px 10px;font-size:13px;color:var(--text);">인스타그램</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">172명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:12px;font-family:var(--font-mono);color:var(--text2);">1,578명</td>
+              <td style="text-align:right;padding:9px 10px;"><span style="display:inline-block;background:#E3F7ED;color:#0E9E76;font-family:var(--font-mono);font-size:11px;font-weight:800;padding:3px 8px;border-radius:11px;">+817%</span></td>
+            </tr>
+            <tr>
+              <td style="padding:9px 10px;font-size:13px;color:var(--text);">메타 (페이스북)</td>
+              <td style="text-align:right;padding:9px 10px;font-size:11px;font-family:var(--font-mono);color:var(--sub);">비교 제한*</td>
+              <td style="text-align:right;padding:9px 10px;font-size:13px;font-family:var(--font-mono);font-weight:800;color:#0E9E76;">13,516명</td>
+              <td style="text-align:right;padding:9px 10px;font-size:11px;font-family:var(--font-mono);color:var(--sub);">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:auto;padding-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--text2);line-height:1.5;">
+          ✅ <strong style="color:var(--text);">ODM은 "광고를 더 쓴 것"이 아니라 "쓸 수 없던 채널을 쓸 수 있게 만든" 액션.</strong> 메타 단일 의존 → 4채널 분산. <span style="color:var(--sub);">*메타 페이스북은 매체 정책상 180일 이전 데이터가 0으로 집계되어 전 기간 비교 불가.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="chrome"><span><b>NEW</b> / 16</span><span>Performance · iOS UA · ODM · 구매 유저 +86.5% · 구글애즈 ×106</span></div>
+</div>
+</body>
+</html>
