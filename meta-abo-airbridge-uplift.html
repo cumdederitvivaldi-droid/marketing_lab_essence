@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>메타 ABO + Airbridge MMP 도입 효과 — 25.07 기점 6개월 (AOV 25,000원 환산)</title>
+<title>메타 ABO + Airbridge MMP 도입 효과 — 25.07 기점 6개월 (AOV ₩25,000 환산)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
@@ -12,172 +12,119 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --cobalt:#1E29FF; --cobalt-deep:#0F19D8; --cobalt-soft:#EEF1FF; --cobalt-border:#C9D0FF;
-  --lime:#D6FF3D; --lime-deep:#B3DA1C;
-  --ink:#0A0F2E; --ink-2:#161B36; --lavender:#C7CBE3; --lavender-dim:#8B91B4;
-  --bg:#F7F9FD; --white:#fff; --text:#0F172A; --text2:#1F2837; --sub:#5B6675; --sub-2:#8B95A6;
-  --line:#E2E6EF; --line-lt:#F1F4F9;
+  --cobalt:#1E29FF; --cobalt-deep:#0F19D8; --cobalt-soft:#EEF1FF;
+  --lime:#D6FF3D; --ink:#0A0F2E;
+  --bg:#F7F9FD; --white:#fff; --text:#0F172A; --text2:#1F2837; --sub:#5B6675;
+  --line:#E2E6EF; --line-lt:#F1F4F9; --lavender:#C7CBE3;
   --green:#10C390; --green-soft:#E3F7ED; --green-dark:#0E9E76;
-  --amber:#F5B400; --amber-soft:#FFF7ED; --amber-dark:#92400E;
-  --red:#EF4444; --red-soft:#FEE2E2;
   --font:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
   --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
 }
 html,body{font-family:var(--font);background:var(--bg);color:var(--text);font-feature-settings:"ss01" 1,"tnum" 1;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;}
-.wrap{max-width:960px;margin:0 auto;padding:32px 28px 60px}
+.wrap{max-width:960px;margin:0 auto;padding:18px 20px 20px}
 
-/* Header */
-.hdr{margin-bottom:28px}
-.eyebrow{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--cobalt);text-transform:uppercase;display:inline-flex;align-items:center;gap:12px;margin-bottom:14px}
-.eyebrow::before{content:'';width:36px;height:2.5px;background:var(--lime)}
-.title{font-weight:900;font-size:36px;letter-spacing:-.03em;line-height:1.18;color:var(--text);margin-bottom:10px}
-.title em{font-style:normal;color:var(--cobalt);background:linear-gradient(transparent 62%,rgba(214,255,61,.65) 0);padding:0 4px}
-.sub{font-size:14px;color:var(--sub);line-height:1.6}
+/* Header — 1 line */
+.hdr{margin-bottom:14px}
+.eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--cobalt);text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:6px}
+.eyebrow::before{content:'';width:28px;height:2px;background:var(--lime)}
+.title{font-weight:900;font-size:22px;letter-spacing:-.025em;line-height:1.2;color:var(--text)}
+.title em{font-style:normal;color:var(--cobalt);background:linear-gradient(transparent 62%,rgba(214,255,61,.65) 0);padding:0 3px}
+.sub{font-size:12px;color:var(--sub);line-height:1.5;margin-top:5px}
 .sub strong{color:var(--text);font-weight:700}
-.meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
-.tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:5px 10px;border-radius:4px;background:var(--cobalt-soft);color:var(--cobalt);text-transform:uppercase}
-.tag.amber{background:var(--amber-soft);color:var(--amber-dark)}
-.tag.outline{background:transparent;border:1px solid var(--line);color:var(--sub)}
 
-/* KPI grid */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 28px}
-.kpi-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+/* KPI grid — 4-col compact */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.kpi-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:11px 13px;display:flex;flex-direction:column;gap:3px;position:relative;overflow:hidden}
 .kpi-card.hl{background:var(--ink);color:#fff;border-color:var(--ink)}
-.kpi-card.hl::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--lime)}
-.kpi-label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--sub);text-transform:uppercase}
+.kpi-card.hl::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime)}
+.kpi-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--sub);text-transform:uppercase}
 .kpi-card.hl .kpi-label{color:var(--lavender)}
-.kpi-num{font-weight:900;font-size:28px;line-height:1.05;letter-spacing:-.025em;color:var(--text);margin-top:2px}
+.kpi-num{font-weight:900;font-size:22px;line-height:1;letter-spacing:-.025em;color:var(--text);margin-top:1px}
 .kpi-card.hl .kpi-num{color:#fff}
 .kpi-card.hl .kpi-num .acc{color:var(--lime)}
-.kpi-delta{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--green-dark);background:var(--green-soft);padding:3px 7px;border-radius:11px;display:inline-block;width:fit-content}
-.kpi-delta.down{color:var(--green-dark);background:var(--green-soft)}
-.kpi-detail{font-size:11px;color:var(--sub);margin-top:2px;line-height:1.4}
+.kpi-detail{font-family:var(--mono);font-size:10px;color:var(--sub);margin-top:3px;line-height:1.35}
 .kpi-card.hl .kpi-detail{color:var(--lavender)}
 
-/* Section */
-.sec-h{font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--cobalt);text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin:32px 0 12px}
-.sec-h::before{content:'';width:24px;height:2px;background:var(--cobalt)}
-
-/* Chart card */
-.chart{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:14px}
-.chart-title{font-weight:800;font-size:15px;color:var(--text);margin-bottom:4px;letter-spacing:-.015em}
-.chart-sub{font-family:var(--mono);font-size:10.5px;color:var(--sub);letter-spacing:.04em;margin-bottom:10px}
-.chart svg{width:100%;height:auto;display:block}
-.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--sub)}
-.legend span{display:inline-flex;align-items:center;gap:5px}
-.legend i{display:inline-block;width:12px;height:3px;border-radius:1.5px}
-
-/* Comparison table */
-.cmp{background:var(--white);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px}
+/* Comparison table — compact */
+.cmp{background:var(--white);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .cmp table{width:100%;border-collapse:separate;border-spacing:0}
-.cmp th{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--ink);text-align:left;padding:10px 14px}
+.cmp th{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#fff;background:var(--ink);text-align:left;padding:7px 12px}
 .cmp th.r{text-align:right}
-.cmp td{padding:11px 14px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--line-lt)}
-.cmp td.r{text-align:right;font-family:var(--mono)}
+.cmp td{padding:7.5px 12px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--line-lt);line-height:1.3}
+.cmp td.r{text-align:right;font-family:var(--mono);font-size:12px}
 .cmp tr.hl td{background:#F4FBF7}
-.cmp tr.hl td.r{font-weight:800;color:var(--green-dark);font-size:13.5px}
-.cmp tr.delta td{background:var(--cobalt-soft);font-weight:800}
-.cmp tr.delta td.r{color:var(--cobalt-deep)}
+.cmp tr.hl td.r{font-weight:800;color:var(--green-dark);font-size:12.5px}
 .cmp tr:last-child td{border-bottom:none}
 .cmp .lbl{font-weight:700;color:var(--text)}
-.cmp .small{font-size:11px;color:var(--sub);font-weight:500}
-.pp{display:inline-block;background:var(--green-soft);color:var(--green-dark);font-family:var(--mono);font-size:11px;font-weight:800;padding:2px 7px;border-radius:10px}
+.cmp .small{font-size:10px;color:var(--sub);font-weight:500}
+.pp{display:inline-block;background:var(--green-soft);color:var(--green-dark);font-family:var(--mono);font-size:10px;font-weight:800;padding:2px 6px;border-radius:9px}
 .pp.cobalt{background:var(--cobalt-soft);color:var(--cobalt-deep)}
-.pp.amber{background:var(--amber-soft);color:var(--amber-dark)}
-
-/* 4-axis card */
-.axis-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px}
-.axis{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden}
-.axis::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--cobalt)}
-.axis-no{font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--cobalt);text-transform:uppercase}
-.axis-name{font-weight:900;font-size:16px;color:var(--text);letter-spacing:-.02em;margin-top:2px;line-height:1.3}
-.axis-desc{font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:6px}
-.axis-desc strong{color:var(--cobalt-deep)}
-.axis-kpi{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--green-dark);margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
 
 /* Insight callout */
-.callout{background:var(--ink);color:#fff;border-radius:14px;padding:18px 22px;position:relative;overflow:hidden;margin:14px 0}
-.callout::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--lime)}
-.callout .lbl{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--lavender);text-transform:uppercase;margin-bottom:6px}
-.callout .body{font-weight:800;font-size:16px;line-height:1.55;letter-spacing:-.018em}
+.callout{background:var(--ink);color:#fff;border-radius:10px;padding:11px 14px;position:relative;overflow:hidden;margin-top:10px}
+.callout::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime)}
+.callout .lbl{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--lavender);text-transform:uppercase;margin-bottom:3px}
+.callout .body{font-weight:800;font-size:13px;line-height:1.5;letter-spacing:-.012em}
 .callout .body em{font-style:normal;color:var(--lime)}
 
-/* Note */
-.note{font-family:var(--mono);font-size:11px;color:var(--sub);line-height:1.6;margin-top:14px;padding:12px 14px;background:var(--white);border-radius:8px;border:1px dashed var(--line)}
-.note strong{color:var(--text2)}
-
-/* Mobile */
 @media (max-width:720px){
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .axis-grid{grid-template-columns:1fr}
-  .title{font-size:26px}
+  .title{font-size:18px}
 }
 @media (max-width:480px){
-  .kpi-grid{grid-template-columns:1fr}
-  .wrap{padding:24px 18px 50px}
+  .wrap{padding:14px 14px}
+  .kpi-num{font-size:18px}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- Header -->
+  <!-- Header (compact) -->
   <div class="hdr">
     <div class="eyebrow">Performance · Meta · MMP</div>
-    <h1 class="title">메타: CBO → ABO + Airbridge MMP 도입으로<br><em>광고비 +19.5% 증액에 구매 +37.6%</em> · CPA -13.1%</h1>
-    <p class="sub">2025.07 기점 전후 3개월(25.04~06 vs 25.07~09) — Meta 광고 관리자 실측 ·<br><strong>매출은 AOV ₩25,000 환산</strong> · Airbridge 포스트백 / 무료봉투 액션 매핑 / 오디언스 iOS 리타겟 동시 적용</p>
-    <div class="meta">
-      <span class="tag">Meta Ads</span>
-      <span class="tag">Airbridge MMP</span>
-      <span class="tag">ABO Structure</span>
-      <span class="tag">iOS Retarget</span>
-      <span class="tag outline">데이터 추출: 2026.05.30</span>
-    </div>
+    <h1 class="title">메타: CBO → ABO + Airbridge MMP — <em>광고비 +19.5% 증액에 구매 +37.6%, CPA -13.1%</em></h1>
+    <p class="sub">25.07 기점 전후 3개월 (25.04~06 vs 25.07~09) · Meta omni_purchase 실측 · <strong>매출은 AOV ₩25,000 환산</strong> · 포스트백 + 무료봉투 액션 매핑 + iOS 오디언스 리타겟 동시 적용</p>
   </div>
 
   <!-- KPI Highlights -->
   <div class="kpi-grid">
     <div class="kpi-card hl">
-      <div class="kpi-label">구매수</div>
+      <div class="kpi-label">구매수 ↑</div>
       <div class="kpi-num"><span class="acc">+37.6%</span></div>
-      <div class="kpi-delta">11,532 → 15,868건</div>
-      <div class="kpi-detail">+4,336건 / 동기간 3개월</div>
+      <div class="kpi-detail">11,532 → 15,868건</div>
     </div>
     <div class="kpi-card hl">
-      <div class="kpi-label">매출 (AOV ₩25,000 환산)</div>
+      <div class="kpi-label">매출 (AOV 환산) ↑</div>
       <div class="kpi-num"><span class="acc">+37.6%</span></div>
-      <div class="kpi-delta">2.88억 → 3.97억</div>
-      <div class="kpi-detail">+1.08억 / 광고비 +19.5%</div>
+      <div class="kpi-detail">2.88억 → 3.97억</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">CPA (omni_purchase)</div>
+      <div class="kpi-label">CPA ↓</div>
       <div class="kpi-num">-13.1%</div>
-      <div class="kpi-delta">₩15,838 → ₩13,759</div>
-      <div class="kpi-detail">증액 와중에 -₩2,079 ↓</div>
+      <div class="kpi-detail">₩15,838 → ₩13,759</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">ROAS (AOV 환산)</div>
+      <div class="kpi-label">ROAS (AOV) ↑</div>
       <div class="kpi-num">+15.1%</div>
-      <div class="kpi-delta">1.58x → 1.82x</div>
-      <div class="kpi-detail">광고비 효율 동반 개선</div>
+      <div class="kpi-detail">1.58x → 1.82x</div>
     </div>
   </div>
 
-  <!-- Comparison Table -->
-  <div class="sec-h">Before / After 비교</div>
+  <!-- Comparison Table (compact, 6 rows) -->
   <div class="cmp">
     <table>
       <thead><tr>
         <th>지표</th>
-        <th class="r">Before · 25.04~06 (CBO + 단일 매핑)</th>
-        <th class="r">After · 25.07~09 (ABO + Airbridge MMP)</th>
+        <th class="r">Before · 25.04~06 (CBO)</th>
+        <th class="r">After · 25.07~09 (ABO + MMP)</th>
         <th class="r">증감</th>
       </tr></thead>
       <tbody>
         <tr>
           <td class="lbl">광고비</td>
-          <td class="r">₩182,648,316</td>
-          <td class="r">₩218,324,213</td>
+          <td class="r">₩182.6M</td>
+          <td class="r">₩218.3M</td>
           <td class="r"><span class="pp cobalt">+19.5%</span></td>
         </tr>
         <tr class="hl">
@@ -187,9 +134,9 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--text);font-fe
           <td class="r"><span class="pp">+37.6%</span></td>
         </tr>
         <tr class="hl">
-          <td class="lbl">매출 <span class="small">(AOV ₩25,000 환산)</span></td>
-          <td class="r">₩288,300,000</td>
-          <td class="r">₩396,700,000</td>
+          <td class="lbl">매출 <span class="small">(AOV ₩25k 환산)</span></td>
+          <td class="r">₩288.3M</td>
+          <td class="r">₩396.7M</td>
           <td class="r"><span class="pp">+37.6%</span></td>
         </tr>
         <tr>
@@ -205,186 +152,21 @@ html,body{font-family:var(--font);background:var(--bg);color:var(--text);font-fe
           <td class="r"><span class="pp">+15.1%</span></td>
         </tr>
         <tr>
-          <td class="lbl">노출</td>
-          <td class="r">16,723,411</td>
-          <td class="r">22,812,858</td>
-          <td class="r"><span class="pp cobalt">+36.4%</span></td>
-        </tr>
-        <tr>
-          <td class="lbl">도달</td>
-          <td class="r">2,861,255</td>
-          <td class="r">4,181,146</td>
-          <td class="r"><span class="pp cobalt">+46.1%</span></td>
-        </tr>
-        <tr>
-          <td class="lbl">CPM</td>
-          <td class="r">₩10,922</td>
-          <td class="r">₩9,570</td>
-          <td class="r"><span class="pp">-12.4%</span></td>
-        </tr>
-        <tr>
-          <td class="lbl">앱 설치</td>
-          <td class="r">32,076</td>
-          <td class="r">33,128</td>
-          <td class="r"><span class="pp">+3.3%</span></td>
+          <td class="lbl">도달 · CPM</td>
+          <td class="r">2.86M · ₩10,922</td>
+          <td class="r">4.18M · ₩9,570</td>
+          <td class="r"><span class="pp">+46% / -12%</span></td>
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <!-- Monthly trend chart -->
-  <div class="sec-h">월별 추세 — 6개월 (25.04~25.09)</div>
-  <div class="chart">
-    <div class="chart-title">광고비 vs 구매수 — 25.07 기점으로 동반 점프</div>
-    <div class="chart-sub">광고비(코발트 바) · 구매수(라임 라인) · 매출(AOV ₩25,000) · Meta 광고 관리자 실측</div>
-    <svg viewBox="0 0 720 320">
-      <defs>
-        <linearGradient id="spendg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#1E29FF" stop-opacity=".85"/>
-          <stop offset="100%" stop-color="#1E29FF" stop-opacity=".5"/>
-        </linearGradient>
-      </defs>
-      <!-- y grid -->
-      <line x1="60" y1="30" x2="700" y2="30" stroke="#F1F4F9"/>
-      <line x1="60" y1="100" x2="700" y2="100" stroke="#F1F4F9"/>
-      <line x1="60" y1="170" x2="700" y2="170" stroke="#F1F4F9"/>
-      <line x1="60" y1="240" x2="700" y2="240" stroke="#E2E6EF" stroke-width="1.5"/>
-      <text x="55" y="34" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">100M</text>
-      <text x="55" y="104" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">70M</text>
-      <text x="55" y="174" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">40M</text>
-      <text x="55" y="244" font-size="10" fill="#8B95A6" text-anchor="end" font-family="JetBrains Mono">10M</text>
-      <text x="705" y="34" font-size="10" fill="#0E9E76" text-anchor="start" font-family="JetBrains Mono">7000</text>
-      <text x="705" y="174" font-size="10" fill="#0E9E76" text-anchor="start" font-family="JetBrains Mono">3000</text>
-
-      <!-- transition vertical -->
-      <line x1="350" y1="22" x2="350" y2="240" stroke="#B3DA1C" stroke-width="1.3" stroke-dasharray="4,4"/>
-      <rect x="310" y="6" width="80" height="18" rx="3" fill="#0A0F2E"/>
-      <text x="350" y="19" font-size="10" fill="#D6FF3D" font-weight="800" text-anchor="middle" font-family="JetBrains Mono">↑ 25.07 전환</text>
-
-      <!-- Spend bars: width 50, x baseline -->
-      <!-- 25.04 56.9M / 25.05 60.8M / 25.06 65.0M / 25.07 85.8M / 25.08 71.8M / 25.09 60.7M -->
-      <!-- y = 240 - val/100M * 210 -->
-      <rect x="80" y="120.59" width="50" height="119.41" rx="3" fill="url(#spendg)"/>
-      <rect x="170" y="112.34" width="50" height="127.66" rx="3" fill="url(#spendg)"/>
-      <rect x="260" y="103.55" width="50" height="136.45" rx="3" fill="url(#spendg)"/>
-      <rect x="370" y="59.91" width="50" height="180.09" rx="3" fill="#1E29FF"/>
-      <rect x="460" y="89.15" width="50" height="150.85" rx="3" fill="url(#spendg)"/>
-      <rect x="550" y="112.48" width="50" height="127.52" rx="3" fill="url(#spendg)"/>
-
-      <!-- Spend labels above -->
-      <text x="105" y="115" font-size="10" fill="#0F19D8" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">56.9M</text>
-      <text x="195" y="107" font-size="10" fill="#0F19D8" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">60.8M</text>
-      <text x="285" y="98" font-size="10" fill="#0F19D8" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">65.0M</text>
-      <text x="395" y="54" font-size="11" fill="#0F19D8" font-weight="900" text-anchor="middle" font-family="JetBrains Mono">85.8M</text>
-      <text x="485" y="84" font-size="10" fill="#0F19D8" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">71.8M</text>
-      <text x="575" y="107" font-size="10" fill="#0F19D8" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">60.7M</text>
-
-      <!-- Purchase line: max 7000 ≈ y=30, 3000 ≈ y=170, baseline 240
-           y = 240 - (val/100) * (210/70)  (since 7000 - 0 maps to 30..240, range 210, but lower bound 0 to upper 7000 ⇒ scale 30/7000 per unit doesn't match. let me redo: y=240 - val * 0.03)
-           val=3796 → y=240 - 3796*0.03=240-113.88=126.12
-           val=3979 → y=240 - 119.37=120.63
-           val=3757 → y=240 - 112.71=127.29
-           val=6637 → y=240 - 199.11=40.89
-           val=4996 → y=240 - 149.88=90.12
-           val=4235 → y=240 - 127.05=112.95 -->
-      <polyline points="105,126.12 195,120.63 285,127.29 395,40.89 485,90.12 575,112.95" fill="none" stroke="#10C390" stroke-width="3" stroke-linejoin="round"/>
-      <circle cx="105" cy="126.12" r="5" fill="#10C390" stroke="#fff" stroke-width="2"/>
-      <circle cx="195" cy="120.63" r="5" fill="#10C390" stroke="#fff" stroke-width="2"/>
-      <circle cx="285" cy="127.29" r="5" fill="#10C390" stroke="#fff" stroke-width="2"/>
-      <circle cx="395" cy="40.89" r="6.5" fill="#D6FF3D" stroke="#10C390" stroke-width="2.5"/>
-      <circle cx="485" cy="90.12" r="5" fill="#10C390" stroke="#fff" stroke-width="2"/>
-      <circle cx="575" cy="112.95" r="5" fill="#10C390" stroke="#fff" stroke-width="2"/>
-
-      <!-- Purchase value labels -->
-      <text x="105" y="142" font-size="9.5" fill="#0E9E76" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">3,796</text>
-      <text x="195" y="137" font-size="9.5" fill="#0E9E76" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">3,979</text>
-      <text x="285" y="143" font-size="9.5" fill="#0E9E76" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">3,757</text>
-      <text x="395" y="32" font-size="11" fill="#0E9E76" text-anchor="middle" font-family="JetBrains Mono" font-weight="900">6,637 ★</text>
-      <text x="485" y="82" font-size="9.5" fill="#0E9E76" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">4,996</text>
-      <text x="575" y="105" font-size="9.5" fill="#0E9E76" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">4,235</text>
-
-      <!-- X labels -->
-      <text x="105" y="262" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.04</text>
-      <text x="195" y="262" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.05</text>
-      <text x="285" y="262" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.06</text>
-      <text x="395" y="262" font-size="11" fill="#0F172A" text-anchor="middle" font-family="JetBrains Mono" font-weight="800">25.07</text>
-      <text x="485" y="262" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.08</text>
-      <text x="575" y="262" font-size="11" fill="#5B6675" text-anchor="middle" font-family="JetBrains Mono">25.09</text>
-
-      <!-- CPA mini callout -->
-      <rect x="80" y="278" width="620" height="28" rx="6" fill="#0A0F2E"/>
-      <text x="390" y="296" font-size="11.5" fill="#D6FF3D" text-anchor="middle" font-family="JetBrains Mono" font-weight="800">★ 25.07: 광고비 +32% MoM 증액 · 구매 +77% MoM · CPA ₩17,294 → ₩12,923 (-25.3%)</text>
-    </svg>
-    <div class="legend">
-      <span><i style="background:#1E29FF;"></i>광고비 (KRW, 좌축)</span>
-      <span><i style="background:#10C390;"></i>구매수 (좌측·우축 환산)</span>
-      <span><i style="background:#D6FF3D;border:1px solid #10C390;"></i>전환점 (ABO+MMP 적용)</span>
-    </div>
-  </div>
-
-  <!-- Monthly breakdown table -->
-  <div class="cmp" style="margin-top:14px">
-    <table>
-      <thead><tr>
-        <th>월</th>
-        <th class="r">광고비</th>
-        <th class="r">구매</th>
-        <th class="r">매출(AOV 25k)</th>
-        <th class="r">CPA</th>
-        <th class="r">ROAS</th>
-        <th>비고</th>
-      </tr></thead>
-      <tbody>
-        <tr><td class="lbl">25.04</td><td class="r">₩56.9M</td><td class="r">3,796</td><td class="r">₩94.9M</td><td class="r">₩14,990</td><td class="r">1.67x</td><td><span class="small">CBO 기존 구조</span></td></tr>
-        <tr><td class="lbl">25.05</td><td class="r">₩60.8M</td><td class="r">3,979</td><td class="r">₩99.5M</td><td class="r">₩15,273</td><td class="r">1.64x</td><td><span class="small">CBO 기존 구조</span></td></tr>
-        <tr><td class="lbl">25.06</td><td class="r">₩65.0M</td><td class="r">3,757</td><td class="r">₩93.9M</td><td class="r">₩17,294</td><td class="r">1.45x</td><td><span class="small">CPA 천장, 전환 준비</span></td></tr>
-        <tr class="hl"><td class="lbl">25.07 ★</td><td class="r">₩85.8M</td><td class="r">6,637</td><td class="r">₩165.9M</td><td class="r">₩12,923</td><td class="r">1.93x</td><td><span class="small" style="color:var(--green-dark);font-weight:700">ABO + Airbridge 4축 적용</span></td></tr>
-        <tr class="hl"><td class="lbl">25.08</td><td class="r">₩71.8M</td><td class="r">4,996</td><td class="r">₩124.9M</td><td class="r">₩14,378</td><td class="r">1.74x</td><td><span class="small">안정 운영</span></td></tr>
-        <tr class="hl"><td class="lbl">25.09</td><td class="r">₩60.7M</td><td class="r">4,235</td><td class="r">₩105.9M</td><td class="r">₩14,338</td><td class="r">1.74x</td><td><span class="small">예산 효율화 + ROAS 유지</span></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 4-axis execution -->
-  <div class="sec-h">실행 — 메타 한 매체에서 동시 적용한 4축</div>
-  <div class="axis-grid">
-    <div class="axis">
-      <div class="axis-no">① 구조 개편</div>
-      <div class="axis-name">CBO → ABO 소재 구조 전면 재편</div>
-      <div class="axis-desc">캠페인 예산 자동 분배(CBO) 대신 <strong>광고 세트별 ABO</strong>로 전환. 쓰레기 종류 × 페르소나 × 상황 조합 소재를 대량 제작해 공통점으로 묶어 운영. 머신러닝 학습 시드 정확도 ↑</div>
-      <div class="axis-kpi">→ 7월 CPA ₩17,294 → ₩12,923 (-25.3% MoM)</div>
-    </div>
-    <div class="axis">
-      <div class="axis-no">② MMP 도입</div>
-      <div class="axis-name">Airbridge 포스트백 연동</div>
-      <div class="axis-desc">메타 AE 적극 소통으로 도입 설득. 인앱 구매 신호가 메타로 정확히 전달되도록 <strong>포스트백 + 이벤트 매핑</strong>. 데이터 정합성·CPA 추가 절감 두 가지 모두 확보</div>
-      <div class="axis-kpi">→ ROAS 측정 가시화 + 머신러닝 학습 정확도 향상</div>
-    </div>
-    <div class="axis">
-      <div class="axis-no">③ 액션 매핑</div>
-      <div class="axis-name">무료봉투 신청 → 에어브릿지 이벤트 매핑</div>
-      <div class="axis-desc">회원가입↔구매 사이 <strong>중간 퍼널(무료봉투 신청)</strong>을 직접 광고 액션으로 매핑. 머신러닝이 구매 전 단계 의향 유저를 학습하도록 신호 확장</div>
-      <div class="axis-kpi">→ 도달 +46.1% · CPM -12.4% (학습 효율 ↑)</div>
-    </div>
-    <div class="axis">
-      <div class="axis-no">④ 오디언스</div>
-      <div class="axis-name">Airbridge 오디언스 → iOS 리타겟</div>
-      <div class="axis-desc">ATT로 리타겟이 막힌 <strong>iOS에서도 오디언스 기반 리타겟</strong> 가능. 유사타겟·구매 이력 고객 리타겟까지 확장. 메타 단독 한계를 우회</div>
-      <div class="axis-kpi">→ iOS 리타겟 활성화 · 광고비 +19.5%까지 안정적 증액</div>
-    </div>
   </div>
 
   <!-- Insight callout -->
   <div class="callout">
-    <div class="lbl">핵심 인사이트</div>
-    <div class="body">CBO에서 ABO로 구조를 뒤집고 <em>Airbridge MMP를 4축</em>(포스트백 · 액션 매핑 · 오디언스 · iOS 리타겟)으로 동시 적용한 결과 — 광고비 +19.5% 증액에 <em>구매·매출이 동시에 +37.6%</em> 따라왔고 CPA는 오히려 <em>-13.1% 하락</em>. 적극 베팅이 가능한 효율 구조를 메타 한 매체에서 만든 셈.</div>
+    <div class="lbl">한 줄 요약</div>
+    <div class="body">CBO → ABO 구조 개편 + Airbridge MMP 4축(포스트백 · 액션 매핑 · 오디언스 · iOS 리타겟) 동시 적용 — 광고비 +19.5% 증액에 <em>구매·매출이 +37.6% 따라옴</em>, CPA는 오히려 <em>-13.1%</em>. 데이터 출처: Meta 광고 관리자 · 추출 2026.05.30.</div>
   </div>
 
-  <div class="note">
-    <strong>📊 데이터 출처</strong> · Meta 광고 관리자(act_225607806262602 · 커버링) · 7d_click+1d_view 어트리뷰션 · omni_purchase 기준 (action_type=omni_purchase, 메타가 픽셀·SDK·MMP 통합 집계)<br>
-    <strong>💰 매출 환산</strong> · Meta 측 자체 보고 매출은 측정 갭(픽셀 일부 누락·앱 인앱 매출 미반영)이 있어, <strong>객단가 ₩25,000</strong>으로 일관 환산. ROAS도 동일 기준 적용해 Before/After 동일한 측정 prism으로 비교<br>
-    <strong>🔧 추출 시점</strong> · 2026.05.30 · 비교 구간 각 91일(25.04~06 91일 / 25.07~09 92일) 거의 동일 길이
-  </div>
 </div>
 </body>
 </html>
