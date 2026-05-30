@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1920">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
 <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet">
 <title>이도형 콘텐츠 마케터 포트폴리오 v28 — Content Edition</title>
@@ -16,6 +16,21 @@
  * Hybrid: v7 cobalt/lime visual rituals × v13 light-base readability
  * ════════════════════════════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box;}
+
+/* ─── Responsive scale: 1920×1080 디자인을 viewport 너비에 맞춰 비례 축소 ─── */
+/* 1920px 이상 viewport: scale 1.0 유지 (디자인 원본 크기 그대로) */
+/* 1920px 미만 viewport: 가로 너비에 맞춰 슬라이드 통째로 축소 (16:9 비율 유지) */
+:root{
+  --slide-scale: min(1, calc(100vw / 1920px));
+}
+@media (max-width: 1920px){
+  html,body{
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  body{align-items:flex-start !important;}
+}
+
 :root{
   /* ─── Core palette (v7 cobalt+lime) ─── */
   --cobalt:#1E29FF;
@@ -64,7 +79,7 @@
   --blue-mid:var(--lavender);
 }
 body{font-family:var(--font-sans);background:#0A0F2E;display:flex;flex-direction:column;align-items:center;gap:3px;padding:3px 0;font-feature-settings:"ss01" 1,"tnum" 1;-webkit-font-smoothing:antialiased;}
-.slide{width:1920px;height:1080px;background:var(--bg);overflow:hidden;flex-shrink:0;position:relative;color:var(--text);}
+.slide{width:1920px;height:1080px;background:var(--bg);overflow:hidden;flex-shrink:0;position:relative;color:var(--text);transform:scale(var(--slide-scale));transform-origin:top left;margin-bottom:calc(-1080px * (1 - var(--slide-scale)));}
 .slide.dark{background:var(--ink);color:#fff;}
 .slide.cobalt{background:var(--cobalt);color:#fff;}
 

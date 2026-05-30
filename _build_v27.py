@@ -893,7 +893,7 @@ slide_blocks["p6"] = cvr
 # --------------------------------------------------------------------------
 preamble = sub_once(
     preamble,
-    r"<title>이도형 포트폴리오 v26 — Cobalt Edge · 병목·실행·결과</title>",
+    r"<title>이도형 그로스 마케터 포트폴리오 v26 — Cobalt Edge</title>",
     "<title>이도형 퍼포먼스 마케터 포트폴리오 v27 — Performance Edition</title>",
 )
 

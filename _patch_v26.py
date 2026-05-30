@@ -52,32 +52,31 @@ def find_block_end(text: str, start: int) -> int:
     raise RuntimeError(f"Unbalanced <div> from offset {start}")
 
 
-# 3) 대상 파일들에 패치 적용
-TARGETS = ["portfolio.html", "이도형_포트폴리오_v26.html"]
-last_text: str | None = None
-for fn in TARGETS:
-    p = HERE / fn
-    text = p.read_text(encoding="utf-8")
-    open_match = re.search(r'<div class="slide" id="p10">', text)
-    if not open_match:
-        raise SystemExit(f"p10 not found in {fn}")
-    start = open_match.start()
-    end = find_block_end(text, start)
-    text = text[:start] + new_block + text[end:]
+# 3) v26.html을 canonical source로 두고, p10 + title 패치 적용
+V26 = HERE / "이도형_포트폴리오_v26.html"
+text = V26.read_text(encoding="utf-8")
 
-    # <title>에 '그로스 마케터' 명시 (한 번만 적용; 이미 변경돼 있으면 skip)
-    text = re.sub(
-        r"<title>이도형 포트폴리오 v26 — Cobalt Edge · 병목·실행·결과</title>",
-        "<title>이도형 그로스 마케터 포트폴리오 v26 — Cobalt Edge</title>",
-        text,
-        count=1,
-    )
+open_match = re.search(r'<div class="slide" id="p10">', text)
+if not open_match:
+    raise SystemExit("p10 not found in v26")
+start = open_match.start()
+end = find_block_end(text, start)
+text = text[:start] + new_block + text[end:]
 
+# <title>에 '그로스 마케터' 명시 (한 번만 적용; 이미 변경돼 있으면 skip)
+text = re.sub(
+    r"<title>이도형 포트폴리오 v26 — Cobalt Edge · 병목·실행·결과</title>",
+    "<title>이도형 그로스 마케터 포트폴리오 v26 — Cobalt Edge</title>",
+    text,
+    count=1,
+)
+
+V26.write_text(text, encoding="utf-8")
+print(f"patched {V26}: {len(text):,} bytes")
+
+# portfolio.html과 그로스 alias는 v26.html과 항상 동일 — 단순 복사로 동기화
+# (v26.html source에 직접 수정한 viewport / responsive CSS 변경도 자동 반영)
+for sibling in ["portfolio.html", "이도형_그로스마케터_포트폴리오.html"]:
+    p = HERE / sibling
     p.write_text(text, encoding="utf-8")
-    print(f"patched {fn}: {len(text):,} bytes")
-    last_text = text
-
-# 사용자 친화적 한글 alias — URL에서 직무가 한눈에 보이게
-ALIAS = HERE / "이도형_그로스마케터_포트폴리오.html"
-ALIAS.write_text(last_text, encoding="utf-8")
-print(f"wrote alias {ALIAS}")
+    print(f"wrote alias {p}")
