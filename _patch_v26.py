@@ -54,6 +54,7 @@ def find_block_end(text: str, start: int) -> int:
 
 # 3) 대상 파일들에 패치 적용
 TARGETS = ["portfolio.html", "이도형_포트폴리오_v26.html"]
+last_text: str | None = None
 for fn in TARGETS:
     p = HERE / fn
     text = p.read_text(encoding="utf-8")
@@ -63,5 +64,20 @@ for fn in TARGETS:
     start = open_match.start()
     end = find_block_end(text, start)
     text = text[:start] + new_block + text[end:]
+
+    # <title>에 '그로스 마케터' 명시 (한 번만 적용; 이미 변경돼 있으면 skip)
+    text = re.sub(
+        r"<title>이도형 포트폴리오 v26 — Cobalt Edge · 병목·실행·결과</title>",
+        "<title>이도형 그로스 마케터 포트폴리오 v26 — Cobalt Edge</title>",
+        text,
+        count=1,
+    )
+
     p.write_text(text, encoding="utf-8")
     print(f"patched {fn}: {len(text):,} bytes")
+    last_text = text
+
+# 사용자 친화적 한글 alias — URL에서 직무가 한눈에 보이게
+ALIAS = HERE / "이도형_그로스마케터_포트폴리오.html"
+ALIAS.write_text(last_text, encoding="utf-8")
+print(f"wrote alias {ALIAS}")

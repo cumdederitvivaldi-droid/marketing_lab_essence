@@ -894,7 +894,7 @@ slide_blocks["p6"] = cvr
 preamble = sub_once(
     preamble,
     r"<title>이도형 포트폴리오 v26 — Cobalt Edge · 병목·실행·결과</title>",
-    "<title>이도형 포트폴리오 v27 — Performance Edition · 퍼포먼스 마케터</title>",
+    "<title>이도형 퍼포먼스 마케터 포트폴리오 v27 — Performance Edition</title>",
 )
 
 # v15 17-슬라이드 comment → v27 16-슬라이드
@@ -911,3 +911,8 @@ ordered_slides = [slide_blocks[sid] for sid, _ in NEW_ORDER]
 out = preamble + "\n\n".join(ordered_slides) + tail
 DST.write_text(out, encoding="utf-8")
 print(f"wrote {DST} ({len(out):,} bytes, {out.count(chr(10)):,} lines)")
+
+# 사용자 친화적 한글 alias — URL에서 직무가 한눈에 보이게
+ALIAS = DST.parent / "이도형_퍼포먼스마케터_포트폴리오.html"
+ALIAS.write_text(out, encoding="utf-8")
+print(f"wrote alias {ALIAS}")
