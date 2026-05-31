@@ -81,12 +81,12 @@ NEW_ORDER = [
     ("p13",      6),   # PA 그로스 사이클      (viral 01/01)
     ("p990",     7),   # 990원 진입 이벤트 LP   (growth 01/01)
     ("p9",       8),   # 페이백 RCT (LP + 인플 영상) (CRM 01/01)
-    ("p4",       9),   # M1 등급제 (모바일 직접 제작) (growth·CRM 02/02) ← p9 뒤
+    ("p4",       9),   # M1 등급제 (모바일 직접 제작) (growth·CRM 02/02)
     ("p6",      10),   # D45 CVR (알림톡 콘텐츠) (growth·CRM 01/02)
-    ("p14",     11),   # Claude CLI (Figma→웹 자동화)
-    ("p15",     12),   # 팀 리딩 (콘텐츠 인턴 육성)
-    ("p10",     13),   # Web2App Bridge LP 10종 (perf 01/02) ← 뒤로
-    ("p11",     14),   # T-ROAS                (perf 02/02) ← 뒤로
+    ("p10",     11),   # Web2App Bridge LP 10종 (perf 01/02) ← p6 뒤
+    ("p11",     12),   # T-ROAS                (perf 02/02) ← Web2App 뒤
+    ("p14",     13),   # Claude CLI (Figma→웹 자동화)
+    ("p15",     14),   # 팀 리딩 (콘텐츠 인턴 육성)
     ("p16",     15),   # 이전 경력
     ("p17",     16),   # OUTRO
 ]
