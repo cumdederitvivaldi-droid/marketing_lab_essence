@@ -21,22 +21,25 @@ body{font-family:'Apple SD Gothic Neo','Segoe UI',sans-serif;background:#f0f2f5;
 <body>
 <div class="grid">
   <div class="card c1"><div class="label">총 노출</div><div class="value" id="imp"></div><div class="sub">impressions</div></div>
-  <div class="card c2"><div class="label">총 비용</div><div class="value" id="cost"></div><div class="sub">KRW</div></div>
-  <div class="card c3"><div class="label">총 구매 건수</div><div class="value" id="pur"></div><div class="sub">purchases</div></div>
-  <div class="card c4"><div class="label">평균 CPA</div><div class="value" id="cpa"></div><div class="sub" id="ctr"></div></div>
+  <div class="card c2"><div class="label">CTR</div><div class="value" id="ctr"></div><div class="sub">클릭률</div></div>
+  <div class="card c3"><div class="label">구매 CVR</div><div class="value" id="cvr"></div><div class="sub">클릭 대비 구매율</div></div>
+  <div class="card c4"><div class="label">최저/평균 CPA 비율</div><div class="value" id="cparatio"></div><div class="sub">효율 최적화 폭</div></div>
 </div>
 <script>
 const raw=[[39468,386,572059,440],[96077,1104,1466022,1086],[0,0,0,0],[361308,2971,5594479,1291],[132274,544,715231,331],[1849,3,9957,2],[9343,96,177637,13],[67320,267,659457,10],[22971,132,327430,4],[70106,378,855603,14],[16365,220,438863,69],[17092,296,449587,108],[15765,273,456169,102],[1617,3,17325,0],[9217,41,124930,0],[29004,250,425094,10],[0,0,0,0],[32567,228,447761,16],[25979,134,424821,7],[385705,1572,4455025,117],[22195,88,305628,0],[18984,110,282832,8],[261167,1260,3001881,105],[85913,744,1710773,42],[39507,407,891948,20],[18688,133,363083,15],[12714,98,224265,10],[3914,30,38472,2],[16208,177,391892,469],[0,0,0,0],[3262,10,58767,0],[18360,105,204266,4],[809,3,11371,0],[21689,114,265855,6],[20994,143,244742,6],[61208,568,1540897,53],[6857,58,105121,2],[58860,442,1374988,17],[5135,31,103505,3],[51080,1672,992425,0],[76919,1533,1031908,0],[23300,298,547807,245],[47123,487,955376,548],[20698,183,348976,31],[1366,9,33389,0],[59051,493,535000,241],[27672,294,763658,22],[30989,280,896154,19],[10178,122,299551,14],[12477,59,448368,12],[18139,185,456316,64],[20847,255,456693,109],[81191,1090,595251,2],[6634,136,41034,0],[16071,124,126617,2],[48869,243,607742,3],[138127,2509,1079738,5],[0,0,0,0],[17874,104,156640,2],[61340,401,972142,18],[261167,1260,2460012,35],[1446,26,10955,0],[26045,197,202683,2],[9757,108,49624,0],[892167,8187,11750937,294],[24695,159,355030,2],[20036,244,189707,0],[19258,150,567120,2],[17200,99,360040,13],[30244,239,670453,15]];
-const fmt=n=>n.toLocaleString('ko-KR');
 const tI=raw.reduce((s,r)=>s+r[0],0);
-const tC=raw.reduce((s,r)=>s+r[2],0);
-const tP=raw.reduce((s,r)=>s+r[3],0);
 const tK=raw.reduce((s,r)=>s+r[1],0);
+const tP=raw.reduce((s,r)=>s+r[3],0);
+const tC=raw.reduce((s,r)=>s+r[2],0);
+const fmt=n=>n.toLocaleString('ko-KR');
+// Best CPA from sets with purchases
+const cpas=raw.filter(r=>r[3]>0).map(r=>r[2]/r[3]);
+const bestCpa=Math.min(...cpas);
+const avgCpa=tC/tP;
 document.getElementById('imp').textContent=fmt(tI);
-document.getElementById('cost').textContent='₩'+fmt(tC);
-document.getElementById('pur').textContent=fmt(tP);
-document.getElementById('cpa').textContent='₩'+fmt(Math.round(tC/tP));
-document.getElementById('ctr').textContent='CTR '+((tK/tI)*100).toFixed(2)+'%';
+document.getElementById('ctr').textContent=((tK/tI)*100).toFixed(2)+'%';
+document.getElementById('cvr').textContent=((tP/tK)*100).toFixed(2)+'%';
+document.getElementById('cparatio').textContent=(bestCpa/avgCpa*100).toFixed(0)+'%';
 </script>
 </body>
 </html>

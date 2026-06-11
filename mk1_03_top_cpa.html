@@ -13,10 +13,9 @@ h2 span{font-size:12px;color:#888;font-weight:400;margin-left:8px}
 </style>
 </head>
 <body>
-<h2>CPA 최저 TOP 10 <span>구매 발생 세트만 · KRW (낮을수록 효율적)</span></h2>
+<h2>CPA 효율 TOP 10 <span>구매 발생 세트만 · 최저=100 기준 상대 지수 (낮을수록 효율적)</span></h2>
 <canvas id="c" height="320"></canvas>
 <script>
-const fmt=n=>n.toLocaleString('ko-KR');
 const raw=[
   ["aos_re 자취생(음식물)",836],
   ["aos(Web2App) 지구의날(환경)",1350],
@@ -30,22 +29,24 @@ const raw=[
   ["aos(Web2App) 주목/천안50",4472],
 ];
 const sorted=[...raw].sort((a,b)=>a[1]-b[1]);
+const minVal=sorted[0][1];
+const indexed=sorted.map(r=>Math.round(r[1]/minVal*100));
 new Chart(document.getElementById('c'),{
   type:'bar',
   data:{
     labels:sorted.map(r=>r[0]),
     datasets:[{
-      label:'CPA (KRW)',
-      data:sorted.map(r=>r[1]),
+      label:'CPA 지수',
+      data:indexed,
       backgroundColor:'#0f9b8e',
       borderRadius:6,
     }]
   },
   options:{
     indexAxis:'y',
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`₩${fmt(ctx.raw)}`}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`지수 ${ctx.raw} (최저 대비 ${ctx.raw}%)`}}},
     scales:{
-      x:{grid:{color:'#f0f0f0'},ticks:{font:{size:11},callback:v=>'₩'+fmt(v)}},
+      x:{grid:{color:'#f0f0f0'},ticks:{font:{size:11}}},
       y:{ticks:{font:{size:11}}}
     },
     maintainAspectRatio:false,

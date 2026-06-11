@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ì»¤ë²ë§ ì ì²´ ì±ê³¼ ëìë³´ë</title>
+<title>커버링 전체 성과 대시보드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,128 +44,130 @@
 <body>
 
 <div class="dash-header">
-  <span class="dash-title">ð ì»¤ë²ë§ ì ì²´ ì±ê³¼ ëìë³´ë</span>
-  <span class="dash-period">2024.01 ~ 2026.04 &nbsp;|&nbsp; ì´ëí ì¬ì§ ê¸°ê°: 2024.05.13 ~</span>
+  <span class="dash-title">📊 커버링 전체 성과 대시보드</span>
+  <span class="dash-period">2024.01 ~ 2026.04 &nbsp;|&nbsp; 이도형 재직 기간: 2024.05.13 ~</span>
 </div>
 
 <div class="kpi-row">
   <div class="kpi">
-    <div class="kpi-label">ì ë§¤ì¶ (2026.04)</div>
-    <div class="kpi-value">17.6ìµ</div>
-    <div class="kpi-growth">â² ìì¬ ëë¹ +1,541%</div>
+    <div class="kpi-label">매출 성장 (이사 전 대비)</div>
+    <div class="kpi-value">+1,541%</div>
+    <div class="kpi-growth">▲ 재직 기간 기준</div>
   </div>
   <div class="kpi">
-    <div class="kpi-label">MAU (2026.03)</div>
-    <div class="kpi-value">56,736</div>
-    <div class="kpi-growth">â² ìì¬ ëë¹ +2,439%</div>
+    <div class="kpi-label">MAU 성장 (이사 전 대비)</div>
+    <div class="kpi-value">+2,439%</div>
+    <div class="kpi-growth">▲ 재직 기간 기준</div>
   </div>
   <div class="kpi">
-    <div class="kpi-label">ì ê· ì ì  (2026.03)</div>
-    <div class="kpi-value">18,717</div>
-    <div class="kpi-growth">â² ìì¬ ëë¹ +2,066%</div>
+    <div class="kpi-label">신규 이용자 성장 (이사 전 대비)</div>
+    <div class="kpi-value">+2,066%</div>
+    <div class="kpi-growth">▲ 재직 기간 기준</div>
   </div>
   <div class="kpi">
-    <div class="kpi-label">ê³µíì´ìµë¥  (2026.01)</div>
+    <div class="kpi-label">공헌이익률 (2026.01)</div>
     <div class="kpi-value">35.9%</div>
-    <div class="kpi-growth">â² ë°ì´í° ìì ëë¹ +26.5pp</div>
+    <div class="kpi-growth">▲ 데이터 집계 대비 +26.5pp</div>
   </div>
 </div>
 
-<!-- Row 1: ë§¤ì¶ full width -->
+<!-- Row 1: 매출 성장 지수 -->
 <div class="full chart-card">
-  <div class="chart-title">ì ì²´ ë§¤ì¶ (ë¶ê°ì¸ í¬í¨)</div>
-  <div class="chart-sub">ë¨ì: ìµì &nbsp;|&nbsp; ì£¼í© ì ì  = ì´ëí ìì¬ ìì  (2024.05)</div>
+  <div class="chart-title">매출 성장 지수</div>
+  <div class="chart-sub">2024.01 = 100 기준 &nbsp;|&nbsp; 주황 점선 = 이도형 이사 시점 (2024.05)</div>
   <div class="legend">
-    <div class="leg-item"><span class="leg-bar" style="background:#93C5FD;"></span> ë§¤ì¶</div>
+    <div class="leg-item"><span class="leg-bar" style="background:#93C5FD;"></span> 성장 지수</div>
     <span class="leg-sep"></span>
-    <div class="leg-item"><span class="leg-ev"></span> ìì¬ ìì </div>
+    <div class="leg-item"><span class="leg-ev"></span> 이사 시점</div>
   </div>
   <div class="chart-wrap" style="height:220px;">
     <canvas id="c-revenue"></canvas>
   </div>
 </div>
 
-<!-- Row 2: ì ê·ì ì  + MAU -->
+<!-- Row 2: 신규이용자 + MAU -->
 <div class="grid-2">
   <div class="chart-card">
-    <div class="chart-title">ì ê· ì ì  ì</div>
-    <div class="chart-sub">ë¨ì: ëª</div>
+    <div class="chart-title">신규 이용자 성장 지수</div>
+    <div class="chart-sub">2024.01 = 100 기준</div>
     <div class="chart-wrap" style="height:190px;">
       <canvas id="c-newuser"></canvas>
     </div>
   </div>
   <div class="chart-card">
-    <div class="chart-title">MAU (30ì¼ íì± ì ì )</div>
-    <div class="chart-sub">ë¨ì: ëª</div>
+    <div class="chart-title">MAU 성장 지수</div>
+    <div class="chart-sub">2024.01 = 100 기준</div>
     <div class="chart-wrap" style="height:190px;">
       <canvas id="c-mau"></canvas>
     </div>
   </div>
 </div>
 
-<!-- Row 3: ë§ì¼íë¹ + ê³µíì´ìµë¥  -->
+<!-- Row 3: 마케팅비 + 공헌이익률 -->
 <div class="grid-2">
   <div class="chart-card">
-    <div class="chart-title">ë§ì¼í ë¹ì©</div>
-    <div class="chart-sub">ë¨ì: ìµì</div>
+    <div class="chart-title">마케팅 비용 성장 지수</div>
+    <div class="chart-sub">2024.11 = 100 기준 (데이터 집계 시작)</div>
     <div class="chart-wrap" style="height:190px;">
       <canvas id="c-mktcost"></canvas>
     </div>
   </div>
   <div class="chart-card">
-    <div class="chart-title">ë¶ê°ì¸ í ê³µíì´ìµë¥ </div>
-    <div class="chart-sub">ë¨ì: %</div>
+    <div class="chart-title">부가세 후 공헌이익률</div>
+    <div class="chart-sub">단위: %</div>
     <div class="chart-wrap" style="height:190px;">
       <canvas id="c-margin"></canvas>
     </div>
   </div>
 </div>
 
-<!-- Row 4: ììì´ìµë¥  + CAC -->
+<!-- Row 4: 영업이익률 + CAC -->
 <div class="grid-2">
   <div class="chart-card">
-    <div class="chart-title">ììì´ìµë¥ </div>
-    <div class="chart-sub">ë¨ì: % &nbsp;|&nbsp; ì ì ì´ì ì¤ì´ë ê°ì  ì¶ì¸</div>
+    <div class="chart-title">영업이익률</div>
+    <div class="chart-sub">단위: % &nbsp;|&nbsp; 재직 이후 손실 줄이는 개선 추세</div>
     <div class="chart-wrap" style="height:190px;">
       <canvas id="c-opinc"></canvas>
     </div>
   </div>
   <div class="chart-card">
-    <div class="chart-title">CAC (ì ê· ì ì  íë ë¹ì©)</div>
-    <div class="chart-sub">ë¨ì: ì &nbsp;|&nbsp; ìì¬ ìì ë¶í° ì¶ì </div>
+    <div class="chart-title">CAC 추이 (이사 시점 = 100 기준)</div>
+    <div class="chart-sub">이사 시점 이후 집계 &nbsp;|&nbsp; 낮을수록 효율적</div>
     <div class="chart-wrap" style="height:190px;">
       <canvas id="c-cac"></canvas>
     </div>
   </div>
 </div>
 
-<div class="note">* ì¼ë¶ ì§íë ë°ì´í° ê¸°ë¡ ìì ìì ì´ ë¤ë¥¼ ì ìì &nbsp;|&nbsp; ì£¼í© ì ì : ì´ëí ìì¬ ìì (2024.05)</div>
+<div class="note">* 일부 지표는 데이터 기록 시작일이 다를 수 있음 &nbsp;|&nbsp; 주황 점선 기준: 이도형 이사 시점 (2024.05)</div>
 
 <script>
 const months = ['2024.01','2024.02','2024.03','2024.04','2024.05','2024.06','2024.07','2024.08','2024.09','2024.10','2024.11','2024.12','2025.01','2025.02','2025.03','2025.04','2025.05','2025.06','2025.07','2025.08','2025.09','2025.10','2025.11','2025.12','2026.01','2026.02','2026.03','2026.04'];
+const joinIdx = 4; // 2024.05
 
-const revenue = [61835700.223,71248774,76276477,88026517,107032587,99056069,176823278,212386043,204365316,241567668,241791183,256569395,290140406,331630160,381394182,449985376,520865048,601055339,743389269,810644472,839142451,954951892,950903259,1085256507,1215766356,1282992054,1671119065,1757436603];
-const revenueAuk = revenue.map(v => v === null ? null : Math.round(v/100000000*100)/100);
+// --- raw values (not exposed) ---
+const _rev = [61835700,71248774,76276477,88026517,107032587,99056069,176823278,212386043,204365316,241567668,241791183,256569395,290140406,331630160,381394182,449985376,520865048,601055339,743389269,810644472,839142451,954951892,950903259,1085256507,1215766356,1282992054,1671119065,1757436603];
+const _mau = [970,1296,1452,1721,2234,3182,4214,5583,6003,6662,7050,8183,8767,9952,12430,15366,17757,21671,26683,28965,30861,34597,35069,40222,43317,49125,56736,null];
+const _new = [363,548,501,600,864,1373,1807,2321,1853,1933,1893,2512,2691,2692,4896,5783,6235,7517,10211,9440,8441,10111,8802,12506,12051,12935,18717,null];
+const _mkt = [null,null,null,null,null,null,null,null,null,null,34979894,62278554,36407608,45177166,62151123,72416222,76489573,122808918,191892770,122914998,150679845,211320103,176878907,277621752,317420108,309667127,435443506,null];
+const _cac = [null,null,null,null,14260,13394,13054,10515,11849,15735,19250,19056,14114,13223,12553,11940,12467,13197,16253,13626,14401,19461,20571,22596,22327,21305,23147,null];
 
-const contrib = [null,null,null,null,null,null,null,null,null,0.09360603164849288,0.12668517678092608,0.1533711980611316,0.17292731147448998,0.1821650602413315,0.1802121631547424,0.18921851670790685,0.23308393764597543,0.22305251916851598,0.2351678492134528,0.25646024349870605,0.2688609413241437,0.2849799333880047,0.33226297471116223,0.29787832649868623,0.35884749431147106,0.2753776642471566,0.2985740172259958,null];
+// --- convert to index ---
+const toIdx = (arr, baseIdx) => arr.map(v => v === null ? null : Math.round(v / arr[baseIdx] * 10) / 10);
+const revIdx = toIdx(_rev, 0);
+const mauIdx = toIdx(_mau, 0);
+const newIdx = toIdx(_new, 0);
+const mktBase = _mkt.findIndex(v => v !== null);
+const mktIdx  = _mkt.map(v => v === null ? null : Math.round(v / _mkt[mktBase] * 10) / 10);
+const cacBase = _cac.findIndex(v => v !== null); // joinIdx
+const cacIdx  = _cac.map(v => v === null ? null : Math.round(v / _cac[cacBase] * 10) / 10);
+
+// --- keep as-is (% metrics) ---
+const contrib = [null,null,null,null,null,null,null,null,null,0.09360603,0.12668518,0.15337120,0.17292731,0.18216506,0.18021216,0.18921852,0.23308394,0.22305252,0.23516785,0.25646024,0.26886094,0.28497993,0.33226297,0.29787833,0.35884749,0.27537766,0.29857402,null];
 const contribPct = contrib.map(v => v === null ? null : Math.round(v*1000)/10);
-
-const mktcost = [null,null,null,null,null,null,null,null,null,null,34979894,62278554,36407608,45177166,62151123,72416222,76489573,122808918,191892770,122914998,150679845,211320103,176878907,277621752,317420108,309667127,435443506,null];
-const mktAuk = mktcost.map(v => v === null ? null : Math.round(v/100000000*100)/100);
-
-const opinc = [null,null,null,null,null,null,null,null,null,null,-0.16719104781242478,-0.2436418979084793,-0.12772593561581705,-0.11689397200109179,-0.12936842638870272,-0.09917779711363388,-0.029414011173965367,-0.08772147881771605,-0.16010493446187898,-0.00971110672546472,-0.05486781210058332,-0.045605562200499765,-0.009310157779279678,-0.11763734331337233,-0.02625531210966664,-0.09423697794609896,-0.07378574880180663,null];
+const opinc = [null,null,null,null,null,null,null,null,null,null,-0.16719,-0.24364,-0.12773,-0.11689,-0.12937,-0.09918,-0.02941,-0.08772,-0.16010,-0.00971,-0.05487,-0.04561,-0.00931,-0.11764,-0.02626,-0.09424,-0.07379,null];
 const opincPct = opinc.map(v => v === null ? null : Math.round(v*1000)/10);
 
-const newuser = [363,548,501,600,864,1373,1807,2321,1853,1933,1893,2512,2691,2692,4896,5783,6235,7517,10211,9440,8441,10111,8802,12506,12051,12935,18717,null];
-
-const mau = [970,1296,1452,1721,2234,3182,4214,5583,6003,6662,7050,8183,8767,9952,12430,15366,17757,21671,26683,28965,30861,34597,35069,40222,43317,49125,56736,null];
-
-const cac = [null,null,null,null,14260,13394,13054,10515,11849,15735,19250,19056,14114,13223,12553,11940,12467,13197,16253,13626,14401,19461,20571,22596,22327,21305,23147,null];
-
-// Employment start index (2024.05 = index 4)
-const joinIdx = 4;
-
-// Annotation plugin: vertical dashed line
 const joinLinePlugin = {
   id: 'joinLine',
   afterDraw(chart) {
@@ -198,7 +200,7 @@ const commonOpts = (yFmt, hasJoin=true) => ({
       padding: 8,
       titleFont: { size: 11 },
       bodyFont: { size: 11 },
-      callbacks: { label: ctx => yFmt(ctx.parsed.y) }
+      callbacks: { label: ctx => ctx.parsed.y !== null ? yFmt(ctx.parsed.y) : '' }
     }
   },
   scales: {
@@ -209,7 +211,7 @@ const commonOpts = (yFmt, hasJoin=true) => ({
         maxRotation: 45, minRotation: 45,
         callback: (val, idx) => {
           const m = months[idx];
-          return m.endsWith('.01') ? m : m.split('.')[1] + 'ì';
+          return m.endsWith('.01') ? m : m.split('.')[1] + '월';
         }
       }
     },
@@ -221,13 +223,13 @@ const commonOpts = (yFmt, hasJoin=true) => ({
   }
 });
 
-// 1. Revenue chart
+// 1. Revenue index
 new Chart(document.getElementById('c-revenue'), {
   type: 'bar',
   data: {
     labels: months,
     datasets: [{
-      data: revenueAuk,
+      data: revIdx,
       backgroundColor: months.map((m,i) => i >= joinIdx ? '#93C5FD' : '#BFDBFE'),
       borderColor: months.map((m,i) => i >= joinIdx ? '#3B82F6' : '#93C5FD'),
       borderWidth: 1,
@@ -236,195 +238,127 @@ new Chart(document.getElementById('c-revenue'), {
     }]
   },
   options: {
-    ...commonOpts(v => v === null ? '' : v.toFixed(1) + 'ìµ'),
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
     plugins: {
       ...commonOpts(v => v).plugins,
       tooltip: {
         ...commonOpts(v => v).plugins.tooltip,
-        callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + 'ìµì' : '' }
+        callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' }
       }
+    },
+    scales: {
+      ...commonOpts(v => v).scales,
+      y: { ...commonOpts(v => v).scales.y, title: { display: true, text: '성장 지수 (2024.01=100)', font: { size: 9 } } }
     }
   }
 });
 
-// 2. New Users
+// 2. New Users index
 new Chart(document.getElementById('c-newuser'), {
   type: 'bar',
   data: {
     labels: months,
     datasets: [{
-      data: newuser,
+      data: newIdx,
       backgroundColor: months.map((m,i) => i >= joinIdx ? '#6EE7B7' : '#D1FAE5'),
       borderColor: months.map((m,i) => i >= joinIdx ? '#10B981' : '#6EE7B7'),
-      borderWidth: 1,
-      borderRadius: 3,
-      spanGaps: true
+      borderWidth: 1, borderRadius: 3, spanGaps: true
     }]
   },
   options: {
-    ...commonOpts(v => v === null ? '' : v.toLocaleString() + 'ëª'),
-    plugins: {
-      ...commonOpts(v => v).plugins,
-      tooltip: {
-        ...commonOpts(v => v).plugins.tooltip,
-        callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toLocaleString() + 'ëª' : '' }
-      }
-    }
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'성장 지수 (2024.01=100)', font:{size:9} } } }
   }
 });
 
-// 3. MAU
+// 3. MAU index
 new Chart(document.getElementById('c-mau'), {
   type: 'line',
   data: {
     labels: months,
     datasets: [{
-      data: mau,
-      borderColor: '#0D9488',
-      backgroundColor: 'rgba(13,148,136,0.08)',
-      borderWidth: 2,
-      pointRadius: 2.5,
-      pointHoverRadius: 5,
-      tension: 0.3,
-      fill: true,
-      spanGaps: true
+      data: mauIdx,
+      borderColor: '#0D9488', backgroundColor: 'rgba(13,148,136,0.08)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: true, spanGaps: true
     }]
   },
   options: {
-    ...commonOpts(v => v === null ? '' : v.toLocaleString() + 'ëª'),
-    plugins: {
-      ...commonOpts(v => v).plugins,
-      tooltip: {
-        ...commonOpts(v => v).plugins.tooltip,
-        callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toLocaleString() + 'ëª' : '' }
-      }
-    }
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'성장 지수 (2024.01=100)', font:{size:9} } } }
   }
 });
 
-// 4. Marketing Cost
+// 4. Marketing Cost index
 new Chart(document.getElementById('c-mktcost'), {
   type: 'bar',
   data: {
     labels: months,
     datasets: [{
-      data: mktAuk,
-      backgroundColor: '#FCD34D',
-      borderColor: '#F59E0B',
-      borderWidth: 1,
-      borderRadius: 3,
-      spanGaps: true
+      data: mktIdx,
+      backgroundColor: '#FCD34D', borderColor: '#F59E0B', borderWidth: 1, borderRadius: 3, spanGaps: true
     }]
   },
   options: {
-    ...commonOpts(v => v === null ? '' : v.toFixed(1) + 'ìµ'),
-    plugins: {
-      ...commonOpts(v => v).plugins,
-      tooltip: {
-        ...commonOpts(v => v).plugins.tooltip,
-        callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + 'ìµì' : '' }
-      }
-    }
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'성장 지수 (2024.11=100)', font:{size:9} } } }
   }
 });
 
-// 5. Contribution Margin
+// 5. Contribution Margin % (keep as-is)
 new Chart(document.getElementById('c-margin'), {
   type: 'line',
   data: {
     labels: months,
     datasets: [{
       data: contribPct,
-      borderColor: '#059669',
-      backgroundColor: 'rgba(5,150,105,0.07)',
-      borderWidth: 2,
-      pointRadius: 2.5,
-      pointHoverRadius: 5,
-      tension: 0.3,
-      fill: true,
-      spanGaps: false
+      borderColor: '#059669', backgroundColor: 'rgba(5,150,105,0.07)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: true, spanGaps: false
     }]
   },
   options: {
     ...commonOpts(v => v === null ? '' : v.toFixed(1) + '%'),
-    plugins: {
-      ...commonOpts(v => v).plugins,
-      tooltip: {
-        ...commonOpts(v => v).plugins.tooltip,
-        callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + '%' : '' }
-      }
-    }
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + '%' : '' } } }
   }
 });
 
-// 6. Operating Income
+// 6. Operating Income % (keep as-is)
 new Chart(document.getElementById('c-opinc'), {
   type: 'line',
   data: {
     labels: months,
     datasets: [{
       data: opincPct,
-      borderColor: '#7C3AED',
-      backgroundColor: 'rgba(124,58,237,0.07)',
-      borderWidth: 2,
-      pointRadius: 2.5,
-      pointHoverRadius: 5,
-      tension: 0.3,
-      fill: true,
-      spanGaps: false
+      borderColor: '#7C3AED', backgroundColor: 'rgba(124,58,237,0.07)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: true, spanGaps: false
     }]
   },
   options: {
     ...commonOpts(v => v === null ? '' : v.toFixed(1) + '%'),
-    plugins: {
-      ...commonOpts(v => v).plugins,
-      tooltip: {
-        ...commonOpts(v => v).plugins.tooltip,
-        callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + '%' : '' }
-      }
-    },
-    scales: {
-      ...commonOpts(v => v).scales,
-      y: {
-        ...commonOpts(v => v).scales.y,
-        ticks: { font: { size: 9 }, color: '#9ca3af', callback: v => v.toFixed(0) + '%' }
-      }
-    }
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + '%' : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, ticks: { font:{size:9}, color:'#9ca3af', callback: v => v.toFixed(0) + '%' } } }
   }
 });
 
-// 7. CAC
+// 7. CAC index
 new Chart(document.getElementById('c-cac'), {
   type: 'line',
   data: {
     labels: months,
     datasets: [{
-      data: cac,
-      borderColor: '#EF4444',
-      backgroundColor: 'rgba(239,68,68,0.07)',
-      borderWidth: 2,
-      pointRadius: 2.5,
-      pointHoverRadius: 5,
-      tension: 0.3,
-      fill: false,
-      spanGaps: false
+      data: cacIdx,
+      borderColor: '#EF4444', backgroundColor: 'rgba(239,68,68,0.07)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: false, spanGaps: false
     }]
   },
   options: {
-    ...commonOpts(v => v === null ? '' : v.toLocaleString() + 'ì'),
-    plugins: {
-      ...commonOpts(v => v).plugins,
-      tooltip: {
-        ...commonOpts(v => v).plugins.tooltip,
-        callbacks: { label: ctx => ctx.parsed.y !== null ? ctx.parsed.y.toLocaleString() + 'ì' : '' }
-      }
-    },
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
     scales: {
-      ...commonOpts(v => v).scales,
-      y: {
-        ...commonOpts(v => v).scales.y,
-        ticks: { font: { size: 9 }, color: '#9ca3af', callback: v => (v/10000).toFixed(0) + 'ë§' }
-      }
+      ...commonOpts(v=>v).scales,
+      y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'CAC 지수 (2024.05=100)', font:{size:9} }, ticks: { font:{size:9}, color:'#9ca3af', callback: v => v.toFixed(0) } }
     }
   }
 });

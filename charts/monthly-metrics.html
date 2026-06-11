@@ -191,9 +191,7 @@
                 if(ctx.parsed.y == null) return ` MoM 성장률: —`;
                 return ` MoM 성장률: ${ctx.parsed.y > 0 ? '+' : ''}${ctx.parsed.y.toFixed(1)}%`;
               }
-              const abs = ds._abs[ctx.dataIndex];
-              const absStr = abs == null ? '—' : fmt[ds._fmt](abs);
-              return ` ${ds.label}: ${ctx.parsed.y.toFixed(0)} (${absStr})`;
+              return ` ${ds.label}: ${ctx.parsed.y.toFixed(0)}`;
             },
           },
         },

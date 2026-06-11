@@ -47,27 +47,27 @@
   <!-- Charts -->
   <div class="charts-grid">
     <div class="chart-card">
-      <h2>구매 건수 TOP 10 <span>광고 세트 기준</span></h2>
+      <h2>구매 지수 TOP 10 <span>최고 세트=100 기준</span></h2>
       <canvas id="topPurchaseChart"></canvas>
     </div>
     <div class="chart-card">
-      <h2>CPA 최저 TOP 10 <span>구매 발생 세트만, KRW</span></h2>
+      <h2>CPA 지수 최저 TOP 10 <span>구매 발생 세트만, 최저=100</span></h2>
       <canvas id="topCpaChart"></canvas>
     </div>
     <div class="chart-card">
-      <h2>플랫폼별 비용 비중 <span>KRW 합계</span></h2>
+      <h2>플랫폼별 비용 비중 <span>% of total</span></h2>
       <canvas id="platformCostChart"></canvas>
     </div>
     <div class="chart-card">
-      <h2>플랫폼별 구매 건수 비중</h2>
+      <h2>플랫폼별 구매 비중 <span>% of total</span></h2>
       <canvas id="platformPurchaseChart"></canvas>
     </div>
     <div class="chart-card wide">
-      <h2>월별 비용 vs 구매 건수 추이</h2>
+      <h2>월별 비용 vs 구매 성장 추이 <span>26.02=100 기준 지수</span></h2>
       <canvas id="monthlyChart" class="canvas-tall"></canvas>
     </div>
     <div class="chart-card wide">
-      <h2>소재 카테고리별 성과 비교 <span>비용(KRW) · 구매 건수</span></h2>
+      <h2>소재 카테고리별 성과 비중 <span>비용 비중(%) · 구매 비중(%)</span></h2>
       <canvas id="categoryChart" class="canvas-tall"></canvas>
     </div>
   </div>
@@ -185,35 +185,43 @@ const totImp = raw.reduce((s,r)=>s+r[1],0);
 const totClk = raw.reduce((s,r)=>s+r[2],0);
 const totCost = raw.reduce((s,r)=>s+r[3],0);
 const totPur = raw.reduce((s,r)=>s+r[4],0);
-const avgCPA = Math.round(totCost / totPur);
 const ctr = ((totClk/totImp)*100).toFixed(2);
+const cvr = totClk>0 ? ((totPur/totClk)*100).toFixed(2) : '0.00';
+const cpaList = raw.filter(r=>r[5]!==null&&r[5]>0).map(r=>r[5]);
+const bestCpa = Math.min(...cpaList);
+const avgCpa = totPur>0 ? totCost/totPur : 1;
+const cpaRatio = Math.round(bestCpa/avgCpa*100);
 
 document.getElementById('kpi-grid').innerHTML = `
   <div class="kpi-card"><div class="label">총 노출</div><div class="value">${fmt(totImp)}</div><div class="sub">impressions</div></div>
-  <div class="kpi-card accent1"><div class="label">총 비용</div><div class="value">₩${fmt(totCost)}</div><div class="sub">KRW</div></div>
-  <div class="kpi-card accent2"><div class="label">총 구매 건수</div><div class="value">${fmt(totPur)}</div><div class="sub">purchases</div></div>
-  <div class="kpi-card accent3"><div class="label">평균 CPA</div><div class="value">₩${fmt(avgCPA)}</div><div class="sub">CTR ${ctr}%</div></div>
+  <div class="kpi-card accent1"><div class="label">CTR</div><div class="value">${ctr}%</div><div class="sub">클릭률</div></div>
+  <div class="kpi-card accent2"><div class="label">구매 CVR</div><div class="value">${cvr}%</div><div class="sub">클릭 대비 구매율</div></div>
+  <div class="kpi-card accent3"><div class="label">최저 CPA / 평균 비율</div><div class="value">${cpaRatio}%</div><div class="sub">낮을수록 고효율 세트 존재</div></div>
 `;
 
 // ─── 팔레트 ──────────────────────────────────────────
 const palette = ['#0f3460','#e94560','#0f9b8e','#f5a623','#7c3aed','#06b6d4','#10b981','#f97316','#8b5cf6','#ec4899'];
 
-// ─── 차트1: 구매 TOP10 ────────────────────────────────
+// ─── 차트1: 구매 지수 TOP10 ──────────────────────────
 const sorted_pur = [...raw].filter(r=>r[4]>0).sort((a,b)=>b[4]-a[4]).slice(0,10);
+const maxPur = sorted_pur[0][4];
 new Chart(document.getElementById('topPurchaseChart'), {
   type: 'bar',
   data: {
     labels: sorted_pur.map(r=>extractLabel(r[0])),
     datasets: [{
-      label: '구매 건수',
-      data: sorted_pur.map(r=>r[4]),
+      label: '구매 지수 (최고=100)',
+      data: sorted_pur.map(r=>Math.round(r[4]/maxPur*100)),
       backgroundColor: palette,
       borderRadius: 6,
     }]
   },
   options: {
     indexAxis: 'y',
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `구매 지수: ${ctx.raw}` } }
+    },
     scales: {
       x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
       y: { ticks: { font: { size: 11 } } }
@@ -222,15 +230,16 @@ new Chart(document.getElementById('topPurchaseChart'), {
   }
 });
 
-// ─── 차트2: CPA 최저 TOP10 ───────────────────────────
+// ─── 차트2: CPA 지수 최저 TOP10 ─────────────────────
 const sorted_cpa = [...raw].filter(r=>r[5]!==null&&r[5]>0).sort((a,b)=>a[5]-b[5]).slice(0,10);
+const minCpa = sorted_cpa[0][5];
 new Chart(document.getElementById('topCpaChart'), {
   type: 'bar',
   data: {
     labels: sorted_cpa.map(r=>extractLabel(r[0])),
     datasets: [{
-      label: 'CPA (KRW)',
-      data: sorted_cpa.map(r=>r[5]),
+      label: 'CPA 지수 (최저=100)',
+      data: sorted_cpa.map(r=>Math.round(r[5]/minCpa*100)),
       backgroundColor: '#0f9b8e',
       borderRadius: 6,
     }]
@@ -239,10 +248,10 @@ new Chart(document.getElementById('topCpaChart'), {
     indexAxis: 'y',
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `₩${fmt(ctx.raw)}` } }
+      tooltip: { callbacks: { label: ctx => `CPA 지수: ${ctx.raw}` } }
     },
     scales: {
-      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 }, callback: v => '₩'+fmt(v) } },
+      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
       y: { ticks: { font: { size: 11 } } }
     },
     maintainAspectRatio: true,
@@ -260,16 +269,20 @@ raw.forEach(r => {
 });
 const platColors = ['#0f3460','#e94560','#0f9b8e','#f5a623','#7c3aed'];
 
+const totalPlatCost = platforms.reduce((s,p)=>s+platCost[p],0);
+const totalPlatPur  = platforms.reduce((s,p)=>s+platPur[p],0);
+const platCostPct = platforms.map(p=>Math.round(platCost[p]/totalPlatCost*1000)/10);
+const platPurPct  = platforms.map(p=>totalPlatPur>0?Math.round(platPur[p]/totalPlatPur*1000)/10:0);
 new Chart(document.getElementById('platformCostChart'), {
   type: 'doughnut',
   data: {
     labels: platforms,
-    datasets: [{ data: platforms.map(p=>platCost[p]), backgroundColor: platColors, hoverOffset: 8 }]
+    datasets: [{ data: platCostPct, backgroundColor: platColors, hoverOffset: 8 }]
   },
   options: {
     plugins: {
       legend: { position: 'bottom', labels: { font: { size: 12 } } },
-      tooltip: { callbacks: { label: ctx => `${ctx.label}: ₩${fmt(ctx.raw)}` } }
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw}%` } }
     }
   }
 });
@@ -277,12 +290,12 @@ new Chart(document.getElementById('platformPurchaseChart'), {
   type: 'doughnut',
   data: {
     labels: platforms,
-    datasets: [{ data: platforms.map(p=>platPur[p]), backgroundColor: platColors, hoverOffset: 8 }]
+    datasets: [{ data: platPurPct, backgroundColor: platColors, hoverOffset: 8 }]
   },
   options: {
     plugins: {
       legend: { position: 'bottom', labels: { font: { size: 12 } } },
-      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${fmt(ctx.raw)}건` } }
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw}%` } }
     }
   }
 });
@@ -296,25 +309,30 @@ raw.forEach(r => {
   const mo = getMonth(r[0]);
   if (mCost[mo]!==undefined) { mCost[mo]+=r[3]; mPur[mo]+=r[4]; }
 });
+const mCostArr = monthLabels.map(m=>mCost[m]);
+const mPurArr  = monthLabels.map(m=>mPur[m]);
+const baseC = mCostArr[2]||1, baseP = mPurArr[2]||1; // 26.02 = index 2
+const mCostIdx = mCostArr.map(v=>Math.round(v/baseC*100));
+const mPurIdx  = mPurArr.map(v=>v===0?0:Math.round(v/baseP*100));
 new Chart(document.getElementById('monthlyChart'), {
   type: 'bar',
   data: {
     labels: monthLabels,
     datasets: [
-      { type: 'bar', label: '비용 (KRW)', data: monthLabels.map(m=>mCost[m]), backgroundColor: 'rgba(15,52,96,0.75)', yAxisID: 'y', borderRadius: 6 },
-      { type: 'line', label: '구매 건수', data: monthLabels.map(m=>mPur[m]), borderColor: '#e94560', backgroundColor: 'rgba(233,69,96,.15)', pointRadius: 6, pointBackgroundColor: '#e94560', yAxisID: 'y1', tension: 0.35, fill: true }
+      { type: 'bar', label: '비용 지수', data: mCostIdx, backgroundColor: 'rgba(15,52,96,0.75)', yAxisID: 'y', borderRadius: 6 },
+      { type: 'line', label: '구매 지수', data: mPurIdx, borderColor: '#e94560', backgroundColor: 'rgba(233,69,96,.15)', pointRadius: 6, pointBackgroundColor: '#e94560', yAxisID: 'y1', tension: 0.35, fill: true }
     ]
   },
   options: {
     plugins: {
       legend: { labels: { font: { size: 12 } } },
       tooltip: { callbacks: {
-        label: ctx => ctx.datasetIndex===0 ? `비용: ₩${fmt(ctx.raw)}` : `구매: ${fmt(ctx.raw)}건`
+        label: ctx => ctx.datasetIndex===0 ? `비용 지수: ${ctx.raw}` : `구매 지수: ${ctx.raw}`
       }}
     },
     scales: {
-      y:  { position: 'left',  grid: { color: '#f0f0f0' }, ticks: { callback: v=>'₩'+fmt(v), font:{size:11} }, title: { display: true, text: '비용 (KRW)' } },
-      y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { font:{size:11} }, title: { display: true, text: '구매 건수' } }
+      y:  { position: 'left',  grid: { color: '#f0f0f0' }, ticks: { font:{size:11} }, title: { display: true, text: '비용 지수 (26.02=100)' } },
+      y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { font:{size:11} }, title: { display: true, text: '구매 지수 (26.02=100)' } }
     },
     maintainAspectRatio: false,
   }
@@ -329,25 +347,28 @@ raw.forEach(r => {
   catCost[c]=(catCost[c]||0)+r[3];
   catPur[c] =(catPur[c]||0)+r[4];
 });
+const totalCatC = cats.reduce((s,c)=>s+catCost[c],0);
+const totalCatP = cats.reduce((s,c)=>s+catPur[c],0);
+const catCostPct = cats.map(c=>Math.round(catCost[c]/totalCatC*1000)/10);
+const catPurPct  = cats.map(c=>totalCatP>0?Math.round(catPur[c]/totalCatP*1000)/10:0);
 new Chart(document.getElementById('categoryChart'), {
   type: 'bar',
   data: {
     labels: cats,
     datasets: [
-      { label: '비용 (KRW)', data: cats.map(c=>catCost[c]), backgroundColor: 'rgba(15,52,96,0.8)', borderRadius: 6, yAxisID: 'y' },
-      { label: '구매 건수', data: cats.map(c=>catPur[c]),  backgroundColor: 'rgba(233,69,96,0.8)', borderRadius: 6, yAxisID: 'y1' },
+      { label: '비용 비중 (%)', data: catCostPct, backgroundColor: 'rgba(15,52,96,0.8)', borderRadius: 6, yAxisID: 'y' },
+      { label: '구매 비중 (%)', data: catPurPct,  backgroundColor: 'rgba(233,69,96,0.8)', borderRadius: 6, yAxisID: 'y' },
     ]
   },
   options: {
     plugins: {
       legend: { labels: { font: { size: 12 } } },
       tooltip: { callbacks: {
-        label: ctx => ctx.datasetIndex===0 ? `비용: ₩${fmt(ctx.raw)}` : `구매: ${fmt(ctx.raw)}건`
+        label: ctx => `${ctx.dataset.label}: ${ctx.raw}%`
       }}
     },
     scales: {
-      y:  { position: 'left',  grid: { color: '#f0f0f0' }, ticks: { callback: v=>'₩'+fmt(v), font:{size:11} } },
-      y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { font:{size:11} } }
+      y: { position: 'left', grid: { color: '#f0f0f0' }, ticks: { callback: v=>v+'%', font:{size:11} }, title: { display:true, text:'비중 (%)' } }
     },
     maintainAspectRatio: false,
   }

@@ -13,7 +13,7 @@ h2 span{font-size:12px;color:#888;font-weight:400;margin-left:8px}
 </style>
 </head>
 <body>
-<h2>구매 건수 TOP 10 <span>광고 세트 기준</span></h2>
+<h2>구매 효율 TOP 10 <span>광고 세트 기준 · 1위=100 기준 상대 지수</span></h2>
 <canvas id="c" height="320"></canvas>
 <script>
 const raw=[
@@ -29,23 +29,25 @@ const raw=[
   ["aos_all 오픈(음식물)",117],
 ];
 const sorted=[...raw].sort((a,b)=>b[1]-a[1]);
+const maxVal=sorted[0][1];
+const indexed=sorted.map(r=>Math.round(r[1]/maxVal*100));
 const palette=['#0f3460','#16213e','#1a4a8a','#e94560','#c73652','#0f9b8e','#0d8477','#f5a623','#d4891e','#7c3aed'];
 new Chart(document.getElementById('c'),{
   type:'bar',
   data:{
     labels:sorted.map(r=>r[0]),
     datasets:[{
-      label:'구매 건수',
-      data:sorted.map(r=>r[1]),
+      label:'구매 지수',
+      data:indexed,
       backgroundColor:palette,
       borderRadius:6,
     }]
   },
   options:{
     indexAxis:'y',
-    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.raw.toLocaleString('ko-KR')}건`}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`지수 ${ctx.raw}`}}},
     scales:{
-      x:{grid:{color:'#f0f0f0'},ticks:{font:{size:11}}},
+      x:{grid:{color:'#f0f0f0'},ticks:{font:{size:11},callback:v=>v},max:100},
       y:{ticks:{font:{size:11}}}
     },
     maintainAspectRatio:false,
