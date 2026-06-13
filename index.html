@@ -35,7 +35,7 @@
 <body>
 <div class="card">
   <h3>7대 성장 지표 통합 (입사 시점 = 100 기준)</h3>
-  <div class="desc">입사(2024-05) 당시 값을 100으로 정규화 — 매출은 성장 추이(예측치) 지수, 공헌이익률은 우측 축 % 값</div>
+  <div class="desc">입사(2024-05) 당시 값을 100으로 정규화 — 매출·공헌이익률은 예측 추이 지수(절대값·실제 % 비공개)</div>
   <div class="chart-wrap"><canvas id="chartAll"></canvas></div>
   <div class="legend-row">
     <div class="legend-item"><span class="legend-dot" style="background:#DC2626"></span>매출 (예측 성장지수)</div>
@@ -44,7 +44,7 @@
     <div class="legend-item"><span class="legend-dot" style="background:#8B5CF6"></span>신규 가입자</div>
     <div class="legend-item"><span class="legend-dot" style="background:#EC4899"></span>첫 이용</div>
     <div class="legend-item"><span class="legend-dot" style="background:#6366F1"></span>앱 설치수</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#F59E0B; border-radius:50%"></span>공헌이익률 (우축 %)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#F59E0B; border-radius:50%"></span>공헌이익률 (예측 개선지수)</div>
   </div>
   <div class="join-label">▏ 입사 시점 (2024-05) · 점선 좌측은 입사 전 기준선</div>
 </div>
@@ -59,7 +59,8 @@ const labels = [
 ];
 const JOIN = 4;
 
-const cmRate    = [-25.3,-30.0,-32.7,-32.8,-5.1,-39.3,9.8,12.1,12.6,13.1,16.4,19.1,21.0,21.9,21.7,22.6,27.0,26.0,27.2,29.4,30.6,32.2,37.0,33.5,39.6,31.3,32.6,33.4];
+// 공헌이익률 실제 %는 비공개 — 상대 개선지수(예측, 최저=0·최고=100)로만 추이 표시
+const cmIndex   = [18,12,8,8,43,0,62,65,66,66,71,74,76,78,77,78,84,83,84,87,89,91,97,92,100,89,91,92];
 // 매출 절대액은 비공개 — 입사(2024-05)=100 기준 정규화 성장지수(예측치)만 노출
 const revenueIndex = [58,67,71,82,100,93,165,198,191,226,226,240,271,310,356,420,487,562,695,757,784,892,888,1014,1136,1199,1561,1642];
 const dau30     = [970,1296,1452,1721,2234,3182,4214,5583,6003,6662,7050,8183,8767,9952,12430,15366,17757,21671,26683,28965,30861,34597,35069,40222,43317,49125,56736,63845];
@@ -90,7 +91,7 @@ new Chart(document.getElementById('chartAll').getContext('2d'), {
       { label:'신규 가입자',data:normalize(newSignup,JOIN),borderColor:'#8B5CF6', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, borderDash:[4,3], yAxisID:'y' },
       { label:'첫 이용',  data:normalize(firstUse,JOIN),  borderColor:'#EC4899', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, borderDash:[4,3], yAxisID:'y' },
       { label:'앱 설치수', data:normalize(appInstall,JOIN),borderColor:'#6366F1', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, yAxisID:'y' },
-      { label:'공헌이익률',data:cmRate,                   borderColor:'#F59E0B', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y2' }
+      { label:'공헌이익률',data:cmIndex,                  borderColor:'#F59E0B', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y2' }
     ]
   },
   options: {
@@ -99,7 +100,7 @@ new Chart(document.getElementById('chartAll').getContext('2d'), {
     plugins: {
       legend:{ display:false },
       tooltip:{ callbacks:{ label: ctx => {
-        if(ctx.dataset.label==='공헌이익률') return `공헌이익률: ${ctx.raw.toFixed(1)}%`;
+        if(ctx.dataset.label==='공헌이익률') return `공헌이익률(예측 개선지수): ${ctx.raw.toFixed(0)}`;
         if(ctx.dataset.label==='매출') return `매출(예측 성장지수): ${ctx.raw.toFixed(0)} (기준 100)`;
         return `${ctx.dataset.label}: ${ctx.raw.toFixed(0)} (기준 100)`;
       }}},
@@ -110,7 +111,7 @@ new Chart(document.getElementById('chartAll').getContext('2d'), {
     scales: {
       x:  { ticks:{ font:{size:9}, maxRotation:45, color:'#9CA3AF' }, grid:{ display:false } },
       y:  { position:'left',  title:{ display:true, text:'성장 지수 (입사=100)', font:{size:10}, color:'#9CA3AF' }, ticks:{ font:{size:9}, color:'#9CA3AF' }, grid:{ color:'#F3F4F6' } },
-      y2: { position:'right', title:{ display:true, text:'공헌이익률 (%)',       font:{size:10}, color:'#F59E0B' }, ticks:{ font:{size:9}, color:'#F59E0B', callback: v=>v+'%' }, grid:{ display:false } }
+      y2: { position:'right', title:{ display:true, text:'공헌이익률 (예측 개선지수)', font:{size:10}, color:'#F59E0B' }, ticks:{ font:{size:9}, color:'#F59E0B' }, grid:{ display:false } }
     }
   }
 });
