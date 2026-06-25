@@ -1,0 +1,23 @@
+# 비밀키 포함 — 절대 커밋 금지 (config.example.json 을 복사해 사용)
+config.json
+
+# 런타임 산출물 / 고객 개인정보 (절대 커밋 금지)
+out/
+state/
+
+# 디버그 덤프 (고객 댓글·스크린샷 포함)
+*.png
+debug_*.html
+
+# 파이썬
+__pycache__/
+*.pyc
+
+# 크롬 프로필 / 임시
+comment-reply-chrome/
+*.log
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.vscode/
