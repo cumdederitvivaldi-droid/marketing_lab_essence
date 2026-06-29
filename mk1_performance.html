@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>민경(mk1) 광고 세트 성과 시각화 | 2026.01~05</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif; background: #f0f2f5; color: #1a1a2e; }
+    header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%); color: #fff; padding: 28px 36px; }
+    header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    header p { font-size: 13px; color: #a8b2d8; margin-top: 6px; }
+    .container { max-width: 1300px; margin: 0 auto; padding: 28px 20px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .kpi-card { background: #fff; border-radius: 14px; padding: 20px 22px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+    .kpi-card .label { font-size: 12px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    .kpi-card .value { font-size: 28px; font-weight: 800; margin-top: 6px; color: #0f3460; }
+    .kpi-card .sub { font-size: 12px; color: #aaa; margin-top: 4px; }
+    .kpi-card.accent1 .value { color: #e94560; }
+    .kpi-card.accent2 .value { color: #0f9b8e; }
+    .kpi-card.accent3 .value { color: #f5a623; }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .chart-card { background: #fff; border-radius: 14px; padding: 22px 24px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+    .chart-card.wide { grid-column: 1 / -1; }
+    .chart-card h2 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #1a1a2e; }
+    .chart-card h2 span { font-size: 12px; color: #888; font-weight: 400; margin-left: 8px; }
+    canvas { max-height: 320px; }
+    .canvas-tall { max-height: 420px !important; }
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .charts-grid { grid-template-columns: 1fr; }
+      .chart-card.wide { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>민경(mk1) 광고 세트 성과 시각화</h1>
+  <p>기간: 2026.01.01 ~ 2026.05.15 &nbsp;|&nbsp; 필터: 광고 이름 또는 광고 세트 이름에 mk1 포함</p>
+</header>
+
+<div class="container">
+  <!-- KPI Cards -->
+  <div class="kpi-grid" id="kpi-grid"></div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h2>구매 지수 TOP 10 <span>최고 세트=100 기준</span></h2>
+      <canvas id="topPurchaseChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>CPA 지수 최저 TOP 10 <span>구매 발생 세트만, 최저=100</span></h2>
+      <canvas id="topCpaChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>플랫폼별 비용 비중 <span>% of total</span></h2>
+      <canvas id="platformCostChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>플랫폼별 구매 비중 <span>% of total</span></h2>
+      <canvas id="platformPurchaseChart"></canvas>
+    </div>
+    <div class="chart-card wide">
+      <h2>월별 비용 vs 구매 성장 추이 <span>26.02=100 기준 지수</span></h2>
+      <canvas id="monthlyChart" class="canvas-tall"></canvas>
+    </div>
+    <div class="chart-card wide">
+      <h2>소재 카테고리별 성과 비중 <span>비용 비중(%) · 구매 비중(%)</span></h2>
+      <canvas id="categoryChart" class="canvas-tall"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+const raw = [
+  ["aos(Web2App)_purchase_all_vd_pa_지구의날프로모션(육아)_mk1_26.04.23",39468,386,572059,440,1300],
+  ["aos(Web2App)_purchase_all_vd_pa_지구의날프로모션(환경)_mk1_26.04.23",96077,1104,1466022,1086,1350],
+  ["aos(Web2App)_purchase_all_vd_가장짧은시간(대형폐기물)_cr1_26.03.25",0,0,0,0,null],
+  ["aos(Web2App)_purchase_all_vd_결산(대형폐기물)_mk1_26.03.06",361308,2971,5594479,1291,4333],
+  ["aos(Web2App)_purchase_all_vd_지구의날프로모션(복합)_mk1_26.04.22",132274,544,715231,331,2161],
+  ["aos(Web2App)_purchase_all_vd_팀장님(대형폐기물)_hn1_26.03.25",1849,3,9957,2,4978],
+  ["aos(Web2App)_purchase_lookalike(7%)_vd_부럽다/천안50(음식물)_nk1_26.03.18",9343,96,177637,13,13664],
+  ["aos(Web2App)_purchase_lookalike(7%)_vd_신주목/100%(대형폐기물)_mk1_26.04.03",67320,267,659457,10,65946],
+  ["aos(Web2App)_purchase_lookalike(7%)_vd_신주목/2500(대형폐기물)_mk1_26.04.03",22971,132,327430,4,81858],
+  ["aos(Web2App)_purchase_lookalike(7%)_vd_신주목/50%(대형폐기물)_mk1_26.04.03",70106,378,855603,14,61114],
+  ["aos(Web2App)_purchase_lookalike(7%)_vd_주목/아산100(대형페기물)_mk1_26.03.18",16365,220,438863,69,6360],
+  ["aos(Web2App)_purchase_lookalike(7%)_vd_주목/천안100(대형폐기물)_mk1_26.03.18",17092,296,449587,108,4163],
+  ["aos(Web2App)_purchase_lookalike(7%)_vd_주목/천안50(대형폐기물)_mk1_26.03.18",15765,273,456169,102,4472],
+  ["aos_purchase_all_cr_vd_시작(음식물)_mk1_26.05.15",1617,3,17325,0,null],
+  ["aos_purchase_all_vd_cr_알고리즘(음식물)_mk1_26.05.11",9217,41,124930,0,null],
+  ["aos_purchase_all_vd_dcj_고효율소재모듬(복합소구)_mk1_26.05.07",29004,250,425094,10,42509],
+  ["aos_purchase_all_vd_구름이(폐기물)_mk1_25.01.28",0,0,0,0,null],
+  ["aos_purchase_all_vd_모르면 손해(폐기물)_mk1_26.02.26",32567,228,447761,16,27985],
+  ["aos_purchase_all_vd_여러분(폐기물)_mk1_26.04.10",25979,134,424821,7,60689],
+  ["aos_purchase_all_vd_오픈(음식물)_mk1_26.03.20",385705,1572,4455025,117,38077],
+  ["aos_purchase_all_vd_이사할때 짤(폐기물)_mk1_26.03.03",22195,88,305628,0,null],
+  ["aos_purchase_all_vd_폐기물모음_sj1_26.01.28",18984,110,282832,8,35354],
+  ["aos_purchase_all_vd_필요없어요(대형폐기물)_mk1_26.04.08",261167,1260,3001881,105,28589],
+  ["aos_purchase_lookalike(7%)_vd_이모든걸(대형폐기물)_mk1_26.03.31",85913,744,1710773,42,40733],
+  ["aos_purchase_lookalike(7%)_vd_인플루언서PA(1)_sj1_26.02.13",39507,407,891948,20,44597],
+  ["aos_purchase_lookalike(7%)_vd_인플루언서PA(5)_mk1_26.02.12",18688,133,363083,15,24206],
+  ["aos_purchase_re_vd_고효율소재모음(1)_25.07.23",12714,98,224265,10,22426],
+  ["aos_purchase_re_vd_음식물(배달음식)_mk1_26.02.02",3914,30,38472,2,19236],
+  ["aos_purchase_re_vd_자취생(음식물)_mk1_26.02.03",16208,177,391892,469,836],
+  ["aos_purchase_re_vd_자취생(음식물)_mk1_26.02.03 - 사본",0,0,0,0,null],
+  ["aos_purschase_천안,아산_vd_고효율소재모음_sj1_26.02.11",3262,10,58767,0,null],
+  ["aos_registration_lookalike(7%)_cr_vd_인플루언서PA_mk1_26.05.11",18360,105,204266,4,51066],
+  ["aos_registration_lookalike(7%)_vd_(음식물)_mk1_26.02.02",809,3,11371,0,null],
+  ["aos_registration_lookalike(7%)_vd_ca_cr_인플루언서PA_mk1_26.05.07",21689,114,265855,6,44309],
+  ["aos_registration_lookalike(7%)_vd_고효율소재모음_hn1_26.03.25",20994,143,244742,6,40790],
+  ["aos_registration_lookalike(7%)_vd_구름이(폐기물)_mk1_26.02.03",61208,568,1540897,53,29074],
+  ["aos_registration_lookalike(7%)_vd_인플루언서PA(1)_mk1_26.02.24",6857,58,105121,2,52560],
+  ["aos_registration_lookalike(7%)_vd_큰일나(음식물)_mk1_26.02.09",58860,442,1374988,17,80882],
+  ["aos_trial_re_vd_고효율소재모음(2)_dh1_26.02.20",5135,31,103505,3,34502],
+  ["b2b(Web)_lead_ncr_vd_방문수거(집앞)_mk1_26.04.28",51080,1672,992425,0,null],
+  ["b2b(Web)_lead_ncr_vd_방문수거(추가금)_mk1_26.04.28",76919,1533,1031908,0,null],
+  ["ios(Web2App)_purchase_all_vd_pa_지구의날프로모션(육아)_mk1_26.04.23",23300,298,547807,245,2236],
+  ["ios(Web2App)_purchase_all_vd_pa_지구의날프로모션(환경)_mk1_26.04.23",47123,487,955376,548,1743],
+  ["ios(Web2App)_purchase_all_vd_결산(대형폐기물)_mk1_26.03.06",20698,183,348976,31,11257],
+  ["ios(Web2App)_purchase_all_vd_아귀찮아(음식물)_cr1_26.02.03",1366,9,33389,0,null],
+  ["ios(Web2App)_purchase_all_vd_지구의날프로모션(복합)_mk1_26.04.22",59051,493,535000,241,2220],
+  ["ios(Web2App)_purchase_lookalike(7%)_vd_신주목/100%(대형폐기물)_mk1_26.04.03",27672,294,763658,22,34712],
+  ["ios(Web2App)_purchase_lookalike(7%)_vd_신주목/2500(대형폐기물)_mk1_26.04.03",30989,280,896154,19,47166],
+  ["ios(Web2App)_purchase_lookalike(7%)_vd_신주목/50%(대형폐기물)_mk1_26.04.03",10178,122,299551,14,21396],
+  ["ios(Web2App)_purchase_lookalike(7%)_vd_주목/아산100(대형폐기물)_mk1_26.03.18",12477,59,448368,12,37364],
+  ["ios(Web2App)_purchase_lookalike(7%)_vd_주목/천안100(대형폐기물)_mk1_26.03.18",18139,185,456316,64,7130],
+  ["ios(Web2App)_purchase_lookalike(7%)_vd_주목/천안50(대형폐기물)_mk1_26.03.18",20847,255,456693,109,4190],
+  ["ios_purcahse_all_vd_오픈(음식물)_mk1_26.03.20",81191,1090,595251,2,297626],
+  ["ios_purchase_all_cr_vd_시작(음식물)_mk1_26.05.15",6634,136,41034,0,null],
+  ["ios_purchase_all_vd_cr_알고리즘(음식물)_mk1_26.05.11",16071,124,126617,2,63308],
+  ["ios_purchase_all_vd_cr_인플루언서PA(1)_hn1_26.01.29",48869,243,607742,3,202581],
+  ["ios_purchase_all_vd_가장짧은시간(대형폐기물)_mk1_26.04.08",138127,2509,1079738,5,215948],
+  ["ios_purchase_all_vd_구름이(폐기물)_mk1_25.01.28",0,0,0,0,null],
+  ["ios_purchase_all_vd_복합소구모음_hn1_26.01.29",17874,104,156640,2,78320],
+  ["ios_purchase_all_vd_복합소구모음_hn1_26.03.20",61340,401,972142,18,54008],
+  ["ios_purchase_all_vd_여러분(폐기물)_mk1_26.04.10",261167,1260,2460012,35,70286],
+  ["ios_purchase_all_vd_음식물모음_hn1_26.01.29",1446,26,10955,0,null],
+  ["ios_purchase_all_vd_이사할때 짤(폐기물)_mk1_26.03.03",26045,197,202683,2,101342],
+  ["ios_purchase_all_vd_폐기물모음_hn1_26.01.29",9757,108,49624,0,null],
+  ["ios_purchase_lookalike(7%)_vd_인플루언서PA(1)_mk1_26.02.12",892167,8187,11750937,294,39969],
+  ["ios_purchase_lookalike(7%)_vd_커뮤니티(폐기물)_mk1_26.02.12",24695,159,355030,2,177515],
+  ["ios_purchase_re_vd_고효율소재모음(2)_25.07.23",20036,244,189707,0,null],
+  ["ios_purchase_re_vd_자취생(음식물)_mk1_26.02.03",19258,150,567120,2,283560],
+  ["ios_registration_lookalike(7%)_vd_구름이(페기물)_mk1_26.02.03",17200,99,360040,13,27695],
+  ["ios_registration_lookalike(7%)_vd_큰일나(음식물)_mk1_26.02.09",30244,239,670453,15,44697],
+];
+
+// ─── 헬퍼 ───────────────────────────────────────────
+function fmt(n) { return n.toLocaleString('ko-KR'); }
+function extractLabel(name) {
+  // 소재명(한글 괄호 포함) 추출
+  const m = name.match(/vd[_\/][a-z0-9]*[_]?([가-힣\s\/\(\)%a-zA-Z0-9]+)(?:_(?:mk1|sj1|hn1|cr1|nk1|dh1|pa))/i);
+  if (m) return m[1].trim().replace(/^(pa|ca|cr|dcj)_/i,'');
+  const m2 = name.match(/([가-힣\s\/\(\)%]+)/);
+  return m2 ? m2[0].trim().slice(0,20) : name.slice(0,20);
+}
+function getPlatform(name) {
+  if (name.startsWith('b2b')) return 'B2B';
+  if (name.startsWith('ios(Web2App)')) return 'iOS Web2App';
+  if (name.startsWith('ios')) return 'iOS';
+  if (name.startsWith('aos(Web2App)')) return 'AOS Web2App';
+  return 'AOS';
+}
+function getMonth(name) {
+  const m = name.match(/_26\.0(\d)\.\d+/);
+  if (m) return `26.0${m[1]}`;
+  const m2 = name.match(/_25\.(\d{2})\.\d+/);
+  if (m2) return `25.${m2[1]}`;
+  return '기타';
+}
+function getCategory(name) {
+  if (name.includes('대형폐기물') || name.includes('대형페기물')) return '대형폐기물';
+  if (name.includes('음식물')) return '음식물';
+  if (name.includes('폐기물')) return '일반폐기물';
+  if (name.includes('복합') || name.includes('복합소구')) return '복합소구';
+  if (name.includes('인플루언서')) return '인플루언서PA';
+  if (name.includes('방문수거')) return '방문수거(B2B)';
+  return '기타';
+}
+
+// ─── KPI ────────────────────────────────────────────
+const totImp = raw.reduce((s,r)=>s+r[1],0);
+const totClk = raw.reduce((s,r)=>s+r[2],0);
+const totCost = raw.reduce((s,r)=>s+r[3],0);
+const totPur = raw.reduce((s,r)=>s+r[4],0);
+const ctr = ((totClk/totImp)*100).toFixed(2);
+const cvr = totClk>0 ? ((totPur/totClk)*100).toFixed(2) : '0.00';
+const cpaList = raw.filter(r=>r[5]!==null&&r[5]>0).map(r=>r[5]);
+const bestCpa = Math.min(...cpaList);
+const avgCpa = totPur>0 ? totCost/totPur : 1;
+const cpaRatio = Math.round(bestCpa/avgCpa*100);
+
+document.getElementById('kpi-grid').innerHTML = `
+  <div class="kpi-card"><div class="label">총 노출</div><div class="value">${fmt(totImp)}</div><div class="sub">impressions</div></div>
+  <div class="kpi-card accent1"><div class="label">CTR</div><div class="value">${ctr}%</div><div class="sub">클릭률</div></div>
+  <div class="kpi-card accent2"><div class="label">구매 CVR</div><div class="value">${cvr}%</div><div class="sub">클릭 대비 구매율</div></div>
+  <div class="kpi-card accent3"><div class="label">최저 CPA / 평균 비율</div><div class="value">${cpaRatio}%</div><div class="sub">낮을수록 고효율 세트 존재</div></div>
+`;
+
+// ─── 팔레트 ──────────────────────────────────────────
+const palette = ['#0f3460','#e94560','#0f9b8e','#f5a623','#7c3aed','#06b6d4','#10b981','#f97316','#8b5cf6','#ec4899'];
+
+// ─── 차트1: 구매 지수 TOP10 ──────────────────────────
+const sorted_pur = [...raw].filter(r=>r[4]>0).sort((a,b)=>b[4]-a[4]).slice(0,10);
+const maxPur = sorted_pur[0][4];
+new Chart(document.getElementById('topPurchaseChart'), {
+  type: 'bar',
+  data: {
+    labels: sorted_pur.map(r=>extractLabel(r[0])),
+    datasets: [{
+      label: '구매 지수 (최고=100)',
+      data: sorted_pur.map(r=>Math.round(r[4]/maxPur*100)),
+      backgroundColor: palette,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `구매 지수: ${ctx.raw}` } }
+    },
+    scales: {
+      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
+      y: { ticks: { font: { size: 11 } } }
+    },
+    maintainAspectRatio: true,
+  }
+});
+
+// ─── 차트2: CPA 지수 최저 TOP10 ─────────────────────
+const sorted_cpa = [...raw].filter(r=>r[5]!==null&&r[5]>0).sort((a,b)=>a[5]-b[5]).slice(0,10);
+const minCpa = sorted_cpa[0][5];
+new Chart(document.getElementById('topCpaChart'), {
+  type: 'bar',
+  data: {
+    labels: sorted_cpa.map(r=>extractLabel(r[0])),
+    datasets: [{
+      label: 'CPA 지수 (최저=100)',
+      data: sorted_cpa.map(r=>Math.round(r[5]/minCpa*100)),
+      backgroundColor: '#0f9b8e',
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `CPA 지수: ${ctx.raw}` } }
+    },
+    scales: {
+      x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
+      y: { ticks: { font: { size: 11 } } }
+    },
+    maintainAspectRatio: true,
+  }
+});
+
+// ─── 플랫폼 집계 ─────────────────────────────────────
+const platforms = ['AOS Web2App','AOS','iOS Web2App','iOS','B2B'];
+const platCost = Object.fromEntries(platforms.map(p=>[p,0]));
+const platPur  = Object.fromEntries(platforms.map(p=>[p,0]));
+raw.forEach(r => {
+  const p = getPlatform(r[0]);
+  platCost[p] = (platCost[p]||0)+r[3];
+  platPur[p]  = (platPur[p]||0)+r[4];
+});
+const platColors = ['#0f3460','#e94560','#0f9b8e','#f5a623','#7c3aed'];
+
+const totalPlatCost = platforms.reduce((s,p)=>s+platCost[p],0);
+const totalPlatPur  = platforms.reduce((s,p)=>s+platPur[p],0);
+const platCostPct = platforms.map(p=>Math.round(platCost[p]/totalPlatCost*1000)/10);
+const platPurPct  = platforms.map(p=>totalPlatPur>0?Math.round(platPur[p]/totalPlatPur*1000)/10:0);
+new Chart(document.getElementById('platformCostChart'), {
+  type: 'doughnut',
+  data: {
+    labels: platforms,
+    datasets: [{ data: platCostPct, backgroundColor: platColors, hoverOffset: 8 }]
+  },
+  options: {
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw}%` } }
+    }
+  }
+});
+new Chart(document.getElementById('platformPurchaseChart'), {
+  type: 'doughnut',
+  data: {
+    labels: platforms,
+    datasets: [{ data: platPurPct, backgroundColor: platColors, hoverOffset: 8 }]
+  },
+  options: {
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 12 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw}%` } }
+    }
+  }
+});
+
+// ─── 월별 추이 ────────────────────────────────────────
+const months = ['25.01','26.01','26.02','26.03','26.04','26.05'];
+const monthLabels = ['25.01','26.01','26.02','26.03','26.04','26.05'];
+const mCost = Object.fromEntries(months.map(m=>[m,0]));
+const mPur  = Object.fromEntries(months.map(m=>[m,0]));
+raw.forEach(r => {
+  const mo = getMonth(r[0]);
+  if (mCost[mo]!==undefined) { mCost[mo]+=r[3]; mPur[mo]+=r[4]; }
+});
+const mCostArr = monthLabels.map(m=>mCost[m]);
+const mPurArr  = monthLabels.map(m=>mPur[m]);
+const baseC = mCostArr[2]||1, baseP = mPurArr[2]||1; // 26.02 = index 2
+const mCostIdx = mCostArr.map(v=>Math.round(v/baseC*100));
+const mPurIdx  = mPurArr.map(v=>v===0?0:Math.round(v/baseP*100));
+new Chart(document.getElementById('monthlyChart'), {
+  type: 'bar',
+  data: {
+    labels: monthLabels,
+    datasets: [
+      { type: 'bar', label: '비용 지수', data: mCostIdx, backgroundColor: 'rgba(15,52,96,0.75)', yAxisID: 'y', borderRadius: 6 },
+      { type: 'line', label: '구매 지수', data: mPurIdx, borderColor: '#e94560', backgroundColor: 'rgba(233,69,96,.15)', pointRadius: 6, pointBackgroundColor: '#e94560', yAxisID: 'y1', tension: 0.35, fill: true }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { labels: { font: { size: 12 } } },
+      tooltip: { callbacks: {
+        label: ctx => ctx.datasetIndex===0 ? `비용 지수: ${ctx.raw}` : `구매 지수: ${ctx.raw}`
+      }}
+    },
+    scales: {
+      y:  { position: 'left',  grid: { color: '#f0f0f0' }, ticks: { font:{size:11} }, title: { display: true, text: '비용 지수 (26.02=100)' } },
+      y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { font:{size:11} }, title: { display: true, text: '구매 지수 (26.02=100)' } }
+    },
+    maintainAspectRatio: false,
+  }
+});
+
+// ─── 카테고리별 ───────────────────────────────────────
+const cats = ['대형폐기물','음식물','일반폐기물','복합소구','인플루언서PA','방문수거(B2B)','기타'];
+const catCost = Object.fromEntries(cats.map(c=>[c,0]));
+const catPur  = Object.fromEntries(cats.map(c=>[c,0]));
+raw.forEach(r => {
+  const c = getCategory(r[0]);
+  catCost[c]=(catCost[c]||0)+r[3];
+  catPur[c] =(catPur[c]||0)+r[4];
+});
+const totalCatC = cats.reduce((s,c)=>s+catCost[c],0);
+const totalCatP = cats.reduce((s,c)=>s+catPur[c],0);
+const catCostPct = cats.map(c=>Math.round(catCost[c]/totalCatC*1000)/10);
+const catPurPct  = cats.map(c=>totalCatP>0?Math.round(catPur[c]/totalCatP*1000)/10:0);
+new Chart(document.getElementById('categoryChart'), {
+  type: 'bar',
+  data: {
+    labels: cats,
+    datasets: [
+      { label: '비용 비중 (%)', data: catCostPct, backgroundColor: 'rgba(15,52,96,0.8)', borderRadius: 6, yAxisID: 'y' },
+      { label: '구매 비중 (%)', data: catPurPct,  backgroundColor: 'rgba(233,69,96,0.8)', borderRadius: 6, yAxisID: 'y' },
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { labels: { font: { size: 12 } } },
+      tooltip: { callbacks: {
+        label: ctx => `${ctx.dataset.label}: ${ctx.raw}%`
+      }}
+    },
+    scales: {
+      y: { position: 'left', grid: { color: '#f0f0f0' }, ticks: { callback: v=>v+'%', font:{size:11} }, title: { display:true, text:'비중 (%)' } }
+    },
+    maintainAspectRatio: false,
+  }
+});
+</script>
+</body>
+</html>

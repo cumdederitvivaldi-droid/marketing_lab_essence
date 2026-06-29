@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5단계 — 지역 확장 & 프로모션</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 12px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 12px 8px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .label { font-size: 10px; color: #888; margin-bottom: 3px; }
+  .kpi .value { font-size: 16px; font-weight: 700; color: #2563eb; }
+  .kpi .sub { font-size: 10px; color: #666; margin-top: 2px; }
+  canvas { max-height: 220px; }
+  .footer { margin-top: 12px; font-size: 11px; color: #aaa; text-align: right; }
+  .full { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+<h2>🚀 5단계 — 지역 확장 & 프로모션 성과</h2>
+<p class="subtitle">광고 포화 돌파: 지역 확장으로 CAC 최저점 달성 + 프로모션으로 브랜드 도달 확장</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">CAC 최저점 달성</div><div class="value" style="color:#16a34a">12,553원</div><div class="sub">포화구간 대비 -32%</div></div>
+  <div class="kpi"><div class="label">브랜드 검색량</div><div class="value" style="color:#16a34a">+143%</div><div class="sub">990원 이벤트 후</div></div>
+  <div class="kpi"><div class="label">페이백 처치군 M1</div><div class="value" style="color:#16a34a">89.5%</div><div class="sub">대조군 37.5%</div></div>
+  <div class="kpi"><div class="label">사전 신청 전환율</div><div class="value" style="color:#16a34a">6.90%</div><div class="sub">기존 쿠폰 0.90%</div></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>📍 지역 확장 타임라인 & CAC 변화</h3>
+    <canvas id="cacExpansionChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>📊 확장 전후 매출·광고비 성장지수 (서울 단독=100, 예측)</h3>
+    <canvas id="compareChart"></canvas>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>🎉 990원 이벤트 핵심 성과</h3>
+    <canvas id='promoChart'></canvas>
+  </div>
+  <div class="card">
+    <h3>🌱 식목일 페이백 이벤트 — RCT 리텐션 비교</h3>
+    <canvas id='paybackChart'></canvas>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card full">
+    <h3>🔬 사전 모객 전환율 비교 (대전·세종·청주)</h3>
+    <canvas id='preChart' style="max-height:160px"></canvas>
+  </div>
+</div>
+
+<div class="footer">⚠️ 식목일 페이백 5개월 누적 LTV 절대값은 원본 데이터 확인 필요 | 지득 +11,285원/유저는 확인됨</div>
+
+<script>
+const blue = '#2563eb', green = '#16a34a', red = '#dc2626', orange = '#f59e0b', gray = '#94a3b8';
+
+new Chart(document.getElementById('cacExpansionChart'), {
+  type: 'line',
+  data: {
+    labels: ['24.09\n(서울만)', '24.10~12\n(서울 포화)', '25.01\n(성남 확장)', '25.02\n(하남·구리)', '25.03\n(부천+6개)', '25.06~09\n(동탄·오산 등)'],
+    datasets: [{
+      label: 'CAC (원)',
+      data: [11849, 17500, 14114, 13223, 12553, 13800],
+      borderColor: blue, backgroundColor: blue + '22',
+      fill: true, tension: 0.4, pointRadius: 7,
+      pointBackgroundColor: [green, red, orange, orange, green, blue],
+      pointBorderWidth: 2, pointBorderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `CAC: ${ctx.raw.toLocaleString()}원` } }
+    },
+    scales: {
+      y: { min: 10000, max: 22000, ticks: { callback: v => v.toLocaleString() + '원' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('compareChart'), {
+  type: 'bar',
+  data: {
+    labels: ['B2C 매출\n성장지수', '광고비\n성장지수'],
+    datasets: [
+      { label: '서울 단독 (24.09~12)', data: [100, 100], backgroundColor: gray + 'bb', borderRadius: 6, borderSkipped: false },
+      { label: '수도권 확장 (25.01~10)', data: [517, 905], backgroundColor: blue + 'cc', borderRadius: 6, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { font: { size: 10 } } }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label} 성장지수(예측): ${ctx.raw.toLocaleString()}` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('promoChart'), {
+  type: 'bar',
+  data: {
+    labels: ['신규 유저\n11월→12월', '브랜드 검색\n('커버링 쓰레기')', 'CAC 변화'],
+    datasets: [
+      { label: '이전', data: [1876, 1810, 19250], backgroundColor: gray + 'bb', borderRadius: 6, borderSkipped: false },
+      { label: '이후', data: [2545, 4400, 19056], backgroundColor: green + 'cc', borderRadius: 6, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { font: { size: 10 } } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('paybackChart'), {
+  type: 'line',
+  data: {
+    labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+    datasets: [
+      {
+        label: '처치군 (페이백 쿠폰, 874명)',
+        data: [89.5, 66.9, 61.1, 56.2, 54.7, 52.9],
+        borderColor: green, backgroundColor: green + '22',
+        fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: green,
+      },
+      {
+        label: '대조군 (쿠폰 미지급, 6,564명)',
+        data: [37.5, 30.4, 27.8, 26.4, 24.1, 24.8],
+        borderColor: gray, backgroundColor: gray + '22',
+        fill: true, tension: 0.4, pointRadius: 5, pointBackgroundColor: gray,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 10 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label.split(' ')[0]}: ${ctx.raw}%` } }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('preChart'), {
+  type: 'bar',
+  data: {
+    labels: ['기존 가입 유저\n(오픈 기념 쿠폰)', '광고 사전 신청\n(얼리쿠폰)'],
+    datasets: [
+      { label: '전환율 (%)', data: [0.90, 6.90], backgroundColor: [gray + 'bb', blue + 'cc'], borderRadius: 8, borderSkipped: false },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `전환율: ${ctx.raw}%` } } },
+    scales: {
+      y: { beginAtZero: true, max: 10, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>

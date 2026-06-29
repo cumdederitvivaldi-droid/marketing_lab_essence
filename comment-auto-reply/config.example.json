@@ -1,0 +1,23 @@
+{
+  "_사용법": "이 파일을 복사해 같은 폴더에 config.json 으로 저장한 뒤 값을 채우세요. config.json 은 GitHub에 올라가지 않습니다(.gitignore). 같은 커버링 계정이면 계정값은 그대로 두면 됩니다.",
+
+  "brand_handle": "covering__official",
+  "tiktok_brand_handle": "covering_dadama",
+
+  "meta_inbox_url": "https://business.facebook.com/latest/inbox/instagram?asset_id=101050698831852&business_id=2631638427131158&mailbox_id=101050698831852",
+
+  "tiktok_comments_url": "https://www.tiktok.com/business-suite/comments",
+
+  "rules_spreadsheet_id": "1hDl3rXQLchiUqZzIX0MoMNC52rfzyU9jkdxq7qA6NPg",
+
+  "cdp_port": 9222,
+  "chrome_profile_dirname": "comment-reply-chrome",
+
+  "_AI_답글생성": "Anthropic API 키. 환경변수 ANTHROPIC_API_KEY 가 있으면 그게 우선합니다. 팀 공용 키 하나를 아래에 넣어 배포해도 됩니다(단, 이 파일이 아니라 config.json 에 넣고 GitHub 업로드 금지).",
+  "anthropic_api_key": "",
+  "anthropic_model": "claude-opus-4-8",
+
+  "_경로_자동탐지": "아래 두 값이 비어 있으면 자동으로 찾습니다. 자동탐지 실패 시에만 직접 경로를 적으세요.",
+  "gcloud_path": "",
+  "chrome_path": ""
+}

@@ -1,0 +1,9 @@
+{
+  "name": "tiktok-airbridge-report",
+  "version": "1.0.0",
+  "description": "TikTok 광고 매체 + Airbridge MMP 데이터를 수식 기반 주간 효율 리포트 xlsx로 자동 생성. /tiktok-report YYYY-MM-DD YYYY-MM-DD 한 줄.",
+  "author": {
+    "name": "hound600al"
+  },
+  "homepage": "https://github.com/hound600al/marketing-lab-26-05-09/tree/main/plugins/tiktok-airbridge-report"
+}

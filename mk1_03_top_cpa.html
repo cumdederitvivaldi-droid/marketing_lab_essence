@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>mk1 CPA TOP10</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Apple SD Gothic Neo','Segoe UI',sans-serif;background:#fff;padding:22px 24px}
+h2{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:16px}
+h2 span{font-size:12px;color:#888;font-weight:400;margin-left:8px}
+</style>
+</head>
+<body>
+<h2>CPA 효율 TOP 10 <span>구매 발생 세트만 · 최저=100 기준 상대 지수 (낮을수록 효율적)</span></h2>
+<canvas id="c" height="320"></canvas>
+<script>
+const raw=[
+  ["aos_re 자취생(음식물)",836],
+  ["aos(Web2App) 지구의날(환경)",1350],
+  ["ios(Web2App) 지구의날(환경)",1743],
+  ["aos(Web2App) 지구의날(육아)",1300],
+  ["ios(Web2App) 지구의날(복합)",2220],
+  ["ios(Web2App) 지구의날(육아)",2236],
+  ["aos(Web2App) 지구의날(복합)",2161],
+  ["ios(Web2App) 주목/천안50",4190],
+  ["aos(Web2App) 주목/천안100",4163],
+  ["aos(Web2App) 주목/천안50",4472],
+];
+const sorted=[...raw].sort((a,b)=>a[1]-b[1]);
+const minVal=sorted[0][1];
+const indexed=sorted.map(r=>Math.round(r[1]/minVal*100));
+new Chart(document.getElementById('c'),{
+  type:'bar',
+  data:{
+    labels:sorted.map(r=>r[0]),
+    datasets:[{
+      label:'CPA 지수',
+      data:indexed,
+      backgroundColor:'#0f9b8e',
+      borderRadius:6,
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`지수 ${ctx.raw} (최저 대비 ${ctx.raw}%)`}}},
+    scales:{
+      x:{grid:{color:'#f0f0f0'},ticks:{font:{size:11}}},
+      y:{ticks:{font:{size:11}}}
+    },
+    maintainAspectRatio:false,
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>mk1 월별 추이</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Apple SD Gothic Neo','Segoe UI',sans-serif;background:#fff;padding:22px 24px}
+h2{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:16px}
+h2 span{font-size:12px;color:#888;font-weight:400;margin-left:8px}
+</style>
+</head>
+<body>
+<h2>월별 비용 vs 구매 성장 추이 <span>2026.01 ~ 2026.05 · 2월=100 기준 지수</span></h2>
+<canvas id="c" height="300"></canvas>
+<script>
+const labels=['1월','2월','3월','4월','5월'];
+const costs=[940786,8629624,18736231,14913213,1705230];
+const purchases=[0,927,2556,5131,22];
+// 2월(index 1)을 기준 100으로 인덱스화
+const baseC=costs[1], baseP=purchases[1];
+const costIdx=costs.map(v=>Math.round(v/baseC*100));
+const purIdx=purchases.map(v=>v===0?0:Math.round(v/baseP*100));
+new Chart(document.getElementById('c'),{
+  type:'bar',
+  data:{
+    labels:labels,
+    datasets:[
+      {type:'bar',label:'비용 지수',data:costIdx,backgroundColor:'rgba(15,52,96,0.75)',yAxisID:'y',borderRadius:6},
+      {type:'line',label:'구매 지수',data:purIdx,borderColor:'#e94560',backgroundColor:'rgba(233,69,96,.12)',pointRadius:6,pointBackgroundColor:'#e94560',yAxisID:'y1',tension:0.35,fill:true}
+    ]
+  },
+  options:{
+    plugins:{
+      legend:{labels:{font:{size:12}}},
+      tooltip:{callbacks:{label:ctx=>ctx.datasetIndex===0?`비용 지수: ${ctx.raw}`:`구매 지수: ${ctx.raw}`}}
+    },
+    scales:{
+      y:{position:'left',grid:{color:'#f0f0f0'},ticks:{font:{size:11}},title:{display:true,text:'비용 지수 (2월=100)'}},
+      y1:{position:'right',grid:{drawOnChartArea:false},ticks:{font:{size:11}},title:{display:true,text:'구매 지수 (2월=100)'}}
+    },
+    maintainAspectRatio:false,
+  }
+});
+</script>
+</body>
+</html>

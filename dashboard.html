@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>커버링 전체 성과 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 20px 24px 32px; }
+
+  .dash-header { margin-bottom: 20px; padding: 14px 18px; background: #F0F4FF; border-left: 4px solid #1A56DB; border-radius: 0 8px 8px 0; display: flex; align-items: baseline; gap: 10px; }
+  .dash-title { font-size: 15px; font-weight: 700; color: #1A56DB; }
+  .dash-period { font-size: 11px; color: #666; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .kpi { background: #f5f5f3; border-radius: 8px; padding: 12px 14px; }
+  .kpi-label { font-size: 10px; color: #888; margin-bottom: 4px; }
+  .kpi-value { font-size: 20px; font-weight: 600; color: #1a1a1a; }
+  .kpi-growth { font-size: 10px; color: #059669; margin-top: 2px; font-weight: 500; }
+
+  .section-title { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 10px; letter-spacing: 0.02em; text-transform: uppercase; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .full { margin-bottom: 16px; }
+
+  .chart-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px 12px; }
+  .chart-title { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px; }
+  .chart-sub { font-size: 10px; color: #9ca3af; margin-bottom: 10px; }
+  .chart-wrap { position: relative; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; font-size: 10px; color: #6b7280; align-items: center; }
+  .leg-item { display: flex; align-items: center; gap: 4px; }
+  .leg-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .leg-bar { width: 10px; height: 8px; border-radius: 2px; display: inline-block; }
+  .leg-ev { width: 1.5px; height: 12px; background: rgba(234,88,12,0.6); display: inline-block; }
+  .leg-sep { width: 0.5px; height: 12px; background: #e5e7eb; margin: 0 2px; display: inline-block; }
+
+  .note { font-size: 10px; color: #9ca3af; margin-top: 8px; line-height: 1.5; }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: 1fr; } .kpi-row { grid-template-columns: repeat(2,1fr); } }
+</style>
+</head>
+<body>
+
+<div class="dash-header">
+  <span class="dash-title">📊 커버링 전체 성과 대시보드</span>
+  <span class="dash-period">2024.01 ~ 2026.04 &nbsp;|&nbsp; 이도형 재직 기간: 2024.05.13 ~</span>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">매출 성장 (이사 전 대비)</div>
+    <div class="kpi-value">+1,541%</div>
+    <div class="kpi-growth">▲ 재직 기간 기준</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">MAU 성장 (이사 전 대비)</div>
+    <div class="kpi-value">+2,439%</div>
+    <div class="kpi-growth">▲ 재직 기간 기준</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">신규 이용자 성장 (이사 전 대비)</div>
+    <div class="kpi-value">+2,066%</div>
+    <div class="kpi-growth">▲ 재직 기간 기준</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">공헌이익률</div>
+    <div class="kpi-value">흑자 전환</div>
+    <div class="kpi-growth">▲ 적자 → 흑자 개선(예측)</div>
+  </div>
+</div>
+
+<!-- Row 1: 매출 성장 지수 -->
+<div class="full chart-card">
+  <div class="chart-title">매출 성장 지수</div>
+  <div class="chart-sub">2024.01 = 100 기준 &nbsp;|&nbsp; 주황 점선 = 이도형 이사 시점 (2024.05)</div>
+  <div class="legend">
+    <div class="leg-item"><span class="leg-bar" style="background:#93C5FD;"></span> 성장 지수</div>
+    <span class="leg-sep"></span>
+    <div class="leg-item"><span class="leg-ev"></span> 이사 시점</div>
+  </div>
+  <div class="chart-wrap" style="height:220px;">
+    <canvas id="c-revenue"></canvas>
+  </div>
+</div>
+
+<!-- Row 2: 신규이용자 + MAU -->
+<div class="grid-2">
+  <div class="chart-card">
+    <div class="chart-title">신규 이용자 성장 지수</div>
+    <div class="chart-sub">2024.01 = 100 기준</div>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="c-newuser"></canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">MAU 성장 지수</div>
+    <div class="chart-sub">2024.01 = 100 기준</div>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="c-mau"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Row 3: 마케팅비 + 공헌이익률 -->
+<div class="grid-2">
+  <div class="chart-card">
+    <div class="chart-title">마케팅 비용 성장 지수</div>
+    <div class="chart-sub">2024.11 = 100 기준 (데이터 집계 시작)</div>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="c-mktcost"></canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">부가세 후 공헌이익률 (예측 개선지수)</div>
+    <div class="chart-sub">상대 추이 · 최저=0 · 최고=100 (실제 % 비공개)</div>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="c-margin"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Row 4: 영업이익률 + CAC -->
+<div class="grid-2">
+  <div class="chart-card">
+    <div class="chart-title">영업이익률 (예측 개선지수)</div>
+    <div class="chart-sub">상대 추이 · 최저=0 · 최고=100 (실제 % 비공개) &nbsp;|&nbsp; 손실 축소 개선 추세</div>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="c-opinc"></canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">CAC 추이 (이사 시점 = 100 기준)</div>
+    <div class="chart-sub">이사 시점 이후 집계 &nbsp;|&nbsp; 낮을수록 효율적</div>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="c-cac"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="note">* 일부 지표는 데이터 기록 시작일이 다를 수 있음 &nbsp;|&nbsp; 주황 점선 기준: 이도형 이사 시점 (2024.05)</div>
+
+<script>
+const months = ['2024.01','2024.02','2024.03','2024.04','2024.05','2024.06','2024.07','2024.08','2024.09','2024.10','2024.11','2024.12','2025.01','2025.02','2025.03','2025.04','2025.05','2025.06','2025.07','2025.08','2025.09','2025.10','2025.11','2025.12','2026.01','2026.02','2026.03','2026.04'];
+const joinIdx = 4; // 2024.05
+
+// --- raw values (not exposed) ---
+// 매출 절대액 비공개: 소스 역산 방지를 위해 성장지수(2024.01=1.0)만 사전 산출해 보관
+const _mau = [970,1296,1452,1721,2234,3182,4214,5583,6003,6662,7050,8183,8767,9952,12430,15366,17757,21671,26683,28965,30861,34597,35069,40222,43317,49125,56736,null];
+const _new = [363,548,501,600,864,1373,1807,2321,1853,1933,1893,2512,2691,2692,4896,5783,6235,7517,10211,9440,8441,10111,8802,12506,12051,12935,18717,null];
+const _mkt = [null,null,null,null,null,null,null,null,null,null,34979894,62278554,36407608,45177166,62151123,72416222,76489573,122808918,191892770,122914998,150679845,211320103,176878907,277621752,317420108,309667127,435443506,null];
+const _cac = [null,null,null,null,14260,13394,13054,10515,11849,15735,19250,19056,14114,13223,12553,11940,12467,13197,16253,13626,14401,19461,20571,22596,22327,21305,23147,null];
+
+// --- convert to index ---
+const toIdx = (arr, baseIdx) => arr.map(v => v === null ? null : Math.round(v / arr[baseIdx] * 10) / 10);
+const revIdx = [1,1.2,1.2,1.4,1.7,1.6,2.9,3.4,3.3,3.9,3.9,4.1,4.7,5.4,6.2,7.3,8.4,9.7,12,13.1,13.6,15.4,15.4,17.6,19.7,20.7,27,28.4];
+const mauIdx = toIdx(_mau, 0);
+const newIdx = toIdx(_new, 0);
+const mktBase = _mkt.findIndex(v => v !== null);
+const mktIdx  = _mkt.map(v => v === null ? null : Math.round(v / _mkt[mktBase] * 10) / 10);
+const cacBase = _cac.findIndex(v => v !== null); // joinIdx
+const cacIdx  = _cac.map(v => v === null ? null : Math.round(v / _cac[cacBase] * 10) / 10);
+
+// --- keep as-is (% metrics) ---
+const contrib = [null,null,null,null,null,null,null,null,null,0.09360603,0.12668518,0.15337120,0.17292731,0.18216506,0.18021216,0.18921852,0.23308394,0.22305252,0.23516785,0.25646024,0.26886094,0.28497993,0.33226297,0.29787833,0.35884749,0.27537766,0.29857402,null];
+// 수익성 실제 %는 비공개 — 상대 개선지수(예측, 최저=0·최고=100)로만 추이 표시
+function relIdx(arr){ const v=arr.filter(x=>x!=null); const mn=Math.min(...v), mx=Math.max(...v); return arr.map(x=>x==null?null:Math.round((x-mn)/(mx-mn)*100)); }
+const contribPct = relIdx(contrib);
+const opinc = [null,null,null,null,null,null,null,null,null,null,-0.16719,-0.24364,-0.12773,-0.11689,-0.12937,-0.09918,-0.02941,-0.08772,-0.16010,-0.00971,-0.05487,-0.04561,-0.00931,-0.11764,-0.02626,-0.09424,-0.07379,null];
+const opincPct = relIdx(opinc);
+
+const joinLinePlugin = {
+  id: 'joinLine',
+  afterDraw(chart) {
+    const {ctx, chartArea, scales} = chart;
+    if (!scales.x) return;
+    const xPos = scales.x.getPixelForValue(joinIdx);
+    if (xPos < chartArea.left || xPos > chartArea.right) return;
+    ctx.save();
+    ctx.beginPath();
+    ctx.setLineDash([4,3]);
+    ctx.strokeStyle = 'rgba(234,88,12,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.moveTo(xPos, chartArea.top);
+    ctx.lineTo(xPos, chartArea.bottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+};
+Chart.register(joinLinePlugin);
+
+const commonOpts = (yFmt, hasJoin=true) => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  interaction: { mode: 'index', intersect: false },
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      backgroundColor: 'rgba(17,24,39,0.85)',
+      padding: 8,
+      titleFont: { size: 11 },
+      bodyFont: { size: 11 },
+      callbacks: { label: ctx => ctx.parsed.y !== null ? yFmt(ctx.parsed.y) : '' }
+    }
+  },
+  scales: {
+    x: {
+      grid: { display: false },
+      ticks: {
+        font: { size: 9 }, color: '#9ca3af',
+        maxRotation: 45, minRotation: 45,
+        callback: (val, idx) => {
+          const m = months[idx];
+          return m.endsWith('.01') ? m : m.split('.')[1] + '월';
+        }
+      }
+    },
+    y: {
+      grid: { color: '#f3f4f6', lineWidth: 1 },
+      border: { dash: [3,3] },
+      ticks: { font: { size: 9 }, color: '#9ca3af', callback: (v) => yFmt(v) }
+    }
+  }
+});
+
+// 1. Revenue index
+new Chart(document.getElementById('c-revenue'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{
+      data: revIdx,
+      backgroundColor: months.map((m,i) => i >= joinIdx ? '#93C5FD' : '#BFDBFE'),
+      borderColor: months.map((m,i) => i >= joinIdx ? '#3B82F6' : '#93C5FD'),
+      borderWidth: 1,
+      borderRadius: 3,
+      spanGaps: true
+    }]
+  },
+  options: {
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: {
+      ...commonOpts(v => v).plugins,
+      tooltip: {
+        ...commonOpts(v => v).plugins.tooltip,
+        callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' }
+      }
+    },
+    scales: {
+      ...commonOpts(v => v).scales,
+      y: { ...commonOpts(v => v).scales.y, title: { display: true, text: '성장 지수 (2024.01=100)', font: { size: 9 } } }
+    }
+  }
+});
+
+// 2. New Users index
+new Chart(document.getElementById('c-newuser'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{
+      data: newIdx,
+      backgroundColor: months.map((m,i) => i >= joinIdx ? '#6EE7B7' : '#D1FAE5'),
+      borderColor: months.map((m,i) => i >= joinIdx ? '#10B981' : '#6EE7B7'),
+      borderWidth: 1, borderRadius: 3, spanGaps: true
+    }]
+  },
+  options: {
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'성장 지수 (2024.01=100)', font:{size:9} } } }
+  }
+});
+
+// 3. MAU index
+new Chart(document.getElementById('c-mau'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      data: mauIdx,
+      borderColor: '#0D9488', backgroundColor: 'rgba(13,148,136,0.08)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: true, spanGaps: true
+    }]
+  },
+  options: {
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'성장 지수 (2024.01=100)', font:{size:9} } } }
+  }
+});
+
+// 4. Marketing Cost index
+new Chart(document.getElementById('c-mktcost'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{
+      data: mktIdx,
+      backgroundColor: '#FCD34D', borderColor: '#F59E0B', borderWidth: 1, borderRadius: 3, spanGaps: true
+    }]
+  },
+  options: {
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'성장 지수 (2024.11=100)', font:{size:9} } } }
+  }
+});
+
+// 5. Contribution Margin % (keep as-is)
+new Chart(document.getElementById('c-margin'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      data: contribPct,
+      borderColor: '#059669', backgroundColor: 'rgba(5,150,105,0.07)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: true, spanGaps: false
+    }]
+  },
+  options: {
+    ...commonOpts(v => v === null ? '' : '지수 ' + v.toFixed(0)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(0) : '' } } }
+  }
+});
+
+// 6. Operating Income % (keep as-is)
+new Chart(document.getElementById('c-opinc'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      data: opincPct,
+      borderColor: '#7C3AED', backgroundColor: 'rgba(124,58,237,0.07)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: true, spanGaps: false
+    }]
+  },
+  options: {
+    ...commonOpts(v => v === null ? '' : '지수 ' + v.toFixed(0)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(0) : '' } } },
+    scales: { ...commonOpts(v=>v).scales, y: { ...commonOpts(v=>v).scales.y, ticks: { font:{size:9}, color:'#9ca3af', callback: v => v.toFixed(0) } } }
+  }
+});
+
+// 7. CAC index
+new Chart(document.getElementById('c-cac'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      data: cacIdx,
+      borderColor: '#EF4444', backgroundColor: 'rgba(239,68,68,0.07)',
+      borderWidth: 2, pointRadius: 2.5, pointHoverRadius: 5, tension: 0.3, fill: false, spanGaps: false
+    }]
+  },
+  options: {
+    ...commonOpts(v => v === null ? '' : v.toFixed(1)),
+    plugins: { ...commonOpts(v=>v).plugins, tooltip: { ...commonOpts(v=>v).plugins.tooltip, callbacks: { label: ctx => ctx.parsed.y !== null ? '지수 ' + ctx.parsed.y.toFixed(1) : '' } } },
+    scales: {
+      ...commonOpts(v=>v).scales,
+      y: { ...commonOpts(v=>v).scales.y, title: { display:true, text:'CAC 지수 (2024.05=100)', font:{size:9} }, ticks: { font:{size:9}, color:'#9ca3af', callback: v => v.toFixed(0) } }
+    }
+  }
+});
+</script>
+</body>
+</html>

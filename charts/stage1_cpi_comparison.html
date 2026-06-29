@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1단계 — CPI 개선 & 매출 성장</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f8f9fa; margin: 0; padding: 24px; }
+  h2 { color: #1a1a2e; font-size: 18px; margin-bottom: 4px; }
+  p.sub { color: #666; font-size: 13px; margin-top: 0; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 14px; color: #555; margin: 0 0 16px; }
+  .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 700; margin-top: 12px; }
+  canvas { max-height: 220px; }
+</style>
+</head>
+<body>
+<div style="max-width:900px;margin:0 auto">
+  <h2>🎯 1단계 — 소구점 전환: CPI 72.8% 절감 & 매출 +64%</h2>
+  <p class="sub">광고 집행 기간: 23.06.02 ~ 24.07.01 | 직접 집행 시작: 24.05.21</p>
+  <div class="grid">
+    <div class="card">
+      <h3>📉 CPI 비교 — 외주 vs 직접 집행</h3>
+      <canvas id="cpiChart"></canvas>
+      <div class="badge">CPI 7,988원 → 2,169원 (-72.8%)</div>
+    </div>
+    <div class="card">
+      <h3>📈 앱 설치 수 비교 (동일 예산)</h3>
+      <canvas id="installChart"></canvas>
+      <div class="badge">설치 수 2,743 → 8,839건 (+222%)</div>
+    </div>
+    <div class="card">
+      <h3>💰 월 매출 성장 (입사 전후)</h3>
+      <canvas id="revenueChart"></canvas>
+      <div class="badge">24.04→24.06: +64.3%</div>
+    </div>
+    <div class="card">
+      <h3>👥 신규유저 성장</h3>
+      <canvas id="userChart"></canvas>
+      <div class="badge">신규유저 600 → 1,373명 (+129%)</div>
+    </div>
+  </div>
+</div>
+<script>
+const green = '#4CAF50', red = '#ef5350', blue = '#2196F3', orange = '#FF9800';
+new Chart(document.getElementById('cpiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['외주 (CBO)', '직접 집행 (ABO)'],
+    datasets: [{ label: 'CPI (원)', data: [7988, 2169],
+      backgroundColor: [red+'99', green+'99'], borderColor: [red, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'원' } } } }
+});
+new Chart(document.getElementById('installChart'), {
+  type: 'bar',
+  data: {
+    labels: ['외주 (11월)', '직접 집행'],
+    datasets: [{ label: '앱 설치 수', data: [2743, 8839],
+      backgroundColor: [red+'99', green+'99'], borderColor: [red, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'건' } } } }
+});
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['24.04 (입사전)', '24.05 (입사)', '24.06'],
+    datasets: [{ label: 'B2C 매출 성장지수(예측)', data: [100, 128, 164],
+      backgroundColor: [red+'99', blue+'99', green+'99'], borderColor: [red, blue, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `성장지수(예측): ${ctx.raw.toLocaleString()}` } } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() } } } }
+});
+new Chart(document.getElementById('userChart'), {
+  type: 'bar',
+  data: {
+    labels: ['24.04 (입사전)', '24.05 (입사)', '24.06'],
+    datasets: [{ label: '신규유저', data: [600, 864, 1373],
+      backgroundColor: [red+'99', blue+'99', green+'99'], borderColor: [red, blue, green], borderWidth: 2, borderRadius: 8 }]
+  },
+  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'명' } } } }
+});
+</script>
+</body>
+</html>

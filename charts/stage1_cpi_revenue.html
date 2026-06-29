@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1단계 — 소구점 교체 성과</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; color: #111; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 24px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 14px; font-weight: 600; color: #444; margin-bottom: 14px; }
+  .stat-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .stat { flex: 1; background: #f3f7ff; border-radius: 8px; padding: 12px; text-align: center; }
+  .stat .label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .stat .value { font-size: 20px; font-weight: 700; color: #2563eb; }
+  .stat .sub { font-size: 11px; color: #2563eb; margin-top: 2px; }
+  .stat.good .value { color: #16a34a; }
+  .stat.good { background: #f0fdf4; }
+  .stat.bad .value { color: #dc2626; }
+  .stat.bad { background: #fef2f2; }
+  canvas { max-height: 220px; }
+  .footer { margin-top: 16px; font-size: 11px; color: #aaa; text-align: right; }
+</style>
+</head>
+<body>
+<h2>🎯 1단계 — 소구점 교체 성과 요약</h2>
+<p class="subtitle">외주 마케터 vs 이도형 직접 집행 비교 (2024.05.21~07.01)</p>
+
+<div class="stat-row">
+  <div class="stat good">
+    <div class="label">CPI 개선</div>
+    <div class="value">-72.8%</div>
+    <div class="sub">7,988원 → 2,169원</div>
+  </div>
+  <div class="stat good">
+    <div class="label">앱 설치 수</div>
+    <div class="value">+222%</div>
+    <div class="sub">2,743건 → 8,839건</div>
+  </div>
+  <div class="stat good">
+    <div class="label">CTR 개선</div>
+    <div class="value">+1.19%p</div>
+    <div class="sub">1.94% → 3.13%</div>
+  </div>
+  <div class="stat">
+    <div class="label">예산 차이</div>
+    <div class="value">-12.5%</div>
+    <div class="sub">21.9M → 19.2M원</div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>📊 CPI 비교 (원)</h3>
+    <canvas id="cpiChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>📈 소재 교체 후 월별 매출 성장지수 (입사=100, 예측)</h3>
+    <canvas id="revenueChart"></canvas>
+  </div>
+</div>
+
+<div class="grid" style="margin-top:20px">
+  <div class="card">
+    <h3>🎯 앱 설치 수 비교 (건)</h3>
+    <canvas id="installChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>👤 신규 유저 추이</h3>
+    <canvas id="userChart"></canvas>
+  </div>
+</div>
+
+<div class="footer">데이터 기준: Meta Ads 리포트 (2023.06.02~2024.07.01) / 매출 기준: B2C 월별</div>
+
+<script>
+const blue = '#2563eb', green = '#16a34a', red = '#dc2626', gray = '#94a3b8';
+
+new Chart(document.getElementById('cpiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['외주 마케터\n(iOS 단독)', '이도형 직접 집행\n(AOS+iOS)'],
+    datasets: [{
+      label: 'CPI (원)',
+      data: [7988, 2169],
+      backgroundColor: [red + 'cc', green + 'cc'],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `CPI: ${ctx.raw.toLocaleString()}원` } },
+      datalabels: { display: false }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() + '원' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ["24.04\n(입사 전)", "24.05\n(집행 시작)", "24.06\n(증액)"],
+    datasets: [{
+      label: 'B2C 매출 성장지수(예측)',
+      data: [100, 128, 164],
+      backgroundColor: [gray + 'aa', blue + 'bb', blue + 'cc'],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `성장지수(예측): ${ctx.raw.toLocaleString()}` } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('installChart'), {
+  type: 'bar',
+  data: {
+    labels: ['외주 마케터', '이도형 직접 집행'],
+    datasets: [{
+      label: '앱 설치 수 (건)',
+      data: [2743, 8839],
+      backgroundColor: [red + 'cc', green + 'cc'],
+      borderRadius: 8, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()}건` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('userChart'), {
+  type: 'line',
+  data: {
+    labels: ['24.04 (입사 전)', '24.05 (집행 시작)', '24.06 (증액)'],
+    datasets: [{
+      label: '신규 유저 (명)',
+      data: [600, 864, 1373],
+      borderColor: blue, backgroundColor: blue + '22',
+      fill: true, tension: 0.4, pointRadius: 6, pointBackgroundColor: blue,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()}명` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>

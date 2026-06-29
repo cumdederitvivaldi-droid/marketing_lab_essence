@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4단계 — 인플루언서 협업 방식 진화</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 12px; }
+  .timeline { display: flex; flex-direction: column; gap: 10px; }
+  .phase { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 8px; }
+  .phase.p1 { background: #fef2f2; }
+  .phase.p2 { background: #fffbeb; }
+  .phase.p3 { background: #f0fdf4; }
+  .phase.p4 { background: #eff6ff; }
+  .phase-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .p1 .phase-num { background: #dc2626; color: #fff; }
+  .p2 .phase-num { background: #f59e0b; color: #fff; }
+  .p3 .phase-num { background: #16a34a; color: #fff; }
+  .p4 .phase-num { background: #2563eb; color: #fff; }
+  .phase-content .title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .phase-content .period { font-size: 11px; color: #888; margin-bottom: 3px; }
+  .phase-content .result { font-size: 12px; }
+  canvas { max-height: 220px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 12px 8px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .label { font-size: 10px; color: #888; margin-bottom: 3px; }
+  .kpi .value { font-size: 16px; font-weight: 700; color: #2563eb; }
+  .kpi .sub { font-size: 10px; color: #666; margin-top: 2px; }
+</style>
+</head>
+<body>
+<h2>🤝 4단계 — 인플루언서 협업 방식 진화</h2>
+<p class="subtitle">단순 협찬 → 브랜디드 → PA(파트너십 광고) → DM 바이럴 (2025.04 ~ 2026.03)</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">PA CPA</div><div class="value" style="color:#16a34a">12,042원</div><div class="sub">35,233원 → -66%</div></div>
+  <div class="kpi"><div class="label">DM 바이럴 CPA</div><div class="value" style="color:#16a34a">기존 1/3</div><div class="sub">광고비 0원</div></div>
+  <div class="kpi"><div class="label">협업 단가</div><div class="value" style="color:#16a34a">30~50만원</div><div class="sub">기존 500~1,000만원</div></div>
+  <div class="kpi"><div class="label">리스크</div><div class="value" style="color:#16a34a">Low</div><div class="sub">단순협업: High</div></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>🔄 협업 방식 4단계 진화 타임라인</h3>
+    <div class="timeline">
+      <div class="phase p1">
+        <div class="phase-num">1</div>
+        <div class="phase-content">
+          <div class="title">단순 협찬 (2025.04~07)</div>
+          <div class="period">민델리, 원룸만들기, 미미짱 등 8명</div>
+          <div class="result">⚠️ 트랙킹 불가 / 건당 500만~1천만원 / 실패 시 전액 손실</div>
+        </div>
+      </div>
+      <div class="phase p2">
+        <div class="phase-num">2</div>
+        <div class="phase-content">
+          <div class="title">브랜디드 + 라이센스 (2025.09~11)</div>
+          <div class="period">원룸만들기 재협업, 인프피리뷰, 시은니야</div>
+          <div class="result">⚠️ 전환 추적 확보했으나 2차 활용 콘텐츠 효율 저조</div>
+        </div>
+      </div>
+      <div class="phase p3">
+        <div class="phase-num">3</div>
+        <div class="phase-content">
+          <div class="title">PA 집행 (2025.11~)</div>
+          <div class="period">팔로워 소수 + 제작역량 높은 인플루언서 × 메타 파트너십 광고</div>
+          <div class="result">✅ CPA 35,233원 → 12,042원 (-66%) / 예산 규모 단계적 확장</div>
+        </div>
+      </div>
+      <div class="phase p4">
+        <div class="phase-num">4</div>
+        <div class="phase-content">
+          <div class="title">DM 바이럴 (2026.02~)</div>
+          <div class="period">슈퍼차트 5명 × 2회차</div>
+          <div class="result">✅ 기존 회원가입 CPA 대비 1/3 효율 / 광고비 0원</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>💸 협업 비용 구조 비교</h3>
+    <canvas id="costChart"></canvas>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>📉 CPA 개선 추이 (원)</h3>
+    <canvas id="cpaChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>🛡️ 방식별 리스크 vs 효율 비교</h3>
+    <canvas id='riskChart'></canvas>
+  </div>
+</div>
+
+<script>
+const blue = '#2563eb', green = '#16a34a', red = '#dc2626', orange = '#f59e0b', gray = '#94a3b8';
+
+new Chart(document.getElementById('costChart'), {
+  type: 'bar',
+  data: {
+    labels: ['단순 협찬\n(건당)', 'PA 집행\n(건당)'],
+    datasets: [{
+      label: '협업 단가 (원)',
+      data: [7500000, 400000],
+      backgroundColor: [red + 'cc', green + 'cc'],
+      borderRadius: 8, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()}원` } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => (v/10000).toFixed(0) + '만원' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('cpaChart'), {
+  type: 'bar',
+  data: {
+    labels: ['단순 협찬 / 브랜디드\n(효율 낮음)', 'PA 집행', 'DM 바이럴\n(기존 CAC 대비)'],
+    datasets: [{
+      label: 'CPA (원)',
+      data: [35233, 12042, null],
+      backgroundColor: [red + 'cc', green + 'cc', blue + 'cc'],
+      borderRadius: 8, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.raw ? `${ctx.raw.toLocaleString()}원` : '기존 CAC의 1/3' } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('riskChart'), {
+  type: 'radar',
+  data: {
+    labels: ['CPA 효율', '리스크 낮음', '트랙킹 가능', '확장성', '비용 효율'],
+    datasets: [
+      { label: '단순 협찬', data: [1, 1, 2, 1, 1], borderColor: red, backgroundColor: red + '22', pointBackgroundColor: red },
+      { label: 'PA 집행', data: [5, 5, 5, 5, 4], borderColor: green, backgroundColor: green + '22', pointBackgroundColor: green },
+      { label: 'DM 바이럴', data: [5, 5, 4, 3, 5], borderColor: blue, backgroundColor: blue + '22', pointBackgroundColor: blue },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    scales: { r: { min: 0, max: 5, ticks: { stepSize: 1 }, grid: { color: '#e0e0e0' }, pointLabels: { font: { size: 11 } } } },
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "visual-tools",
+  "description": "웹 캡처 무드보드 생성(/moodboard)과 파일 날짜별 자동 정리(/sort-files)를 묶은 비주얼 작업 도구 플러그인. Playwright MCP 포함.",
+  "author": {
+    "name": "hound"
+  }
+}

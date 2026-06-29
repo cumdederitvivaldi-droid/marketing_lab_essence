@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>이도형 — 브랜드 엑셀러레이터 포트폴리오</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="deck-stage.js"></script>
+<style>
+  html, body { background: #0A0E16; }
+
+  /* ─── Slide base ───────────────────────────────────────────── */
+  deck-stage section {
+    width: 1920px; height: 1080px;
+    position: relative; overflow: hidden;
+    font-family: var(--font-sans);
+    color: var(--fg-1);
+  }
+  .s-light { background: var(--ink-50); }
+  .s-white { background: #FFFFFF; }
+  .s-dark  { background: var(--ink-900); color: #fff; }
+  .s-blue  { background: var(--blue-500); color: #fff; }
+
+  /* ─── Frame: outer 100px padding standard ─────────────────── */
+  .frame { position:absolute; inset:0; padding: 96px 112px; display:flex; flex-direction:column; }
+  .frame-tight { padding: 80px 96px; }
+
+  /* ─── Page chrome footer ──────────────────────────────────── */
+  .chrome { display:flex; justify-content:space-between; align-items:baseline; margin-top:auto; padding-top:48px; }
+  .chrome span { font-family:var(--font-mono); font-size:14px; letter-spacing:0.14em; text-transform:uppercase; color: var(--ink-400); }
+  .s-dark .chrome span, .s-blue .chrome span { color: rgba(255,255,255,0.55); }
+
+  /* ─── Eyebrow ─────────────────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 16px; letter-spacing: 0.16em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--fg-3);
+    display: inline-flex; align-items: center; gap: 14px;
+  }
+  .eyebrow b { font-weight: 700; color: var(--blue-500); }
+  .eyebrow .bar { width: 42px; height: 2px; background: var(--blue-500); display: inline-block; }
+  .s-dark .eyebrow, .s-blue .eyebrow { color: rgba(255,255,255,0.7); }
+  .s-dark .eyebrow b { color: #fff; }
+  .s-blue .eyebrow b { color: #fff; }
+
+  /* ─── Cards (HeyDealer-style) ─────────────────────────────── */
+  .card {
+    background: #fff; border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 32px 36px;
+  }
+  .card-flat { background:#fff; border: 1px solid var(--ink-100); border-radius: var(--radius-lg); padding: 32px 36px; }
+  .card-tint { background: var(--blue-50); border-radius: var(--radius-lg); padding: 32px 36px; }
+  .card-blue { background: var(--blue-500); color: #fff; border-radius: var(--radius-lg); padding: 32px 36px; }
+  .card-dark { background: #161B26; color: #fff; border-radius: var(--radius-lg); padding: 32px 36px; }
+
+  /* ─── Metric block ────────────────────────────────────────── */
+  .metric { display:flex; flex-direction:column; }
+  .metric .lbl { font-family:var(--font-mono); font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--fg-3); margin-bottom:10px; }
+  .metric .val { font-family:var(--font-display); font-weight:900; font-size:72px; line-height:1; letter-spacing:-0.035em; font-variant-numeric:tabular-nums; color:var(--ink-800); }
+  .metric .val .unit { font-size:0.45em; font-weight:700; color:var(--blue-500); margin-left:4px; }
+  .metric .sub { font-size:15px; color:var(--fg-2); margin-top:12px; line-height:1.5; }
+  .card-dark .metric .val { color:#fff; }
+  .card-dark .metric .lbl { color: var(--blue-300); }
+  .card-dark .metric .sub { color: var(--ink-300); }
+  .card-blue .metric .val { color:#fff; }
+  .card-blue .metric .val .unit { color: #fff; opacity:.7; }
+  .card-blue .metric .lbl { color: rgba(255,255,255,0.7); }
+  .card-blue .metric .sub { color: rgba(255,255,255,0.85); }
+
+  /* ─── Chart wrapper ───────────────────────────────────────── */
+  .chart-card h4 { font-size:18px; font-weight:700; margin:0 0 4px; color:var(--ink-800); }
+  .chart-card .sub { font-family:var(--font-mono); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-3); margin-bottom:18px; }
+
+  /* ─── Data table ──────────────────────────────────────────── */
+  .data-table { width:100%; border-collapse:collapse; font-size:17px; }
+  .data-table th, .data-table td { text-align:left; padding:14px 18px; }
+  .data-table thead th { font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--fg-3); font-weight:600; border-bottom: 2px solid var(--ink-200); }
+  .data-table tbody tr { border-bottom: 1px solid var(--ink-100); }
+  .data-table tbody tr:last-child { border-bottom:none; }
+  .data-table td.num { font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-weight:600; }
+  .data-table tr.pop { background: var(--blue-50); }
+  .data-table tr.pop td:first-child { border-left: 3px solid var(--blue-500); }
+  .data-table .pos { color: var(--mint-500); }
+  .data-table .neg { color: var(--rose-500); }
+
+  /* ─── Stage chip ──────────────────────────────────────────── */
+  .stage-chip {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 10px 20px; border-radius: 999px;
+    background: var(--blue-500); color: #fff;
+    font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.1em;
+    font-weight: 700; text-transform: uppercase;
+  }
+  .stage-chip .ico { font-size: 18px; }
+
+  /* ─── Hashtag chip ────────────────────────────────────────── */
+  .tag {
+    display: inline-flex; align-items: center;
+    padding: 8px 18px; border-radius: 999px;
+    background: rgba(255,255,255,0.10); color: #fff;
+    font-weight: 600; font-size: 18px;
+    border: 1px solid rgba(255,255,255,0.18);
+    white-space: nowrap;
+  }
+  .tag-light {
+    display: inline-flex; align-items: center;
+    padding: 8px 18px; border-radius: 999px;
+    background: var(--blue-50); color: var(--blue-600);
+    font-weight: 600; font-size: 18px;
+    white-space: nowrap;
+  }
+
+  /* blue link arrow */
+  .arrow-link { color: var(--blue-500); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<script type="application/json" id="speaker-notes">
+[
+  "안녕하세요, 5년차 그로스 마케터 이도형입니다. 콘텐츠 제작부터 퍼포먼스 광고, 데이터 분석, CRM, 팀 빌딩까지 마케팅에 필요한 모든 요소를 직접 실행하는 브랜드 엑셀러레이터입니다.",
+  "오늘 보여드릴 내용은 크게 다섯 부분입니다. 프로필, 핵심 성과, 6단계 그로스 스토리, 실제 작업물, 스킬과 일하는 방식, 그리고 컨택입니다.",
+  "간단히 제 소개입니다. 5년 4개월간 커버링, 이삼오구, 나인투식스, 와이즈플래닛을 거치며 1인 마케터에서 팀 리드로 성장했습니다.",
+  "이 한 페이지가 제 정체성입니다. 직접 만든 콘텐츠로 앱 월 매출 약 40배 성장, CRM으로 유의미한 추가 매출 회수. 모두 직접 실행하고 만들어낸 성과입니다.",
+  "이제 어떻게 만들었는지 6단계로 풀어드리겠습니다. 입사 당시 월 매출을 약 40배까지 성장시킨 과정입니다.",
+  "1단계, 소구점 발견. 마케터도 소재도 없던 상황에서 앱 리뷰의 한 줄에서 진짜 페인 포인트를 발견하고 직접 촬영·집행했습니다. CPI를 7,988원에서 2,169원으로 72.8% 절감했습니다.",
+  "2-1단계, 등급제 도입. 회차별 이탈 데이터를 분석해 쿠폰 트리거 시점을 정하고, 70일 누적 주문 조건으로 이용 주기를 단축시켰습니다. 등급 달성 유저의 180일 LTV는 미달성 대비 18.1배 차이가 났습니다.",
+  "3단계, 멀티채널 확장. Meta·Google Ads·TikTok 동시 운용으로 월 평균 매출을 약 230% 성장시켰습니다. 채널 간 시너지 구조가 만들어졌습니다.",
+  "4단계, 인플루언서 PA. 단순 협업의 한계를 PA 방식으로 바꿔 CPA를 35,233원에서 12,042원으로 66% 절감했습니다.",
+  "5단계, 지역 확장과 프로모션. 990원 첫 이용 이벤트, 단골 고객 등급제, 8kg 초과 할인까지. 광고 포화의 벽을 두 방향으로 동시에 뚫었습니다.",
+  "실제로 제가 만든 콘텐츠들입니다. 등급제 디자인, 8kg 초과 할인 페이지, 990원 연말 청소결산 프로모션, Lucky Clover 이벤트, 모바일 등급 화면 — 기획부터 디자인까지 직접 실행했습니다.",
+  "제가 다루는 도구들과 일하는 방식입니다. Meta·Google·TikTok이 상급, BigQuery·SQL로 데이터 분석. 9가지 워킹 원칙으로 빠른 실행과 합리적 소통을 추구합니다.",
+  "감사합니다. 함께 일하고 싶으시면 hound600al@naver.com 또는 카카오톡 hound600al로 연락 주세요."
+]
+</script>
+
+<deck-stage>
+
+  <!-- ═══════════════ SLIDE 1 · COVER ═══════════════ -->
+  <section class="s-dark" data-screen-label="01 Cover">
+    <!-- subtle blue glow -->
+    <div style="position:absolute; right:-200px; top:-200px; width:900px; height:900px; background: radial-gradient(circle, rgba(45,91,255,0.35) 0%, transparent 60%); pointer-events:none;"></div>
+    <div style="position:absolute; left:-100px; bottom:-200px; width:700px; height:700px; background: radial-gradient(circle, rgba(45,91,255,0.18) 0%, transparent 60%); pointer-events:none;"></div>
+
+    <div class="frame">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div style="font-family:var(--font-mono); font-size:16px; letter-spacing:0.2em; color:var(--blue-300); font-weight:700;">PORTFOLIO · 2026</div>
+        <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.16em; color: rgba(255,255,255,0.55); text-align:right;">
+          BRAND ACCELERATOR<br>
+          GROWTH MARKETER · 5Y 4M
+        </div>
+      </div>
+
+      <div style="margin: auto 0;">
+        <div style="display:flex; align-items:baseline; gap:24px; margin-bottom:32px;">
+          <div style="width:48px; height:6px; background: var(--blue-500);"></div>
+          <div style="font-family:var(--font-mono); font-size:22px; letter-spacing:0.22em; color:var(--blue-300); font-weight:600;">LEE DOHYEONG</div>
+        </div>
+        <h1 style="font-size:200px; line-height:0.92; font-weight:900; color:#fff; letter-spacing:-0.045em; margin:0 0 32px;">
+          브랜드의 <span style="color: var(--blue-400);">성장을</span><br>
+          가속화합니다.
+        </h1>
+        <p style="font-size:26px; color: rgba(255,255,255,0.78); margin: 40px 0 0; max-width: 1300px; line-height:1.55;">
+          5년 4개월차 그로스 마케터 · 콘텐츠·퍼포먼스·CRM·데이터 분석을 하나의 루틴으로 직접 실행하며, 브랜드의 성장을 단계가 아닌 속도로 만듭니다.
+        </p>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 48px;">
+          <span class="tag">#데이터드리븐</span>
+          <span class="tag">#그로스해킹</span>
+          <span class="tag">#실행력</span>
+          <span class="tag">#1인마케터→팀리드</span>
+          <span class="tag">#5년차</span>
+        </div>
+      </div>
+
+      <div class="chrome">
+        <span>HOUND600AL@NAVER.COM · 010-7589-9117</span>
+        <span>2026.05</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 2 · CONTENTS ═══════════════ -->
+  <section class="s-light" data-screen-label="02 Contents">
+    <div class="frame">
+      <div class="eyebrow" style="margin-bottom: 28px;"><span class="bar"></span><b>CONTENTS</b></div>
+      <h2 style="font-size:96px; font-weight:900; line-height:1; letter-spacing:-0.035em; margin:0 0 72px;">
+        오늘의 <span class="u-blue">6가지</span>
+      </h2>
+
+      <div style="display:grid; grid-template-columns: 120px 1fr 360px; gap: 0 48px; max-width: 1600px;">
+
+        <!-- 01 -->
+        <div style="font-family:var(--font-mono); font-size:32px; color:var(--ink-300); padding-top:12px; font-weight:700;">01</div>
+        <div style="font-size:44px; font-weight:700; padding:20px 0; border-bottom:1px solid var(--ink-200); color:var(--ink-800);">Profile · Career</div>
+        <div style="font-family:var(--font-mono); font-size:16px; color:var(--fg-3); padding-top:34px; text-align:right;">5y 4m · 4 companies</div>
+
+        <!-- 02 -->
+        <div style="font-family:var(--font-mono); font-size:32px; color:var(--ink-300); padding-top:32px; font-weight:700;">02</div>
+        <div style="font-size:44px; font-weight:700; padding:20px 0; border-bottom:1px solid var(--ink-200); margin-top:20px; color:var(--ink-800);">Headline Performance</div>
+        <div style="font-family:var(--font-mono); font-size:16px; color:var(--fg-3); padding-top:54px; text-align:right;">40× growth (예측)</div>
+
+        <!-- 03 - featured -->
+        <div style="font-family:var(--font-mono); font-size:32px; color:var(--blue-500); padding-top:32px; font-weight:700;">03</div>
+        <div style="font-size:44px; font-weight:700; padding:20px 0; border-bottom:1px solid var(--blue-500); margin-top:20px; color:var(--ink-800);">
+          6-Step Growth Story
+          <span style="display:inline-block; margin-left:14px; vertical-align: 6px; background: var(--blue-500); color:#fff; padding:5px 14px; border-radius: 999px; font-size:18px; font-family:var(--font-mono); letter-spacing:0.08em; font-weight:700;">FEATURED</span>
+        </div>
+        <div style="font-family:var(--font-mono); font-size:16px; color:var(--blue-500); padding-top:54px; text-align:right; font-weight:600;">월 매출 40배 성장(예측)</div>
+
+        <!-- 04 -->
+        <div style="font-family:var(--font-mono); font-size:32px; color:var(--ink-300); padding-top:32px; font-weight:700;">04</div>
+        <div style="font-size:44px; font-weight:700; padding:20px 0; border-bottom:1px solid var(--ink-200); margin-top:20px; color:var(--ink-800);">Selected Works (커버링)</div>
+        <div style="font-family:var(--font-mono); font-size:16px; color:var(--fg-3); padding-top:54px; text-align:right;">Figma · Live</div>
+
+        <!-- 05 -->
+        <div style="font-family:var(--font-mono); font-size:32px; color:var(--ink-300); padding-top:32px; font-weight:700;">05</div>
+        <div style="font-size:44px; font-weight:700; padding:20px 0; border-bottom:1px solid var(--ink-200); margin-top:20px; color:var(--ink-800);">Skills · How I Work</div>
+        <div style="font-family:var(--font-mono); font-size:16px; color:var(--fg-3); padding-top:54px; text-align:right;">25+ tools · 9 principles</div>
+
+        <!-- 06 -->
+        <div style="font-family:var(--font-mono); font-size:32px; color:var(--ink-300); padding-top:32px; font-weight:700;">06</div>
+        <div style="font-size:44px; font-weight:700; padding:20px 0; border-bottom:1px solid var(--ink-200); margin-top:20px; color:var(--ink-800);">Contact</div>
+        <div style="font-family:var(--font-mono); font-size:16px; color:var(--fg-3); padding-top:54px; text-align:right;">hound600al@naver.com</div>
+      </div>
+
+      <div class="chrome"><span>P 02 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 3 · PROFILE ═══════════════ -->
+  <section class="s-light" data-screen-label="03 Profile">
+    <div class="frame" style="display:grid; grid-template-columns: 560px 1fr; gap:80px; padding-top:80px;">
+
+      <!-- Profile photo with blue offset block -->
+      <div>
+        <div style="position:relative; width:520px; height:660px;">
+          <div style="position:absolute; left:28px; top:28px; right:-28px; bottom:-28px; background: var(--blue-500); border-radius: var(--radius-lg);"></div>
+          <img src="../assets/profile_dohyeong.jpg" alt="이도형"
+               style="position:relative; width:100%; height:100%; object-fit:cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);"/>
+        </div>
+        <div style="margin-top:64px; font-family:var(--font-mono); font-size:13px; letter-spacing:0.14em; text-transform:uppercase; color:var(--fg-3);">
+          PHOTO · 2025
+        </div>
+      </div>
+
+      <!-- info -->
+      <div>
+        <div class="eyebrow" style="margin-bottom: 28px;"><span class="bar"></span><b>01 — PROFILE</b></div>
+        <h2 style="font-size:72px; font-weight:900; line-height:1.02; letter-spacing:-0.035em; margin:0 0 36px;">
+          <span class="u-blue">결과를 만드는</span><br>
+          마케터 이도형
+        </h2>
+        <p style="font-size:22px; line-height:1.65; color:var(--fg-2); margin: 0 0 56px; max-width:780px;">
+          1인 마케터로 시작해 5인 팀 리드로 성장했습니다. <b style="color:var(--ink-800);">콘텐츠 제작, 퍼포먼스 광고, CRM, 데이터 분석</b> — 영역의 경계 없이 직접 실행하기 때문에, 의사결정과 결과 사이의 시간을 압축합니다.
+        </p>
+
+        <div style="display:grid; grid-template-columns: 180px 1fr; row-gap:20px; font-size:18px; max-width:780px; border-top:1px solid var(--ink-200); padding-top:32px;">
+          <div style="font-family:var(--font-mono); color:var(--fg-3); letter-spacing:0.1em; text-transform:uppercase; font-size:13px; padding-top:2px;">이름</div>
+          <div style="font-weight:600; color:var(--ink-800);">이도형 (Lee Dohyeong) · 1995년생</div>
+
+          <div style="font-family:var(--font-mono); color:var(--fg-3); letter-spacing:0.1em; text-transform:uppercase; font-size:13px; padding-top:2px;">경력</div>
+          <div style="font-weight:600; color:var(--ink-800);">총 5년 4개월 · 그로스 마케터 · 마케팅 리드</div>
+
+          <div style="font-family:var(--font-mono); color:var(--fg-3); letter-spacing:0.1em; text-transform:uppercase; font-size:13px; padding-top:2px;">소속</div>
+          <div style="font-weight:600; color:var(--ink-800);">
+            <span style="display:inline-block; background:var(--mint-100); color:var(--mint-500); padding:2px 10px; border-radius:6px; font-size:14px; margin-right:8px; vertical-align:1px;">재직 중</span>
+            (주)커버링 · 마케팅 리드 (2024.05~)
+          </div>
+
+          <div style="font-family:var(--font-mono); color:var(--fg-3); letter-spacing:0.1em; text-transform:uppercase; font-size:13px; padding-top:2px;">학력</div>
+          <div style="font-weight:600; color:var(--ink-800);">인하대학교 경영학 · 스포츠과학 복수전공</div>
+
+          <div style="font-family:var(--font-mono); color:var(--fg-3); letter-spacing:0.1em; text-transform:uppercase; font-size:13px; padding-top:2px;">위치</div>
+          <div style="font-weight:600; color:var(--ink-800);">서울 은평구</div>
+
+          <div style="font-family:var(--font-mono); color:var(--fg-3); letter-spacing:0.1em; text-transform:uppercase; font-size:13px; padding-top:2px;">연락처</div>
+          <div style="font-weight:600; color:var(--ink-800);">hound600al@naver.com · 카카오 hound600al · 010-7589-9117</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute; left:112px; right:112px; bottom:48px; display:flex; justify-content:space-between;">
+      <span style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-400);">P 03 / 14</span>
+      <span style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-400);">LEE DOHYEONG · 이도형</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 4 · HEADLINE PERFORMANCE ═══════════════ -->
+  <section class="s-dark" data-screen-label="04 Headline">
+    <div class="frame">
+      <div class="eyebrow" style="margin-bottom:32px;"><span class="bar" style="background:var(--blue-400);"></span><b>02 — HEADLINE PERFORMANCE</b></div>
+      <h2 style="font-size:96px; font-weight:900; line-height:1; letter-spacing:-0.035em; margin:0 0 72px; color:#fff;">
+        직접 만든 콘텐츠로<br>
+        월 매출 <span style="color:var(--blue-400);">약 40배</span> 성장을 만들었습니다.
+      </h2>
+
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:24px; margin-bottom: 36px;">
+        <div class="card-dark">
+          <div class="metric">
+            <div class="lbl">B2C 매출 성장</div>
+            <div class="val">40<span class="unit">×</span></div>
+            <div class="sub">직접 제작 콘텐츠 기반 · 예측</div>
+          </div>
+        </div>
+        <div class="card-blue">
+          <div class="metric">
+            <div class="lbl" style="color:rgba(255,255,255,0.85);">앱 월 매출 성장</div>
+            <div class="val">40<span class="unit">×</span></div>
+            <div class="sub">약 40배 성장 · 24개월 · 예측</div>
+          </div>
+        </div>
+        <div class="card-dark">
+          <div class="metric">
+            <div class="lbl">CRM 추가 매출 회수</div>
+            <div class="val">7,997<span class="unit">명</span></div>
+            <div class="sub">휴면 유저 재활성화 · 유의미한 매출 회수</div>
+          </div>
+        </div>
+        <div class="card-dark">
+          <div class="metric">
+            <div class="lbl">월 광고 집행 규모</div>
+            <div class="val">4.5<span class="unit">억</span></div>
+            <div class="sub">목표 CAC 내 · 5개 채널 · 광고비</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+        <div style="background:#161B26; border-left: 4px solid var(--blue-400); padding: 24px 32px; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:13px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">팀 빌딩</div>
+          <div style="color:#fff; font-size:22px; font-weight:600; line-height:1.4;">5인 팀 직접 채용·온보딩 — 인턴 4명을 월 1천만 원 집행 가능한 마케터로 육성, 전원 정규직 전환</div>
+        </div>
+        <div style="background:#161B26; border-left: 4px solid var(--mint-500); padding: 24px 32px; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+          <div style="font-family:var(--font-mono); color:var(--mint-300); font-size:13px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">인플루언서 PA</div>
+          <div style="color:#fff; font-size:22px; font-weight:600; line-height:1.4;">단순 협업 → PA 구조 전환 · CPA 66% 절감 — Paid 한계를 신뢰 기반 바이럴로 보완</div>
+        </div>
+      </div>
+
+      <div class="chrome"><span>P 04 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 5 · 6-STEP OVERVIEW ═══════════════ -->
+  <section class="s-light" data-screen-label="05 Six Step Overview">
+    <div class="frame frame-tight">
+      <div class="eyebrow" style="margin-bottom: 20px;"><span class="bar"></span><b>03 — 6-STEP GROWTH STORY</b></div>
+      <h2 style="font-size:64px; font-weight:900; line-height:1.05; letter-spacing:-0.035em; margin:0 0 12px;">
+        월 매출 <span class="u-blue">약 40배 성장</span> <span style="color:var(--ink-300); font-weight:600; font-size:.7em;">(예측)</span>
+      </h2>
+      <p style="font-size:22px; color:var(--fg-2); margin: 0 0 40px;">입사부터 24개월간 병목을 발견하고 돌파해온 6단계.</p>
+
+      <div class="card-flat" style="padding: 16px 24px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:80px;">단계</th>
+              <th style="width:520px;">핵심 과제</th>
+              <th style="width:280px;">매출 성장율(예측)</th>
+              <th>주요 성과</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family:var(--font-mono); font-weight:700;">🎯 1</td>
+              <td><b style="color:var(--ink-800);">소구점 발굴</b> — 앱 리뷰에서 진짜 페인 포인트를 찾아 직접 촬영·집행</td>
+              <td class="num">+64%(예측)</td>
+              <td class="num pos">CPI –72.8% (7,988 → 2,169원)</td>
+            </tr>
+            <tr>
+              <td style="font-family:var(--font-mono); font-weight:700;">🏅 2-1</td>
+              <td><b style="color:var(--ink-800);">등급제·CRM 자동화·CVR 개선</b> — 공헌이익률 적자 → 흑자 전환(예측)</td>
+              <td class="num">+36%(예측)</td>
+              <td class="num pos">LTV 18.1× · M1 리텐션 +41%p</td>
+            </tr>
+            <tr>
+              <td style="font-family:var(--font-mono); font-weight:700;">⚖️ 2-2</td>
+              <td><b style="color:var(--ink-800);">AOV 개선</b> — 배출량 정책·품목 콘텐츠로 객단가 상승</td>
+              <td class="num">+34%(예측)</td>
+              <td class="num pos">광고 체력 완성</td>
+            </tr>
+            <tr class="pop">
+              <td style="font-family:var(--font-mono); font-weight:700;">🎲 3</td>
+              <td><b style="color:var(--ink-800);">멀티채널 확장</b> — Meta·Google Ads·TikTok 동시 운용</td>
+              <td class="num">+226%(예측)</td>
+              <td class="num pos">월 평균 매출 +230%</td>
+            </tr>
+            <tr>
+              <td style="font-family:var(--font-mono); font-weight:700;">🤝 4</td>
+              <td><b style="color:var(--ink-800);">인플루언서 PA</b> — 단순 협업 → PA(Partnership Ads) 전환</td>
+              <td class="num">+70%(예측)</td>
+              <td class="num pos">CPA –66% (35,233 → 12,042원)</td>
+            </tr>
+            <tr>
+              <td style="font-family:var(--font-mono); font-weight:700;">🗺️ 5</td>
+              <td><b style="color:var(--ink-800);">지역 확장 + 프로모션</b> — 사전 CRM·990원 이벤트·8kg 초과 할인</td>
+              <td class="num">+135%(예측)</td>
+              <td class="num pos">서비스 포화 돌파</td>
+            </tr>
+            <tr>
+              <td style="font-family:var(--font-mono); font-weight:700;">👥 6</td>
+              <td><b style="color:var(--ink-800);">팀 빌딩</b> — 1인 → 5인 팀, 인턴 4명 전원 정규직 전환</td>
+              <td class="num">전 구간 기반</td>
+              <td class="num pos">월 1천만 운용 인턴 육성</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chrome"><span>P 05 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 6 · STAGE 1 ═══════════════ -->
+  <section class="s-light" data-screen-label="06 Stage1 Hook">
+    <div class="frame frame-tight">
+      <div style="display:flex; align-items:center; gap:18px; margin-bottom: 24px;">
+        <span class="stage-chip"><span>STEP 01</span><span style="opacity:.7;">|</span><span class="ico">🎯</span><span>소구점 발굴</span></span>
+        <span style="font-family:var(--font-mono); font-size:14px; color:var(--fg-3); letter-spacing:0.1em;">+64%(예측)</span>
+      </div>
+
+      <h2 style="font-size:60px; font-weight:900; line-height:1.05; letter-spacing:-0.035em; margin:0 0 36px; max-width: 1500px;">
+        소구점을 못 찾으면,<br><span class="u-blue">좋은 제품도 팔리지 않는다.</span>
+      </h2>
+
+      <div style="display:grid; grid-template-columns: 1fr 760px; gap:64px;">
+
+        <!-- Left: narrative -->
+        <div>
+          <div style="border-left: 3px solid var(--blue-500); padding-left:24px; margin-bottom:32px;">
+            <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--fg-3); text-transform:uppercase; margin-bottom:8px;">병목</div>
+            <p style="font-size:19px; line-height:1.6; color:var(--fg-2);">전담 마케터·디자이너·편집자 부재. 외주 마케터의 이미지 배너가 전부.<br>광고 소구는 <s style="color:var(--fg-4);">"배달음식 분리 없이 버려도 된다"</s> — 고객의 진짜 페인이 아니었음.</p>
+          </div>
+
+          <div class="card-tint" style="padding: 28px 32px; margin-bottom: 28px;">
+            <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--blue-600); text-transform:uppercase; margin-bottom:12px;">앱스토어 리뷰에서 발견한 한 줄</div>
+            <p style="font-size:30px; font-weight:700; line-height:1.4; margin:0; color:var(--ink-800);">"<span class="u-blue">상한 반찬통</span> 버릴 때<br>정말 유용해요"</p>
+          </div>
+
+          <div>
+            <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--fg-3); text-transform:uppercase; margin-bottom:8px;">실행</div>
+            <p style="font-size:17px; line-height:1.6; color:var(--fg-2);">
+              입사 1주일 만에 소구점 <b style="color:var(--ink-800);">6개 베리에이션</b> 직접 기획·촬영·편집·집행.<br>
+              '상한 반찬통' 소구 포함 — 24.05.21 광고 집행 시작.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: chart + metric -->
+        <div>
+          <div class="card chart-card" style="margin-bottom: 20px;">
+            <h4>외주 vs 직접 집행 — CPI 비교</h4>
+            <div class="sub">23.06 ~ 24.07 / 단위: 원</div>
+            <div style="height:240px; position:relative;"><canvas id="ch-1-cpi"></canvas></div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+            <div class="card">
+              <div class="metric">
+                <div class="lbl">CPI 절감</div>
+                <div class="val" style="font-size:54px; color:var(--mint-500);">–72.8<span class="unit" style="color:var(--mint-500);">%</span></div>
+                <div class="sub">7,988원 → 2,169원</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="metric">
+                <div class="lbl">앱 설치 수</div>
+                <div class="val" style="font-size:54px; color:var(--mint-500);">+222<span class="unit" style="color:var(--mint-500);">%</span></div>
+                <div class="sub">2,743건 → 8,839건</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chrome"><span>P 06 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 7 · STAGE 2-1 ═══════════════ -->
+  <section class="s-light" data-screen-label="07 Stage2 Tier">
+    <div class="frame frame-tight">
+      <div style="display:flex; align-items:center; gap:18px; margin-bottom: 24px;">
+        <span class="stage-chip"><span>STEP 02-1</span><span style="opacity:.7;">|</span><span class="ico">🏅</span><span>등급제·CRM 자동화</span></span>
+        <span style="font-family:var(--font-mono); font-size:14px; color:var(--fg-3); letter-spacing:0.1em;">+36%(예측)</span>
+      </div>
+
+      <h2 style="font-size:56px; font-weight:900; line-height:1.05; letter-spacing:-0.035em; margin:0 0 32px;">
+        이탈 데이터로 <span class="u-blue">쿠폰 트리거</span>를 설계하다.
+      </h2>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+        <div class="card chart-card">
+          <h4>회차별 잔존율 — 7·10회차에 이탈 급증</h4>
+          <div class="sub">코호트 통합 638명 · 쿠폰 트리거 포인트</div>
+          <div style="height:360px; position:relative;"><canvas id="ch-2-retention"></canvas></div>
+        </div>
+
+        <div>
+          <div class="card chart-card" style="margin-bottom:20px;">
+            <h4>180일 LTV — 등급 달성 vs 미달성</h4>
+            <div class="sub">코호트 2024.08~2025.02</div>
+            <div style="height:180px; position:relative;"><canvas id="ch-2-ltv"></canvas></div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+            <div class="card">
+              <div class="metric">
+                <div class="lbl">LTV 차이</div>
+                <div class="val" style="font-size:54px; color:var(--blue-500);">18.1<span class="unit">×</span></div>
+                <div class="sub">176,121원 vs 9,743원</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="metric">
+                <div class="lbl">M1 리텐션 (달성)</div>
+                <div class="val" style="font-size:54px; color:var(--mint-500);">86.9<span class="unit" style="color:var(--mint-500);">%</span></div>
+                <div class="sub">도입 전 45.9% · +41%p</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-dark" style="margin-top:24px; padding: 18px 32px; display:flex; align-items:center; gap: 28px;">
+        <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:13px; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; flex-shrink:0;">설계 핵심</div>
+        <div style="font-size:18px; line-height:1.5;">이탈 급증 구간(7·9·10회차)에 <b style="color:var(--blue-300);">쿠폰 트리거</b> = 이탈 방어 / 70일 내 N회 이용 시 등급 유지 = <b style="color:var(--blue-300);">이용 주기 단축</b> — 두 목표를 하나의 구조로 달성.</div>
+      </div>
+
+      <div class="chrome"><span>P 07 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 8 · STAGE 3 ═══════════════ -->
+  <section class="s-light" data-screen-label="08 Stage3 Multichannel">
+    <div class="frame frame-tight">
+      <div style="display:flex; align-items:center; gap:18px; margin-bottom: 24px;">
+        <span class="stage-chip"><span>STEP 03</span><span style="opacity:.7;">|</span><span class="ico">🎲</span><span>멀티채널 확장</span></span>
+        <span style="font-family:var(--font-mono); font-size:14px; color:var(--fg-3); letter-spacing:0.1em;">+226%(예측)</span>
+      </div>
+
+      <h2 style="font-size:56px; font-weight:900; line-height:1.05; letter-spacing:-0.035em; margin:0 0 32px;">
+        한 매체 의존을 벗어나, <span class="u-blue">3채널 시너지</span>를 만들다.
+      </h2>
+
+      <div class="card chart-card" style="margin-bottom: 20px;">
+        <h4>월별 B2C 매출 성장지수 추이 — 멀티채널 도입 시점</h4>
+        <div class="sub">2024.05 (입사) ~ 2025.08 · 입사월=100 성장지수(예측) · 점선 = 멀티채널 시작</div>
+        <div style="height:320px; position:relative;"><canvas id="ch-3-revenue"></canvas></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;">
+        <div class="card">
+          <div class="metric">
+            <div class="lbl">월 평균 매출</div>
+            <div class="val" style="font-size:48px; color:var(--mint-500);">+230<span class="unit" style="color:var(--mint-500);">%</span></div>
+            <div class="sub" style="font-size:14px;">+230% 성장(예측)</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="lbl">월 평균 신규유저</div>
+            <div class="val" style="font-size:48px; color:var(--mint-500);">+262<span class="unit" style="color:var(--mint-500);">%</span></div>
+            <div class="sub" style="font-size:14px;">1,581 → 5,725명</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="lbl">평균 공헌이익률</div>
+            <div class="val" style="font-size:48px;">흑자 전환</div>
+            <div class="sub" style="font-size:14px;">적자 → 흑자·구조 개선(예측)</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric">
+            <div class="lbl">TikTok 일 예산 확장</div>
+            <div class="val" style="font-size:48px;">12<span class="unit">×</span></div>
+            <div class="sub" style="font-size:14px;">10만 → 120만 원</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chrome"><span>P 08 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 9 · STAGE 4 ═══════════════ -->
+  <section class="s-light" data-screen-label="09 Stage4 PA">
+    <div class="frame frame-tight">
+      <div style="display:flex; align-items:center; gap:18px; margin-bottom: 24px;">
+        <span class="stage-chip"><span>STEP 04</span><span style="opacity:.7;">|</span><span class="ico">🤝</span><span>인플루언서 PA</span></span>
+        <span style="font-family:var(--font-mono); font-size:14px; color:var(--fg-3); letter-spacing:0.1em;">+70%(예측)</span>
+      </div>
+
+      <h2 style="font-size:56px; font-weight:900; line-height:1.05; letter-spacing:-0.035em; margin:0 0 32px;">
+        <span class="u-blue">구조를 바꾸니</span> 효율이 바뀌었다.
+      </h2>
+
+      <div style="display:grid; grid-template-columns: 1fr 700px; gap:48px;">
+        <div class="card-flat" style="padding:0; overflow:hidden;">
+          <table style="width:100%; border-collapse:collapse; font-size:17px;">
+            <thead>
+              <tr style="background: var(--ink-800); color:#fff;">
+                <th style="text-align:left; padding:16px 22px; font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">항목</th>
+                <th style="text-align:left; padding:16px 22px; font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600;">기존 단순 협업</th>
+                <th style="text-align:left; padding:16px 22px; font-family:var(--font-mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; background: var(--blue-500); color:#fff; font-weight:700;">PA 방식</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--ink-100);">
+                <td style="padding:20px 22px; font-weight:600;">협업 단가</td>
+                <td style="padding:20px 22px; font-family:var(--font-mono);">건당 500~1000만</td>
+                <td style="padding:20px 22px; font-family:var(--font-mono); background:var(--blue-50); color:var(--blue-700); font-weight:700;">건당 30~50만</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--ink-100);">
+                <td style="padding:20px 22px; font-weight:600;">실패 시 리스크</td>
+                <td style="padding:20px 22px; color:var(--rose-500);">高 · 협업비 전액 손실</td>
+                <td style="padding:20px 22px; background:var(--blue-50); color:var(--mint-500); font-weight:600;">低 · 소액 + 광고 중단 가능</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--ink-100);">
+                <td style="padding:20px 22px; font-weight:600;">전환 트랙킹</td>
+                <td style="padding:20px 22px;">쿠폰 사용 시만</td>
+                <td style="padding:20px 22px; background:var(--blue-50); color:var(--blue-700); font-weight:600;">광고 계정 연동 전수 추적</td>
+              </tr>
+              <tr>
+                <td style="padding:20px 22px; font-weight:600;">확장성</td>
+                <td style="padding:20px 22px;">낮음 · 고단가로 선택적</td>
+                <td style="padding:20px 22px; background:var(--blue-50); color:var(--blue-700); font-weight:600;">높음 · 다수 동시 집행 가능</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div class="card chart-card" style="margin-bottom: 20px;">
+            <h4>CPA 비교 — 단순 협업 vs PA 집행</h4>
+            <div class="sub">2025-04~07 vs 2025-11~ · 단위: 원</div>
+            <div style="height:240px; position:relative;"><canvas id="ch-4-cpa"></canvas></div>
+          </div>
+          <div class="card-blue">
+            <div class="metric">
+              <div class="lbl" style="color:rgba(255,255,255,0.85);">CPA 절감</div>
+              <div class="val" style="font-size:64px;">–66<span class="unit">%</span></div>
+              <div class="sub">35,233 → 12,042원 · DM 바이럴은 회원가입 CPA 대비 1/3 효율</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chrome"><span>P 09 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 10 · STAGE 5 ═══════════════ -->
+  <section class="s-light" data-screen-label="10 Stage5 Expansion">
+    <div class="frame frame-tight">
+      <div style="display:flex; align-items:center; gap:18px; margin-bottom: 24px;">
+        <span class="stage-chip"><span>STEP 05</span><span style="opacity:.7;">|</span><span class="ico">🗺️</span><span>지역 확장 + 프로모션</span></span>
+        <span style="font-family:var(--font-mono); font-size:14px; color:var(--fg-3); letter-spacing:0.1em;">+135%(예측)</span>
+      </div>
+
+      <h2 style="font-size:56px; font-weight:900; line-height:1.05; letter-spacing:-0.035em; margin:0 0 28px;">
+        포화의 벽을, <span class="u-blue">두 방향으로</span> 동시에 뚫다.
+      </h2>
+
+      <div style="border-left: 3px solid var(--blue-500); padding-left:24px; margin-bottom:32px;">
+        <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--fg-3); text-transform:uppercase; margin-bottom:8px;">병목</div>
+        <p style="font-size:19px; line-height:1.6; color:var(--fg-2);">광고비를 올릴수록 포화도 상승, CPM 상승, CVR 좋아도 CAC가 목표치를 벗어남.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+        <div class="card" style="position:relative; padding-top:48px;">
+          <div style="position:absolute; top:-14px; left:32px; background:var(--ink-800); color:#fff; padding:6px 16px; font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; font-weight:700; border-radius: 999px;">실행 ①</div>
+          <h3 style="font-size:32px; font-weight:800; margin:0 0 16px;">지역 확장</h3>
+          <p style="font-size:16px; line-height:1.6; color:var(--fg-2); margin:0 0 24px;">사전 CRM으로 신규 지역 선점, 광고 모수 자체를 늘려 포화 구조를 깨뜨림.</p>
+          <div style="display:flex; gap:16px;">
+            <div style="flex:1; padding:18px; background:var(--ink-50); border-radius: var(--radius-md);">
+              <div style="font-size:11px; color:var(--fg-3); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.1em;">신규 지역</div>
+              <div style="font-size:28px; font-weight:900; margin-top:6px;">대전·세종·청주</div>
+            </div>
+            <div style="flex:1; padding:18px; background:var(--ink-50); border-radius: var(--radius-md);">
+              <div style="font-size:11px; color:var(--fg-3); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.1em;">사전 CRM</div>
+              <div style="font-size:28px; font-weight:900; margin-top:6px;">선점 가입 모객</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-blue" style="position:relative; padding-top:48px;">
+          <div style="position:absolute; top:-14px; left:32px; background: var(--ink-800); color:var(--blue-300); padding:6px 16px; font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; font-weight:700; border-radius: 999px;">실행 ②</div>
+          <h3 style="font-size:32px; font-weight:800; margin:0 0 16px;">990원 프로모션</h3>
+          <p style="font-size:16px; line-height:1.6; opacity:0.92; margin:0 0 24px;">일반 광고로는 못 데려오던 가격 민감 고객을 활성화. 진입 장벽을 한 자리수로 낮춤.</p>
+          <div style="display:flex; gap:16px;">
+            <div style="flex:1; padding:18px; background:rgba(255,255,255,0.16); border-radius: var(--radius-md);">
+              <div style="font-size:11px; opacity:0.8; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.1em;">최저 진입가</div>
+              <div style="font-size:36px; font-weight:900; margin-top:6px; color:var(--sun-300);">₩990</div>
+            </div>
+            <div style="flex:1; padding:18px; background:rgba(255,255,255,0.16); border-radius: var(--radius-md);">
+              <div style="font-size:11px; opacity:0.8; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.1em;">유저 활성화</div>
+              <div style="font-size:28px; font-weight:900; margin-top:6px;">신규 페르소나</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-dark" style="margin-top:24px; padding: 20px 36px; display:flex; align-items:center; gap:32px;">
+        <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:13px; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; flex-shrink:0;">결과</div>
+        <div style="font-size:22px; font-weight:700;">이 구간만 <span style="color:var(--blue-400); font-size:32px;">+135%</span> · 24개월 누적 월 매출 <span style="color:var(--blue-400);">약 40배 성장(예측)</span> 달성</div>
+      </div>
+
+      <div class="chrome"><span>P 10 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 11 · SELECTED WORKS (커버링 Figma) ═══════════════ -->
+  <section class="s-light" data-screen-label="11 Selected Works">
+    <div class="frame frame-tight">
+      <div class="eyebrow" style="margin-bottom: 20px;"><span class="bar"></span><b>04 — SELECTED WORKS · 커버링</b></div>
+      <h2 style="font-size:60px; font-weight:900; line-height:1; letter-spacing:-0.035em; margin:0 0 12px;">
+        기획부터 디자인까지, <span class="u-blue">직접 만든 결과물.</span>
+      </h2>
+      <p style="font-size:18px; color:var(--fg-2); margin: 0 0 36px;">Ps · Ai · Ae · Pr · Figma 풀 스택. 외주 없이 콘텐츠 기획·촬영·편집·배포 전 과정 자체 실행.</p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 18px;">
+
+        <div class="card-flat" style="padding: 0; overflow: hidden;">
+          <div style="height: 460px; background: var(--ink-50); display:flex; align-items:center; justify-content:center; overflow: hidden;">
+            <img src="../assets/covering_tier_system.png" alt="등급제 디자인" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;"/>
+          </div>
+          <div style="padding: 20px 22px;">
+            <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em; color:var(--blue-500); text-transform:uppercase; font-weight:700; margin-bottom:8px;">CRM · LTV</div>
+            <h4 style="font-size:18px; font-weight:700; margin:0 0 6px;">단골 고객 등급제</h4>
+            <p style="font-size:13px; color:var(--fg-2); margin:0; line-height:1.5;">씨앗·새싹·묘목·나무 단계별 혜택 설계. LTV 18.1× 차이로 이어진 핵심 구조.</p>
+          </div>
+        </div>
+
+        <div class="card-flat" style="padding: 0; overflow: hidden;">
+          <div style="height: 460px; background: var(--ink-50); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <img src="../assets/covering_pricing.png" alt="8kg 초과 할인" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;"/>
+          </div>
+          <div style="padding: 20px 22px;">
+            <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em; color:var(--blue-500); text-transform:uppercase; font-weight:700; margin-bottom:8px;">AOV · PROMO</div>
+            <h4 style="font-size:18px; font-weight:700; margin:0 0 6px;">8kg 초과 할인</h4>
+            <p style="font-size:13px; color:var(--fg-2); margin:0; line-height:1.5;">배출량 정책 콘텐츠. 객단가 상승을 위한 인센티브 구조 시각화.</p>
+          </div>
+        </div>
+
+        <div class="card-flat" style="padding: 0; overflow: hidden;">
+          <div style="height: 460px; background: var(--ink-50); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <img src="../assets/covering_promo_year_end.png" alt="연말 청소결산" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;"/>
+          </div>
+          <div style="padding: 20px 22px;">
+            <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em; color:var(--blue-500); text-transform:uppercase; font-weight:700; margin-bottom:8px;">PROMO · STAGE 5</div>
+            <h4 style="font-size:18px; font-weight:700; margin:0 0 6px;">연말 청소결산</h4>
+            <p style="font-size:13px; color:var(--fg-2); margin:0; line-height:1.5;">첫 이용 990원 + 단골 고객 경품. 진입 장벽을 한 자리수로.</p>
+          </div>
+        </div>
+
+        <div class="card-flat" style="padding: 0; overflow: hidden;">
+          <div style="height: 460px; background: var(--ink-50); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <img src="../assets/covering_promo_lucky_clover.png" alt="Lucky Clover 이벤트" style="width: 100%; height: 100%; object-fit: cover; object-position: top center;"/>
+          </div>
+          <div style="padding: 20px 22px;">
+            <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:0.12em; color:var(--blue-500); text-transform:uppercase; font-weight:700; margin-bottom:8px;">VIRAL · INVITE</div>
+            <h4 style="font-size:18px; font-weight:700; margin:0 0 6px;">Lucky Clover Event</h4>
+            <p style="font-size:13px; color:var(--fg-2); margin:0; line-height:1.5;">친구 초대 30% 할인 + 페이백 쿠폰. 바이럴 루프 디자인.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px; display:flex; gap:16px; align-items:center;">
+        <span class="tag-light">📱 모바일 등급 UI</span>
+        <span class="tag-light">🎁 프로모션 LP</span>
+        <span class="tag-light">📊 데이터 대시보드</span>
+        <span class="tag-light">🎬 광고 영상 소재</span>
+        <span class="tag-light">📩 카카오 알림톡</span>
+        <span style="font-family:var(--font-mono); font-size:13px; color:var(--fg-3); letter-spacing:0.08em; margin-left:auto;">전체 작업물 → notion.so/이도형 포트폴리오</span>
+      </div>
+
+      <div class="chrome"><span>P 11 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 12 · SKILLS ═══════════════ -->
+  <section class="s-light" data-screen-label="12 Skills">
+    <div class="frame">
+      <div class="eyebrow" style="margin-bottom: 20px;"><span class="bar"></span><b>05 — SKILLS · TOOLS</b></div>
+      <h2 style="font-size:64px; font-weight:900; line-height:1.05; letter-spacing:-0.035em; margin:0 0 40px;">
+        <span class="u-blue">상</span>부터 <span class="u-sun">중</span>·<span class="u-rose">하</span>까지 — 25+ 도구
+      </h2>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:32px;">
+        <div class="card">
+          <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--blue-500); text-transform:uppercase; margin-bottom:18px; padding-bottom:14px; border-bottom: 1px solid var(--ink-200); font-weight:700;">📣 Media · 매체 광고</div>
+          <ul style="list-style:none; padding:0; margin:0; font-size:17px; line-height:1.9;">
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>Meta</b> · 상</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>Google Ads</b> · 상</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>TikTok Ads</b> · 상</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>GFA · 중</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>Naver SA / 쇼검 / 브검 · 중</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>알림톡 / 플친톡 / 스냅푸쉬</b> · 상</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--blue-500); text-transform:uppercase; margin-bottom:18px; padding-bottom:14px; border-bottom: 1px solid var(--ink-200); font-weight:700;">📊 Data · Tools</div>
+          <ul style="list-style:none; padding:0; margin:0; font-size:17px; line-height:1.9;">
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>Excel</b> · <b>카페24 접속통계</b> · 상</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>Google Analytics · GTM · 중</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>SQL / BigQuery · 중</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--rose-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>AppsFlyer · Airbridge · 하</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--rose-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>Mixpanel · 하</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>Photoshop · Illustrator · 중</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>Premiere Pro · After Effects · 중</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>Figma</b> · 상</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--blue-500); text-transform:uppercase; margin-bottom:18px; padding-bottom:14px; border-bottom: 1px solid var(--ink-200); font-weight:700;">🧠 Soft Skills</div>
+          <ul style="list-style:none; padding:0; margin:0; font-size:17px; line-height:1.9;">
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>자극적인 콘텐츠 기획</b></li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>데이터 분석 · 가설 검증</b></li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--blue-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span><b>문제 해결 능력</b></li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>커뮤니케이션 · 협업</li>
+            <li><span style="display:inline-block; width:8px; height:8px; background:var(--sun-500); border-radius:50%; margin-right:12px; vertical-align:middle;"></span>비판적 사고력</li>
+          </ul>
+          <div style="margin-top:24px; padding:18px 22px; background: var(--ink-800); color:#fff; border-radius: var(--radius-md);">
+            <div style="font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--blue-300); margin-bottom:6px; text-transform:uppercase;">자격증 · 어학</div>
+            <div style="font-size:15px; line-height:1.6;">GAIQ · 컴활 2급<br>TOEIC <b style="color:var(--blue-300);">975</b> · 비즈니스 영어</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chrome"><span>P 12 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 13 · HOW I WORK ═══════════════ -->
+  <section class="s-dark" data-screen-label="13 How I Work">
+    <div class="frame">
+      <div class="eyebrow" style="margin-bottom: 28px;"><span class="bar" style="background:var(--blue-400);"></span><b>HOW I WORK · 9 PRINCIPLES</b></div>
+      <h2 style="font-size:88px; font-weight:900; line-height:1; letter-spacing:-0.035em; margin:0 0 56px; color:#fff;">
+        제가 일하는 <span style="color:var(--blue-400);">방식.</span>
+      </h2>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px 36px; max-width: 1700px;">
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">01</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">성장 &gt; 워라벨 — 기대 가치가 그려진다면 일을 최우선으로 생각합니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">02</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">될까? 안될까? 고민보다는 일단 해보고 빠르게 결과를 확인합니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">03</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">설득할 때는 항상 <b style="color:var(--blue-400);">정량·정성적 근거</b>를 갖추고 합리적으로 소통합니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">04</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">무조건적인 긍정 X — 동료를 지지하더라도 반대 입장을 생각해본 후 수긍합니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">05</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">팀의 방향성이 정해지면 결정 전 입장과 무관하게 결과를 위해 <b style="color:var(--blue-400);">최대한 몰입</b>합니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">06</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">협업에서 공유는 예절. 팀원들과 주기적으로 진행 상황을 공유합니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">07</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">소통 시 의도는 명확하게 전달하되, 말은 예쁘게 표현합니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">08</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">상대방의 업무 범위를 침범하지 않게 조심, R&R이 애매하면 먼저 물어봅니다.</div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.12); padding-top:18px;">
+          <div style="font-family:var(--font-mono); color:var(--blue-300); font-size:14px; letter-spacing:0.18em; margin-bottom:10px; font-weight:600;">09</div>
+          <div style="color:#fff; font-size:21px; line-height:1.45; font-weight:500;">평소 방식만 고집하지 않고, <b style="color:var(--blue-400);">동료들과 해결책을 공유</b>하며 발전시킵니다.</div>
+        </div>
+      </div>
+
+      <div class="chrome"><span>P 13 / 14</span><span>LEE DOHYEONG · 이도형</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SLIDE 14 · THANK YOU / CONTACT ═══════════════ -->
+  <section class="s-blue" data-screen-label="14 Contact">
+    <!-- background ornament -->
+    <div style="position:absolute; right:-300px; bottom:-300px; width:1100px; height:1100px; border-radius:50%; background: rgba(255,255,255,0.06); pointer-events:none;"></div>
+    <div style="position:absolute; right:-100px; bottom:-100px; width:700px; height:700px; border-radius:50%; background: rgba(255,255,255,0.08); pointer-events:none;"></div>
+
+    <div class="frame">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div style="font-family:var(--font-mono); font-size:16px; letter-spacing:0.2em; font-weight:700;">CONTACT · 2026</div>
+        <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.16em; text-align:right; opacity:.7;">
+          BRAND ACCELERATOR<br>LEE DOHYEONG
+        </div>
+      </div>
+
+      <div style="margin: auto 0;">
+        <h1 style="font-size:240px; line-height:0.92; font-weight:900; color:#fff; letter-spacing:-0.05em; margin:0;">
+          Let's<br>
+          <span style="display:inline-block; padding-left:140px;">grow.</span>
+        </h1>
+
+        <div style="margin-top:80px; display:grid; grid-template-columns: 1fr 1fr; gap:48px; max-width:1500px;">
+          <div>
+            <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.7; margin-bottom:10px;">EMAIL</div>
+            <div style="font-size:42px; font-weight:800; color:#fff;">hound600al@naver.com</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-mono); font-size:13px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.7; margin-bottom:10px;">KAKAO · PHONE</div>
+            <div style="font-size:42px; font-weight:800; color:#fff;">hound600al · 010-7589-9117</div>
+          </div>
+        </div>
+
+        <div style="margin-top:48px;">
+          <a href="https://fuschia-rondeletia-182.notion.site/35d1baa073c980b88f2cf25ff933aad0?pvs=74"
+             style="display:inline-flex; align-items:center; gap:14px; padding:18px 28px; background:#fff; color:var(--blue-500); border-radius:999px; font-size:20px; font-weight:700; box-shadow: var(--shadow-md);">
+            📄 전체 포트폴리오 (Notion)
+            <span style="font-size:22px;">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div style="font-family:var(--font-mono); font-size:14px; letter-spacing:0.16em; display:flex; justify-content:space-between; align-items:baseline; margin-top:auto; padding-top:48px;">
+        <span>BRAND ACCELERATOR · 이도형</span>
+        <span>14 / 14</span>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script>
+/* ──────────────────────────────────────────────────────────────
+ * Chart palette — cobalt blue + ink, semantic accents
+ * ──────────────────────────────────────────────────────────────
+ */
+const PAL = {
+  ink:        '#131A26',
+  inkDeep:    '#0A0E16',
+  blue:       '#2D5BFF',
+  blueLight:  '#5C86FF',
+  blueFill:   'rgba(45,91,255,0.14)',
+  bluePale:   '#DCE5FF',
+  mint:       '#10C390',
+  mintFill:   'rgba(16,195,144,0.16)',
+  rose:       '#EF4444',
+  sun:        '#F5B400',
+  gray:       '#8B95A6',
+  grayLight:  '#DDE2EB',
+  line:       '#EEF1F6',
+};
+
+Chart.defaults.font.family = "'Pretendard Variable', Pretendard, -apple-system, sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.color = PAL.ink;
+Chart.defaults.borderColor = PAL.line;
+
+/* Stage 1 — CPI */
+new Chart(document.getElementById('ch-1-cpi'), {
+  type: 'bar',
+  data: {
+    labels: ['외주 (11월 iOS)', '직접 집행 (24.05.21~)'],
+    datasets: [{
+      data: [7988, 2169],
+      backgroundColor: [PAL.grayLight, PAL.blue],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.x.toLocaleString() + '원' } } },
+    scales: {
+      x: { ticks: { callback: v => v.toLocaleString() + '원', font: { size: 13 } }, grid: { color: PAL.line } },
+      y: { ticks: { font: { size: 15, weight: 600 } }, grid: { display: false } }
+    }
+  }
+});
+
+/* Stage 2 — Retention */
+new Chart(document.getElementById('ch-2-retention'), {
+  type: 'line',
+  data: {
+    labels: ['1','2','3','4','5','6','7','8','9','10','11','12','13','21'],
+    datasets: [
+      {
+        label: '잔존율(%)',
+        data: [100,70.2,53.4,43.9,34.2,27.1,20.8,16,11.6,8,5.8,4.4,4.2,0.9],
+        borderColor: PAL.blue, backgroundColor: PAL.blueFill,
+        fill: true, tension: 0.35, pointRadius: 4, pointBackgroundColor: PAL.blue, borderWidth: 3,
+      },
+      {
+        label: '이전 대비 이탈율(%)',
+        data: [0,29.8,23.9,17.9,22.1,20.6,23.1,23.3,27.5,31.1,27.5,24.3,3.6,0],
+        borderColor: PAL.rose, backgroundColor: 'transparent',
+        borderDash: [6,4], tension: 0.3, pointRadius: 3, borderWidth: 2,
+      }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { font: { size: 12 }, boxWidth: 14, padding: 16 } } },
+    scales: {
+      y: { beginAtZero: true, max: 110, ticks: { callback: v => v + '%', font: { size: 11 } }, grid: { color: PAL.line } },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+/* Stage 2 — LTV */
+new Chart(document.getElementById('ch-2-ltv'), {
+  type: 'bar',
+  data: {
+    labels: ['등급 달성 (새싹↑)', '등급 미달성'],
+    datasets: [{
+      data: [176121, 9743],
+      backgroundColor: [PAL.blue, PAL.grayLight],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.x.toLocaleString() + '원' } } },
+    scales: {
+      x: { ticks: { callback: v => (v/1000).toFixed(0) + 'k', font: { size: 11 } }, grid: { color: PAL.line } },
+      y: { ticks: { font: { size: 13, weight: 600 } }, grid: { display: false } }
+    }
+  }
+});
+
+/* Stage 3 — Revenue trend */
+new Chart(document.getElementById('ch-3-revenue'), {
+  type: 'line',
+  data: {
+    labels: ['24.05','24.06','24.07','24.08','24.09','24.10','24.11','24.12','25.01','25.02','25.03','25.04','25.05','25.06','25.07','25.08'],
+    datasets: [{
+      label: '성장지수(예측, 입사월=100)',
+      data: [100, 129, 174, 233, 248, 300, 292, 300, 331, 417, 417, 654, 769, 769, 1194, 1304],
+      borderColor: PAL.blue,
+      backgroundColor: ctx => {
+        const c = ctx.chart.ctx;
+        const g = c.createLinearGradient(0, 0, 0, 320);
+        g.addColorStop(0, 'rgba(45,91,255,0.30)');
+        g.addColorStop(1, 'rgba(45,91,255,0)');
+        return g;
+      },
+      fill: true, tension: 0.3, borderWidth: 3,
+      pointRadius: 3, pointBackgroundColor: PAL.blue,
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '성장지수 ' + c.parsed.y + ' (예측)' } } },
+    scales: {
+      y: { ticks: { callback: v => v, font: { size: 11 } }, grid: { color: PAL.line } },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+// Multichannel marker
+Chart.register({
+  id: 'mcLine',
+  afterDraw(chart) {
+    if (chart.canvas.id !== 'ch-3-revenue') return;
+    const { ctx, chartArea: a, scales } = chart;
+    const x = scales.x.getPixelForValue(8);
+    ctx.save();
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = PAL.sun;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, a.top); ctx.lineTo(x, a.bottom); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = PAL.sun;
+    ctx.font = 'bold 11px Pretendard, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('25.01 멀티채널 시작', x + 8, a.top + 14);
+    ctx.restore();
+  }
+});
+Chart.getChart('ch-3-revenue').update();
+
+/* Stage 4 — CPA */
+new Chart(document.getElementById('ch-4-cpa'), {
+  type: 'bar',
+  data: {
+    labels: ['단순 협업', 'PA 집행'],
+    datasets: [{
+      data: [35233, 12042],
+      backgroundColor: [PAL.grayLight, PAL.blue],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.parsed.y.toLocaleString() + '원' } } },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() + '원', font: { size: 11 } }, grid: { color: PAL.line } },
+      x: { ticks: { font: { size: 15, weight: 600 } }, grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "meta-ad-sync",
+  "description": "커버링 효율정리 Excel에 이번 주 신규 소재를 자동으로 추가하고 서식을 적용하는 도구. /add-creatives 로 실행.",
+  "author": {
+    "name": "hound"
+  }
+}

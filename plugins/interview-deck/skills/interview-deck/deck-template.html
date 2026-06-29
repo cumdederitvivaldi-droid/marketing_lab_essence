@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!-- 면접 발표덱 스캐폴드. 검증됨(채널톡·리웨이크 등 15+건). 복제 후 채워라.
+     톤 오버라이드: :root 액센트 토큰만 회사 브랜드 컬러로 교체. 구조 토큰·폰트는 유지.
+     슬라이드 추가: <section class="slide">...</section> 반복. 첫 슬라이드만 .active.
+     컴포넌트 사용법은 slide-architecture.md 카탈로그 참고. -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{회사}} {{직무}} 전략 제안 · {{이름}}</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root{
+  /* 구조 토큰 — 유지 */
+  --ink:#15171C; --navy:#1A1F2E; --black:#0E1118;
+  --gray:#8A8F99; --gray2:#5B6170;
+  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  /* 액센트 토큰 — 회사 브랜드로 교체 */
+  --blue:#1B66FF; --blue-d:#0F4FD6; --blue-soft:#E7EFFF;
+  --violet:#6E4BFF; --violet-d:#5436E0; --violet-soft:#ECE6FF;
+  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
+  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
+  --rose:#E0533D; --rose-soft:#FCE7E2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:46px 64px;overflow:hidden}
+.slide.active{display:flex;animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);text-transform:uppercase;margin-bottom:11px}
+.kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#c0402c} .kicker.gray{color:var(--gray)}
+h1{font-size:50px;font-weight:800;line-height:1.16;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:33px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+p,li{font-size:16.5px;line-height:1.6;color:#2C313C}
+.lead{font-size:20px;line-height:1.62;color:var(--gray2);font-weight:500}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
+.hl.vio{background:linear-gradient(transparent 58%, var(--violet-soft) 58%)}
+.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+b,strong{font-weight:800;color:var(--ink)}
+.mono{font-variant-numeric:tabular-nums}
+
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--ink)}
+.logo .ic{width:25px;height:25px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+
+.grid{display:grid;gap:15px}
+.card{background:var(--soft);border-radius:var(--radius);padding:19px 21px;border:1px solid transparent}
+.card.blue{background:var(--blue-soft)} .card.vio{background:var(--violet-soft)} .card.teal{background:var(--teal-soft)} .card.amber{background:var(--amber-soft)} .card.rose{background:var(--rose-soft)}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.card.dark{background:var(--ink)} .card.dark h3{color:#fff} .card.dark p,.card.dark li{color:#D5D9E2}
+.card h3{margin-bottom:5px}
+.card .num{font-size:13.5px;font-weight:800;color:var(--gray);margin-bottom:5px}
+.card p{font-size:15px;line-height:1.55}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--gray2)}
+.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
+.pill.k{background:var(--ink);color:#fff}
+.pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)} .pill.teal{background:var(--teal-soft);color:var(--teal-d)}
+
+.goal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:800;margin-bottom:13px}
+.goal b{color:#8FB6FF}
+
+.metric .big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
+.metric .big.blue{color:var(--blue-d)} .metric .big.vio{color:var(--violet-d)} .metric .big.teal{color:var(--teal-d)} .metric .big.rose{color:var(--rose)} .metric .big.amber{color:var(--amber-d)}
+.metric .lab{font-size:13.5px;color:var(--gray2);margin-top:7px;font-weight:600;line-height:1.4}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12.5px;color:var(--gray);font-weight:700;letter-spacing:.02em}
+td b{font-weight:800}
+tr.hi td{background:var(--blue-soft)}
+.chk{color:var(--teal-d);font-weight:800} .x{color:var(--rose);font-weight:800}
+
+.shot{border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block}
+.cap{font-size:12px;color:var(--gray);margin-top:7px;text-align:center;line-height:1.4}
+.shotwrap{position:relative}
+.shotwrap .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px}
+
+.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:17px 23px}
+.callout h3{color:#fff} .callout p{color:#D5D9E2}
+.quote{background:linear-gradient(120deg,#1A1F2E,#241C4A);color:#fff;border-radius:var(--radius);padding:24px 28px}
+.quote .q{font-size:25px;font-weight:800;line-height:1.36;color:#fff}
+.quote .q .g{background:linear-gradient(90deg,#8FB6FF,#B9A6FF,#7FE6DA);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.flag{font-size:12.5px;color:var(--gray);font-style:italic}
+.src{font-size:11.5px;color:var(--gray);line-height:1.5}
+.src b{color:var(--gray2);font-weight:700}
+.foot{position:absolute;left:64px;right:64px;bottom:18px;display:flex;justify-content:space-between;font-size:11.5px;color:var(--gray);border-top:1px solid var(--line);padding-top:9px;gap:20px}
+.foot .src{flex:1}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:23px;margin-bottom:8px;font-size:15.5px}
+ul.clean li:before{content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
+ul.clean.vio li:before{background:var(--violet)} ul.clean.teal li:before{background:var(--teal)} ul.clean.rose li:before{background:var(--rose)}
+
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{flex:1;background:var(--soft);border-radius:13px;padding:12px;text-align:center}
+.flow .arr{display:flex;align-items:center;padding:0 7px;font-size:19px;color:var(--gray);font-weight:800}
+
+.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow)}
+.adcard .ad{font-size:9px;font-weight:800;color:var(--teal-d);border:1px solid var(--teal);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:5px}
+.adcard .u{font-size:10px;color:var(--gray)}
+.adcard .ti{font-size:13px;font-weight:800;color:#1a0dab;line-height:1.3;margin:2px 0}
+.adcard .ds{font-size:10.5px;color:#4a4f5e;line-height:1.4}
+.stepbox{background:var(--soft);border-radius:12px;padding:12px 13px;flex:1}
+.stepbox .n{font-size:11px;font-weight:800;color:var(--blue-d)}
+.stepbox h4{font-size:13.5px;font-weight:800;color:var(--ink);margin:3px 0 4px}
+.stepbox p{font-size:12px;color:#4a4f5e;line-height:1.45}
+
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar,.hint{display:none}}
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+.hint{position:fixed;bottom:20px;right:22px;color:#8b8d94;font-size:12px;z-index:50}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide active" style="justify-content:center;background:
+  radial-gradient(900px 520px at 84% -10%, var(--blue-soft) 0%, transparent 55%),
+  radial-gradient(720px 520px at -5% 110%, var(--violet-soft) 0%, transparent 55%), #fff">
+  <div class="logo" style="margin-bottom:30px"><span class="ic">◆</span>{{회사}}</div>
+  <div class="kicker">{{직무}} 전략 제안</div>
+  <h1>{{thesis 한 문장}}<br><span class="hl">강조</span>는 한 곳만</h1>
+  <p class="lead" style="margin-top:22px;max-width:930px">{{부제: 무엇을 어떻게 제안하는지}}</p>
+  <div style="margin-top:34px;display:flex;gap:10px">
+    <span class="pill k">{{회사}}</span>
+    <span class="pill blue">{{직무}} 지원</span>
+    <span class="pill vio">이도형</span>
+  </div>
+</section>
+
+<!-- 2 예시: 헤더 + 카드 그리드 + 출처바 (복제해서 슬라이드 추가) -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">SECTION</div><h2>{{슬라이드 제목}}</h2></div>
+    <div class="logo"><span class="ic">◆</span>{{회사}}</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:start">
+    <div class="card blue"><div class="num">01</div><h3>{{포인트}}</h3><p>{{설명}}</p></div>
+    <div class="card vio"><div class="num">02</div><h3>{{포인트}}</h3><p>{{설명}}</p></div>
+    <div class="card teal"><div class="num">03</div><h3>{{포인트}}</h3><p>{{설명}}</p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> {{출처+신뢰도 태그}}</span>
+    <span>{{회사}} · 이도형</span>
+  </div>
+</section>
+
+</div></div>
+
+<div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
+<div class="hint">← → 또는 Space · F 전체화면</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';}
+addEventListener('resize',fit);fit();show(0);
+</script>
+</body>
+</html>

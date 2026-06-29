@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>mk1 구매 TOP10</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Apple SD Gothic Neo','Segoe UI',sans-serif;background:#fff;padding:22px 24px}
+h2{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:16px}
+h2 span{font-size:12px;color:#888;font-weight:400;margin-left:8px}
+</style>
+</head>
+<body>
+<h2>구매 효율 TOP 10 <span>광고 세트 기준 · 1위=100 기준 상대 지수</span></h2>
+<canvas id="c" height="320"></canvas>
+<script>
+const raw=[
+  ["aos(Web2App) 지구의날(환경)",1086],
+  ["aos(Web2App) 결산(대형폐기물)",1291],
+  ["aos_re 자취생(음식물)",469],
+  ["ios(Web2App) 지구의날(환경)",548],
+  ["ios(Web2App) 지구의날(육아)",245],
+  ["ios(Web2App) 지구의날(복합)",241],
+  ["aos(Web2App) 지구의날(육아)",440],
+  ["ios_lookalike 인플루언서PA(1)",294],
+  ["aos(Web2App) 지구의날(복합)",331],
+  ["aos_all 오픈(음식물)",117],
+];
+const sorted=[...raw].sort((a,b)=>b[1]-a[1]);
+const maxVal=sorted[0][1];
+const indexed=sorted.map(r=>Math.round(r[1]/maxVal*100));
+const palette=['#0f3460','#16213e','#1a4a8a','#e94560','#c73652','#0f9b8e','#0d8477','#f5a623','#d4891e','#7c3aed'];
+new Chart(document.getElementById('c'),{
+  type:'bar',
+  data:{
+    labels:sorted.map(r=>r[0]),
+    datasets:[{
+      label:'구매 지수',
+      data:indexed,
+      backgroundColor:palette,
+      borderRadius:6,
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`지수 ${ctx.raw}`}}},
+    scales:{
+      x:{grid:{color:'#f0f0f0'},ticks:{font:{size:11},callback:v=>v},max:100},
+      y:{ticks:{font:{size:11}}}
+    },
+    maintainAspectRatio:false,
+  }
+});
+</script>
+</body>
+</html>
