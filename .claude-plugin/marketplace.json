@@ -14,6 +14,24 @@
       },
       "category": "productivity",
       "source": "./plugins/visual-tools"
+    },
+    {
+      "name": "tiktok-airbridge-report",
+      "description": "TikTok 광고 매체 + Airbridge MMP 데이터를 광고세트 단위 그룹 view + 수식 기반 주간 효율 리포트 xlsx로 자동 생성. /tiktok-report YYYY-MM-DD YYYY-MM-DD 한 줄로 데이터 수집부터 빌드까지.",
+      "author": {
+        "name": "hound600al"
+      },
+      "category": "marketing-analytics",
+      "source": "./plugins/tiktok-airbridge-report"
+    },
+    {
+      "name": "interview-deck",
+      "description": "면접 발표덱을 병렬 리서치→서사 설계→회사 브랜드 톤 단일 HTML 덱(1280×720 키보드 네비) 빌드→GitHub Pages 배포까지 한 번에(/interview-deck). deck-researcher·deck-deployer 서브에이전트 포함.",
+      "author": {
+        "name": "hound600al"
+      },
+      "category": "productivity",
+      "source": "./plugins/interview-deck"
     }
   ]
 }

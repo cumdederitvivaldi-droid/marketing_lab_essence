@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인플루언서 단순 협업 (25.04~07) — 오가닉 동반 점프</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; gap: 16px; margin-bottom: 16px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 12px; }
+  canvas { max-height: 260px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .kpi .value { font-size: 18px; font-weight: 700; color: #2563eb; }
+  .kpi .sub { font-size: 11px; color: #666; margin-top: 3px; }
+  .kpi .value.green { color: #16a34a; }
+  .kpi .value.purple { color: #7c3aed; }
+  .kpi .value.orange { color: #ea580c; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee; }
+  th { font-weight: 600; color: #555; background: #fafafa; font-size: 11px; }
+  td.num { text-align: right; font-feature-settings: 'tnum'; }
+  td.highlight { color: #16a34a; font-weight: 700; }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: #666; flex-wrap: wrap; margin-bottom: 8px; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  .footer { font-size: 11px; color: #888; margin-top: 8px; text-align: right; }
+  .ops-box { background: #f0fdf4; border-left: 4px solid #16a34a; padding: 14px; border-radius: 8px; font-size: 12.5px; line-height: 1.6; }
+  .ops-box strong { color: #14532d; }
+</style>
+</head>
+<body>
+<h2>💌 인플루언서 단순 협업 — 광고 도달 밖의 고객을 깨운 4중 신호 (2025.04~07)</h2>
+<p class="subtitle">8명 인플루언서 협업 · 도형+하늘 2인 운영 · 대행사 협업으로 가능했던 구간 · BigQuery 실측</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">일평균 회원가입</div><div class="value green">+61%</div><div class="sub">532 → 859명/일</div></div>
+  <div class="kpi"><div class="label">일평균 오가닉 가입</div><div class="value green">+59%</div><div class="sub">208 → 331명/일 (광고 도달 밖)</div></div>
+  <div class="kpi"><div class="label">일평균 구매</div><div class="value purple">+40%</div><div class="sub">1,845 → 2,582건/일</div></div>
+  <div class="kpi"><div class="label">일평균 매출</div><div class="value orange">+41%</div><div class="sub">일평균 매출 성장(예측)</div></div>
+</div>
+
+<div class="card" style="margin-bottom:16px;">
+  <h3>📈 4개 핵심 지표 동시 점프 — Baseline · Collab · Post 비교 (일평균)</h3>
+  <div class="legend">
+    <span><span class="dot" style="background:#94a3b8"></span>Baseline (05.15~06.09)</span>
+    <span><span class="dot" style="background:#16a34a"></span>Collab 본격화 (06.26~07.31)</span>
+    <span><span class="dot" style="background:#7c3aed"></span>Post (08.01~08.15)</span>
+  </div>
+  <canvas id="kpiChart"></canvas>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <h3>🌱 오가닉 가입 점프 — 광고 도달 밖에서도 인지가 만들어졌다</h3>
+    <div class="legend">
+      <span><span class="dot" style="background:#16a34a"></span>오가닉 (signup_referral_channel ≠ ADS)</span>
+      <span><span class="dot" style="background:#2563eb"></span>광고 추적(ADS)</span>
+    </div>
+    <canvas id="organicChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>🎯 인플루언서별 발행 직후 5일 평균 가입</h3>
+    <canvas id="influencerChart"></canvas>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:16px;">
+  <h3>👥 운영 컨텍스트 — 2인 팀이 8명 협업을 굴린 방식</h3>
+  <div class="ops-box">
+    <strong>마케팅팀 인력</strong>: 이도형(그로스 리드) + 김하늘(바이럴/콘텐츠) <strong>2명</strong><br>
+    <strong>협업 대행사</strong>: 슈퍼차트(인플 매칭·리스트업), 야호엔터(콘텐츠 피드백), 크리플래닛(컨택) — 인플루언서 컨택·리스트업·콘텐츠 피드백·캠페인 가이드 작성을 외부에서 병렬 진행<br>
+    <strong>도형 역할</strong>: 캠페인 설계, 쿠폰 정책 설정, BigQuery 효율 측정, PA 단계로의 학습 이관<br>
+    <strong>가능했던 이유</strong>: 대행사 협업 구조로 인력 1/4 수준에 가까운 운영비로 8개 협업을 동시에 굴림. 내부는 의사결정·측정·전략에 집중, 실행은 분담.
+  </div>
+</div>
+
+<div class="card">
+  <h3>📋 8명 협업 라인업 & 쿠폰 사용 실적</h3>
+  <table>
+    <thead>
+      <tr><th>인플루언서</th><th>발행일</th><th class="num">5일 평균 가입</th><th class="num">vs baseline</th><th class="num">쿠폰 사용 구매</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>민델리</td><td>2025-06-10</td><td class="num">651</td><td class="num">+23%</td><td class="num">55건</td></tr>
+      <tr><td>원룸만들기</td><td>2025-06-20</td><td class="num">612</td><td class="num">+15%</td><td class="num">—</td></tr>
+      <tr><td><strong>미미짱</strong></td><td>2025-06-26</td><td class="num highlight">980</td><td class="num highlight">+85%</td><td class="num">362건</td></tr>
+      <tr><td><strong>유하맘</strong></td><td>2025-07-02</td><td class="num highlight">1,011</td><td class="num highlight">+91%</td><td class="num">90건</td></tr>
+      <tr><td>땡스맘</td><td>2025-07-13</td><td class="num">830</td><td class="num">+57%</td><td class="num">11건</td></tr>
+      <tr><td>청산유수현</td><td>2025-07-26</td><td class="num">758</td><td class="num">+43%</td><td class="num">6건</td></tr>
+      <tr><td>살림토끼</td><td>2025-07-30</td><td class="num">783</td><td class="num">+48%</td><td class="num">69건</td></tr>
+      <tr><td>리뷰한다송미니</td><td>2025-07-31</td><td class="num">778</td><td class="num">+47%</td><td class="num">45건</td></tr>
+      <tr><td><strong>합계 (8명)</strong></td><td>—</td><td class="num">—</td><td class="num">—</td><td class="num"><strong>638건</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="footer">출처: BigQuery secure_dataset (user · order_v2 · invoice · receipt 조인) — B2C only, status='PAID'</div>
+</div>
+
+<script>
+// 4개 지표 동시 점프 (정규화: baseline=100)
+new Chart(document.getElementById('kpiChart'), {
+  type: 'bar',
+  data: {
+    labels: ['일평균 회원가입', '일평균 오가닉 가입', '일평균 구매(B2C)', '일평균 매출(B2C)'],
+    datasets: [
+      { label: 'Baseline', data: [100,100,100,100], backgroundColor: 'rgba(148,163,184,0.85)' },
+      { label: 'Collab 본격화', data: [161,159,140,141], backgroundColor: 'rgba(22,163,74,0.85)' },
+      { label: 'Post', data: [139,154,147,150], backgroundColor: 'rgba(124,58,237,0.85)' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + ' (baseline=100)' } } },
+    scales: { y: { beginAtZero: true, max: 180, ticks: { callback: v => v }, title: { display: true, text: 'Baseline 대비 지수 (100 기준)' } } }
+  }
+});
+
+// 오가닉 vs ADS 일평균 가입
+new Chart(document.getElementById('organicChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Baseline', 'Collab 본격화', 'Post'],
+    datasets: [
+      { label: '오가닉 (≠ADS)', data: [208, 331, 321], backgroundColor: 'rgba(22,163,74,0.85)' },
+      { label: '광고 (ADS)', data: [324, 528, 417], backgroundColor: 'rgba(37,99,235,0.85)' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '명/일' } } },
+    scales: {
+      x: { stacked: true },
+      y: { stacked: true, beginAtZero: true, ticks: { callback: v => v + '명' }, title: { display: true, text: '일평균 가입 (명/일)' } }
+    }
+  }
+});
+
+// 인플루언서별 발행 직후 5일 평균 가입
+new Chart(document.getElementById('influencerChart'), {
+  type: 'bar',
+  data: {
+    labels: ['민델리','원룸만들기','미미짱','유하맘','땡스맘','청산유수현','살림토끼','송미니'],
+    datasets: [
+      { label: '발행 직후 5일 평균 가입', data: [651,612,980,1011,830,758,783,778], backgroundColor: ['#94a3b8','#94a3b8','#16a34a','#16a34a','#7c3aed','#7c3aed','#7c3aed','#7c3aed'] },
+      { type: 'line', label: 'Baseline (532)', data: [532,532,532,532,532,532,532,532], borderColor: '#dc2626', borderWidth: 2, borderDash: [6,4], pointRadius: 0, fill: false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '명/일' } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => v + '명' }, title: { display: true, text: '5일 평균 가입 (명/일)' } } }
+  }
+});
+</script>
+</body>
+</html>

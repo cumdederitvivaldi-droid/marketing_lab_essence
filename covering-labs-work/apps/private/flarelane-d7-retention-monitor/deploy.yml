@@ -1,0 +1,5 @@
+name: flarelane-d7-retention-monitor
+description: "ENG-1559 D7 슬랙 모니터 — 매일 09:00/18:00 KST 배정·쿠폰·재주문 그래프 보고"
+type: batch
+schedule: "0 9,18 * * *"
+command: "python3 src/main.py"

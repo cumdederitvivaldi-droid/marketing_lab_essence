@@ -40,7 +40,7 @@
     <canvas id="cacExpansionChart"></canvas>
   </div>
   <div class="card">
-    <h3>📊 확장 전후 매출·광고비 비교</h3>
+    <h3>📊 확장 전후 매출·광고비 성장지수 (서울 단독=100, 예측)</h3>
     <canvas id="compareChart"></canvas>
   </div>
 </div>
@@ -97,17 +97,17 @@ new Chart(document.getElementById('cacExpansionChart'), {
 new Chart(document.getElementById('compareChart'), {
   type: 'bar',
   data: {
-    labels: ['B2C 매출\n최대 (만원)', '광고비\n최대 (만원)'],
+    labels: ['B2C 매출\n성장지수', '광고비\n성장지수'],
     datasets: [
-      { label: '서울 단독 (24.09~12)', data: [17400, 2200], backgroundColor: gray + 'bb', borderRadius: 6, borderSkipped: false },
-      { label: '수도권 확장 (25.01~10)', data: [90000, 19900], backgroundColor: blue + 'cc', borderRadius: 6, borderSkipped: false },
+      { label: '서울 단독 (24.09~12)', data: [100, 100], backgroundColor: gray + 'bb', borderRadius: 6, borderSkipped: false },
+      { label: '수도권 확장 (25.01~10)', data: [517, 905], backgroundColor: blue + 'cc', borderRadius: 6, borderSkipped: false },
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: true,
-    plugins: { legend: { position: 'top', labels: { font: { size: 10 } } }, tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()}만원` } } },
+    plugins: { legend: { position: 'top', labels: { font: { size: 10 } } }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label} 성장지수(예측): ${ctx.raw.toLocaleString()}` } } },
     scales: {
-      y: { beginAtZero: true, ticks: { callback: v => (v/10000).toFixed(1) + '억' }, grid: { color: '#f0f0f0' } },
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
       x: { grid: { display: false } }
     }
   }

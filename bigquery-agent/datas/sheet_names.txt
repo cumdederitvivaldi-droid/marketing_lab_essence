@@ -1,0 +1,29 @@
+ 0  OKR 트랙킹
+ 1  전체 월별
+ 2  전체 주별
+ 3  전체 일별
+ 4  커버링B2C요약
+ 5  메타(AOS) (구매)
+ 6  메타(AOS) (web2app)
+ 7  메타(AOS) (회원가입)
+ 8  메타(AOS) (리타겟)
+ 9  메타(IOS) (구매)
+10  메타(IOS) (web2app)
+11  메타(IOS) (회원가입)
+12  메타(IOS) (리타겟)
+13  ASA
+14  트위터
+15  구글애즈
+16  토스애즈 (ios)
+17  틱톡
+18  메타 RAW
+19  메타 RAW (MMP)
+20  ASA RAW
+21  ASA RAW (MMP)
+22  ASA 환율
+23  트위터 RAW
+24  구글애즈 RAW
+25  구글애즈 RAW (MMP)
+26  토스애즈 RAW
+27  틱톡 RAW
+28  틱톡 RAW (MMP)

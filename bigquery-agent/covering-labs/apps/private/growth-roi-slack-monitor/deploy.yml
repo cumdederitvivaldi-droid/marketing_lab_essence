@@ -1,0 +1,5 @@
+name: growth-roi-slack-monitor
+description: "Growth Marketing ROI Slack monitor - Mon/Thu recommendation, approval evidence, and execution follow-up"
+type: batch
+schedule: "0 9 * * 1,4"
+command: "python3 src/main.py"

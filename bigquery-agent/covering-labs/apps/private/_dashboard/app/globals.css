@@ -1,0 +1,4 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0f172a; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
+a { color: inherit; }
+code { font-family: 'Courier New', monospace; }

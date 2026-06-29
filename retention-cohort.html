@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회차별 잔존 유저 깔때기 — 등급 설계</title>
+<title>회차별 잔존율 깔때기 — 등급 설계</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
@@ -51,9 +51,8 @@
   .lg-bar{width:12px; height:9px; border-radius:2px; display:inline-block;}
   .lg-sep{width:1px; height:12px; background:var(--ink-200);}
 
-  .chart-wrap{position:relative; height:540px;}
+  .chart-wrap{position:relative; height:440px;}
 
-  /* ── Tier callout overlays ───────────────────────────────── */
   .tier-overlay{position:absolute; inset:0; pointer-events:none;}
   .tier-callout{
     position:absolute;
@@ -108,7 +107,6 @@
   .tier-callout.blue { color:#2D5BFF; }
   .tier-callout.mint { color:#10C390; }
 
-  /* ── Tier summary chips below chart ──────────────────────── */
   .tier-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:24px;}
   .tier-chip{
     background:#fff; border:1px solid var(--ink-100); border-left:4px solid currentColor;
@@ -135,7 +133,7 @@
     body{padding:24px 16px;}
     h1.title{font-size:24px;}
     .card{padding:18px;}
-    .chart-wrap{height:460px;}
+    .chart-wrap{height:360px;}
     .tier-row{grid-template-columns:1fr;}
     .tier-callout .tier-desc{font-size:11px;}
     .tier-callout{padding:4px 9px 4px 4px;}
@@ -146,23 +144,21 @@
 <div class="wrap">
 
   <div class="eyebrow">RETENTION COHORT · TIER DESIGN</div>
-  <h1 class="title">회차별 잔존 유저 깔때기와 <span class="blue">등급 설계</span></h1>
+  <h1 class="title">회차별 잔존율 깔때기와 <span class="blue">등급 설계</span></h1>
   <p class="sub">
     1~21회차 구매 코호트의 잔존 흐름. 이탈이 가속되는 <b>7·13회차</b>에는 쿠폰 기반 등급 트리거를,
     안정 구간인 <b>21회차+</b>에는 충성 고객 등급을 부여해 서비스 고착을 설계했습니다.
   </p>
 
   <div class="card">
-    <div class="card-title">회차별 잔존 유저 깔때기</div>
-    <div class="card-sub">막대 = 잔존 유저 수 · 라인 = 잔존율(%) · 색상 막대 = 등급 부여 회차</div>
+    <div class="card-title">회차별 잔존율 깔때기</div>
+    <div class="card-sub">막대 = 잔존율(%) · 색상 막대 = 등급 부여 회차</div>
     <div class="legend">
       <span class="lg-item"><span class="lg-bar" style="background:#8FAEFF;"></span> 일반 회차</span>
       <span class="lg-sep"></span>
       <span class="lg-item"><span class="lg-bar" style="background:#F5B400;"></span> TIER 1 · 이탈 방어 쿠폰</span>
       <span class="lg-item"><span class="lg-bar" style="background:#2D5BFF;"></span> TIER 2 · 서비스 고착 쿠폰</span>
       <span class="lg-item"><span class="lg-bar" style="background:#10C390;"></span> TIER 3 · 충성 고객 (VIP)</span>
-      <span class="lg-sep"></span>
-      <span class="lg-item"><span class="lg-dot" style="background:#1F2837;"></span> 잔존율 (%)</span>
     </div>
     <div class="chart-wrap">
       <canvas id="c-funnel"></canvas>
@@ -189,7 +185,7 @@
       <span class="tier-badge">TIER 3</span>
       <div class="tier-body">
         <div class="tier-head">충성 고객 (VIP) · 21회차+</div>
-        <div class="tier-note">잔존 6명 · 이탈율 0.0% · 누적 83.4일 이상 활성 유지</div>
+        <div class="tier-note">이탈율 0.0% · 잔존율 0.9% · 누적 83.4일 이상 활성 유지</div>
       </div>
     </div>
   </div>
@@ -202,20 +198,20 @@
 
 <script>
   const rows = [
-    {n:'1회차',  u:638, r:100.0},
-    {n:'2회차',  u:448, r:70.2},
-    {n:'3회차',  u:341, r:53.4},
-    {n:'4회차',  u:280, r:43.9},
-    {n:'5회차',  u:218, r:34.2},
-    {n:'6회차',  u:173, r:27.1},
-    {n:'7회차',  u:133, r:20.8},
-    {n:'8회차',  u:102, r:16.0},
-    {n:'9회차',  u:74,  r:11.6},
-    {n:'10회차', u:51,  r:8.0},
-    {n:'11회차', u:37,  r:5.8},
-    {n:'12회차', u:28,  r:4.4},
-    {n:'13회차', u:27,  r:4.2},
-    {n:'21회차', u:6,   r:0.9},
+    {n:'1회차',  r:100.0},
+    {n:'2회차',  r:70.2},
+    {n:'3회차',  r:53.4},
+    {n:'4회차',  r:43.9},
+    {n:'5회차',  r:34.2},
+    {n:'6회차',  r:27.1},
+    {n:'7회차',  r:20.8},
+    {n:'8회차',  r:16.0},
+    {n:'9회차',  r:11.6},
+    {n:'10회차', r:8.0},
+    {n:'11회차', r:5.8},
+    {n:'12회차', r:4.4},
+    {n:'13회차', r:4.2},
+    {n:'21회차', r:0.9},
   ];
 
   const tiers = [
@@ -237,25 +233,12 @@
       datasets:[
         {
           type:'bar',
-          label:'잔존 유저',
-          data: rows.map(r => r.u),
+          label:'잔존율 (%)',
+          data: rows.map(r => r.r),
           backgroundColor: rows.map((_,i) => tierByIdx[i]?.bar || '#8FAEFF'),
           borderRadius:5,
           maxBarThickness:34,
           yAxisID:'y',
-          order:2,
-        },
-        {
-          type:'line',
-          label:'잔존율 (%)',
-          data: rows.map(r => r.r),
-          borderColor:'#1F2837',
-          backgroundColor:'#1F2837',
-          borderWidth:2,
-          tension:.25,
-          pointRadius:3,
-          pointHoverRadius:5,
-          yAxisID:'y1',
           order:1,
         }
       ]
@@ -269,23 +252,17 @@
           backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
           padding:10, cornerRadius:8, displayColors:false,
           callbacks:{
-            label:(ctx)=> ctx.datasetIndex===0
-              ? ` 잔존 유저: ${ctx.parsed.y.toLocaleString()}명`
-              : ` 잔존율: ${ctx.parsed.y.toFixed(1)}%`
+            label:(ctx)=> ` 잔존율: ${ctx.parsed.y.toFixed(1)}%`
           }
         }
       },
       scales:{
         x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } },
         y:{
-          beginAtZero:true,
+          beginAtZero:true, max:100,
           grid:{ color:'#EEF1F6', drawBorder:false },
-          ticks:{ font:{ size:10 }, callback:(v)=> v.toLocaleString()+'명' }
-        },
-        y1:{
-          position:'right', beginAtZero:true, max:100,
-          grid:{ display:false },
-          ticks:{ font:{ size:10 }, callback:(v)=> v+'%' }
+          ticks:{ font:{ size:10 }, callback:(v)=> v+'%' },
+          title:{ display:true, text:'잔존율 (%)' }
         }
       },
       animation:{

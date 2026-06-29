@@ -1,0 +1,23 @@
+쿼리 설명: 구글애즈 uac_ios_purchase_aim_(복합소구)_26.04.10 캠페인 유입 유저의 주간 구매 추이 (DB 기준)
+테이블: ads_data.user_acquisition_channel JOIN secure_dataset.order_v2
+추출 일시: 2026-05-12 22:15:57
+비고: 에어브릿지 구매 이벤트 데이터는 BigQuery 미적재 — DB 기준만 제공
+컬럼 설명: purchase_users=구매 유저 수(중복제거), purchase_count=총 주문 수, completed_count=완료 주문, canceled_count=취소 주문
+
+=== 실행 쿼리 ===
+
+SELECT
+  DATE_TRUNC(DATE(o.created_at), WEEK(MONDAY)) AS week_start,
+  DATE_ADD(DATE_TRUNC(DATE(o.created_at), WEEK(MONDAY)), INTERVAL 6 DAY) AS week_end,
+  COUNT(DISTINCT o.user_id) AS purchase_users,
+  COUNT(o.id) AS purchase_count,
+  COUNTIF(o.status = 'COMPLETED') AS completed_count,
+  COUNTIF(o.status = 'CANCELED') AS canceled_count
+FROM `covering-app-ccd23.ads_data.user_acquisition_channel` uac
+JOIN `covering-app-ccd23.secure_dataset.order_v2` o
+  ON uac.user_id = o.user_id
+WHERE uac.ad_campaign = 'uac_ios_purchase_aim_(복합소구)_26.04.10'
+  AND o.deleted_at IS NULL
+  AND DATE(o.created_at) >= '2026-04-07'
+GROUP BY week_start, week_end
+ORDER BY week_start

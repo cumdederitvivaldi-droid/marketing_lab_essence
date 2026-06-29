@@ -1,0 +1,5 @@
+name: large-waste-monitoring-report
+description: "대형폐기물 일일 모니터링 Slack 배치 - 매일 09:00 KST 제품팀_data 발송"
+type: batch
+schedule: "0 9 * * *"
+command: "python3 src/main.py"

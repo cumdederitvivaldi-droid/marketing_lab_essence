@@ -1,0 +1,7 @@
+{
+  "name": "interview-deck",
+  "description": "면접 발표덱을 병렬 리서치→서사 설계→회사 브랜드 톤 단일 HTML 덱(1280×720 키보드 네비) 빌드→GitHub Pages 배포까지 한 번에. 그로스·마케팅 면접 과제 발표 자료 제작용. /interview-deck 스킬 + deck-researcher·deck-deployer 서브에이전트 포함.",
+  "author": {
+    "name": "hound600al"
+  }
+}

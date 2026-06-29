@@ -1,0 +1,5 @@
+name: aarrr-data-slack-report
+description: "AARRR 데이터 리포트 Slack 스레드 배치 - 월·수·금 09:10 KST 실행"
+type: batch
+schedule: "10 9 * * 1,3,5"
+command: "python3 src/main.py"

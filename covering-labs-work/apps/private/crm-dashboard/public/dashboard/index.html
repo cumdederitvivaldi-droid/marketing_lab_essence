@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>커버링 앱 메시지 플로우 맵</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #161b27;
+  --card: #1e2535;
+  --border: #242d3f;
+  --text: #dce4f0;
+  --muted: #56657a;
+  --accent: #4f8ef7;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Apple SD Gothic Neo','Pretendard',sans-serif;font-size:13px;display:flex;flex-direction:column}
+
+/* ── Topbar ── */
+.topbar{height:46px;flex-shrink:0;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--surface)}
+.topbar-left h1{font-size:14px;font-weight:700;letter-spacing:-.2px;cursor:pointer}
+.topbar-left h1:hover{opacity:.75}
+.topbar-left p{font-size:11px;color:var(--muted);margin-top:1px}
+.stats{display:flex;gap:5px}
+.stat{padding:3px 9px;border-radius:4px;font-size:11px;font-weight:600}
+.stat-total{background:rgba(79,142,247,.12);color:#7aabff}
+.stat-알림톡{background:rgba(251,191,36,.1);color:#fbbf24}
+.stat-푸시{background:rgba(167,139,250,.1);color:#a78bfa}
+.stat-문자{background:rgba(100,116,139,.12);color:#8097b4}
+
+/* ── Notice ── */
+.notice{flex-shrink:0;background:rgba(79,142,247,.06);border-bottom:1px solid rgba(79,142,247,.13);padding:5px 20px;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.notice a{color:#7aabff;text-decoration:none}
+.notice a:hover{text-decoration:underline}
+
+/* ── Layout ── */
+.layout{flex:1;display:flex;overflow:hidden}
+
+/* ── Sidebar ── */
+.sidebar{width:218px;flex-shrink:0;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;background:var(--surface)}
+.sidebar-top{padding:8px 10px 10px;flex-shrink:0;border-top:1px solid var(--border)}
+.sidebar-top input{width:100%;padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;outline:none}
+.sidebar-top input:focus{border-color:var(--accent)}
+.ch-filters{display:flex;gap:3px;margin-top:6px}
+.ch-btn{padding:3px 7px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:10px;cursor:pointer;transition:all .12s}
+.ch-btn.active{border-color:rgba(79,142,247,.45);color:#7aabff;background:rgba(79,142,247,.1)}
+
+/* ── Sidebar nav ── */
+.sidebar-nav{flex:1;overflow-y:auto}
+
+/* nav item (top-level: 플로우/수거/리텐션) */
+.nav-item{border-bottom:1px solid var(--border)}
+.nav-item-header{display:flex;align-items:center;gap:8px;padding:11px 14px;cursor:pointer;color:var(--muted);font-size:12px;font-weight:600;user-select:none;transition:all .12s;position:relative}
+.nav-item-header:hover{background:rgba(255,255,255,.025);color:var(--text)}
+.nav-item-header.active{color:var(--text);background:rgba(79,142,247,.08)}
+.nav-item-header.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:0 2px 2px 0}
+.nav-item-cnt{margin-left:auto;font-size:10px;background:rgba(255,255,255,.05);padding:1px 6px;border-radius:6px}
+.nav-item-header.active .nav-item-cnt{background:rgba(79,142,247,.18);color:#7aabff}
+
+/* stage list inside 플로우 nav item */
+.stage-list{overflow:hidden;max-height:0;transition:max-height .25s ease}
+.stage-list.open{max-height:600px}
+.stage-group-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:7px 14px 3px;opacity:.7}
+.stage-item{display:flex;align-items:center;gap:7px;padding:5px 14px 5px 22px;cursor:pointer;color:var(--muted);font-size:12px;transition:all .12s}
+.stage-item:hover{background:rgba(255,255,255,.03);color:var(--text)}
+.stage-item.highlight-nav{color:#c8d8f8}
+.stage-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.stage-cnt{font-size:10px;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:5px;margin-left:auto}
+
+/* ── Main ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.main-header{flex-shrink:0;padding:9px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.main-title{font-size:13px;font-weight:600}
+.view-section{flex:1;overflow:hidden}
+
+/* ── Kanban ── */
+.kanban{display:flex;gap:10px;padding:14px 18px;height:100%;overflow-x:auto;align-items:flex-start}
+.k-col{flex-shrink:0;width:190px;display:flex;flex-direction:column}
+.k-col.highlight .k-head{box-shadow:0 0 0 2px #4f8ef7}
+.k-head{padding:7px 12px;border-radius:7px 7px 0 0;font-size:11px;font-weight:700;text-align:center;flex-shrink:0;color:#fff;cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:center;gap:5px}
+.k-head::after{content:'▾';font-size:9px;opacity:.7;transition:transform .2s}
+.k-col.collapsed .k-head{border-radius:7px}
+.k-col.collapsed .k-head::after{transform:rotate(-90deg)}
+.k-body{overflow:hidden;max-height:2000px;transition:max-height .25s ease,padding .25s;background:rgba(255,255,255,.015);border:1px solid var(--border);border-top:none;border-radius:0 0 7px 7px;padding:6px;display:flex;flex-direction:column;gap:4px}
+.k-col.collapsed .k-body{max-height:0;padding:0;border:none}
+.k-sub-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:4px 4px 2px}
+.mini-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:8px 9px;cursor:pointer;transition:border-color .12s}
+.mini-card:hover{border-color:var(--accent)}
+.mini-card.filtered{display:none}
+.mc-top{display:flex;gap:3px;margin-bottom:4px;flex-wrap:wrap}
+.mc-ch{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px}
+.mc-ch-알림톡{background:rgba(251,191,36,.12);color:#fbbf24}
+.mc-ch-푸시{background:rgba(167,139,250,.12);color:#a78bfa}
+.mc-ch-문자{background:rgba(100,116,139,.15);color:#8097b4}
+.mc-v{font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(79,142,247,.1);color:#7aabff}
+.mc-name{font-size:11px;font-weight:600;line-height:1.4}
+/* ── Notice buttons ── */
+.notice{justify-content:space-between}
+.notice-left{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.notice-btns{display:flex;gap:6px;flex-shrink:0}
+.notice-btn{font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:background .12s,border-color .12s}
+.notice-btn:hover{background:rgba(255,255,255,.06);border-color:var(--accent)}
+.notice-btn-primary{border-color:rgba(79,142,247,.4);color:#7aabff}
+.notice-btn-primary:hover{background:rgba(79,142,247,.1)}
+.mc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:4px}
+.mc-sched{font-size:10px;color:#f59e0b}
+.mc-dev{font-size:9px;padding:1px 4px;border-radius:3px;font-weight:600}
+.mc-dev-O{background:rgba(34,197,94,.1);color:#4ade80}
+.mc-dev-X{background:rgba(239,68,68,.1);color:#f87171}
+.mc-dev-e{background:rgba(100,116,139,.1);color:var(--muted)}
+
+/* ── Process view ── */
+.process-wrap{padding:20px 24px;height:100%;overflow-y:auto}
+.pflow{display:flex;align-items:flex-start;margin-bottom:28px}
+.pblock{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:0}
+.pblock-head{padding:10px 14px;font-size:12px;font-weight:700;text-align:center}
+.pblock-list{padding:8px;display:flex;flex-direction:column;gap:4px}
+.prow{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:5px;cursor:pointer;transition:background .12s}
+.prow:hover{background:rgba(255,255,255,.04)}
+.prow-name{font-size:11px;font-weight:500;flex:1}
+.prow-time{font-size:10px;color:#f59e0b;white-space:nowrap}
+.parrow{display:flex;align-items:flex-start;padding-top:36px;color:var(--muted);font-size:18px;flex-shrink:0;padding-left:5px;padding-right:5px}
+.parrow-down{display:flex;justify-content:center;margin-bottom:12px;color:var(--muted);font-size:16px}
+.p-results-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.p-results{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.p-result-block{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.p-result-head{padding:7px 10px;font-size:10px;font-weight:700;text-align:center}
+.p-result-list{padding:6px;display:flex;flex-direction:column;gap:3px}
+.p-result-item{padding:5px 6px;border-radius:4px;cursor:pointer;font-size:10px;line-height:1.4;transition:background .12s}
+.p-result-item:hover{background:rgba(255,255,255,.04)}
+.p-result-time{font-size:9px;color:#f59e0b}
+
+/* ── Retention view ── */
+.ret-wrap{padding:20px 24px;height:100%;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.ret-section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 22px}
+.ret-sec-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px}
+
+/* D+ timeline lanes */
+.tl-lane{display:flex;align-items:center;gap:12px;padding:6px 0}
+.tl-lane+.tl-lane{border-top:1px solid rgba(255,255,255,.04)}
+.tl-lane-name{width:68px;flex-shrink:0;font-size:10px;font-weight:600;color:var(--muted);text-align:right;line-height:1.3}
+.tl-lane-track{flex:1;position:relative;height:48px}
+.tl-line{position:absolute;top:50%;height:2px;width:100%;border-radius:1px;transform:translateY(-50%)}
+.tl-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;border:2px solid var(--card);cursor:pointer;z-index:2;transition:transform .12s}
+.tl-dot:hover{transform:translate(-50%,-50%) scale(1.3)}
+.tl-dot .tl-day{position:absolute;font-size:9px;color:var(--muted);white-space:nowrap;left:50%;transform:translateX(-50%);pointer-events:none}
+.tl-dot.above .tl-day{bottom:13px}
+.tl-dot.below .tl-day{top:13px}
+.tl-dot .tl-tip{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:#1a2035;border:1px solid var(--border);border-radius:5px;padding:5px 9px;font-size:10px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:20}
+.tl-dot:hover .tl-tip{opacity:1}
+.tl-axis{display:flex;padding-left:80px;margin-top:4px;position:relative;height:14px}
+.tl-axis-label{position:absolute;font-size:9px;color:var(--muted);transform:translateX(-50%)}
+
+/* weekly section layout */
+.week-row{display:flex;gap:0;align-items:stretch}
+.week-regular{flex:1;min-width:0}
+.week-vsep{width:1px;background:var(--border);margin:0 16px;flex-shrink:0}
+.week-irregular{width:200px;flex-shrink:0}
+.week-irr-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.irreg-list{display:flex;flex-direction:column;gap:3px}
+.irreg-item{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;cursor:pointer;font-size:11px;color:var(--muted);transition:background .12s}
+.irreg-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.irreg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+/* 7-day grid timeline */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);position:relative}
+.week-grid::before{content:'';position:absolute;top:calc(16px + 6px);left:calc(100%/14);right:calc(100%/14);height:2px;background:var(--border);border-radius:1px;z-index:0}
+.week-cell{display:flex;flex-direction:column;align-items:center;gap:2px}
+.week-cell-day{font-size:10px;color:var(--muted);height:18px;display:flex;align-items:center;justify-content:center}
+.week-cell-track{height:50px;width:100%;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.wc-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--card);cursor:pointer;position:relative;transition:transform .12s}
+.wc-dot:hover{transform:scale(1.3)}
+.wc-dot .w-lbl{position:absolute;font-size:9px;white-space:nowrap;left:50%;transform:translateX(-50%);pointer-events:none;color:inherit;line-height:1.3}
+.wc-dot.above .w-lbl{bottom:14px}
+.wc-dot.below .w-lbl{top:14px}
+.wc-dot .w-tip{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:#1a2035;border:1px solid var(--border);border-radius:5px;padding:5px 9px;font-size:10px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:20}
+.wc-dot:hover .w-tip{opacity:1}
+/* mini-card trigger */
+.mc-trigger{font-size:10px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* retention trigger */
+.rg-trigger{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.35}
+/* section divider */
+.sec-div{height:1px;background:var(--border);margin:16px 0;opacity:.6}
+
+/* ret card groups */
+.ret-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rg{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.rg-head{padding:9px 14px;font-size:12px;font-weight:700}
+.rg-body{padding:8px;display:flex;flex-direction:column;gap:3px}
+.rg-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:5px;cursor:pointer;transition:background .12s}
+.rg-item:hover{background:rgba(255,255,255,.04)}
+.rg-divider{height:1px;background:var(--border);margin:6px 0}
+.rg-day{font-size:10px;font-weight:600;color:#7aabff;min-width:80px;flex-shrink:0;padding-top:1px}
+.rg-name{font-size:11px;flex:1;line-height:1.45}
+
+/* ── Modal ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:100%;max-width:620px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-htitle{font-size:14px;font-weight:700}
+.modal-x{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer}
+.modal-x:hover{color:var(--text)}
+.vtabs{display:flex;gap:4px;padding:10px 18px 0;flex-wrap:wrap}
+.vtab{padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer}
+.vtab.active{background:rgba(79,142,247,.15);border-color:rgba(79,142,247,.4);color:#7aabff}
+.modal-body{padding:14px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.mf{display:flex;flex-direction:column;gap:3px}
+.mf-l{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.mf-v{font-size:12px;line-height:1.65;background:var(--card);padding:8px 12px;border-radius:6px;white-space:pre-wrap;word-break:break-all}
+.mf-v.mono{font-family:monospace;font-size:11px}
+.mrow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <h1 id="logo-title">커버링 앱 메시지 플로우 맵</h1>
+    <p>메시지 발송 플로우 · 앱 설치 → 수거 → 리텐션</p>
+  </div>
+  <div class="stats">
+    <span class="stat stat-total">전체 <b id="st-t">—</b></span>
+    <span class="stat stat-알림톡">알림톡 <b id="st-a">—</b></span>
+    <span class="stat stat-푸시">푸시 <b id="st-p">—</b></span>
+    <span class="stat stat-문자">문자 <b id="st-m">—</b></span>
+  </div>
+</div>
+
+<!-- Notice -->
+<div class="notice">
+  <div class="notice-left">💡 내용 추가·수정이 필요하면 시트에 기입해 주세요. 갱신 시 자동으로 반영됩니다.</div>
+  <div class="notice-btns">
+    <a class="notice-btn notice-btn-primary" href="https://docs.google.com/spreadsheets/d/1stder39ZjcYhJWe-s0QBUL4DtuwX3zU46a20up_QxlY/edit" target="_blank">📝 시트 기입</a>
+    <span id="updated-at" style="font-size:10px;color:var(--muted);align-self:center"></span>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-nav">
+      <!-- 1. 수거 프로세스 -->
+      <div class="nav-item">
+        <div class="nav-item-header active" id="nav-process" data-view="process">
+          🔄 수거 프로세스 상세
+        </div>
+      </div>
+      <!-- 2. 리텐션 타임라인 -->
+      <div class="nav-item">
+        <div class="nav-item-header" id="nav-retention" data-view="retention">
+          📅 리텐션 · 등급 · 공지
+          <span class="nav-item-cnt" id="cnt-retention">—</span>
+        </div>
+      </div>
+      <!-- 3. 플로우 보드 -->
+      <div class="nav-item">
+        <div class="nav-item-header" id="nav-kanban" data-view="kanban">
+          📋 메시지 플로우
+          <span class="nav-item-cnt" id="cnt-kanban">—</span>
+        </div>
+        <div class="stage-list" id="stage-list">
+          <div class="stage-group-label">수거</div>
+          <div class="stage-item" data-col="col_apply" data-stage="수거신청">
+            <span class="stage-dot" style="background:#2da8c8"></span>수거 신청
+            <span class="stage-cnt" id="sc-수거신청">—</span>
+          </div>
+          <div class="stage-item" data-col="col_day" data-stage="수거당일">
+            <span class="stage-dot" style="background:#c8a020"></span>수거 당일
+            <span class="stage-cnt" id="sc-수거당일">—</span>
+          </div>
+          <div class="stage-item" data-col="col_result" data-stage="수거성공">
+            <span class="stage-dot" style="background:#4ade80"></span>수거 결과
+            <span class="stage-cnt" id="sc-수거성공">—</span>
+          </div>
+          <div class="stage-item" data-col="col_etc" data-stage="결제">
+            <span class="stage-dot" style="background:#fb923c"></span>결제
+            <span class="stage-cnt" id="sc-결제">—</span>
+          </div>
+          <div class="stage-item" data-col="col_etc" data-stage="취소">
+            <span class="stage-dot" style="background:#8097b4"></span>취소
+            <span class="stage-cnt" id="sc-취소">—</span>
+          </div>
+          <div class="stage-group-label" style="margin-top:6px">그 외</div>
+          <div class="stage-item" data-col="col_signup" data-stage="앱설치_회원가입">
+            <span class="stage-dot" style="background:#7c6ee0"></span>앱 설치 / 회원가입
+            <span class="stage-cnt" id="sc-앱설치_회원가입">—</span>
+          </div>
+          <div class="stage-item" data-col="col_delivery" data-stage="봉투배송">
+            <span class="stage-dot" style="background:#38bdf8"></span>봉투 배송
+            <span class="stage-cnt" id="sc-봉투배송">—</span>
+          </div>
+          <div class="stage-item" data-col="col_retention" data-stage="리텐션">
+            <span class="stage-dot" style="background:#a855f7"></span>리텐션
+            <span class="stage-cnt" id="sc-리텐션">—</span>
+          </div>
+          <div class="stage-item" data-col="col_service" data-stage="서비스공지">
+            <span class="stage-dot" style="background:#3b82f6"></span>서비스 공지
+            <span class="stage-cnt" id="sc-서비스공지">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-top">
+      <input id="search" type="text" placeholder="검색...">
+      <div class="ch-filters">
+        <button class="ch-btn active" data-ch="all">전체</button>
+        <button class="ch-btn" data-ch="알림톡">알림톡</button>
+        <button class="ch-btn" data-ch="푸시">푸시</button>
+        <button class="ch-btn" data-ch="문자">문자</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="main-header">
+      <span class="main-title" id="main-title">플로우 보드</span>
+    </div>
+    <div class="view-section" id="view-section"></div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-htitle" id="m-title"></div>
+      <button class="modal-x" id="m-x">×</button>
+    </div>
+    <div class="vtabs" id="m-vtabs"></div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+// ── Config ─────────────────────────────────────────────
+const COLUMNS = [
+  { id:'col_signup',    label:'앱 설치 / 회원가입', color:'#5c52aa', stages:['앱설치_회원가입','기타'] },
+  { id:'col_apply',     label:'수거 신청',           color:'#2290aa', stages:['수거신청'] },
+  { id:'col_day',       label:'수거 당일',            color:'#a08010', stages:['수거당일'] },
+  { id:'col_result',    label:'수거 결과',             color:'#b05820', stages:['수거성공','수거실패','수거지연'],
+    sub:[{label:'성공',stages:['수거성공'],dot:'#4ade80'},{label:'실패',stages:['수거실패'],dot:'#f87171'},{label:'지연',stages:['수거지연'],dot:'#f97316'}]
+  },
+  { id:'col_etc',       label:'취소 / 결제',          color:'#4a5e78', stages:['취소','결제'],
+    sub:[{label:'취소',stages:['취소'],dot:'#8097b4'},{label:'결제',stages:['결제'],dot:'#fb923c'}]
+  },
+  { id:'col_delivery',  label:'봉투 배송',             color:'#1a8aaa', stages:['봉투배송'] },
+  { id:'col_retention', label:'리텐션',               color:'#8a3870', stages:['리텐션','등급'] },
+  { id:'col_service',   label:'서비스 공지',           color:'#2a5fa8', stages:['서비스공지'] },
+];
+const COL_ROWS=[
+  {label:'수거',     cols:['col_apply','col_day','col_result','col_etc']},
+  {label:'그 외',    cols:['col_signup','col_delivery','col_retention','col_service']},
+];
+
+const PROCESS_FLOW = ['수거신청','수거당일'];
+const PROCESS_RESULTS = [
+  {id:'수거성공',label:'수거 성공',color:'#4ade80'},{id:'수거실패',label:'수거 실패',color:'#f87171'},
+  {id:'수거지연',label:'수거 지연',color:'#f97316'},{id:'취소',label:'취소',color:'#8097b4'},
+  {id:'봉투배송',label:'봉투 배송',color:'#38bdf8'},{id:'결제',label:'결제',color:'#fb923c'},
+];
+
+// D+ timeline  non-linear scale: D0-30 = 60%, D30-65 = 40%
+function dayToPct(d){ return d<=30?(d/30)*60:60+((d-30)/35)*40; }
+const MAX_DAY=65;
+
+const TL_LANES=[
+  { name:'웰컴쿠폰\n만료',color:'#c8609a',
+    matchCard:c=>c.base_name.includes('쿠폰 만료'),
+    events:[
+      {day:4, tip:'1주차 만료 예고'},{day:7, tip:'1주차 만료일'},
+      {day:11,tip:'2주차 만료 예고'},{day:14,tip:'2주차 만료일'},
+      {day:18,tip:'3주차 만료 예고'},{day:25,tip:'4주차 만료일'},
+    ]
+  },
+  { name:'미이용\nCRM', color:'#d97030',
+    events:[
+      {day:16,tip:'장기 미이용 이벤트 (D+16)',match:c=>c.base_name.includes('16일')},
+      {day:21,tip:'수거 신청 유도 (D+21)',    match:c=>c.base_name.includes('21일')},
+      {day:28,tip:'장기 미이용 이벤트 (D+28)',match:c=>c.base_name.includes('28일')},
+      {day:45,tip:'장기 미이용 이벤트 (D+45)',match:c=>c.base_name.includes('45일')},
+      {day:61,tip:'장기 미이용 이벤트 (D+60)',match:c=>c.base_name.includes('60일')},
+    ]
+  },
+];
+
+// 7-day grid: index 0=월…6=일
+const WEEK_DAYS=['월','화','수','목','금','토','일'];
+const WEEK_EVENTS=[
+  { dayIdx:0, label:'등급 업그레이드', color:'#fbbf24', tip:'매주 월요일 오후 4시 · 등급 업그레이드 안내',
+    match:c=>['리텐션','등급'].includes(c.flow_stage)&&c.base_name.includes('등급 업그레이드'), above:false},
+  { dayIdx:3, label:'쿠폰 발급 안내', color:'#c8609a', tip:'매주 목요일 오후 7시 · 매주 쿠폰 발급 안내',
+    match:c=>c.flow_stage==='리텐션'&&c.base_name.includes('쿠폰 발급'), above:false},
+];
+
+// ── State ──────────────────────────────────────────────
+let allCards=[];
+let activeChannel='all';
+let searchQ='';
+let curView='process';
+let modalCard=null;
+let modalVIdx=0;
+
+// ── Load ───────────────────────────────────────────────
+let currentUpdatedAt='';
+
+function escapeHtmlValue(value){
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+function sanitizeJson(value){
+  if(typeof value==='string') return escapeHtmlValue(value);
+  if(Array.isArray(value)) return value.map(sanitizeJson);
+  if(value&&typeof value==='object'){
+    return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,sanitizeJson(v)]));
+  }
+  return value;
+}
+
+function loadData(){
+  return fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(data=>{
+    data=sanitizeJson(data);
+    allCards.length=0;
+    Object.values(data.flow).forEach(s=>s.cards.forEach(c=>allCards.push(c)));
+    document.getElementById('st-t').textContent=data.stats.total;
+    document.getElementById('st-a').textContent=data.stats.by_channel['알림톡']||0;
+    document.getElementById('st-p').textContent=data.stats.by_channel['푸시']||0;
+    document.getElementById('st-m').textContent=data.stats.by_channel['문자']||0;
+    if(data.stats.updated_at) document.getElementById('updated-at').textContent='갱신 '+data.stats.updated_at;
+    currentUpdatedAt=data.stats.updated_at||'';
+    return data;
+  });
+}
+
+loadData().then(()=>{ initCounts(); switchView('process'); })
+  .catch(e=>{ document.getElementById('view-section').innerHTML=`<div style="color:#f87171;padding:20px">data.json 로드 실패: ${e.message}</div>`; });
+
+// ── 탭 포커스 시 자동 갱신 ──────────────────────────────
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible') return;
+  fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(data=>{
+    const nextUpdatedAt=escapeHtmlValue(data.stats?.updated_at||'');
+    if(nextUpdatedAt!==currentUpdatedAt){
+      loadData().then(()=>{ initCounts(); switchView(curView); });
+    }
+  }).catch(()=>{});
+});
+
+function initCounts(){
+  const stageMap={'앱설치_회원가입':['앱설치_회원가입','기타'],'수거신청':['수거신청'],'수거당일':['수거당일'],
+    '수거성공':['수거성공'],'수거실패':['수거실패'],'수거지연':['수거지연'],'취소':['취소'],
+    '봉투배송':['봉투배송'],'결제':['결제'],'기타':['기타'],
+    '리텐션':['리텐션','등급'],'서비스공지':['서비스공지']};
+  for(const [stage,ids] of Object.entries(stageMap)){
+    const el=document.getElementById('sc-'+stage);
+    if(el) el.textContent=allCards.filter(c=>ids.includes(c.flow_stage)).length;
+  }
+  document.getElementById('cnt-kanban').textContent=allCards.length;
+  const retCnt=allCards.filter(c=>['리텐션','등급','서비스공지'].includes(c.flow_stage)).length;
+  document.getElementById('cnt-retention').textContent=retCnt;
+}
+
+// ── Sidebar nav ────────────────────────────────────────
+document.querySelectorAll('.nav-item-header').forEach(hdr=>{
+  hdr.addEventListener('click',()=>{
+    const view=hdr.dataset.view;
+    setActiveNav(view);
+    switchView(view);
+  });
+});
+document.querySelectorAll('.stage-item').forEach(el=>{
+  el.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(curView!=='kanban'){ setActiveNav('kanban'); switchView('kanban'); }
+    requestAnimationFrame(()=>scrollToCol(el.dataset.col));
+  });
+});
+
+function setActiveNav(view){
+  document.querySelectorAll('.nav-item-header').forEach(h=>h.classList.remove('active'));
+  document.getElementById('nav-'+view).classList.add('active');
+  // stage list open only in kanban
+  document.getElementById('stage-list').classList.toggle('open',view==='kanban');
+}
+
+function switchView(view){
+  curView=view;
+  const titles={kanban:'메시지 플로우 보드',process:'수거 프로세스 상세',retention:'리텐션 · 등급 · 공지'};
+  document.getElementById('main-title').textContent=titles[view];
+  const sec=document.getElementById('view-section');
+  if(view==='kanban'){ sec.innerHTML='<div class="kanban" id="kanban"></div>'; renderKanban(); }
+  else if(view==='process'){ sec.innerHTML=''; sec.appendChild(buildProcessView()); }
+  else{ sec.innerHTML=''; sec.appendChild(buildRetentionView()); }
+}
+
+function scrollToCol(colId){
+  const kanban=document.getElementById('kanban');
+  if(!kanban) return;
+  const target=document.getElementById(colId);
+  if(!target) return;
+  document.querySelectorAll('.k-col').forEach(c=>c.classList.remove('highlight'));
+  target.classList.add('highlight');
+  target.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  setTimeout(()=>target.classList.remove('highlight'),1500);
+}
+
+// ── Kanban ─────────────────────────────────────────────
+function renderKanban(){
+  const kanban=document.getElementById('kanban');
+  if(!kanban) return;
+  function colHtml(col){
+    const cards=allCards.filter(c=>col.stages.includes(c.flow_stage));
+    let body='';
+    if(col.sub){
+      col.sub.forEach(sub=>{
+        const sc=cards.filter(c=>sub.stages.includes(c.flow_stage));
+        if(!sc.length) return;
+        body+=`<div class="k-sub-label" style="color:${sub.dot}">${sub.label}</div>`;
+        body+=sc.map(c=>miniCard(c)).join('');
+      });
+    } else { body=cards.map(c=>miniCard(c)).join(''); }
+    if(!body) body='<div style="font-size:10px;color:var(--muted);text-align:center;padding:10px">-</div>';
+    return `<div class="k-col" id="${col.id}">
+      <div class="k-head" style="background:${col.color}">${col.label}</div>
+      <div class="k-body">${body}</div>
+    </div>`;
+  }
+  kanban.innerHTML=COLUMNS.map(colHtml).join('');
+  kanban.querySelectorAll('.k-head').forEach(hd=>hd.addEventListener('click',()=>hd.closest('.k-col').classList.toggle('collapsed')));
+  kanban.querySelectorAll('.mini-card').forEach(el=>el.addEventListener('click',()=>openModal(+el.dataset.idx)));
+  applyFilter();
+}
+
+function miniCard(card){
+  const idx=allCards.indexOf(card);
+  const chs=[...new Set(card.variants.map(v=>v.channel))];
+  const vars=[...new Set(card.variants.flatMap(v=>v.variant))].filter(v=>v!=='공통');
+  const dev=card.variants.some(v=>v.dev_applied==='O')?'O':card.variants.some(v=>v.dev_applied==='X')?'X':'';
+  return `<div class="mini-card" data-idx="${idx}" data-chs="${chs.join(',')}" data-name="${esc(card.base_name)}" data-text="${esc(card.variants.map(v=>v.content).join(' '))}">
+    <div class="mc-top">
+      ${chs.map(ch=>`<span class="mc-ch mc-ch-${ch}">${ch}</span>`).join('')}
+      ${vars.map(v=>`<span class="mc-v">${v}</span>`).join('')}
+    </div>
+    <div class="mc-name">${card.base_name}</div>
+    <div class="mc-foot">
+      <span class="mc-sched">${card.schedule||''}</span>
+      <span class="mc-dev mc-dev-${dev||'e'}">${dev||'—'}</span>
+    </div>
+  </div>`;
+}
+
+// ── Process view ───────────────────────────────────────
+function buildProcessView(){
+  const wrap=document.createElement('div');
+  wrap.className='process-wrap';
+  const stageColors={수거신청:'#2da8c8',수거당일:'#c8a020'};
+  const stageLabels={수거신청:'수거 신청',수거당일:'수거 당일'};
+  const flowHtml=PROCESS_FLOW.map((sid,i)=>{
+    const cards=allCards.filter(c=>c.flow_stage===sid);
+    const color=stageColors[sid]||'#888';
+    return `${i>0?'<div class="parrow">→</div>':''}
+      <div class="pblock">
+        <div class="pblock-head" style="background:${color}20;color:${color}">${stageLabels[sid]||sid}</div>
+        <div class="pblock-list">${cards.map(card=>{
+          const idx=allCards.indexOf(card);
+          const chs=[...new Set(card.variants.map(v=>v.channel))];
+          return `<div class="prow" data-idx="${idx}">
+            <div>${chs.map(ch=>`<span class="mc-ch mc-ch-${ch}">${ch}</span>`).join('')}</div>
+            <div class="prow-name">${card.base_name}</div>
+            <div class="prow-time">${card.schedule||''}</div>
+          </div>`;
+        }).join('')}</div>
+      </div>`;
+  }).join('');
+  const rider=`<div class="parrow">→</div>
+    <div class="pblock">
+      <div class="pblock-head" style="background:#7c6ee020;color:#a090d8">라이더 방문</div>
+      <div class="pblock-list"><div style="padding:14px 8px;font-size:11px;color:var(--muted);text-align:center">결과에 따라 분기 →</div></div>
+    </div>`;
+  const results=PROCESS_RESULTS.map(pr=>{
+    const cards=allCards.filter(c=>c.flow_stage===pr.id);
+    return `<div class="p-result-block">
+      <div class="p-result-head" style="background:${pr.color}18;color:${pr.color}">${pr.label}</div>
+      <div class="p-result-list">${cards.map(card=>{
+        const idx=allCards.indexOf(card);
+        return `<div class="p-result-item" data-idx="${idx}"><div style="font-weight:600">${card.base_name}</div><div class="p-result-time">${card.schedule||''}</div></div>`;
+      }).join('')||'<div class="p-result-item" style="color:var(--muted)">-</div>'}</div>
+    </div>`;
+  }).join('');
+  wrap.innerHTML=`
+    <div style="margin-bottom:10px;font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.4px;text-transform:uppercase">수거 신청 → 당일 안내 → 라이더 방문</div>
+    <div class="pflow">${flowHtml}${rider}</div>
+    <div class="sec-div"></div>
+    <div class="p-results-label">수거 결과별 메시지</div>
+    <div class="p-results">${results}</div>`;
+  wrap.querySelectorAll('[data-idx]').forEach(el=>el.addEventListener('click',()=>openModal(+el.dataset.idx)));
+  return wrap;
+}
+
+// ── Retention view ─────────────────────────────────────
+function buildRetentionView(){
+  const wrap=document.createElement('div');
+  wrap.className='ret-wrap';
+
+  // ① 미이용 CRM 타임라인 (D+)
+  const lanesHtml=TL_LANES.map(lane=>{
+    const dotsHtml=lane.events.map((ev,i)=>{
+      const pct=dayToPct(ev.day);
+      const isAbove=i%2===0;
+      let idx=-1;
+      if(ev.match) idx=allCards.findIndex(c=>['리텐션','등급'].includes(c.flow_stage)&&ev.match(c));
+      else if(lane.matchCard) idx=allCards.findIndex(c=>['리텐션','등급'].includes(c.flow_stage)&&lane.matchCard(c));
+      return `<div class="tl-dot ${isAbove?'above':'below'}" style="left:${pct}%;background:${lane.color}" ${idx>=0?`data-idx="${idx}"`:''}>
+        <div class="tl-day">D+${ev.day}</div>
+        <div class="tl-tip">${ev.tip}</div>
+      </div>`;
+    }).join('');
+    const nl=lane.name.split('\n');
+    return `<div class="tl-lane">
+      <div class="tl-lane-name">${nl.map(l=>`<span style="display:block">${l}</span>`).join('')}</div>
+      <div class="tl-lane-track">
+        <div class="tl-line" style="background:linear-gradient(to right,${lane.color}50,${lane.color}18)"></div>
+        ${dotsHtml}
+      </div>
+    </div>`;
+  }).join('');
+  const axisMarks=[0,10,20,30,45,65];
+  const axisHtml=axisMarks.map(d=>`<span class="tl-axis-label" style="left:${dayToPct(d)}%">D+${d}</span>`).join('');
+
+  // ② 주간 정기 발송 (7-day grid) + 비정기 발송
+  const weekGridHtml=WEEK_DAYS.map((dayLabel,idx)=>{
+    const ev=WEEK_EVENTS.find(e=>e.dayIdx===idx);
+    const trackContent=ev
+      ? (()=>{
+          const cardIdx=allCards.findIndex(c=>ev.match(c));
+          return `<div class="wc-dot ${ev.above?'above':'below'}" style="background:${ev.color};color:${ev.color}" ${cardIdx>=0?`data-idx="${cardIdx}"`:''}>
+            <div class="w-lbl">${ev.label}</div>
+            <div class="w-tip">${ev.tip}</div>
+          </div>`;
+        })()
+      : '';
+    return `<div class="week-cell">
+      <div class="week-cell-day">${dayLabel}</div>
+      <div class="week-cell-track">${trackContent}</div>
+    </div>`;
+  }).join('');
+
+  const irregCards=allCards.filter(c=>['리텐션','등급','서비스공지'].includes(c.flow_stage)
+    &&(c.schedule||'').includes('특정 일자'));
+  const irregHtml=`<div class="irreg-list">${irregCards.map(card=>{
+    const idx=allCards.indexOf(card);
+    const color=card.flow_stage==='서비스공지'?'#3a78c9':'#7aabff';
+    return `<div class="irreg-item" data-idx="${idx}">
+      <span class="irreg-dot" style="background:${color}"></span>
+      <span>${card.base_name}</span>
+    </div>`;
+  }).join('')}</div>`;
+
+  // ③ 카드 목록 (구분선 포함)
+  const retCards=allCards.filter(c=>['리텐션','등급','서비스공지'].includes(c.flow_stage));
+  const DAY_ORDER={월:0,화:1,수:2,목:3,금:4,토:5,일:6};
+  function schedDay(s){const m=(s||'').match(/([월화수목금토일])요일/);return m?DAY_ORDER[m[1]]??9:9;}
+  function rgItem(card){
+    const idx=allCards.indexOf(card);
+    return `<div class="rg-item" data-idx="${idx}">
+      <span class="rg-day">${card.schedule||'—'}</span>
+      <div style="flex:1;min-width:0"><div class="rg-name">${card.base_name}</div></div>
+    </div>`;
+  }
+  function rgGroup(label,color,items){
+    if(!items.length) return '';
+    return `<div class="rg">
+      <div class="rg-head" style="background:${color}18;color:${color}">${label}</div>
+      <div class="rg-body">${items.map(rgItem).join('')}</div>
+    </div>`;
+  }
+  const g1=retCards.filter(c=>c.base_name.includes('쿠폰 만료'));
+  const g2=retCards.filter(c=>c.base_name.includes('미이용')||c.base_name.includes('수거 신청 유도'));
+  const g3all=retCards.filter(c=>!c.base_name.includes('쿠폰 만료')&&!c.base_name.includes('미이용')&&!c.base_name.includes('수거 신청 유도'));
+  const g3weekly=g3all.filter(c=>(c.schedule||'').includes('매주')).sort((a,b)=>schedDay(a.schedule)-schedDay(b.schedule));
+  const g3irreg=g3all.filter(c=>(c.schedule||'').includes('특정 일자'));
+  const g3other=g3all.filter(c=>!g3weekly.includes(c)&&!g3irreg.includes(c));
+  const g3html=`<div class="rg">
+    <div class="rg-head" style="background:#3a90c818;color:#3a90c8">등급 · 정기 · 공지</div>
+    <div class="rg-body">
+      ${g3weekly.map(rgItem).join('')}
+      ${(g3weekly.length&&g3irreg.length)?'<div class="rg-divider"></div>':''}
+      ${g3irreg.map(rgItem).join('')}
+      ${g3other.map(rgItem).join('')}
+    </div>
+  </div>`;
+  const groupsHtml=rgGroup('웰컴쿠폰 만료 CRM','#c8609a',g1)+rgGroup('장기 미이용 CRM','#d97030',g2)+g3html;
+
+  wrap.innerHTML=`
+    <div class="ret-section">
+      <div class="ret-sec-title">미이용 CRM 타임라인</div>
+      <div>${lanesHtml}</div>
+      <div class="tl-axis">${axisHtml}</div>
+    </div>
+    <div class="ret-section">
+      <div class="ret-sec-title">정기 발송 현황</div>
+      <div class="week-row">
+        <div class="week-regular">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:6px;font-weight:600">주간 정기 (요일별)</div>
+          <div class="week-grid">${weekGridHtml}</div>
+        </div>
+        <div class="week-vsep"></div>
+        <div class="week-irregular">
+          <div class="week-irr-title">비정기 (특정 일자 1회)</div>
+          ${irregHtml}
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px">발송 카드 목록</div>
+      <div class="ret-groups">${groupsHtml}</div>
+    </div>`;
+
+  wrap.querySelectorAll('[data-idx]').forEach(el=>el.addEventListener('click',()=>openModal(+el.dataset.idx)));
+  return wrap;
+}
+
+// ── Filter ─────────────────────────────────────────────
+document.querySelectorAll('.ch-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ch-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeChannel=btn.dataset.ch;
+    applyFilter();
+  });
+});
+document.getElementById('search').addEventListener('input',e=>{
+  searchQ=e.target.value.toLowerCase();
+  applyFilter();
+});
+function applyFilter(){
+  document.querySelectorAll('.mini-card').forEach(el=>{
+    const chs=el.dataset.chs.split(',');
+    const chOk=activeChannel==='all'||chs.includes(activeChannel);
+    const qOk=!searchQ||(el.dataset.name||'').toLowerCase().includes(searchQ)||(el.dataset.text||'').toLowerCase().includes(searchQ);
+    el.classList.toggle('filtered',!(chOk&&qOk));
+  });
+}
+
+// ── Modal ──────────────────────────────────────────────
+function openModal(idx){
+  modalCard=allCards[idx]; modalVIdx=0;
+  renderModal();
+  document.getElementById('modal-bg').classList.add('open');
+}
+function renderModal(){
+  const card=modalCard;
+  document.getElementById('m-title').textContent=card.base_name;
+  const vt=document.getElementById('m-vtabs');
+  if(card.variants.length>1){
+    vt.style.display='';
+    vt.innerHTML=card.variants.map((v,i)=>{
+      const lbl=v.channel+(v.variant[0]!=='공통'?' · '+v.variant.join('/'):'');
+      return `<button class="vtab ${i===modalVIdx?'active':''}" data-vi="${i}">${lbl}</button>`;
+    }).join('');
+    vt.querySelectorAll('.vtab').forEach(el=>el.addEventListener('click',()=>{modalVIdx=+el.dataset.vi;renderModal();}));
+  } else { vt.style.display='none'; }
+  const v=card.variants[modalVIdx];
+  const f=(l,val,mono=false)=>val?`<div class="mf"><div class="mf-l">${l}</div><div class="mf-v${mono?' mono':''}">${val}</div></div>`:'';
+  document.getElementById('m-body').innerHTML=`
+    <div class="mrow2">${f('채널',v.channel)}${f('템플릿 ID',v.template_id,true)}</div>
+    <div class="mrow2">${f('발송 빈도',v.schedule)}${f('개발 적용',v.dev_applied||'—')}</div>
+    ${f('트리거 조건',v.trigger)}
+    ${f('메시지 내용',v.content)}
+    ${f('CTA',v.cta)}
+    ${f('쿠폰 정보',v.coupon_info)}
+    ${f('비고',v.note)}
+    ${f('개발 영역',v.dev_area)}`;
+}
+document.getElementById('m-x').addEventListener('click',()=>document.getElementById('modal-bg').classList.remove('open'));
+document.getElementById('logo-title').addEventListener('click',()=>{ setActiveNav('process'); switchView('process'); });
+document.getElementById('modal-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)document.getElementById('modal-bg').classList.remove('open');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modal-bg').classList.remove('open');});
+
+function esc(s){return escapeHtmlValue(s);}
+
+</script>
+</body>
+</html>

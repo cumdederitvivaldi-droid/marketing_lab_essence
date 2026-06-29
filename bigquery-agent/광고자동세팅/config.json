@@ -1,0 +1,92 @@
+{
+  "_comment": "커버링 Meta 광고 자동 생성 기본 설정 — create_campaign.py 가 읽는 템플릿",
+
+  "account_id": "act_225607806262602",
+  "page_id": "101050698831852",
+  "instagram_user_id": "17841447628316354",
+
+  "apps": {
+    "aos": {
+      "application_id": "361437313025665",
+      "store_url": "http://play.google.com/store/apps/details?id=com.covering.recle",
+      "optimization_goal": "OFFSITE_CONVERSIONS",
+      "custom_event_type": "PURCHASE",
+      "user_os": null,
+      "user_device": null
+    },
+    "ios": {
+      "application_id": "361437313025665",
+      "store_url": "http://itunes.apple.com/app/id1573884422",
+      "optimization_goal": "APP_INSTALLS",
+      "custom_event_type": null,
+      "user_os": ["iOS_ver_14.0_and_above"],
+      "user_device": ["iPad", "iPhone", "iPod"]
+    }
+  },
+
+  "default_adset": {
+    "billing_event": "IMPRESSIONS",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "daily_budget_krw": 30000,
+    "age_min": 20,
+    "age_max": 65
+  },
+
+  "targeting_templates": {
+    "all": {
+      "label": "논타겟",
+      "geo_locations": {
+        "countries": ["KR"]
+      },
+      "excluded_geo_locations": {
+        "cities": [
+          {"country": "KR", "key": "1265558", "name": "Busan",       "radius": 80, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "1268112", "name": "Chungju",     "radius": 40, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "1268595", "name": "Gongju",      "radius": 80, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "1270709", "name": "Inje",        "radius": 80, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "1270848", "name": "Jinju",       "radius": 80, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "1278119", "name": "Pohang",      "radius": 80, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "1283697", "name": "Taebaek",     "radius": 80, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "2686939", "name": "Dongducheon", "radius": 23, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "2686959", "name": "Dangjin",     "radius": 50, "distance_unit": "kilometer"},
+          {"country": "KR", "key": "2686976", "name": "Gimcheon",    "radius": 80, "distance_unit": "kilometer"}
+        ],
+        "regions": [
+          {"key": "1999", "country": "KR", "name": "Jeju-do"}
+        ],
+        "places": [
+          {
+            "key": "260204260708261",
+            "name": "전라남도 광주",
+            "distance_unit": "kilometer",
+            "latitude": 35.1593415,
+            "longitude": 126.8994748,
+            "radius": 80
+          }
+        ]
+      },
+      "excluded_custom_audiences": [
+        {"id": "120211616668350514"}
+      ],
+      "app_install_state": "not_installed"
+    },
+    "re": {
+      "label": "리타겟",
+      "geo_locations": {"countries": ["KR"]},
+      "custom_audiences": [],
+      "_note": "리타겟 오디언스 ID를 job JSON의 audience_ids 필드에 입력하세요"
+    },
+    "lookalike": {
+      "label": "유사타겟",
+      "geo_locations": {"countries": ["KR"]},
+      "custom_audiences": [],
+      "_note": "유사타겟 오디언스 ID를 job JSON의 audience_ids 필드에 입력하세요. lookalike_pct 도 설정하세요"
+    }
+  },
+
+  "default_creative": {
+    "title": "커버링으로 빠르게 청소하기",
+    "message": "커버링만 있으면 1분안에 청소 \n\n비밀 할인코드 : BIMIL20\n◾내 정보> 쿠폰> 쿠폰 코드 입력하기에 입력하면 끝!\n\n[이용 가능 지역 안내]\n서울, 고양(일부), 남양주(일부), 구리, 인천(일부), 부천, 하남(일부), 광명, 안양, 성남, 군포, 안산, 시흥, 수원, 용인(기흥구·수지구), 의왕, 화성(동탄), 오산, 평택(일부), 과천, 김포, 의정부, 경기도 광주, 안성시, 파주시, 천안, 아산, 대전, 세종, 청주\n*일부 지역은 서비스 제한구역이 있습니다\n\n인근 지역은 서비스 확장 준비 중이니 조금만 기다려주세요🫡",
+    "call_to_action_type": "INSTALL_MOBILE_APP"
+  }
+}

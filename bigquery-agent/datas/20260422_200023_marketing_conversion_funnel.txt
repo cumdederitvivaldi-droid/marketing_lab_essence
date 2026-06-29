@@ -1,0 +1,52 @@
+분석명: marketing_conversion_funnel
+설명: 마케팅 채널별 코호트 전환 퍼널 (가입→첫주문 D1/D3/D7/D14/D30/D60) | 최근 16주 코호트, D30 경과 기준
+추출일시: 2026-04-22 20:00:33
+프로젝트: covering-app-ccd23
+비고: short_link_id 없음 → user.signup_referral_channel 대체
+
+=== 실행 SQL ===
+
+WITH signup_cohorts AS (
+  SELECT
+    u.id AS user_id,
+    DATE(u.created_date) AS signup_date,
+    DATE_TRUNC(DATE(u.created_date), WEEK(MONDAY)) AS cohort_week,
+    COALESCE(NULLIF(TRIM(u.signup_referral_channel), ''), 'organic') AS campaign_name
+  FROM `covering-app-ccd23.secure_dataset.user` u
+  WHERE u.withdrawal_date IS NULL
+    AND DATE(u.created_date) >= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 16 WEEK)
+    AND DATE(u.created_date) <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 30 DAY)
+),
+first_orders AS (
+  SELECT
+    o.user_id,
+    MIN(DATE(o.created_at, 'Asia/Seoul')) AS first_order_date
+  FROM `covering-app-ccd23.secure_dataset.order_v2` o
+  WHERE o.company_id IS NULL
+    AND o.deleted_at IS NULL
+    AND o.status IN ('COMPLETED','IN_PROGRESS','READY','CREATED')
+  GROUP BY o.user_id
+)
+SELECT
+  s.cohort_week,
+  s.campaign_name,
+  COUNT(DISTINCT s.user_id)                                                                         AS cohort_size,
+  COUNT(DISTINCT fo.user_id)                                                                        AS ever_ordered,
+  ROUND(SAFE_DIVIDE(COUNT(DISTINCT fo.user_id)*100.0,         COUNT(DISTINCT s.user_id)),2)         AS overall_conversion_pct,
+  COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <=  1 THEN s.user_id END) AS d1_orders,
+  COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <=  3 THEN s.user_id END) AS d3_orders,
+  COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <=  7 THEN s.user_id END) AS d7_orders,
+  COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <= 14 THEN s.user_id END) AS d14_orders,
+  COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <= 30 THEN s.user_id END) AS d30_orders,
+  COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <= 60 THEN s.user_id END) AS d60_orders,
+  ROUND(SAFE_DIVIDE(COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <=  1 THEN s.user_id END)*100.0, COUNT(DISTINCT s.user_id)),2) AS d1_rate_pct,
+  ROUND(SAFE_DIVIDE(COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <=  3 THEN s.user_id END)*100.0, COUNT(DISTINCT s.user_id)),2) AS d3_rate_pct,
+  ROUND(SAFE_DIVIDE(COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <=  7 THEN s.user_id END)*100.0, COUNT(DISTINCT s.user_id)),2) AS d7_rate_pct,
+  ROUND(SAFE_DIVIDE(COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <= 14 THEN s.user_id END)*100.0, COUNT(DISTINCT s.user_id)),2) AS d14_rate_pct,
+  ROUND(SAFE_DIVIDE(COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <= 30 THEN s.user_id END)*100.0, COUNT(DISTINCT s.user_id)),2) AS d30_rate_pct,
+  ROUND(SAFE_DIVIDE(COUNT(DISTINCT CASE WHEN DATE_DIFF(fo.first_order_date, s.signup_date, DAY) <= 60 THEN s.user_id END)*100.0, COUNT(DISTINCT s.user_id)),2) AS d60_rate_pct
+FROM signup_cohorts s
+LEFT JOIN first_orders fo ON s.user_id = fo.user_id
+GROUP BY s.cohort_week, s.campaign_name
+ORDER BY s.cohort_week, s.campaign_name
+

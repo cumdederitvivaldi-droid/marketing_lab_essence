@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/covering-first-free/fonts/Pretendard-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('/covering-first-free/fonts/Pretendard-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('/covering-first-free/fonts/Pretendard-Bold.woff2') format('woff2');
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+
+html {
+  background-color: #ffffff;
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  background-color: #ffffff;
+  overscroll-behavior: none;
+}
+
+@media (min-width: 768px) {
+  html,
+  body {
+    background-color: #F3F4F6;
+  }
+}
+
+@keyframes bottomsheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes dim-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

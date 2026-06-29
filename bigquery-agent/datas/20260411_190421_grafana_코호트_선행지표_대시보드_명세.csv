@@ -1,0 +1,338 @@
+구분,ID,이름,측정시점,목적_및_맥락,시각화_타입,판단기준,SQL_쿼리,개발자_주의사항
+대시보드_변수,VAR1,$referral_channels,-,"모니터링할 Airbridge 원링크/채널 선택. Grafana Multi-value Query Variable 타입으로 생성. 실험군 필터링의 핵심 변수.","쿼리 드롭다운 (Multi-value)",-,"SELECT DISTINCT signup_referral_channel
+FROM `covering-app-ccd23.secure_dataset.user`
+WHERE signup_referral_channel IS NOT NULL
+  AND DATE(created_date, 'Asia/Seoul') >= '2026-01-01'
+ORDER BY 1","쿼리 내 사용 시 반드시 ${referral_channels:singlequote} 형태로 삽입. :singlequote 포맷 누락 시 SQL IN절 오류 발생."
+대시보드_변수,VAR2,$cohort_start_date,-,"코호트 집계 시작일 지정. Grafana Text input Variable.","텍스트 입력",기본값: 2026-01-01,-,-
+패널,P0,주별 코호트 모수,-,"각 주에 실험군 채널에서 첫 주문한 유저 수를 파악. 모수가 너무 적으면 선행 지표의 통계적 신뢰성이 낮아지므로 200명 미만 주차는 참고용으로만 활용. 실험군 + 전체 평균 비교 표시.","Bar chart (채널별 누적 막대)","코호트당 최소 200명 권장. 미만 시 통계 불신뢰 경고 레이블 추가 권장.","WITH all_first_orders AS (
+  SELECT
+    o.user_id,
+    DATE_TRUNC(DATE(o.created_at, 'Asia/Seoul'), WEEK(MONDAY)) AS cohort_week,
+    CASE
+      WHEN u.signup_referral_channel IN (${referral_channels:singlequote})
+      THEN u.signup_referral_channel
+      ELSE '전체 평균'
+    END AS channel_group
+  FROM (
+    SELECT user_id, id, created_at,
+      ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS rn
+    FROM `covering-app-ccd23.secure_dataset.order_v2`
+    WHERE deleted_at IS NULL
+      AND DATE(created_at, 'Asia/Seoul') >= DATE('${cohort_start_date}')
+  ) o
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON o.user_id = u.id
+  WHERE o.rn = 1
+    AND u.withdrawal_date IS NULL
+)
+SELECT
+  TIMESTAMP(cohort_week)  AS time,
+  channel_group           AS channel,
+  COUNT(DISTINCT user_id) AS cohort_size
+FROM all_first_orders
+WHERE cohort_week <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 1 DAY)
+GROUP BY cohort_week, channel_group
+ORDER BY cohort_week DESC, channel_group",-
+패널,P1,[D+2] 수거 완료율,D+2,"첫 주문 후 2일 이내에 수거(fulfillment.status = COMPLETED)가 완료된 유저 비율. 수거 완료 유저의 다음달 재이용률이 미완료 대비 약 20%p 높음. 광고 소재·랜딩과 실제 서비스 간 기대 불일치를 조기 감지하는 지표.","Time series (Line) — 실험군 vs 전체 평균","전체 평균 대비 -5%p 이하 → 경고 (광고 타겟 미스매치 의심). Threshold 설정: -5%p에 Yellow 경고선 추가 권장.","WITH all_first_orders AS (
+  SELECT
+    o.user_id,
+    o.id AS first_order_id,
+    DATE(o.created_at, 'Asia/Seoul') AS first_order_date,
+    DATE_TRUNC(DATE(o.created_at, 'Asia/Seoul'), WEEK(MONDAY)) AS cohort_week,
+    CASE
+      WHEN u.signup_referral_channel IN (${referral_channels:singlequote})
+      THEN u.signup_referral_channel
+      ELSE '전체 평균'
+    END AS channel_group
+  FROM (
+    SELECT user_id, id, created_at,
+      ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS rn
+    FROM `covering-app-ccd23.secure_dataset.order_v2`
+    WHERE deleted_at IS NULL
+      AND DATE(created_at, 'Asia/Seoul') >= DATE('${cohort_start_date}')
+  ) o
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON o.user_id = u.id
+  WHERE o.rn = 1
+    AND u.withdrawal_date IS NULL
+),
+pickup_result AS (
+  SELECT
+    afo.user_id,
+    afo.cohort_week,
+    afo.channel_group,
+    MAX(CASE
+      WHEN f.status = 'COMPLETED'
+       AND DATE(f.completed_at, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 2 DAY)
+      THEN 1 ELSE 0
+    END) AS first_pickup_completed
+  FROM all_first_orders afo
+  JOIN `covering-app-ccd23.secure_dataset.fulfillment` f ON afo.first_order_id = f.order_id
+  GROUP BY afo.user_id, afo.cohort_week, afo.channel_group
+)
+SELECT
+  TIMESTAMP(cohort_week) AS time,
+  channel_group AS channel,
+  COUNT(DISTINCT user_id) AS cohort_size,
+  ROUND(COUNTIF(first_pickup_completed = 1) * 100.0 / COUNT(DISTINCT user_id), 1) AS d2_pickup_completion_pct
+FROM pickup_result
+WHERE cohort_week <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 2 DAY)
+GROUP BY cohort_week, channel_group
+ORDER BY cohort_week DESC, channel_group","코호트 성숙 조건: 2일이 경과한 코호트만 포함 (WHERE 절에 반영됨). 미성숙 코호트 포함 시 수치 왜곡 발생."
+패널,P2,[D+7] 7일 내 재주문율 ⭐,D+7,"핵심 선행 지표. 첫 주문일로부터 7일 이내에 2번째 주문을 한 유저 비율. 다음달 재이용 그룹의 59.5%가 D+7 이내 재주문 / 미재이용 그룹은 31.5%만 재주문. 이 수치 하나만으로 30일을 기다리지 않고 캠페인 효과를 조기 판단 가능.","Time series (Line) — 실험군 vs 전체 평균. Threshold 색상 설정 권장.","✅ 50% 이상 → 양호 (Green Threshold)
+⚠️ 30~50% → 주의 (Yellow Threshold)
+🚨 30% 미만 → 위험 신호 (Red Threshold)","WITH all_first_orders AS (
+  SELECT
+    o.user_id,
+    DATE(o.created_at, 'Asia/Seoul') AS first_order_date,
+    DATE_TRUNC(DATE(o.created_at, 'Asia/Seoul'), WEEK(MONDAY)) AS cohort_week,
+    CASE
+      WHEN u.signup_referral_channel IN (${referral_channels:singlequote})
+      THEN u.signup_referral_channel
+      ELSE '전체 평균'
+    END AS channel_group
+  FROM (
+    SELECT user_id, id, created_at,
+      ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS rn
+    FROM `covering-app-ccd23.secure_dataset.order_v2`
+    WHERE deleted_at IS NULL
+      AND DATE(created_at, 'Asia/Seoul') >= DATE('${cohort_start_date}')
+  ) o
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON o.user_id = u.id
+  WHERE o.rn = 1
+    AND u.withdrawal_date IS NULL
+),
+reorder_check AS (
+  SELECT
+    afo.user_id,
+    afo.cohort_week,
+    afo.channel_group,
+    afo.first_order_date,
+    COUNTIF(
+      DATE(o2.created_at, 'Asia/Seoul') > afo.first_order_date
+      AND DATE(o2.created_at, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 7 DAY)
+      AND o2.deleted_at IS NULL
+    ) > 0 AS has_reorder_d7
+  FROM all_first_orders afo
+  LEFT JOIN `covering-app-ccd23.secure_dataset.order_v2` o2
+    ON afo.user_id = o2.user_id
+  GROUP BY afo.user_id, afo.cohort_week, afo.channel_group, afo.first_order_date
+)
+SELECT
+  TIMESTAMP(cohort_week) AS time,
+  channel_group AS channel,
+  COUNT(DISTINCT user_id) AS cohort_size,
+  ROUND(COUNTIF(has_reorder_d7) * 100.0 / COUNT(DISTINCT user_id), 1) AS d7_reorder_rate_pct
+FROM reorder_check
+WHERE cohort_week <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 7 DAY)
+GROUP BY cohort_week, channel_group
+ORDER BY cohort_week DESC, channel_group","코호트 성숙 조건: 7일이 경과한 코호트만 포함 (WHERE 절에 반영됨)."
+패널,P3,[D+14] 2회 이상 이용율,D+14,"첫 주문 후 14일 이내 누적 2회 이상 주문한 유저 비율. 재이용 그룹 59.3% vs 미재이용 그룹 38.4% → 21%p 차이. D+7 재주문율보다 정밀하게 서비스 습관화 여부를 측정.","Time series (Line) — 실험군 vs 전체 평균","전체 평균 대비 +5%p 이상 → 양호","WITH all_first_orders AS (
+  SELECT
+    o.user_id,
+    DATE(o.created_at, 'Asia/Seoul') AS first_order_date,
+    DATE_TRUNC(DATE(o.created_at, 'Asia/Seoul'), WEEK(MONDAY)) AS cohort_week,
+    CASE
+      WHEN u.signup_referral_channel IN (${referral_channels:singlequote})
+      THEN u.signup_referral_channel
+      ELSE '전체 평균'
+    END AS channel_group
+  FROM (
+    SELECT user_id, id, created_at,
+      ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS rn
+    FROM `covering-app-ccd23.secure_dataset.order_v2`
+    WHERE deleted_at IS NULL
+      AND DATE(created_at, 'Asia/Seoul') >= DATE('${cohort_start_date}')
+  ) o
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON o.user_id = u.id
+  WHERE o.rn = 1
+    AND u.withdrawal_date IS NULL
+),
+order_count_d14 AS (
+  SELECT
+    afo.user_id,
+    afo.cohort_week,
+    afo.channel_group,
+    COUNT(o2.id) AS order_count_d14
+  FROM all_first_orders afo
+  LEFT JOIN `covering-app-ccd23.secure_dataset.order_v2` o2
+    ON afo.user_id = o2.user_id
+    AND o2.deleted_at IS NULL
+    AND DATE(o2.created_at, 'Asia/Seoul') >= afo.first_order_date
+    AND DATE(o2.created_at, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 14 DAY)
+  GROUP BY afo.user_id, afo.cohort_week, afo.channel_group
+)
+SELECT
+  TIMESTAMP(cohort_week) AS time,
+  channel_group AS channel,
+  COUNT(DISTINCT user_id) AS cohort_size,
+  ROUND(COUNTIF(order_count_d14 >= 2) * 100.0 / COUNT(DISTINCT user_id), 1) AS d14_repeat_usage_pct
+FROM order_count_d14
+WHERE cohort_week <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 14 DAY)
+GROUP BY cohort_week, channel_group
+ORDER BY cohort_week DESC, channel_group","코호트 성숙 조건: 14일이 경과한 코호트만 포함 (WHERE 절에 반영됨)."
+패널,P4,[D+14] 구독 전환율,D+14,"첫 주문 후 14일 이내 구독(subscription)을 시작한 유저 비율. 재이용 그룹 6.4% vs 미재이용 그룹 1.0% → 6배 차이. 구독 전환은 장기 리텐션의 가장 강력한 예측 인자.","Time series (Line) — 실험군 vs 전체 평균. Threshold 설정 권장.","3% 이상 → 양호 (Green Threshold)","WITH all_first_orders AS (
+  SELECT
+    o.user_id,
+    DATE(o.created_at, 'Asia/Seoul') AS first_order_date,
+    DATE_TRUNC(DATE(o.created_at, 'Asia/Seoul'), WEEK(MONDAY)) AS cohort_week,
+    CASE
+      WHEN u.signup_referral_channel IN (${referral_channels:singlequote})
+      THEN u.signup_referral_channel
+      ELSE '전체 평균'
+    END AS channel_group
+  FROM (
+    SELECT user_id, id, created_at,
+      ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS rn
+    FROM `covering-app-ccd23.secure_dataset.order_v2`
+    WHERE deleted_at IS NULL
+      AND DATE(created_at, 'Asia/Seoul') >= DATE('${cohort_start_date}')
+  ) o
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON o.user_id = u.id
+  WHERE o.rn = 1
+    AND u.withdrawal_date IS NULL
+),
+subscription_check AS (
+  SELECT
+    afo.user_id,
+    afo.cohort_week,
+    afo.channel_group,
+    MAX(CASE
+      WHEN s.id IS NOT NULL
+       AND DATE(s.created_at, 'Asia/Seoul') >= afo.first_order_date
+       AND DATE(s.created_at, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 14 DAY)
+      THEN 1 ELSE 0
+    END) AS subscribed_d14
+  FROM all_first_orders afo
+  LEFT JOIN `covering-app-ccd23.secure_dataset.subscription` s ON afo.user_id = s.user_id
+  GROUP BY afo.user_id, afo.cohort_week, afo.channel_group
+)
+SELECT
+  TIMESTAMP(cohort_week) AS time,
+  channel_group AS channel,
+  COUNT(DISTINCT user_id) AS cohort_size,
+  ROUND(COUNTIF(subscribed_d14 = 1) * 100.0 / COUNT(DISTINCT user_id), 1) AS d14_subscription_rate_pct
+FROM subscription_check
+WHERE cohort_week <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 14 DAY)
+GROUP BY cohort_week, channel_group
+ORDER BY cohort_week DESC, channel_group","코호트 성숙 조건: 14일이 경과한 코호트만 포함 (WHERE 절에 반영됨)."
+패널,P5,[D+30] 첫 달 종합 지표,D+30,"30일이 경과한 코호트에 대한 종합 품질 평가. 4개 지표(평균 주문 수·결제 발생율·리뷰 작성율·구독 전환율)를 동시에 확인. 재이용 그룹 기준값: 평균 주문수 2.21회 / 결제 발생율 68.7% / 리뷰 작성율 10.3% / 구독 전환율 6.4%.","Table 패널 (cohort_week × 채널 × 지표 4종) 또는 Time series 4개로 분리","avg_orders_d30: 재이용 그룹 2.21회 기준
+d30_payment_rate_pct: 68.7% 기준
+d30_review_rate_pct: 10.3% 기준
+d30_subscription_rate_pct: 6.4% 기준","WITH all_first_orders AS (
+  SELECT
+    o.user_id,
+    DATE(o.created_at, 'Asia/Seoul') AS first_order_date,
+    DATE_TRUNC(DATE(o.created_at, 'Asia/Seoul'), WEEK(MONDAY)) AS cohort_week,
+    CASE
+      WHEN u.signup_referral_channel IN (${referral_channels:singlequote})
+      THEN u.signup_referral_channel
+      ELSE '전체 평균'
+    END AS channel_group
+  FROM (
+    SELECT user_id, id, created_at,
+      ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at ASC) AS rn
+    FROM `covering-app-ccd23.secure_dataset.order_v2`
+    WHERE deleted_at IS NULL
+      AND DATE(created_at, 'Asia/Seoul') >= DATE('${cohort_start_date}')
+  ) o
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON o.user_id = u.id
+  WHERE o.rn = 1
+    AND u.withdrawal_date IS NULL
+),
+order_metrics AS (
+  SELECT
+    afo.user_id,
+    afo.cohort_week,
+    afo.channel_group,
+    afo.first_order_date,
+    COUNT(o2.id) AS order_count_d30
+  FROM all_first_orders afo
+  LEFT JOIN `covering-app-ccd23.secure_dataset.order_v2` o2
+    ON afo.user_id = o2.user_id
+    AND o2.deleted_at IS NULL
+    AND DATE(o2.created_at, 'Asia/Seoul') >= afo.first_order_date
+    AND DATE(o2.created_at, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 30 DAY)
+  GROUP BY afo.user_id, afo.cohort_week, afo.channel_group, afo.first_order_date
+),
+payment_metrics AS (
+  SELECT
+    afo.user_id,
+    MAX(CASE
+      WHEN r.id IS NOT NULL
+       AND r.deleted_at IS NULL
+       -- TODO: receipt.status 결제완료 값 확인 후 조건 추가
+       -- 확인 쿼리: SELECT DISTINCT status, COUNT(*) FROM `covering-app-ccd23.secure_dataset.receipt` WHERE deleted_at IS NULL GROUP BY status ORDER BY 2 DESC
+       AND DATE(r.created_at, 'Asia/Seoul') >= afo.first_order_date
+       AND DATE(r.created_at, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 30 DAY)
+      THEN 1 ELSE 0
+    END) AS has_payment_d30
+  FROM all_first_orders afo
+  LEFT JOIN `covering-app-ccd23.secure_dataset.order_v2` o2
+    ON afo.user_id = o2.user_id AND o2.deleted_at IS NULL
+  LEFT JOIN `covering-app-ccd23.secure_dataset.order_invoice` oi ON o2.id = oi.order_id
+  LEFT JOIN `covering-app-ccd23.secure_dataset.invoice` inv ON oi.invoice_id = inv.id
+  LEFT JOIN `covering-app-ccd23.secure_dataset.receipt` r ON inv.id = r.invoice_id
+  GROUP BY afo.user_id
+),
+review_metrics AS (
+  SELECT
+    afo.user_id,
+    MAX(CASE
+      WHEN c.id IS NOT NULL
+       AND c.deleted_date IS NULL
+       AND DATE(c.created_date, 'Asia/Seoul') >= afo.first_order_date
+       AND DATE(c.created_date, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 30 DAY)
+      THEN 1 ELSE 0
+    END) AS has_review_d30
+  FROM all_first_orders afo
+  LEFT JOIN `covering-app-ccd23.secure_dataset.comment` c ON afo.user_id = c.user_id
+  GROUP BY afo.user_id
+),
+subscription_metrics AS (
+  SELECT
+    afo.user_id,
+    MAX(CASE
+      WHEN s.id IS NOT NULL
+       AND DATE(s.created_at, 'Asia/Seoul') >= afo.first_order_date
+       AND DATE(s.created_at, 'Asia/Seoul') <= DATE_ADD(afo.first_order_date, INTERVAL 30 DAY)
+      THEN 1 ELSE 0
+    END) AS subscribed_d30
+  FROM all_first_orders afo
+  LEFT JOIN `covering-app-ccd23.secure_dataset.subscription` s ON afo.user_id = s.user_id
+  GROUP BY afo.user_id
+),
+combined AS (
+  SELECT
+    om.user_id,
+    om.cohort_week,
+    om.channel_group,
+    om.order_count_d30,
+    COALESCE(pm.has_payment_d30, 0) AS has_payment_d30,
+    COALESCE(rm.has_review_d30,  0) AS has_review_d30,
+    COALESCE(sm.subscribed_d30,  0) AS subscribed_d30
+  FROM order_metrics om
+  LEFT JOIN payment_metrics      pm ON om.user_id = pm.user_id
+  LEFT JOIN review_metrics       rm ON om.user_id = rm.user_id
+  LEFT JOIN subscription_metrics sm ON om.user_id = sm.user_id
+)
+SELECT
+  TIMESTAMP(cohort_week)                                             AS time,
+  channel_group                                                      AS channel,
+  COUNT(DISTINCT user_id)                                            AS cohort_size,
+  ROUND(AVG(order_count_d30), 2)                                     AS avg_orders_d30,
+  ROUND(COUNTIF(has_payment_d30 = 1) * 100.0 / COUNT(*), 1)         AS d30_payment_rate_pct,
+  ROUND(COUNTIF(has_review_d30  = 1) * 100.0 / COUNT(*), 1)         AS d30_review_rate_pct,
+  ROUND(COUNTIF(subscribed_d30  = 1) * 100.0 / COUNT(*), 1)         AS d30_subscription_rate_pct
+FROM combined
+WHERE cohort_week <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 30 DAY)
+GROUP BY cohort_week, channel_group
+ORDER BY cohort_week DESC, channel_group","[TODO] receipt.status 결제완료 값 확인 필요. 확인 후 payment_metrics CTE의 주석 처리된 AND r.status IN (...) 조건 추가. 코호트 성숙 조건: 30일이 경과한 코호트만 포함."
+개발자_전달사항,DEV1,receipt.status 확인,-,"Panel P5 결제 발생율 쿼리에서 receipt.status의 실제 결제완료 값을 확인 후 조건 추가 필요.",-,-,"SELECT DISTINCT status, COUNT(*) AS cnt
+FROM `covering-app-ccd23.secure_dataset.receipt`
+WHERE deleted_at IS NULL
+GROUP BY status
+ORDER BY cnt DESC","확인된 값(예: SUCCESS / PAID / COMPLETED 중 실제 값)으로 payment_metrics CTE 내 주석 해제 후 적용"
+개발자_전달사항,DEV2,Grafana 변수 포맷,-,"모든 쿼리의 ${referral_channels:singlequote} 는 Grafana Multi-value 변수를 SQL IN 절에 맞게 '값1','값2' 형태로 변환하는 포맷. :singlequote 누락 시 SQL 오류 발생.",,-,-,-
+개발자_전달사항,DEV3,코호트 성숙도 필터,-,"각 패널은 해당 측정 기간(D+2/7/14/30)이 경과한 코호트만 포함. 미성숙 코호트 포함 시 지표가 낮게 왜곡됨. 각 쿼리 하단 WHERE cohort_week <= DATE_SUB(...) 조건으로 처리됨.",-,-,-,-
+개발자_전달사항,DEV4,Grafana 시계열 인식,-,"BigQuery DATE 타입을 Grafana가 시계열로 인식하지 못할 수 있음. 모든 쿼리에서 TIMESTAMP(cohort_week) AS time 으로 변환하여 반환. Grafana 패널에서 time 필드를 X축(Time field)으로 지정 필요.",-,-,-,-
+개발자_전달사항,DEV5,표시 방식,-,"모든 시계열 패널은 선택한 실험군 채널(들) + '전체 평균' 시리즈를 같은 그래프에 함께 표시. CASE WHEN channel IN (...) THEN channel ELSE '전체 평균' END 로 그루핑되어 자동 처리됨.",-,-,-,-

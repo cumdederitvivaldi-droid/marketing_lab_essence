@@ -1,0 +1,5 @@
+name: voc-monitor
+description: "커버링 고객 피드백 VOC 일일/주간 리포트 배치"
+type: batch
+schedule: "30 9 * * *"
+command: "python3 src/main.py scheduled"

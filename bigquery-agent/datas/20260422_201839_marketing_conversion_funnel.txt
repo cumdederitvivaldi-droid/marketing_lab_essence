@@ -1,0 +1,56 @@
+분석명: marketing_conversion_funnel
+설명: Airbridge 기준 마케팅 퍼널 | Channel/Campaign/Ad_Group × 주차별 설치/가입/체험/주문 | 최근 16주 | installs>=10
+추출일시: 2026-04-22 20:18:46
+프로젝트: covering-app-ccd23
+기준: Airbridge Channel/Campaign/Ad_Group (airbridge_dataset.app_events)
+채널매핑: google.adwords→Google, facebook.business→Meta, apple.searchads→Apple, tiktok→TikTok
+
+=== 실행 SQL ===
+
+WITH raw AS (
+  SELECT
+    CASE ae.Channel
+  WHEN 'google.adwords'   THEN 'Google'
+  WHEN 'facebook.business' THEN 'Meta'
+  WHEN 'apple.searchads'  THEN 'Apple'
+  WHEN 'tiktok'           THEN 'TikTok'
+  ELSE ae.Channel END                                                      AS channel,
+    ae.Campaign                                                    AS campaign,
+    ae.Ad_Group                                                    AS ad_group,
+    DATE_TRUNC(PARSE_DATE('%Y-%m-%d', ae.Event_Date), WEEK(MONDAY)) AS event_week,
+    ae.Airbridge_Device_ID,
+    ae.Event_Category
+  FROM `covering-app-ccd23.airbridge_dataset.app_events` ae
+  WHERE ae.Channel IS NOT NULL
+    AND ae.Channel NOT IN ('unattributed', '')
+    AND ae.Ad_Group IS NOT NULL AND ae.Ad_Group != ''
+    AND ae.Event_Category IN ('Install (App)','Sign-up (App)','Start Trial (App)','Order Complete (App)')
+    AND ae.Event_Date >= FORMAT_DATE('%Y-%m-%d', DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 16 WEEK))
+    AND ae.Event_Date <= FORMAT_DATE('%Y-%m-%d', CURRENT_DATE('Asia/Seoul'))
+),
+funnel AS (
+  SELECT
+    event_week, channel, campaign, ad_group,
+    COUNT(DISTINCT CASE WHEN Event_Category = 'Install (App)'        THEN Airbridge_Device_ID END) AS installs,
+    COUNT(DISTINCT CASE WHEN Event_Category = 'Sign-up (App)'        THEN Airbridge_Device_ID END) AS signups,
+    COUNT(DISTINCT CASE WHEN Event_Category = 'Start Trial (App)'    THEN Airbridge_Device_ID END) AS trials,
+    COUNT(DISTINCT CASE WHEN Event_Category = 'Order Complete (App)' THEN Airbridge_Device_ID END) AS orders
+  FROM raw
+  GROUP BY 1, 2, 3, 4
+)
+SELECT
+  event_week,
+  channel,
+  campaign,
+  ad_group,
+  installs,
+  signups,
+  ROUND(SAFE_DIVIDE(signups, installs) * 100, 1)  AS signup_rate_pct,
+  trials,
+  ROUND(SAFE_DIVIDE(trials,  installs) * 100, 1)  AS trial_rate_pct,
+  orders,
+  ROUND(SAFE_DIVIDE(orders,  installs) * 100, 1)  AS order_rate_pct
+FROM funnel
+WHERE installs >= 10
+ORDER BY event_week DESC, installs DESC
+

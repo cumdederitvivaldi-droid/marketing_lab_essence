@@ -1,0 +1,148 @@
+name: Critical Issue Detector
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  detect-critical:
+    name: CodeRabbit 크리티컬 이슈 감지
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request != null) ||
+      github.event_name == 'pull_request_review_comment'
+    steps:
+      - name: CodeRabbit 크리티컬 키워드 감지 및 라벨 추가
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = context.payload.comment.body || '';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // CodeRabbit 봇만 처리 (coderabbitai[bot])
+            const sender = context.payload.comment.user.login;
+            if (!sender.includes('coderabbit')) return;
+
+            // CodeRabbit 실제 크리티컬 패턴
+            // - > [!CAUTION] : GitHub Alerts 마크다운 (가장 심각)
+            // - _⚠️ Potential issue_ : 인라인 리뷰 코멘트 (이탤릭 형식)
+            // - 🚨 : 긴급 경고
+            // - security / vulnerability : 보안 이슈
+            const criticalPatterns = [
+              />\s*\[!CAUTION\]/i,
+              /potential\s+issue/i,
+              /🚨/,
+              /\bsecurity\b/i,
+              /\bvulnerabilit/i,
+              /\bcritical\b/i,
+            ];
+
+            const isCritical = criticalPatterns.some(p => p.test(comment));
+            if (!isCritical) return;
+
+            // PR 번호 추출 (issue_comment vs review_comment)
+            const pr_number = context.payload.issue?.number
+              || context.payload.pull_request?.number;
+            if (!pr_number) return;
+
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+              owner, repo, issue_number: pr_number
+            });
+            const hasLabel = labels.some(l => l.name === 'critical-detected');
+
+            if (!hasLabel) {
+              await github.rest.issues.addLabels({
+                owner, repo, issue_number: pr_number,
+                labels: ['critical-detected']
+              });
+              console.log(`PR #${pr_number}: critical-detected 라벨 추가`);
+            }
+
+  mark-pre-merge-fixed:
+    name: critical 수정 커밋 → pre-merge-fixed 자동 라벨
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
+    steps:
+      - name: critical-detected PR에 새 커밋 push → pre-merge-fixed 라벨 추가
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr_number = context.payload.pull_request.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const { data: labels } = await github.rest.issues.listLabelsOnIssue({
+              owner, repo, issue_number: pr_number
+            });
+            const labelNames = labels.map(l => l.name);
+
+            if (labelNames.includes('critical-detected') && !labelNames.includes('pre-merge-fixed')) {
+              await github.rest.issues.addLabels({
+                owner, repo, issue_number: pr_number,
+                labels: ['pre-merge-fixed']
+              });
+              console.log(`PR #${pr_number}: pre-merge-fixed 라벨 자동 추가 (critical 이슈 수정 커밋 감지)`);
+            }
+
+  notify-failure:
+    name: 장애 알림
+    runs-on: ubuntu-latest
+    needs: [detect-critical, mark-pre-merge-fixed]
+    if: failure()
+    steps:
+      - name: Slack 장애 알림 전송
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: |
+          [ -z "$SLACK_BOT_TOKEN" ] && exit 0
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          python3 - "$RUN_URL" <<'PYEOF' > /tmp/slack-payload.json
+          import json, sys
+          run_url = sys.argv[1]
+          blocks = [
+              {
+                  "type": "section",
+                  "text": {
+                      "type": "mrkdwn",
+                      "text": ":rotating_light: *Critical Detect 실패* — critical 탐지/라벨링 누락 가능",
+                  },
+              },
+              {
+                  "type": "section",
+                  "fields": [
+                      {"type": "mrkdwn", "text": "*실패 단계*\ncritical-detect 워크플로우"},
+                      {"type": "mrkdwn", "text": "*실패 코드*\n`workflow-error`"},
+                  ],
+              },
+              {
+                  "type": "section",
+                  "text": {"type": "mrkdwn", "text": "*실패 사유*\nCodeRabbit critical 탐지 또는 라벨링 중 오류 발생"},
+              },
+              {
+                  "type": "section",
+                  "text": {"type": "mrkdwn", "text": ":wrench: *해결 방법*\nActions 로그에서 원인 확인 후 수동으로 `critical-detected` 라벨을 PR에 추가하세요."},
+              },
+              {
+                  "type": "context",
+                  "elements": [
+                      {"type": "mrkdwn", "text": f"<{run_url}|Actions 로그 보기>"},
+                  ],
+              },
+          ]
+          print(json.dumps({"channel": "C0AUK6902BE", "blocks": blocks}, ensure_ascii=False))
+          PYEOF
+
+          curl -sf -X POST "https://slack.com/api/chat.postMessage" \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            --data-binary @/tmp/slack-payload.json || true

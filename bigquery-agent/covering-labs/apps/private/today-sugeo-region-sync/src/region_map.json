@@ -1,0 +1,105 @@
+{
+  "full_city": {
+    "서울시": [
+      { "sgg_code": "11110", "district_name": "종로구", "region_label": "서울시 종로구" },
+      { "sgg_code": "11140", "district_name": "중구", "region_label": "서울시 중구" },
+      { "sgg_code": "11170", "district_name": "용산구", "region_label": "서울시 용산구" },
+      { "sgg_code": "11200", "district_name": "성동구", "region_label": "서울시 성동구" },
+      { "sgg_code": "11215", "district_name": "광진구", "region_label": "서울시 광진구" },
+      { "sgg_code": "11230", "district_name": "동대문구", "region_label": "서울시 동대문구" },
+      { "sgg_code": "11260", "district_name": "중랑구", "region_label": "서울시 중랑구" },
+      { "sgg_code": "11290", "district_name": "성북구", "region_label": "서울시 성북구" },
+      { "sgg_code": "11305", "district_name": "강북구", "region_label": "서울시 강북구" },
+      { "sgg_code": "11320", "district_name": "도봉구", "region_label": "서울시 도봉구" },
+      { "sgg_code": "11350", "district_name": "노원구", "region_label": "서울시 노원구" },
+      { "sgg_code": "11380", "district_name": "은평구", "region_label": "서울시 은평구" },
+      { "sgg_code": "11410", "district_name": "서대문구", "region_label": "서울시 서대문구" },
+      { "sgg_code": "11440", "district_name": "마포구", "region_label": "서울시 마포구" },
+      { "sgg_code": "11470", "district_name": "양천구", "region_label": "서울시 양천구" },
+      { "sgg_code": "11500", "district_name": "강서구", "region_label": "서울시 강서구" },
+      { "sgg_code": "11530", "district_name": "구로구", "region_label": "서울시 구로구" },
+      { "sgg_code": "11545", "district_name": "금천구", "region_label": "서울시 금천구" },
+      { "sgg_code": "11560", "district_name": "영등포구", "region_label": "서울시 영등포구" },
+      { "sgg_code": "11590", "district_name": "동작구", "region_label": "서울시 동작구" },
+      { "sgg_code": "11620", "district_name": "관악구", "region_label": "서울시 관악구" },
+      { "sgg_code": "11650", "district_name": "서초구", "region_label": "서울시 서초구" },
+      { "sgg_code": "11680", "district_name": "강남구", "region_label": "서울시 강남구" },
+      { "sgg_code": "11710", "district_name": "송파구", "region_label": "서울시 송파구" },
+      { "sgg_code": "11740", "district_name": "강동구", "region_label": "서울시 강동구" }
+    ],
+    "부천시": [
+      { "sgg_code": "41192", "district_name": "원미구", "region_label": "부천시 원미구" },
+      { "sgg_code": "41194", "district_name": "소사구", "region_label": "부천시 소사구" },
+      { "sgg_code": "41196", "district_name": "오정구", "region_label": "부천시 오정구" }
+    ],
+    "안양시": [
+      { "sgg_code": "41171", "district_name": "만안구", "region_label": "안양시 만안구" },
+      { "sgg_code": "41173", "district_name": "동안구", "region_label": "안양시 동안구" }
+    ],
+    "구리시": [
+      { "sgg_code": "41310", "district_name": "구리시", "region_label": "구리시" }
+    ],
+    "의정부시": [
+      { "sgg_code": "41150", "district_name": "의정부시", "region_label": "의정부시" }
+    ]
+  },
+  "partial": {
+    "하남시": {
+      "__self__": { "sgg_code": "41450", "district_name": "하남시", "region_label": "하남시" }
+    },
+    "광명시": {
+      "__self__": { "sgg_code": "41210", "district_name": "광명시", "region_label": "광명시" }
+    },
+    "고양시": {
+      "일산동구": { "sgg_code": "41285", "district_name": "일산동구", "region_label": "고양시 일산동구" },
+      "일산서구": { "sgg_code": "41287", "district_name": "일산서구", "region_label": "고양시 일산서구" },
+      "덕양구": { "sgg_code": "41281", "district_name": "덕양구", "region_label": "고양시 덕양구" }
+    },
+    "성남시": {
+      "분당구": { "sgg_code": "41135", "district_name": "분당구", "region_label": "성남시 분당구" },
+      "수정구": { "sgg_code": "41131", "district_name": "수정구", "region_label": "성남시 수정구" },
+      "중원구": { "sgg_code": "41133", "district_name": "중원구", "region_label": "성남시 중원구" }
+    },
+    "인천시": {
+      "부평구": { "sgg_code": "28237", "district_name": "부평구", "region_label": "인천시 부평구" },
+      "남동구": { "sgg_code": "28200", "district_name": "남동구", "region_label": "인천시 남동구" },
+      "계양구": { "sgg_code": "28245", "district_name": "계양구", "region_label": "인천시 계양구" },
+      "연수구": { "sgg_code": "28185", "district_name": "연수구", "region_label": "인천시 연수구" },
+      "서구": { "sgg_code": "28260", "district_name": "서구", "region_label": "인천시 서구" },
+      "미추홀구": { "sgg_code": "28177", "district_name": "미추홀구", "region_label": "인천시 미추홀구" },
+      "중구": { "sgg_code": "28110", "district_name": "중구", "region_label": "인천시 중구" }
+    },
+    "수원시": {
+      "장안구": { "sgg_code": "41111", "district_name": "장안구", "region_label": "수원시 장안구" },
+      "권선구": { "sgg_code": "41113", "district_name": "권선구", "region_label": "수원시 권선구" },
+      "팔달구": { "sgg_code": "41115", "district_name": "팔달구", "region_label": "수원시 팔달구" },
+      "영통구": { "sgg_code": "41117", "district_name": "영통구", "region_label": "수원시 영통구" }
+    },
+    "군포시": {
+      "__self__": { "sgg_code": "41410", "district_name": "군포시", "region_label": "군포시" }
+    },
+    "안산시": {
+      "상록구": { "sgg_code": "41271", "district_name": "상록구", "region_label": "안산시 상록구" },
+      "단원구": { "sgg_code": "41273", "district_name": "단원구", "region_label": "안산시 단원구" }
+    },
+    "시흥시": {
+      "__self__": { "sgg_code": "41390", "district_name": "시흥시", "region_label": "시흥시" }
+    },
+    "용인시": {
+      "수지구": { "sgg_code": "41465", "district_name": "수지구", "region_label": "용인시 수지구" },
+      "기흥구": { "sgg_code": "41463", "district_name": "기흥구", "region_label": "용인시 기흥구" }
+    },
+    "김포시": {
+      "__self__": { "sgg_code": "41570", "district_name": "김포시", "region_label": "김포시" }
+    },
+    "남양주시": {
+      "__self__": { "sgg_code": "41360", "district_name": "남양주시", "region_label": "남양주시" }
+    },
+    "양주시": {
+      "__self__": { "sgg_code": "41630", "district_name": "양주시", "region_label": "양주시" }
+    },
+    "파주시": {
+      "__self__": { "sgg_code": "41480", "district_name": "파주시", "region_label": "파주시" }
+    }
+  }
+}

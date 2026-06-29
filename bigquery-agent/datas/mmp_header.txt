@@ -1,0 +1,4 @@
+Row 0: ['기간', datetime.datetime(2026, 4, 14, 0, 0), datetime.datetime(2026, 4, 20, 0, 0), nan, nan, nan, nan]
+Row 1: ['Campaign', 'Ad', 'Total_attributions', 'Installs', 'Cost', 'Event_count_af_complete_registration', 'Event_unique_users_af_purchase']
+Row 2: ['AOS_논타겟_앱홍보(구매)_26.01.28', 'aos_vd_all_필요없어요(친구)3_cr1_25.04.08', 60, 60, 327716, 35, 4]
+Row 3: ['AOS_논타겟_앱홍보(구매)_26.01.28', 'aos_vd_all_프로모션_폐기물(폐기물)2_dh1_26.01.28', 0, 0, 306, 0, 0]

@@ -1,0 +1,22 @@
+쿼리 설명: Facebook Ads Graph API 리포트 자동 생성
+계정: 커버링 (act_225607806262602)
+조회 기간: last_30d
+추출 일시: 2026-04-29 22:55:13
+캠페인 수: 132
+소재(Ad) 수: 42
+
+컬럼 설명 (CSV):
+  campaign_name  = 캠페인명
+  adset_name     = 광고세트명 (Airbridge sub_publisher_2 매핑 대상)
+  ad_name        = 소재명 (Airbridge sub_publisher_3 매핑 대상)
+  spend          = 지출액 (KRW)
+  impressions    = 노출수
+  clicks         = 클릭수
+  ctr            = 클릭률 (소수점, ×100 = %)
+  cpc            = 클릭당 비용 (KRW)
+  installs       = 앱 설치수 (mobile_app_install 기준)
+  cpi            = 설치당 비용 (KRW)
+
+생성 파일:
+  datas/20260429_225513_facebook_ads_report.md  ← Markdown 리포트
+  datas/20260429_225513_facebook_ads_ad_level.csv  ← 소재 레벨 raw CSV

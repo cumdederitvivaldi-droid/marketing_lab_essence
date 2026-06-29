@@ -1,0 +1,5 @@
+name: ring-quiz-monitoring-report
+description: "링퀴즈 일일 모니터링 Slack 리포트 - 매일 09:00 KST 실험실 발송"
+type: batch
+schedule: "0 9 * * *"
+command: "python3 src/main.py"

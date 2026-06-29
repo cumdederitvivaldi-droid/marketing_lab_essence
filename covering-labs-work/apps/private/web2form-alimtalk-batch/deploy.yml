@@ -1,0 +1,5 @@
+name: web2form-alimtalk-batch
+description: "웹폼 전화번호 입력 시 FlareLane 알림톡 자동 발송 (5분마다 폴링)"
+type: batch
+schedule: "*/5 * * * *"
+command: "python3 src/main.py"

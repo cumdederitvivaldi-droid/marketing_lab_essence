@@ -1,0 +1,22 @@
+<svg width="280" height="160" viewBox="0 0 280 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 앱 미리보기 프레임 -->
+  <rect x="0" y="0" width="280" height="160" rx="12" fill="white"/>
+  <!-- 수거신청 버튼 -->
+  <rect x="30" y="20" width="220" height="44" rx="8" fill="#008AE5"/>
+  <text x="140" y="47" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="15" font-weight="600" fill="white">수거신청</text>
+  <!-- 위치 아이콘 + 주소 -->
+  <circle cx="55" cy="82" r="6" fill="#FFBF00"/>
+  <text x="68" y="86" font-family="Pretendard, sans-serif" font-size="11" fill="#434A56">관악구</text>
+  <!-- 봉투담기 행 -->
+  <rect x="30" y="105" width="220" height="40" rx="8" fill="#F5F7FA"/>
+  <rect x="42" y="113" width="24" height="24" rx="4" fill="#E5F4FF"/>
+  <!-- 봉투 아이콘 작은 것 -->
+  <path d="M48 119C48 119 49 117 54 117C59 117 60 119 60 119L61 129C61 130 60 131 59 131H49C48 131 47 130 47 129L48 119Z" fill="#008AE5"/>
+  <text x="75" y="129" font-family="Pretendard, sans-serif" font-size="12" font-weight="600" fill="#16191D">봉투담기</text>
+  <!-- 수거 무료 뱃지 -->
+  <rect x="140" y="117" width="52" height="20" rx="4" fill="#FF3358"/>
+  <text x="166" y="131" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="10" font-weight="600" fill="white">수거 무료</text>
+  <!-- 화살표 -->
+  <path d="M210 127L216 127" stroke="#434A56" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M213 124L216 127L213 130" stroke="#434A56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

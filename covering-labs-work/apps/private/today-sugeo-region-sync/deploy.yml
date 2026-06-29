@@ -1,0 +1,5 @@
+name: today-sugeo-region-sync
+description: "오늘수거 공개 서비스 지역을 매일 수집해 시군구 기준 스냅샷으로 저장하는 배치"
+type: batch
+schedule: "0 8 * * *"
+command: "python3 src/main.py"

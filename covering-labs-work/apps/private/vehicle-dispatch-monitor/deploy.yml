@@ -1,0 +1,5 @@
+name: vehicle-dispatch-monitor
+description: "차량배차 모니터 — 매일 21:00 KST 실행"
+type: batch
+schedule: "0 21 * * *"
+command: "python3 monitor.py --loop"

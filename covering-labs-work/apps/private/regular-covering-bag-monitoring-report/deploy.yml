@@ -1,0 +1,5 @@
+name: regular-covering-bag-monitoring-report
+description: "일반 커버링 봉투 모니터링 Slack 리포트 - 매일 09:00 KST 실행"
+type: batch
+schedule: "0 9 * * *"
+command: "python3 src/main.py"

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인플루언서 PA — 25.10~26.04 성과 시각화</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; gap: 16px; margin-bottom: 16px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 12px; }
+  canvas { max-height: 260px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .kpi .value { font-size: 18px; font-weight: 700; color: #2563eb; }
+  .kpi .sub { font-size: 11px; color: #666; margin-top: 3px; }
+  .kpi .value.green { color: #16a34a; }
+  .kpi .value.purple { color: #7c3aed; }
+  .kpi .value.orange { color: #ea580c; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee; }
+  th { font-weight: 600; color: #555; background: #fafafa; font-size: 11px; }
+  td.num { text-align: right; font-feature-settings: 'tnum'; }
+  td.highlight { color: #16a34a; font-weight: 700; }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: #666; flex-wrap: wrap; margin-bottom: 8px; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  .footer { font-size: 11px; color: #888; margin-top: 8px; text-align: right; }
+</style>
+</head>
+<body>
+<h2>🤝 인플루언서 PA — 25.10 ~ 26.04 성과 시각화</h2>
+<p class="subtitle">3채널(Meta·Google·TikTok) 인플루언서/PA 소재 누적 성과 · CPA 35,233원 → 12,042원 (-66%)</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">최저 CPA (26.03)</div><div class="value green">12,042원</div><div class="sub">25.11 대비 -66%</div></div>
+  <div class="kpi"><div class="label">최고 월 구매 (25.11)</div><div class="value">3,455건</div><div class="sub">단일 월 최대 볼륨</div></div>
+  <div class="kpi"><div class="label">CPA 개선율</div><div class="value purple">-66%</div><div class="sub">최고 → 최저 CPA</div></div>
+  <div class="kpi"><div class="label">누적 구매</div><div class="value orange">12,799건</div><div class="sub">3채널 합산</div></div>
+</div>
+
+<div class="card" style="margin-bottom:16px;">
+  <h3>📉 월별 CPA 추이 — PA 도입 이후 구조적 하락 (3채널 합산)</h3>
+  <div class="legend">
+    <span><span class="dot" style="background:#2563eb"></span>광고비 (왼쪽 축)</span>
+    <span><span class="dot" style="background:#16a34a"></span>구매 CPA (오른쪽 축)</span>
+  </div>
+  <canvas id="cpaChart"></canvas>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <h3>📊 월별 구매수 추이</h3>
+    <canvas id="purchaseChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>🔀 채널별 CPA 비교 (25.11 ~ 26.04)</h3>
+    <canvas id="channelChart"></canvas>
+  </div>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <h3>🏆 Google Ads — 인플/PA 광고그룹 CPA 베스트</h3>
+    <table>
+      <thead><tr><th>광고그룹</th><th class="num">구매</th><th class="num">CPA</th></tr></thead>
+      <tbody>
+        <tr><td>dg_aos_web2app_자취생 (26.02)</td><td class="num">36</td><td class="num highlight">4,106원</td></tr>
+        <tr><td>dg_aos_web2app_육아·임산부 (26.02)</td><td class="num">17</td><td class="num highlight">4,664원</td></tr>
+        <tr><td>uac_aos_purchase_aim_PA_1 (26.02)</td><td class="num">1,302</td><td class="num highlight">5,040원</td></tr>
+        <tr><td>dg_aos_web2app_신혼·커플 (26.02)</td><td class="num">60</td><td class="num highlight">6,383원</td></tr>
+        <tr><td>uac_ios_purchase_aim_PA_1 (25.12)</td><td class="num">1,731</td><td class="num highlight">7,927원</td></tr>
+        <tr><td>dg_aos_web2app_뷰티 (26.02)</td><td class="num">30</td><td class="num">8,568원</td></tr>
+        <tr><td>dg_aos_web2app_살림·청소 (26.02)</td><td class="num">35</td><td class="num">10,585원</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>🏆 Meta — 인플/PA 소재 베스트 (구매 볼륨)</h3>
+    <table>
+      <thead><tr><th>소재</th><th class="num">구매</th><th class="num">CPA</th></tr></thead>
+      <tbody>
+        <tr><td>오순의집2 ios (26.01)</td><td class="num">1,048</td><td class="num">42,684원</td></tr>
+        <tr><td>오순의집2 ios (25.11)</td><td class="num">775</td><td class="num">51,770원</td></tr>
+        <tr><td>오순의집2 aos (26.02)</td><td class="num">270</td><td class="num">28,526원</td></tr>
+        <tr><td>지지팀장7 ios (26.01)</td><td class="num">265</td><td class="num">47,926원</td></tr>
+        <tr><td>주도연(3월)4 ios (26.03)</td><td class="num">258</td><td class="num highlight">9,347원</td></tr>
+        <tr><td>주도연(3월)4 aos (26.03)</td><td class="num">132</td><td class="num highlight">4,937원</td></tr>
+        <tr><td>살림알림(3월)7 aos (26.03)</td><td class="num">69</td><td class="num highlight">3,834원</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h3>📅 인플/PA 월별 시계열 — 3채널 합산 (표)</h3>
+  <table>
+    <thead><tr><th>월</th><th class="num">구매수</th><th class="num">구매 CPA</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>2025-01</td><td class="num">2</td><td class="num">112,848원</td><td>실험 단계</td></tr>
+      <tr><td>2025-10</td><td class="num">4</td><td class="num">129,571원</td><td>시은니야 라이센스 학습</td></tr>
+      <tr><td>2025-11</td><td class="num">3,455</td><td class="num">35,233원</td><td>PA 본격 도입 / 단일 월 최대 볼륨</td></tr>
+      <tr><td>2025-12</td><td class="num">2,481</td><td class="num highlight">17,210원</td><td>1차 효율 검증</td></tr>
+      <tr><td>2026-01</td><td class="num">3,157</td><td class="num">44,803원</td><td>2차 확장 / 예산 ↑</td></tr>
+      <tr><td>2026-02</td><td class="num">2,350</td><td class="num highlight">16,974원</td><td>web2app 자취생 4,106원</td></tr>
+      <tr><td>2026-03</td><td class="num">1,048</td><td class="num highlight">12,042원</td><td>친구초대 PA — 최저점</td></tr>
+      <tr><td>2026-04</td><td class="num">302</td><td class="num">54,616원</td><td>t-roas 실험 (효율 저하)</td></tr>
+    </tbody>
+  </table>
+  <div class="footer">출처: Meta·Google·TikTok 광고 관리자 실측 (광고그룹/소재명에 "인플루언서" 또는 "PA" 텍스트 포함)</div>
+</div>
+
+<script>
+const FMT_KRW = v => '₩' + v.toLocaleString();
+const FMT_CNT = v => v.toLocaleString() + '건';
+
+// 월별 시계열 (3채널 합산)
+const months = ['25-01','25-10','25-11','25-12','26-01','26-02','26-03','26-04'];
+const spend = [225695, 518283, 121729840, 42696998, 141442043, 39888019, 12620371, 16494043];
+const purchases = [2, 4, 3455, 2481, 3157, 2350, 1048, 302];
+const cpa = [112848, 129571, 35233, 17210, 44803, 16974, 12042, 54616];
+// Normalize spend to index (25-11 = 100)
+const spendBase = spend[2];
+const spendIdx = spend.map(v => Math.round(v / spendBase * 100));
+
+new Chart(document.getElementById('cpaChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { type: 'bar', label: '광고비 지수', data: spendIdx, backgroundColor: 'rgba(37,99,235,0.7)', yAxisID: 'y' },
+      { type: 'line', label: '구매 CPA (원)', data: cpa, borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.15)', borderWidth: 3, pointRadius: 5, yAxisID: 'y1', tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.datasetIndex === 0 ? `광고비 지수: ${ctx.raw}` : `CPA: ${ctx.raw.toLocaleString()}원` } } },
+    scales: {
+      y: { position: 'left', beginAtZero: true, ticks: { callback: v => v }, title: { display: true, text: '광고비 지수 (25.11=100)' } },
+      y1: { position: 'right', beginAtZero: true, ticks: { callback: v => (v/1000).toFixed(0) + 'K' }, title: { display: true, text: 'CPA (원)' }, grid: { drawOnChartArea: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('purchaseChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{ label: '구매수', data: purchases, borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,0.18)', fill: true, borderWidth: 3, pointRadius: 5, tension: 0.3 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => FMT_CNT(ctx.raw) } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() + '건' } } }
+  }
+});
+
+// 채널별 CPA 비교
+const channelMonths = ['25-11','25-12','26-01','26-02','26-03','26-04'];
+new Chart(document.getElementById('channelChart'), {
+  type: 'line',
+  data: {
+    labels: channelMonths,
+    datasets: [
+      { label: 'Meta', data: [53104,58850,41419,38264,11229,44004], borderColor: '#1877f2', backgroundColor: 'rgba(24,119,242,0.12)', borderWidth: 2.5, pointRadius: 4, tension: 0.3 },
+      { label: 'Google', data: [32911,12959,50669,5733,14178,115744], borderColor: '#ea4335', backgroundColor: 'rgba(234,67,53,0.12)', borderWidth: 2.5, pointRadius: 4, tension: 0.3 },
+      { label: 'TikTok', data: [23214,16372,null,null,null,null], borderColor: '#000000', backgroundColor: 'rgba(0,0,0,0.1)', borderWidth: 2.5, pointRadius: 4, tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.raw ? FMT_KRW(ctx.raw) : 'N/A') } } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '₩' + (v/1000).toFixed(0) + 'K' }, title: { display: true, text: 'CPA' } } }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+name: new-region-weekly-monitor
+description: "신규 지역 주간 Slack 모니터 배치 — 권역별 MAU 500 도달 추이와 리스크 요약 (월요일 10:00 KST)"
+type: batch
+schedule: "0 10 * * 1"
+command: "python3 src/main.py"

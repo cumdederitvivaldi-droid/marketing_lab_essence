@@ -1,0 +1,334 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/covering-talk/fonts/PretendardVariable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.75rem;
+  /* 토스 스타일 컬러 */
+  --background: oklch(0.975 0 0);        /* #F9FAFB 밝은 회색 배경 */
+  --foreground: oklch(0.13 0.01 264);    /* #191F28 진한 네이비 */
+  --card: oklch(1 0 0);                  /* 흰색 카드 */
+  --card-foreground: oklch(0.13 0.01 264);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.01 264);
+  --primary: oklch(0.65 0.16 240);        /* 브랜드 블루 #1AA3FF */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0.005 264);
+  --secondary-foreground: oklch(0.13 0.01 264);
+  --muted: oklch(0.95 0.005 264);        /* #F2F4F6 */
+  --muted-foreground: oklch(0.56 0.01 264); /* #8B95A1 */
+  --accent: oklch(0.95 0.02 264);
+  --accent-foreground: oklch(0.65 0.16 240);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.91 0.005 264);       /* #E5E8EB */
+  --input: oklch(0.91 0.005 264);
+  --ring: oklch(0.65 0.16 240);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  /* 채널톡 스타일 사이드바 — 다크 네이비 */
+  --sidebar: oklch(0.18 0.02 264);           /* #1A1E2B */
+  --sidebar-foreground: oklch(0.85 0.01 264);
+  --sidebar-primary: oklch(0.65 0.16 240);    /* 브랜드 블루 */
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.25 0.03 264);    /* 호버 */
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.28 0.02 264);
+  --sidebar-ring: oklch(0.65 0.16 240);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ─── 스크롤바 다크모드 ─── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.15) transparent;
+}
+.dark * {
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.25);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.25);
+}
+/* ─── 앱 전용 시맨틱 컬러 (인라인 스타일용) ─── */
+:root {
+  --app-bg: #F7F8FA;
+  --app-surface: #FFFFFF;
+  --app-surface-secondary: #F2F4F6;
+  --app-surface-hover: #F7F8FA;
+  --app-border: #E8EBED;
+  --app-border-light: #F2F4F6;
+  --app-text-primary: #191F28;
+  --app-text-secondary: #6B7684;
+  --app-text-tertiary: #8B95A1;
+  --app-text-placeholder: #B0B8C1;
+  --app-accent: #1AA3FF;
+  --app-accent-hover: #0D8CE6;
+  --app-accent-light: #EBF4FF;
+  --app-nav-bg: #FFFFFF;
+  --app-nav-hover: #F2F4F6;
+  --app-nav-text: #8B95A1;
+  --app-nav-border: #E8EBED;
+  --app-input-bg: #FFFFFF;
+  --app-input-border: #D1D5DB;
+  --app-modal-backdrop: rgba(0,0,0,0.4);
+  --app-modal-bg: #FFFFFF;
+  --app-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --app-shadow-lg: 0 8px 40px rgba(0,0,0,0.15);
+  --app-bubble-user-bg: #F2F4F6;
+  --app-bubble-user-border: none;
+  --app-bubble-user-text: #191F28;
+  --app-bubble-manager-bg: #1A8CFF;
+  --app-bubble-manager-text: #FFFFFF;
+  --app-bubble-bot-bg: #EBF4FF;
+  --app-bubble-bot-text: #4B5563;
+  --app-bubble-internal-bg: #FFF8E1;
+  --app-bubble-internal-border: #FFB300;
+  --app-chat-input-bg: #F7F8FA;
+  --app-chat-input-border: #E8EBED;
+  --app-chat-input-text: #191F28;
+  --app-tag-red-bg: #FEE2E2;
+  --app-tag-red-text: #DC2626;
+  --app-disabled-bg: #E8EBED;
+  --app-disabled-text: #B0B8C1;
+  --app-selected-bg: #EBF5FF;
+  --app-info-box-bg: #F0F7FF;
+  --app-pagination-bg: #E8F7FF;
+  /* 태그/뱃지 색상 */
+  --app-tag-blue-bg: #E8F7FF;
+  --app-tag-blue-text: #1AA3FF;
+  --app-tag-green-bg: #E8F5E9;
+  --app-tag-green-text: #2E7D32;
+  --app-tag-orange-bg: #FFF3E0;
+  --app-tag-orange-text: #E65100;
+  --app-tag-purple-bg: #F3E8FF;
+  --app-tag-purple-text: #7C3AED;
+  --app-tag-yellow-bg: #FFF8E1;
+  --app-tag-yellow-text: #F57F17;
+  --app-tag-teal-bg: #E0F2F1;
+  --app-tag-teal-text: #00695C;
+  --app-tag-pink-bg: #FCE4EC;
+  --app-tag-pink-text: #C62828;
+  /* 버튼 */
+  --app-btn-primary-bg: #1AA3FF;
+  --app-btn-primary-text: #FFFFFF;
+  --app-btn-danger-bg: #FEF2F2;
+  --app-btn-danger-text: #DC2626;
+  --app-btn-success-bg: #ECFDF5;
+  --app-btn-success-text: #059669;
+  /* AI 스펙 박스 */
+  --app-ai-spec-bg: #F5F3FF;
+  --app-ai-spec-border: #DDD6FE;
+  --app-ai-spec-text: #5B21B6;
+}
+
+.dark {
+  --app-bg: #111315;
+  --app-surface: #1B1D1F;
+  --app-surface-secondary: #232527;
+  --app-surface-hover: #2D2F31;
+  --app-border: #3A3D40;
+  --app-border-light: #2D2F31;
+  --app-text-primary: #E8EBED;
+  --app-text-secondary: #9CA3AF;
+  --app-text-tertiary: #6B7684;
+  --app-text-placeholder: #4B5563;
+  --app-accent: #3B82F6;
+  --app-accent-hover: #2563EB;
+  --app-accent-light: rgba(59,130,246,0.15);
+  --app-nav-bg: #111315;
+  --app-nav-hover: #1B1D1F;
+  --app-nav-text: #6B7684;
+  --app-nav-border: #232527;
+  --app-input-bg: #232527;
+  --app-input-border: #374151;
+  --app-modal-backdrop: rgba(0,0,0,0.6);
+  --app-modal-bg: #1B1D1F;
+  --app-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  --app-shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+  --app-bubble-user-bg: #2A2D30;
+  --app-bubble-user-border: none;
+  --app-bubble-user-text: #E8EBED;
+  --app-bubble-manager-bg: #2563EB;
+  --app-bubble-manager-text: #FFFFFF;
+  --app-bubble-bot-bg: #1E2A3A;
+  --app-bubble-bot-text: #9CA3AF;
+  --app-bubble-internal-bg: #332B00;
+  --app-bubble-internal-border: #B8860B;
+  --app-chat-input-bg: #0D0F10;
+  --app-chat-input-border: #1B1D1F;
+  --app-chat-input-text: #E8EBED;
+  --app-tag-red-bg: rgba(220,38,38,0.2);
+  --app-tag-red-text: #F87171;
+  --app-disabled-bg: #2D2F31;
+  --app-disabled-text: #4B5563;
+  --app-selected-bg: rgba(59,130,246,0.15);
+  --app-info-box-bg: rgba(59,130,246,0.1);
+  --app-pagination-bg: rgba(59,130,246,0.15);
+  /* 태그/뱃지 색상 */
+  --app-tag-blue-bg: rgba(59,130,246,0.15);
+  --app-tag-blue-text: #60A5FA;
+  --app-tag-green-bg: rgba(34,197,94,0.15);
+  --app-tag-green-text: #4ADE80;
+  --app-tag-orange-bg: rgba(249,115,22,0.15);
+  --app-tag-orange-text: #FB923C;
+  --app-tag-purple-bg: rgba(139,92,246,0.15);
+  --app-tag-purple-text: #A78BFA;
+  --app-tag-yellow-bg: rgba(234,179,8,0.15);
+  --app-tag-yellow-text: #FACC15;
+  --app-tag-teal-bg: rgba(20,184,166,0.15);
+  --app-tag-teal-text: #2DD4BF;
+  --app-tag-pink-bg: rgba(239,68,68,0.15);
+  --app-tag-pink-text: #F87171;
+  /* 버튼 */
+  --app-btn-primary-bg: #3B82F6;
+  --app-btn-primary-text: #FFFFFF;
+  --app-btn-danger-bg: rgba(239,68,68,0.15);
+  --app-btn-danger-text: #F87171;
+  --app-btn-success-bg: rgba(34,197,94,0.15);
+  --app-btn-success-text: #4ADE80;
+  /* AI 스펙 박스 */
+  --app-ai-spec-bg: rgba(139,92,246,0.1);
+  --app-ai-spec-border: rgba(139,92,246,0.3);
+  --app-ai-spec-text: #A78BFA;
+}

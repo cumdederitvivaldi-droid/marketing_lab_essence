@@ -1,0 +1,9 @@
+<svg width="120" height="140" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 봉투 본체 -->
+  <path d="M20 45C20 45 25 25 60 25C95 25 100 45 100 45L105 120C105 125 100 130 95 130H25C20 130 15 125 15 120L20 45Z" fill="#7EC8F2"/>
+  <!-- 봉투 묶음 부분 -->
+  <path d="M40 25C40 25 45 10 60 10C75 10 80 25 80 25" stroke="#7EC8F2" stroke-width="8" stroke-linecap="round"/>
+  <path d="M45 25L50 18M75 25L70 18" stroke="#5BB8E8" stroke-width="3" stroke-linecap="round"/>
+  <!-- 220L 텍스트 -->
+  <text x="60" y="85" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="24" font-weight="700" fill="white">220L</text>
+</svg>

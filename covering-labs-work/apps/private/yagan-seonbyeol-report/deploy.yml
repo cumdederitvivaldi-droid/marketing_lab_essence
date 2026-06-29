@@ -1,0 +1,5 @@
+name: yagan-seonbyeol-report
+description: "매일 23시 야간 기사 도착지별 선별장 현황을 #운영팀_선별 채널에 리포트"
+type: batch
+schedule: "0 23 * * *"
+command: "python3 src/main.py"

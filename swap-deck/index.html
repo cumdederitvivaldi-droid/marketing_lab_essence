@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>swap 모빌리티 구독 그로스 전략 — 이도형</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --blue-50:#EEF3FF; --blue-100:#DCE6FF; --blue-500:#1E5BFF; --blue-600:#1547D6; --blue-700:#0F37A8;
+  --ink-900:#0E1116; --ink-800:#1A1D24; --ink-700:#2A2F3A; --ink-500:#5A6172; --ink-300:#9AA1B2;
+  --paper:#FFFFFF; --paper-2:#F6F8FC; --line:#E6EAF2;
+  --mint-500:#12B886; --mint-50:#E6FAF3;
+  --rose-500:#FF4D6A; --rose-50:#FFEDF0;
+  --amber-500:#F59E0B; --amber-50:#FEF6E7;
+  --r:16px; --shadow:0 1px 2px rgba(14,17,22,.04), 0 8px 24px rgba(14,17,22,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#0a0c10;font-family:"Pretendard",-apple-system,sans-serif;color:var(--ink-800);-webkit-font-smoothing:antialiased}
+body{display:flex;align-items:center;justify-content:center;overflow:hidden}
+#scaler{width:1280px;height:720px;position:relative;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--paper);
+  display:none;flex-direction:column;padding:64px 80px;overflow:hidden}
+.slide.active{display:flex}
+.slide.dark{background:var(--ink-900);color:#fff}
+.slide.tint{background:var(--paper-2)}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;letter-spacing:.04em;
+  color:var(--blue-600);text-transform:uppercase;margin-bottom:16px}
+.kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--blue-500)}
+h1{font-size:62px;line-height:1.12;font-weight:800;letter-spacing:-.02em;color:var(--ink-900)}
+h2{font-size:40px;line-height:1.18;font-weight:800;letter-spacing:-.02em;color:var(--ink-900)}
+.sub{font-size:20px;line-height:1.5;color:var(--ink-500);font-weight:500}
+.u-blue{color:var(--blue-500)} .u-mint{color:var(--mint-500)} .u-rose{color:var(--rose-500)} .u-amber{color:#B7791F}
+.u-blue-mark{background:linear-gradient(transparent 58%, var(--blue-100) 58%);padding:0 4px}
+.dark h1,.dark h2{color:#fff}.dark .sub{color:var(--ink-300)}
+
+.row{display:flex;gap:22px}.col{flex:1}.grow{flex:1}.mt-a{margin-top:auto}
+.cards{display:grid;gap:16px}.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;box-shadow:var(--shadow)}
+.card.tint{background:var(--paper-2);box-shadow:none}
+.card.blue{background:var(--blue-50);border-color:var(--blue-100)}
+.card.mint{background:var(--mint-50);border-color:#BFefdc}
+.card.amber{background:var(--amber-50);border-color:#F6E3B8}
+.card.ink{background:var(--ink-900);color:#fff;border:none}
+.card h3{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px;color:var(--ink-900)}
+.card.ink h3{color:#fff}
+.card p{font-size:16px;line-height:1.55;color:var(--ink-500)}
+.card.ink p{color:var(--ink-300)}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--blue-50);color:var(--blue-600);margin-bottom:10px}
+.tag.mint{background:var(--mint-50);color:var(--mint-500)} .tag.rose{background:var(--rose-50);color:var(--rose-500)}
+.tag.amber{background:var(--amber-50);color:#B7791F} .tag.ink{background:#232733;color:#fff}
+
+.metric .big{font-size:46px;font-weight:800;letter-spacing:-.02em;color:var(--blue-500);line-height:1}
+.metric .lbl{font-size:15px;color:var(--ink-500);margin-top:8px;font-weight:600}
+
+ul.list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:4px}
+ul.list li{font-size:17px;line-height:1.5;color:var(--ink-700);padding-left:24px;position:relative}
+ul.list li::before{content:"";position:absolute;left:0;top:8px;width:9px;height:9px;border-radius:3px;background:var(--blue-500)}
+ul.list li b{color:var(--ink-900);font-weight:800}
+.dark ul.list li{color:var(--ink-300)} .dark ul.list li b{color:#fff}
+
+/* charts */
+.chart{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.bar-row{display:flex;align-items:center;gap:12px}
+.bar-row .name{width:90px;font-size:14px;font-weight:700;color:var(--ink-700);text-align:right;flex:none;line-height:1.2}
+.bar-track{flex:1;height:26px;background:var(--paper-2);border-radius:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;background:var(--blue-500);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-size:13px;font-weight:800}
+.bar-fill.mint{background:var(--mint-500)}.bar-fill.ink{background:var(--ink-700)}.bar-fill.b2{background:var(--blue-600)}
+.chip{font-size:11.5px;font-weight:700;color:var(--ink-500);background:var(--paper-2);border:1px solid var(--line);padding:4px 9px;border-radius:999px}
+.chip.on{background:var(--blue-500);color:#fff;border-color:var(--blue-500)}
+.gbar{display:flex;height:23px;border-radius:7px;overflow:hidden;font-size:11.5px;font-weight:800;margin-bottom:13px}
+.gbar .m{background:var(--blue-500);color:#fff;display:flex;align-items:center;padding-left:8px}
+.gbar .f{background:#d3dbeb;color:var(--ink-500);display:flex;align-items:center;justify-content:center}
+.lab{font-size:12px;font-weight:700;color:var(--ink-500);margin-bottom:5px}
+.srch{background:#fff;border-bottom:1px solid var(--line);padding:11px 15px;display:flex;align-items:center;gap:9px}
+.srch .nlogo{font-size:18px;font-weight:900;color:#03c75a}
+.srch .q{flex:1;background:var(--paper-2);border:1.5px solid #03c75a;border-radius:8px;padding:7px 12px;font-size:14px;font-weight:700;color:var(--ink-800)}
+.ad{border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+.ad .src{font-size:11.5px;color:var(--ink-300);font-weight:700;margin-bottom:3px}
+.ad .ttl{font-size:14.5px;font-weight:800;color:var(--ink-900);line-height:1.3}
+.ad .ds{font-size:12.5px;color:var(--ink-500);margin-top:3px}
+
+/* asset placeholder */
+.ph{position:relative;border-radius:12px;overflow:hidden;background:var(--paper-2);border:1px dashed #C3CBDA;display:flex;align-items:center;justify-content:center}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.ph .ph-label{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink-300);font-size:13px;font-weight:700;text-align:center;padding:12px}
+.ph .ph-label .file{color:var(--blue-600);font-size:12px;background:var(--blue-50);padding:3px 8px;border-radius:6px}
+.ph.ok{border-style:solid;border-color:var(--line)} .ph.ok .ph-label{display:none}
+
+/* iframe embed */
+.embed{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+.embed iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+.embed .bar{position:absolute;top:0;left:0;right:0;height:30px;background:#fff;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:7px;padding:0 12px;font-size:12px;font-weight:700;color:var(--ink-500);z-index:2}
+.embed .bar .d{width:9px;height:9px;border-radius:50%;background:#ddd}
+.embed .bar a{margin-left:auto;color:var(--blue-600);text-decoration:none;font-weight:800}
+.embed .frame{position:absolute;top:30px;left:0;right:0;bottom:0}
+.embed .frame iframe{height:100%}
+
+.divider{height:1px;background:var(--line);margin:14px 0}.dark .divider{background:#232733}
+.note{font-size:13px;color:var(--ink-300);line-height:1.5}
+.flag{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#B7791F;background:var(--amber-50);border:1px solid #F6E3B8;padding:8px 14px;border-radius:10px;line-height:1.4}
+.big-quote{font-size:29px;line-height:1.5;font-weight:700;letter-spacing:-.01em}
+.big-quote .u-blue-mark{background:linear-gradient(transparent 58%, rgba(30,91,255,.30) 58%)}
+.hero-badge{display:inline-flex;gap:10px;align-items:center;background:#171b22;border:1px solid #262b36;padding:9px 16px;border-radius:999px;font-size:14px;font-weight:700;color:#cdd3e0;margin-bottom:24px}
+.swap-logo{font-size:22px;font-weight:800;letter-spacing:-.02em;color:#fff}.swap-logo span{color:var(--blue-500)}
+.arrow{font-size:28px;color:var(--blue-500);font-weight:800;align-self:center}
+
+.foot{position:absolute;left:80px;right:80px;bottom:26px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink-300);font-weight:600}
+.dark .foot{color:#4a5160}
+.brand-foot{font-weight:800;color:var(--ink-700)}.dark .brand-foot{color:#9aa1b2}
+#dots{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:50}
+#dots button{width:8px;height:8px;border-radius:50%;border:none;background:#3a4150;cursor:pointer;padding:0;transition:.2s}
+#dots button.on{background:var(--blue-500);width:22px;border-radius:5px}
+.help{position:fixed;bottom:13px;right:16px;color:#3a4150;font-size:12px;z-index:50}
+.pageno{position:fixed;bottom:13px;left:16px;color:#3a4150;font-size:12px;font-weight:700;z-index:50}
+</style>
+</head>
+<body>
+<div id="scaler"></div>
+<div id="dots"></div>
+<div class="pageno" id="pageno"></div>
+<div class="help">← → 또는 스페이스로 이동</div>
+
+<script>
+const SLIDES = [];
+function S(html, cls=""){ SLIDES.push(`<section class="slide ${cls}">${html}<div class="foot"><span class="brand-foot">swap × 이도형 그로스 전략</span><span>2026.06</span></div></section>`); }
+// asset placeholder helper
+function A(file, label, h){ return `<div class="ph" style="height:${h}"><img src="assets/${file}" onerror="this.style.display='none'" onload="this.parentNode.classList.add('ok')"><span class="ph-label">🖼️ ${label}<span class="file">assets/${file}</span></span></div>`; }
+// keyword stat card (gender + age) — Naver 키워드도구 데이터
+function KW(name, trend, male, ages){ const fem=100-male;
+  const arows=ages.map(([lbl,pct,cls])=>`<div class="bar-row"><span class="name" style="width:40px;font-size:12px">${lbl}</span><div class="bar-track" style="height:17px"><div class="bar-fill ${cls}" style="width:${Math.max(18,Math.round(pct/35*100))}%;font-size:10.5px;padding-right:7px">${pct}%</div></div></div>`).join('');
+  return `<div class="col card" style="padding:16px 16px"><div style="font-size:17px;font-weight:800;color:var(--ink-900)">${name}</div><div class="note" style="margin-bottom:11px">${trend}</div><div class="lab">성별</div><div class="gbar"><div class="m" style="width:${male}%">남 ${male}%</div><div class="f" style="width:${fem}%">여 ${fem}%</div></div><div class="lab">연령대</div><div class="chart" style="gap:6px">${arows}</div></div>`; }
+// embed helper
+function E(url, title, h){ return `<div class="embed" style="height:${h}"><div class="bar"><span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span>${title}<a href="${url}" target="_blank">새 탭 ↗</a></div><div class="frame"><iframe src="${url}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups"></iframe></div></div>`; }
+
+/* 1 TITLE */
+SLIDES.push(`<section class="slide dark">
+  <div class="hero-badge"><span class="swap-logo">s<span>wap</span></span> · 모빌리티 구독 D2C</div>
+  <div class="kicker"><span class="dot"></span>Growth Strategy · 면접 발표</div>
+  <h1>이륜 모빌리티 구독,<br><span class="u-blue">'배달'</span>이라는 답을 찾다</h1>
+  <p class="sub" style="margin-top:22px;max-width:880px">검색 데이터가 가리키는 하나의 가설 —<br>전기자전거와 오토바이를 <b style="color:#fff">'배달용'</b> 니즈로 묶어 폭발적으로 모객한다.</p>
+  <div style="margin-top:auto;display:flex;gap:12px;align-items:center;color:#9aa1b2;font-size:15px;font-weight:600">
+    <span>이도형 · Growth Marketer</span><span style="opacity:.4">|</span><span>월 매출 40배 성장(예측)</span><span style="opacity:.4">|</span><span>월 광고 4.5억 / 5채널</span>
+  </div>
+</section>`);
+
+/* 2 시장 */
+S(`<div class="kicker"><span class="dot"></span>현황 진단 · Market</div>
+  <h2>D2C 모빌리티 시장은 <span class="u-blue-mark">세 조각으로 단절</span>돼 있다</h2>
+  <p class="sub" style="margin:12px 0 22px">판매 · 구독 · 인증중고를 한 브랜드로 잇는 플레이어는 사실상 없다.</p>
+  <div class="cards c3 grow">
+    <div class="card"><span class="tag ink">판매</span><h3>삼천리 · 알톤</h3><p>제조·판매 중심. 저가 e-bike로 진입장벽은 낮췄으나 '팔고 끝'.</p></div>
+    <div class="card"><span class="tag">구독</span><h3>더스윙 SWAP · 모토벨로</h3><p>월정액·인수형 구독. 아직 초기 단계, 레저 포지셔닝 중심.</p></div>
+    <div class="card"><span class="tag mint">인증중고</span><h3>라이트브라더스</h3><p>X-ray 검수+보증. 단 <b>프리미엄 카본만</b> — 생활형 e-bike는 공백.</p></div>
+  </div>
+  <div class="card blue" style="margin-top:18px"><p style="font-size:17px;color:var(--ink-800)"><b>핵심 공백</b> — 자동차의 인증중고·구독·정비망·매입 4종 신뢰 인프라가 자전거엔 모두 미성숙.</p></div>`);
+
+/* 3 페인 */
+S(`<div class="kicker"><span class="dot"></span>문제 정의 · Pain</div>
+  <h2>고객은 <span class="u-blue">전 생애주기</span>에서 헤맨다</h2>
+  <div class="cards c4 grow" style="margin-top:22px">
+    <div class="card tint"><div class="metric"><div class="big">100만+</div><div class="lbl">구매 진입장벽<br>(목돈·정보비대칭·시승 불가)</div></div></div>
+    <div class="card tint"><div class="metric"><div class="big u-rose">A/S</div><div class="lbl">"AS 가능한 곳 없으니<br>알아서 찾아가라"</div></div></div>
+    <div class="card tint"><div class="metric"><div class="big u-rose">도난</div><div class="lbl">번호판·등록 부재<br>회수·보상 불가</div></div></div>
+    <div class="card tint"><div class="metric"><div class="big u-rose">처분</div><div class="lbl">감가·사기·시세 부재<br>중고거래 리스크</div></div></div>
+  </div>
+  <div class="card ink" style="margin-top:20px"><p style="font-size:18px">"사기 전엔 뭘 살지 모르고 → 사면 고치기 힘들고 → 잃어버려도 보상 없고 → 팔 땐 헐값" — 고관여·저신뢰 내구재.</p></div>`);
+
+/* 4 데이터1 — 네이버 스크린샷 */
+S(`<div class="kicker"><span class="dot"></span>핵심 발견 · Data ①</div>
+  <h2><span class="u-blue-mark">전기자전거 = 배달 라이더</span>, 같은 사람이다</h2>
+  <p class="sub" style="margin:10px 0 16px">네이버 검색광고 키워드도구 — 성별·연령이 거의 동일하다. (남 70~85% · 30~50대 집중)</p>
+  <div class="row grow" style="gap:14px">
+    ${KW('전기자전거','월 7만 → 18만 · 강한 계절성',79,[['40대',33,'b2'],['30대',29,''],['50+',25,'ink'],['~29',9,'ink']])}
+    ${KW('배민커넥트','월 2.5만 → 1.3만',83,[['30대',34,'b2'],['40대',34,''],['50+',19,'ink'],['~29',9,'ink']])}
+    ${KW('배달라이더','월 1천~1.7천 · 연중 유지',73,[['40대',35,'b2'],['30대',26,''],['50+',23,'ink'],['~29',11,'ink']])}
+  </div>
+  <p class="note" style="margin-top:12px">교집합 타깃 = <b style="color:var(--blue-600)">30~50대 남성</b> · 출처: 네이버 검색광고 키워드도구(최근 1년, 데스크탑·모바일 종합 근사치)</p>`);
+
+/* 5 데이터2 — 검색의도 + 시즌 */
+S(`<div class="kicker"><span class="dot"></span>핵심 발견 · Data ②</div>
+  <h2>검색엔진도 이미 둘을 <span class="u-blue">묶어서</span> 보여준다</h2>
+  <div class="row grow" style="margin-top:16px;gap:20px">
+    <div class="col" style="flex:1.05">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="srch"><span class="nlogo">N</span><div class="q">전기 자전거</div></div>
+        <div style="display:flex;gap:14px;padding:9px 15px;font-size:12.5px;color:var(--ink-300);font-weight:600;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden">통합 · 쇼핑 · 이미지 · 블로그 · 카페 · 지식iN · 동영상</div>
+        <div style="padding:13px 15px;display:flex;flex-direction:column;gap:11px">
+          <div class="ad"><div class="src">광고 · lycle.kr</div><div class="ttl">전기자전거 · 제휴카드 렌탈시 · 최대 120만원 할인</div><div class="ds">초기비용 0원 · 최대 48개월 렌탈</div>
+            <div style="display:flex;gap:7px;margin-top:9px"><span class="chip">자토바이</span><span class="chip on">배달용 추천</span><span class="chip">접이식</span></div></div>
+          <div class="ad"><div class="src">광고 · ventlerus.com</div><div class="ttl">배달라이더가 선정한 자토바이 넘버원</div><div class="ds">프리미엄 전기자전거 · 24개월 무이자 · 부담없는 48개월 인수형렌탈</div></div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:9px">네이버 '전기자전거' 검색 → <b style="color:var(--blue-600)">'배달용 추천'</b> 노출 + 경쟁사 배달 광고</p>
+    </div>
+    <div class="col" style="display:flex;flex-direction:column;gap:14px">
+      <div class="card amber"><span class="tag amber">상업적 검증</span><h3>"배달용 전기자전거" 경쟁지수 98</h3><p>검색량은 작아도 광고주 입찰 최상위 = 전환가치 높은 교집합.</p></div>
+      <div class="card blue"><span class="tag mint">시즌 헷지</span>
+        <div class="chart" style="margin-top:6px">
+          <div class="bar-row"><span class="name">e-bike 봄·여름</span><div class="bar-track"><div class="bar-fill b2" style="width:100%">피크 18만</div></div></div>
+          <div class="bar-row"><span class="name">e-bike 겨울</span><div class="bar-track"><div class="bar-fill ink" style="width:39%">7만 ↓</div></div></div>
+          <div class="bar-row"><span class="name">배달 수요</span><div class="bar-track"><div class="bar-fill mint" style="width:88%">연중 일정</div></div></div>
+        </div>
+        <p style="font-size:15px;color:var(--ink-700);margin-top:10px">레저는 계절을 타지만 <b>배달은 연중 안정</b> → 비수기 방어.</p></div>
+    </div>
+  </div>`);
+
+/* 6 가설 */
+SLIDES.push(`<section class="slide dark">
+  <div class="kicker"><span class="dot"></span>가설 · Hypothesis</div>
+  <div class="big-quote" style="margin-top:6px;max-width:1040px">
+    <span class="u-blue-mark">'배달용 전기자전거 · 배달용 오토바이'</span> 라는<br>
+    명확한 <b style="color:#fff">수익 목적</b> 니즈를 가진 사람을 타깃하면, 일반 레저 구독보다 —
+  </div>
+  <div class="cards c3" style="margin-top:34px">
+    <div class="card ink" style="background:#171b22"><div class="metric"><div class="big u-mint">↑ CVR</div><div class="lbl" style="color:#9aa1b2">목적이 분명해<br>전환율이 높다</div></div></div>
+    <div class="card ink" style="background:#171b22"><div class="metric"><div class="big u-mint">↑ LTV</div><div class="lbl" style="color:#9aa1b2">생계도구라<br>이탈이 적다</div></div></div>
+    <div class="card ink" style="background:#171b22"><div class="metric"><div class="big u-blue">＝ 헷지</div><div class="lbl" style="color:#9aa1b2">계절 비수기를<br>배달이 메운다</div></div></div>
+  </div>
+  <p class="note" style="margin-top:30px;color:#5a6172">근거 ① 인구통계 일치 · ② 검색의도 연결 · ③ 경쟁지수 98 · ④ 시즌 헷지</p>
+</section>`);
+
+/* 7 프레임 */
+S(`<div class="kicker"><span class="dot"></span>전략 프레임 · Framework</div>
+  <h2>같은 타깃, <span class="u-blue">두 개의 엔진</span>으로 푼다</h2>
+  <div class="row grow" style="margin-top:22px;gap:20px">
+    <div class="col card" style="border-top:5px solid var(--blue-500)"><span class="tag">Part 1 · Offense</span>
+      <h3 style="font-size:25px">🚴 전기자전거 = 모객 엔진</h3>
+      <ul class="list" style="margin-top:12px"><li><b>단거리·부업·초보</b> 라이더 진입</li><li>지원금+첫달 0원 → <b>진입장벽 제로</b></li><li>낮은 단가·사고율 → 공격적 확장</li></ul>
+      <div class="divider"></div><p class="note">KPI · 가입 수 · CAC · LP 전환율</p></div>
+    <div class="arrow">×</div>
+    <div class="col card" style="border-top:5px solid var(--ink-700)"><span class="tag ink">Part 2 · Defense</span>
+      <h3 style="font-size:25px">🏍️ 오토바이 = 리스크 방어</h3>
+      <ul class="list" style="margin-top:12px"><li><b>전업·장거리</b> 라이더(고수익·고리스크)</li><li>GPS·인수형으로 <b>손해율·감가 통제</b></li><li>유상운송 손해율 116% → 테크 방어</li></ul>
+      <div class="divider"></div><p class="note">KPI · 손해율 · LTV · 회수율</p></div>
+  </div>
+  <div class="card blue" style="margin-top:16px"><p style="font-size:16.5px;color:var(--ink-800)">공통 인프라 — <b>swap 앱</b> 기반 GPS·FMS 데이터 + 푸시·CRM으로 모객 → 리텐션 → 관제 풀스택.</p></div>`);
+
+/* 8 Part1 */
+S(`<div class="kicker"><span class="dot"></span>Part 1 · 전기자전거</div>
+  <h2>진입장벽을 <span class="u-blue-mark">제로</span>로 만드는 모객 엔진</h2>
+  <div class="cards c2 grow" style="margin-top:20px">
+    <div class="card"><span class="tag">비즈니스 구조</span><ul class="list"><li><b>첫달 0원</b> + 구독료 최소화 진입</li><li>정부·지자체 보조금 <b>개인 명의 대행·연계</b></li><li>낮은 자산 단가 → 도난·파손 손실 미미</li></ul></div>
+    <div class="card"><span class="tag">마케팅 · 그로스</span><ul class="list"><li>배민·쿠팡 등 <b>배달 플랫폼 삼각 제휴</b></li><li>"오토바이 대비 월 고정비 ↓" ROI 카피</li><li>비아지오식 <b>퍼포먼스 LP</b> 무한 변형</li></ul></div>
+  </div>
+  <div class="flag" style="margin-top:16px">⚠️ 발표 주의 — 보조금은 '대량 수령'이 아니라 <b>개인 명의 대행·연계</b>로. (다음 장에서 상세)</div>`);
+
+/* 9 ★ 정부 지원금 강조 */
+S(`<div class="kicker"><span class="dot"></span>B2G2C 레버리지 · ★ 정부 지원금</div>
+  <h2>정부가 <span class="u-blue-mark">돈을 대주는</span> 시장이다</h2>
+  <p class="sub" style="margin:10px 0 18px">전기이륜차 보급사업 — 배달·소상공인을 정부가 우선 지원한다. swap은 이 재원을 레버리지한다.</p>
+  <div class="cards c4" style="margin-bottom:16px">
+    <div class="card mint"><div class="metric"><div class="big u-mint">최대 300만</div><div class="lbl">전기이륜차 대당 보조금<br>(차종별 140~300만원)</div></div></div>
+    <div class="card mint"><div class="metric"><div class="big u-mint">+10~20%</div><div class="lbl">배달용 +10%<br>소상공인 +20% 추가</div></div></div>
+    <div class="card mint"><div class="metric"><div class="big u-mint">100대</div><div class="lbl">소상공인 등<br>우선배정 물량</div></div></div>
+    <div class="card mint"><div class="metric"><div class="big u-mint">2만대·160억</div><div class="lbl">2025 보급 규모<br>(연간, 환경부)</div></div></div>
+  </div>
+  <div class="row grow" style="gap:18px">
+    <div class="col card ink"><span class="tag" style="background:#232733;color:#fff">B2G2C 구조</span>
+      <p style="font-size:17px;color:#cdd3e0;line-height:1.7;margin-top:8px">정부·지자체 보조금<br><span style="color:var(--blue-500);font-weight:800">↓ swap이 개인 명의 신청 대행·연계</span><br>라이더 — <b style="color:#fff">초기비용 0원으로 배달 시작</b></p></div>
+    <div class="col card amber"><span class="tag amber">⚠️ 합법 설계 (반박 대비)</span>
+      <ul class="list" style="margin-top:6px"><li>법인 직접수령은 <b>50대 한도·2년 의무·배터리 40% 환수</b></li><li>→ <b>라이더 개인명의 + swap 금융/구독 래핑</b></li><li>또는 <b>배터리 구독형(차체 60% 보조)+BSS</b></li></ul></div>
+  </div>
+  <div class="card blue" style="margin-top:14px"><p style="font-size:17px;color:var(--ink-900);font-weight:700">핵심 카피 — "정부 지원금으로 <span class="u-blue">초기 비용 0원</span>, 오늘부터 배달 시작하세요."</p></div>`);
+
+/* 10 Part2 */
+S(`<div class="kicker"><span class="dot"></span>Part 2 · 오토바이</div>
+  <h2>테크로 <span class="u-blue">손해율을 통제</span>하는 고수익 솔루션</h2>
+  <div class="cards c2 grow" style="margin-top:20px">
+    <div class="card"><span class="tag ink">테크 · 데이터 방어</span><ul class="list"><li><b>우량 유저</b> 마이크로타게팅(무사고·출퇴근)</li><li>swap 앱·GPS(FMS) 기반 <b>연체 시 원격 시동 차단</b></li><li>주행거리 연동 강제 정비 → 감가 방어</li></ul></div>
+    <div class="card"><span class="tag ink">마케팅 · 그로스</span><ul class="list"><li>"내 차 만들기" <b>인수형 감성</b> 넛지</li><li>수익형 구독 — <b>쿠팡 파트너스식</b> ROI·UGC</li><li><b>B2B 지사장</b> 퍼널로 수십 대 락인</li></ul></div>
+  </div>
+  <div class="card blue" style="margin-top:16px"><p style="font-size:16px;color:var(--ink-800)"><b>이미 보유</b> — 스윙 바이크(부릉 제휴)·일차감·스윙케어·스윙 딜리버리. <b>신규</b> — GPS 원격제어·수익형 구독·인증중고 Loop.</p></div>`);
+
+/* 11 수익형 구독 + IG embed */
+S(`<div class="kicker"><span class="dot"></span>차별화 무기 · Edge</div>
+  <h2>구독을 <span class="u-blue-mark">'돈 버는 도구'</span>로 재정의한다</h2>
+  <div class="row grow" style="margin-top:18px;gap:20px">
+    <div class="col" style="flex:1.15"><div class="card ink" style="height:100%"><span class="tag" style="background:#232733;color:#fff">수익형 구독 — 쿠팡 파트너스식</span>
+      <p style="font-size:17px;color:#cdd3e0;margin-top:8px;line-height:1.6">"0원으로 시작 → 배달로 월 OOO만원, 구독료는 수익의 일부."</p>
+      <ul class="list" style="margin-top:14px"><li>라이더 <b>수익 인증 UGC</b>를 광고 소재화</li><li>라이더→라이더 <b>추천 보상(어필리에이트)</b></li><li>swap 앱 <b>수익 대시보드</b>로 ROI 실시간 시각화 + 푸시 리텐션</li></ul></div></div>
+    <div class="col">${E('https://www.instagram.com/p/DYRUJo8APXt/embed','쿠팡 파트너스식 광고 레퍼런스 (Instagram)','100%')}</div>
+  </div>
+  <p class="note" style="margin-top:10px">생계도구 ROI 서사는 Whizz·Zoomo(글로벌 배달 e-bike 구독)가 검증.</p>`);
+
+/* 12 As-Is/To-Be */
+S(`<div class="kicker"><span class="dot"></span>실행 점검 · As-Is / To-Be</div>
+  <h2>가진 자산은 <span class="u-blue">강화</span>, 빈자리는 <span class="u-blue">신규</span></h2>
+  <div class="row grow" style="margin-top:20px;gap:20px">
+    <div class="col card" style="border-left:5px solid var(--mint-500)"><span class="tag mint">✅ 이미 운영 — "강화"</span>
+      <ul class="list" style="margin-top:10px"><li>인수형 구독 · 비대면 출장수리 · 새 제품</li><li>스윙 바이크 · 일차감 · 스윙케어 보험</li><li>스윙 딜리버리(일감) · GPS 관제 · <b>swap 앱</b>(푸시·CRM)</li></ul></div>
+    <div class="col card" style="border-left:5px solid var(--blue-500)"><span class="tag">❌ 없음 — "신규 무기"</span>
+      <ul class="list" style="margin-top:10px"><li>배달용 니즈 타깃팅 · 수익형 구독</li><li>GPS 원격 시동차단 · 주행거리 연동 정비</li><li>인증중고 회수자산 재유통 Loop</li></ul></div>
+  </div>
+  <div class="card tint" style="margin-top:16px"><p style="font-size:15.5px"><b>발표 팁</b> — ✅는 "실행력", ❌는 "차별성"으로 나눠 말하면 '현황 파악 + 새 그림' 둘 다 증명.</p></div>`);
+
+/* 13 ★ 레퍼런스 라이브 데모 */
+S(`<div class="kicker"><span class="dot"></span>레퍼런스 · Live Demo</div>
+  <h2>경쟁·자사 <span class="u-blue">실제 화면</span>으로 본다</h2>
+  <div class="cards c3 grow" style="margin-top:16px">
+    ${E('https://swapswap.kr/','swap (자사)','100%')}
+    ${E('https://bike.w-rental.co.kr/rental/Rental_V6/mo_land/V6-75-01.html','비아지오 (첫달 0원·약정렌탈)','100%')}
+    ${E('https://owlta.imweb.me/b2c-all/?idx=263','OWLTA (배달 오토바이·무심사)','100%')}
+  </div>
+  <p class="note" style="margin-top:12px">※ 라이브 임베드 — 네트워크/사이트 정책에 따라 일부는 상단 '새 탭 ↗'으로 열람. 비아지오=마케팅 헤비 약정, owlta=무심사·턴키 / swap=테크·수직통합으로 차별화.</p>`);
+
+/* 14 경쟁 벤치마크 요약 */
+S(`<div class="kicker"><span class="dot"></span>경쟁 벤치마크 · Benchmark</div>
+  <h2>마찰 제거는 <span class="u-blue">배우고</span>, 테크로 <span class="u-blue">앞선다</span></h2>
+  <div class="cards c3 grow" style="margin-top:20px">
+    <div class="card"><span class="tag amber">비아지오 (W렌탈)</span><h3>첫달 0원 · 퍼포먼스 LP</h3><p>앱 없이 LP·광고로만 모객. 위약금 불투명·평판 이슈 → <b>swap 신뢰 USP</b>가 파고들 틈.</p></div>
+    <div class="card"><span class="tag amber">OWLTA (올타)</span><h3>무심사 · 턴키 패키지</h3><p>신차+배달세팅+보험+명의대행+익일출고. <b>배울 점.</b> 리스크 통제 테크·일감 연계 없음.</p></div>
+    <div class="card blue"><span class="tag">swap</span><h3>테크 · 수직통합 · 전동화</h3><p>GPS·FMS + 스윙 딜리버리 일감 + 인수형 + 인증중고 Loop = <b>풀스택</b>.</p></div>
+  </div>
+  <div class="flag" style="margin-top:18px">⚠️ 전동화는 <b>배터리 스왑(BSS) 동반 필수</b> — 배달 주행 150~200km vs 전기 50km/충전 5h.</div>`);
+
+/* 15 로드맵 */
+S(`<div class="kicker"><span class="dot"></span>실행 로드맵 · Roadmap</div>
+  <h2>가설을 <span class="u-blue-mark">실험으로</span> 검증한다</h2>
+  <div class="cards c4 grow" style="margin-top:20px">
+    <div class="card tint"><span class="tag">0–3M</span><h3 style="font-size:17px">가설 검증</h3><p>배달 니즈 LP vs 레저 LP <b>A/B</b> — CVR·CAC</p></div>
+    <div class="card tint"><span class="tag">2–6M</span><h3 style="font-size:17px">신뢰 가시화</h3><p>AS SLA·무심사·턴키·도난보장 상품화</p></div>
+    <div class="card tint"><span class="tag">6–18M</span><h3 style="font-size:17px">Loop 완성</h3><p>회수자산 → 생활형 인증중고 재유통</p></div>
+    <div class="card tint"><span class="tag">12M+</span><h3 style="font-size:17px">B2B 확장</h3><p>지사장·플랫폼 플릿 락인</p></div>
+  </div>
+  <div class="card ink" style="margin-top:18px"><p style="font-size:16.5px">North Star — <b style="color:#fff">배달 니즈 타깃 가입 전환율</b> | 가드레일 — <b style="color:#fff">유닛 이코노믹스</b>. 고밀도 거점부터 Loop 검증 후 확장.</p></div>`);
+
+/* 16 closing */
+SLIDES.push(`<section class="slide dark">
+  <div class="kicker"><span class="dot"></span>마무리 · Closing</div>
+  <div class="big-quote" style="margin-top:8px;max-width:1060px">
+    swap의 미래는 이륜차를 빌려주는 렌탈이 아닙니다.<br>
+    전기자전거는 <span class="u-blue-mark">진입장벽 제로의 모객 엔진</span>,<br>
+    오토바이는 <span class="u-blue-mark">손해율을 통제하는 테크 솔루션</span> —<br>
+    그리고 그 둘을 잇는 답은 <b style="color:#fff">'배달'</b>입니다.
+  </div>
+  <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
+    <div style="color:#9aa1b2;font-size:16px;font-weight:600;line-height:1.7">이도형 · Growth Marketer<br><span style="color:#5a6172;font-size:14px">hound600al@naver.com · 010-7589-9117</span></div>
+    <div class="swap-logo" style="font-size:30px">s<span>wap</span></div>
+  </div>
+</section>`);
+
+/* render */
+const scaler=document.getElementById('scaler');scaler.innerHTML=SLIDES.join('');
+const slides=[...document.querySelectorAll('.slide')];const dots=document.getElementById('dots');const pageno=document.getElementById('pageno');
+let i=0;slides.forEach((_,n)=>{const b=document.createElement('button');b.onclick=()=>go(n);dots.appendChild(b);});
+function go(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));[...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));pageno.textContent=`${String(i+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;}
+function fit(){const s=Math.min(window.innerWidth/1280,window.innerHeight/720);scaler.style.transform=`scale(${s})`;}
+window.addEventListener('resize',fit);
+window.addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(i+1);}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1);}if(e.key==='Home')go(0);if(e.key==='End')go(slides.length-1);});
+fit();go(0);
+</script>
+</body>
+</html>

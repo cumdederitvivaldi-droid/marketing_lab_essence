@@ -1,0 +1,5 @@
+name: covering-invite-batch
+description: "친구초대 V1 매칭/지급 배치 — 매일 09:00 KST 실행"
+type: batch
+schedule: "0 9 * * *"
+command: "python3 src/main.py"

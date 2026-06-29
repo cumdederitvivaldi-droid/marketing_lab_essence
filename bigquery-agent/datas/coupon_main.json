@@ -1,0 +1,322 @@
+[
+  {
+    "avg_receipt_completed": "10688.0",
+    "canceled": "0",
+    "completed": "460",
+    "completion_rate_pct": "95.4",
+    "coupon_label": "other_id40",
+    "total_orders": "482",
+    "total_revenue": "4531773",
+    "unique_users": "464"
+  },
+  {
+    "avg_receipt_completed": "15057.0",
+    "canceled": "0",
+    "completed": "239",
+    "completion_rate_pct": "94.1",
+    "coupon_label": "other_id41",
+    "total_orders": "254",
+    "total_revenue": "3297382",
+    "unique_users": "243"
+  },
+  {
+    "avg_receipt_completed": "5170.0",
+    "canceled": "0",
+    "completed": "192",
+    "completion_rate_pct": "89.7",
+    "coupon_label": "100pct_EARLY",
+    "total_orders": "214",
+    "total_revenue": "915097",
+    "unique_users": "201"
+  },
+  {
+    "avg_receipt_completed": "15740.0",
+    "canceled": "0",
+    "completed": "135",
+    "completion_rate_pct": "87.7",
+    "coupon_label": "other_id42",
+    "total_orders": "154",
+    "total_revenue": "1873047",
+    "unique_users": "146"
+  },
+  {
+    "avg_receipt_completed": "13992.0",
+    "canceled": "0",
+    "completed": "116",
+    "completion_rate_pct": "94.3",
+    "coupon_label": "other_id73",
+    "total_orders": "123",
+    "total_revenue": "1441225",
+    "unique_users": "89"
+  },
+  {
+    "avg_receipt_completed": "19049.0",
+    "canceled": "0",
+    "completed": "90",
+    "completion_rate_pct": "97.8",
+    "coupon_label": "other_id143",
+    "total_orders": "92",
+    "total_revenue": "971494",
+    "unique_users": "56"
+  },
+  {
+    "avg_receipt_completed": "9866.0",
+    "canceled": "0",
+    "completed": "54",
+    "completion_rate_pct": "96.4",
+    "coupon_label": "other_id47",
+    "total_orders": "56",
+    "total_revenue": "522884",
+    "unique_users": "55"
+  },
+  {
+    "avg_receipt_completed": "16313.0",
+    "canceled": "0",
+    "completed": "47",
+    "completion_rate_pct": "85.5",
+    "coupon_label": "other_id43",
+    "total_orders": "55",
+    "total_revenue": "701462",
+    "unique_users": "54"
+  },
+  {
+    "avg_receipt_completed": "11915.0",
+    "canceled": "0",
+    "completed": "56",
+    "completion_rate_pct": "91.8",
+    "coupon_label": "other_id85",
+    "total_orders": "61",
+    "total_revenue": "595770",
+    "unique_users": "44"
+  },
+  {
+    "avg_receipt_completed": "5269.0",
+    "canceled": "0",
+    "completed": "30",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "20000won_OPEN",
+    "total_orders": "30",
+    "total_revenue": "158065",
+    "unique_users": "30"
+  },
+  {
+    "avg_receipt_completed": "21090.0",
+    "canceled": "0",
+    "completed": "39",
+    "completion_rate_pct": "97.5",
+    "coupon_label": "other_id25",
+    "total_orders": "40",
+    "total_revenue": "611608",
+    "unique_users": "28"
+  },
+  {
+    "avg_receipt_completed": "12338.0",
+    "canceled": "0",
+    "completed": "15",
+    "completion_rate_pct": "93.8",
+    "coupon_label": "other_id44",
+    "total_orders": "16",
+    "total_revenue": "160389",
+    "unique_users": "14"
+  },
+  {
+    "avg_receipt_completed": "9056.0",
+    "canceled": "0",
+    "completed": "10",
+    "completion_rate_pct": "90.9",
+    "coupon_label": "50pct_DCJ50",
+    "total_orders": "11",
+    "total_revenue": "90558",
+    "unique_users": "11"
+  },
+  {
+    "avg_receipt_completed": "10354.0",
+    "canceled": "0",
+    "completed": "10",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "100pct_DCJ100",
+    "total_orders": "10",
+    "total_revenue": "103540",
+    "unique_users": "10"
+  },
+  {
+    "avg_receipt_completed": "7133.0",
+    "canceled": "0",
+    "completed": "13",
+    "completion_rate_pct": "86.7",
+    "coupon_label": "other_id178",
+    "total_orders": "15",
+    "total_revenue": "42796",
+    "unique_users": "9"
+  },
+  {
+    "avg_receipt_completed": "11328.0",
+    "canceled": "0",
+    "completed": "7",
+    "completion_rate_pct": "77.8",
+    "coupon_label": "other_id46",
+    "total_orders": "9",
+    "total_revenue": "79293",
+    "unique_users": "9"
+  },
+  {
+    "avg_receipt_completed": "13824.0",
+    "canceled": "0",
+    "completed": "11",
+    "completion_rate_pct": "91.7",
+    "coupon_label": "other_id97",
+    "total_orders": "12",
+    "total_revenue": "96768",
+    "unique_users": "8"
+  },
+  {
+    "avg_receipt_completed": "9871.0",
+    "canceled": "0",
+    "completed": "6",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id45",
+    "total_orders": "6",
+    "total_revenue": "59227",
+    "unique_users": "6"
+  },
+  {
+    "avg_receipt_completed": "13624.0",
+    "canceled": "0",
+    "completed": "6",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id179",
+    "total_orders": "6",
+    "total_revenue": "68119",
+    "unique_users": "6"
+  },
+  {
+    "avg_receipt_completed": "15593.0",
+    "canceled": "0",
+    "completed": "5",
+    "completion_rate_pct": "71.4",
+    "coupon_label": "other_id190",
+    "total_orders": "7",
+    "total_revenue": "46780",
+    "unique_users": "5"
+  },
+  {
+    "avg_receipt_completed": "2880.0",
+    "canceled": "0",
+    "completed": "2",
+    "completion_rate_pct": "50.0",
+    "coupon_label": "other_id98",
+    "total_orders": "4",
+    "total_revenue": "5760",
+    "unique_users": "4"
+  },
+  {
+    "avg_receipt_completed": "16274.0",
+    "canceled": "0",
+    "completed": "3",
+    "completion_rate_pct": "75.0",
+    "coupon_label": "other_id48",
+    "total_orders": "4",
+    "total_revenue": "48822",
+    "unique_users": "4"
+  },
+  {
+    "avg_receipt_completed": "18724.0",
+    "canceled": "0",
+    "completed": "5",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id149",
+    "total_orders": "5",
+    "total_revenue": "56172",
+    "unique_users": "3"
+  },
+  {
+    "avg_receipt_completed": "6045.0",
+    "canceled": "0",
+    "completed": "3",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id192",
+    "total_orders": "3",
+    "total_revenue": "12090",
+    "unique_users": "3"
+  },
+  {
+    "avg_receipt_completed": "20256.0",
+    "canceled": "0",
+    "completed": "2",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id111",
+    "total_orders": "2",
+    "total_revenue": "40512",
+    "unique_users": "2"
+  },
+  {
+    "avg_receipt_completed": "19800.0",
+    "canceled": "0",
+    "completed": "3",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id7",
+    "total_orders": "3",
+    "total_revenue": "39600",
+    "unique_users": "2"
+  },
+  {
+    "avg_receipt_completed": "13239.0",
+    "canceled": "0",
+    "completed": "2",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id64",
+    "total_orders": "2",
+    "total_revenue": "26478",
+    "unique_users": "1"
+  },
+  {
+    "avg_receipt_completed": "26737.0",
+    "canceled": "0",
+    "completed": "1",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id101",
+    "total_orders": "1",
+    "total_revenue": "26737",
+    "unique_users": "1"
+  },
+  {
+    "avg_receipt_completed": "5740.0",
+    "canceled": "0",
+    "completed": "3",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "2500won_DCJ25",
+    "total_orders": "3",
+    "total_revenue": "5740",
+    "unique_users": "1"
+  },
+  {
+    "avg_receipt_completed": "61856.0",
+    "canceled": "0",
+    "completed": "2",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id136",
+    "total_orders": "2",
+    "total_revenue": "123712",
+    "unique_users": "1"
+  },
+  {
+    "avg_receipt_completed": "0.0",
+    "canceled": "0",
+    "completed": "1",
+    "completion_rate_pct": "100.0",
+    "coupon_label": "other_id105",
+    "total_orders": "1",
+    "total_revenue": "0",
+    "unique_users": "1"
+  },
+  {
+    "avg_receipt_completed": null,
+    "canceled": "0",
+    "completed": "0",
+    "completion_rate_pct": "0.0",
+    "coupon_label": "other_id193",
+    "total_orders": "1",
+    "total_revenue": "0",
+    "unique_users": "1"
+  }
+]

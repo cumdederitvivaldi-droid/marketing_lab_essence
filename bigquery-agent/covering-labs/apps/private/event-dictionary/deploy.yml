@@ -1,0 +1,3 @@
+name: event-dictionary
+description: "이벤트 딕셔너리 — 시트 정의와 최근 7일 BigQuery 발화 수"
+type: nextjs

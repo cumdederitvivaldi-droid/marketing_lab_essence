@@ -1,0 +1,54 @@
+쿼리 설명: CRM 푸시 발송 타겟 추출 — 회원가입 후 0KG 초과 수거 이력이 없는 기존 유저
+추출 일시: 2026-04-20
+기준 데이터셋: covering-app-ccd23.secure_dataset
+
+=== 타겟 조건 ===
+
+[포함 조건]
+- 커버링 앱 생성 시점 ~ 2026-04-19 사이 회원가입 완료
+- 0KG 초과 수거 이력 없음 (fulfillment_item.actual_weight_grams > 0 인 건 없음)
+- 미탈퇴 (user.withdrawal_date IS NULL)
+- 서비스 지역 내 거주 (user_address → address.h_code ∩ service_region.h_code, active_flag=TRUE)
+- 마케팅 수신 동의 (device.is_marketing_agree = TRUE, 가장 최근 갱신 기기 기준)
+
+[제외 조건]
+- 봉투 배송 완료 이력 (product_code IN ('free_home_kit','paid_home_kit') + order_v2.status='COMPLETED') — 기간 무관
+- 7일 이내 봉투 수령 완료 (2026-04-13~04-19 기준)
+- 수거 서비스(SERVICE type) 주문이 전부 CANCELED 상태인 유저
+- 수거 실패 이력 (fulfillment.failure_reason_code IN ENTER_FAIL / NOTFOUND_FAIL / POLICY_FAIL)
+
+=== 결과 요약 ===
+총 타겟 인원: 159,115명
+
+=== 컬럼 설명 ===
+별명                  : user.nickname (앱 내 닉네임)
+user_id               : user.id (PK)
+회원가입일자          : user.created_date (KST 변환, DATE)
+마케팅수신동의여부    : device.is_marketing_agree (Y/N) — 가장 최근 갱신 기기 기준 (모두 Y)
+탈퇴여부              : withdrawal_date IS NULL 여부 (모두 N — 포함 조건)
+0kg초과배출여부       : fulfillment_item.actual_weight_grams > 0 여부 (모두 N — 포함 조건)
+마지막신청이벤트종류  : 가장 최근 order_v2에 포함된 product.name 목록 (복수 상품은 콤마 구분) / 없으면 no_history
+현재주소              : user_address(active=TRUE) → address.road_address (도로명 주소) / 없으면 no_address
+지역내가입여부        : 현재 주소의 h_code가 service_region에 포함되는지 여부 (모두 Y — 포함 조건)
+
+=== 주요 테이블 ===
+covering-app-ccd23.secure_dataset.user
+covering-app-ccd23.secure_dataset.device
+covering-app-ccd23.secure_dataset.user_address
+covering-app-ccd23.secure_dataset.address
+covering-app-ccd23.secure_dataset.service_region
+covering-app-ccd23.secure_dataset.order_v2
+covering-app-ccd23.secure_dataset.order_line
+covering-app-ccd23.secure_dataset.product
+covering-app-ccd23.secure_dataset.fulfillment
+covering-app-ccd23.secure_dataset.fulfillment_item
+
+=== 실행 SQL 파일 ===
+crm_zero_kg_target.sql (프로젝트 루트)
+
+=== 비고 ===
+- 마케팅수신동의여부: device 테이블 기준 (최근 갱신 기기의 is_marketing_agree 컬럼)
+- 탈퇴여부 / 0kg초과배출여부 / 지역내가입여부는 포함·제외 조건 필터이므로 결과 값이 전부 동일(N/N/Y)
+- 마지막신청이벤트종류: 레거시 order.status 아닌 현재 product.name 기준
+- 주소: user_address.active=TRUE + address.deleted_date IS NULL 기준 (주문 이력 없으면 no_address)
+- 봉투 배송 완료 및 7일 이내 수령 완료 조건은 중복 적용 (더 엄격한 조건 보장)
