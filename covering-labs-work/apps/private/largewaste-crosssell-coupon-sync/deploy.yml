@@ -1,0 +1,5 @@
+name: largewaste-crosssell-coupon-sync
+description: "[ENG-3199] 대형폐기물 크로스셀 — 쿠폰 216 자격 FlareLane User Tag 동기화 (5분 cron)"
+type: batch
+schedule: "*/5 * * * *"
+command: "python3 src/main.py"

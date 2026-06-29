@@ -1,0 +1,76 @@
+분석명: retention_leading_indicators
+설명: D30 리텐션 선행지표 4종 집계 | ind1=D7재주문, ind2=D14재주문, ind3=30일내3회+, ind4=구독활성
+추출일시: 2026-04-22 20:00:52
+프로젝트: covering-app-ccd23
+비고: short_link_id 없음 → user.signup_referral_channel 대체
+
+=== 실행 SQL ===
+
+WITH first_orders AS (
+  SELECT
+    o.user_id,
+    MIN(DATE(o.created_at, 'Asia/Seoul')) AS first_order_date
+  FROM `covering-app-ccd23.secure_dataset.order_v2` o
+  WHERE o.company_id IS NULL AND o.deleted_at IS NULL
+    AND o.status IN ('COMPLETED','IN_PROGRESS','READY')
+  GROUP BY o.user_id
+),
+cohort_users AS (
+  SELECT
+    fo.user_id, fo.first_order_date,
+    DATE_TRUNC(fo.first_order_date, WEEK(MONDAY)) AS cohort_week,
+    COALESCE(NULLIF(TRIM(u.signup_referral_channel), ''), 'organic') AS campaign_name
+  FROM first_orders fo
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON fo.user_id = u.id
+  WHERE fo.first_order_date >= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 16 WEEK)
+    AND fo.first_order_date <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 30 DAY)
+),
+order_activity AS (
+  SELECT o.user_id, DATE(o.created_at, 'Asia/Seoul') AS order_date
+  FROM `covering-app-ccd23.secure_dataset.order_v2` o
+  WHERE o.company_id IS NULL AND o.deleted_at IS NULL
+    AND o.status IN ('COMPLETED','IN_PROGRESS','READY')
+),
+sub_dates AS (
+  SELECT user_id, MIN(DATE(created_at)) AS first_sub_date
+  FROM `covering-app-ccd23.secure_dataset.subscription`
+  GROUP BY user_id
+),
+user_indicators AS (
+  SELECT
+    cu.user_id, cu.cohort_week, cu.campaign_name,
+    MAX(CASE WHEN oa.order_date > cu.first_order_date
+             AND DATE_DIFF(oa.order_date, cu.first_order_date, DAY) <=  7
+             THEN 1 ELSE 0 END)                                      AS ind_reorder_d7,
+    MAX(CASE WHEN oa.order_date > cu.first_order_date
+             AND DATE_DIFF(oa.order_date, cu.first_order_date, DAY) <= 14
+             THEN 1 ELSE 0 END)                                      AS ind_reorder_d14,
+    CASE WHEN COUNT(DISTINCT CASE
+           WHEN oa.order_date >= cu.first_order_date
+            AND DATE_DIFF(oa.order_date, cu.first_order_date, DAY) <= 30
+           THEN oa.order_date END) >= 3 THEN 1 ELSE 0 END            AS ind_3plus_d30,
+    MAX(CASE WHEN sd.first_sub_date IS NOT NULL
+             AND sd.first_sub_date >= cu.first_order_date
+             AND DATE_DIFF(sd.first_sub_date, cu.first_order_date, DAY) <= 30
+             THEN 1 ELSE 0 END)                                      AS ind_subscribed_d30
+  FROM cohort_users cu
+  LEFT JOIN order_activity oa ON cu.user_id = oa.user_id
+  LEFT JOIN sub_dates sd ON cu.user_id = sd.user_id
+  GROUP BY cu.user_id, cu.cohort_week, cu.campaign_name
+)
+SELECT
+  cohort_week,
+  campaign_name,
+  COUNT(*)                                                               AS total_users,
+  SUM(ind_reorder_d7)                                                    AS reorder_d7_users,
+  ROUND(SAFE_DIVIDE(SUM(ind_reorder_d7)*100.0,     COUNT(*)), 2)         AS reorder_d7_pct,
+  SUM(ind_reorder_d14)                                                   AS reorder_d14_users,
+  ROUND(SAFE_DIVIDE(SUM(ind_reorder_d14)*100.0,    COUNT(*)), 2)         AS reorder_d14_pct,
+  SUM(ind_3plus_d30)                                                     AS orders_3plus_users,
+  ROUND(SAFE_DIVIDE(SUM(ind_3plus_d30)*100.0,      COUNT(*)), 2)         AS orders_3plus_pct,
+  SUM(ind_subscribed_d30)                                                AS subscribed_d30_users,
+  ROUND(SAFE_DIVIDE(SUM(ind_subscribed_d30)*100.0, COUNT(*)), 2)         AS subscribed_d30_pct
+FROM user_indicators
+GROUP BY cohort_week, campaign_name
+ORDER BY cohort_week, campaign_name
+

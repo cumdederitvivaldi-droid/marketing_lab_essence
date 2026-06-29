@@ -1,0 +1,117 @@
+﻿python : C:\Users\hound\AppData\Roaming\Python\Python312\site-packages\google\auth\_default.py:113: UserWarning: Your application has authenticated using end user credentials from Google Cloud SDK without a quota pro
+ject. You might receive a "quota exceeded" or "API not enabled" error. See the following page for troubleshooting: https://cloud.google.com/docs/authentication/adc-troubleshooting/user-creds. 
+At line:4 char:1
++ python datas/analyze_campaigns.py 2>&1 | Out-File datas/analysis_resu ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\hound\...ng/user-creds. :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warnings.warn(_CLOUD_SDK_CREDENTIALS_WARNING)
+=== [1] 천안아산 주목 매체 데이터 (3/18~4/26) ===
+총 191행
+
+=== [2] 대전세종청주 신주목 매체 데이터 (4/3~4/26) ===
+총 299행
+
+[천안아산 주목] 소재그룹별 집계
+광고그룹                                                          노출      클릭     설치         비용    CTR     설치율      CPI
+ios(Web2App)_purchase_lookalike(7%)_vd_주목/천안50(대형폐기물)_m        0       0     11    456,693  0.00%   0.00%   41,518
+ios(Web2App)_purchase_lookalike(7%)_vd_주목/천안100(대형폐기물)_        0     198     22    456,316  0.00%  11.11%   20,742
+aos(Web2App)_purchase_lookalike(7%)_vd_주목/천안50(대형폐기물)_m        0     301     38    456,165  0.00%  12.62%   12,004
+aos(Web2App)_purchase_lookalike(7%)_vd_주목/천안100(대형폐기물)_        0     341     54    449,587  0.00%  15.84%    8,326
+ios(Web2App)_purchase_lookalike(7%)_vd_주목/아산100(대형폐기물)_        0      51      4    448,368  0.00%   7.84%  112,092
+aos(Web2App)_purchase_lookalike(7%)_vd_주목/아산100(대형페기물)_        0     240     29    438,793  0.00%  12.08%   15,131
+ios(Web2App)_purchase_lookalike(7%)_vd_주목하세요/천안50(대형폐기물        0     289     28          0  0.00%   9.69%        0
+
+합계: 노출 0 | 클릭 1,420 | 설치 186 | 비용 2,705,922원
+전체 CTR: N/A
+전체 설치율: 13.10%
+전체 CPI: 14,548원
+
+[대전세종청주 신주목] 소재그룹별 집계
+광고그룹                                                          노출      클릭     설치         비용    CTR     설치율      CPI
+(없음)                                                           0  24,324    146  9,697,504  0.00%   0.60%   66,421
+aos(Web2App)_purchase_lookalike(7%)_vd_신주목/50%(대형폐기물)_m        0       0     46    855,603  0.00%   0.00%   18,600
+ios(Web2App)_purchase_lookalike(7%)_vd_신주목/2500(대형폐기물)_        0     153     27    830,123  0.00%  17.65%   30,745
+ios(Web2App)_purchase_lookalike(7%)_vd_신주목/100%(대형폐기물)_        0     296     34    763,658  0.00%  11.49%   22,461
+aos(Web2App)_purchase_lookalike(7%)_vd_신주목/100%(대형폐기물)_        0       0     46    659,457  0.00%   0.00%   14,336
+aos(Web2App)_purchase_lookalike(7%)_vd_신주목/2500(대형폐기물)_        0       0     16    327,430  0.00%   0.00%   20,464
+ios(Web2App)_purchase_lookalike(7%)_vd_신주목/50%(대형폐기물)_m        0      67     15    299,551  0.00%  22.39%   19,970
+aos_purchase_dcj_vd_신주목/50%(대형폐기물)_dh1_26.04.23                0       0     25     94,246  0.00%   0.00%    3,770
+aos(Web2App)_purchase_lookalike(7%)_vd_신주목(대형폐기물)_mk1_2        0      45      3          0  0.00%   6.67%        0
+aos(Web2App)_purchase_lookalike(7%)_vd_신주목(대형폐기물)_mk1_2        0      10      2          0  0.00%  20.00%        0
+ios(Web2App)_purchase_lookalike(7%)_vd_신주목(대형폐기물)_mk1_2        0      47      7          0  0.00%  14.89%        0
+aos(Web2App)_purchase_lookalike(7%)_vd_신주목(대형폐기물)_mk1_2        0      21      3          0  0.00%  14.29%        0
+ios(Web2App)_purchase_lookalike(7%)_vd_신주목(대형폐기물)_mk1_2        0      47      6          0  0.00%  12.77%        0
+
+합계: 노출 0 | 클릭 25,010 | 설치 376 | 비용 13,527,572원
+전체 CTR: N/A
+전체 설치율: 1.50%
+전체 CPI: 35,978원
+
+=== [3] 천안아산 주목 MMP 데이터 (Airbridge) ===
+  결과 없음 — 캠페인명 매칭 안됨
+
+=== [4] 대전세종청주 신주목 MMP 데이터 (Airbridge) ===
+  채널: google.adwords | 캠페인: p_max_os_web2app_aim_(대전세종청주)_26.04.15 | 설치: 42
+  MMP 총 설치: 42
+
+=== [5] MMP 캠페인명 전체 목록 (3/18~4/26) ===
+  [google.adwords] uac_aos_purchase_aim_(엄마소구)_25.05.27 → 7195건
+  [unattributed] None → 4314건
+  [facebook.business] AOS_논타겟_앱홍보(구매)_26.01.28 → 1179건
+  [web] None → 963건
+  [facebook.business] iOS_유사타겟_회원가입_26.02.06_4 → 921건
+  [apple.searchads] 브랜드_Exact_25.10.29 → 867건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.01.29_1 → 847건
+  [apple.searchads] 카테고리_Exact_25.10.29 → 695건
+  [facebook.business] AOS_유사타겟_회원가입_26.01.28 → 638건
+  [google.adwords] uac_ios_purchase_aim_(복합소구)_26.03.18 → 592건
+  [facebook.business] AOS(Web2App)_논타겟_판매_26.02.03 → 515건
+  [facebook.business] iOS(Web2App)_논타겟_판매_26.02.03 → 487건
+  [google.adwords] uac_aos_purchase_aim_t-roas(복합소구)_26.04.17 → 483건
+  [google.adwords] uac_ios_purchase_aim_(복합소구)_26.04.10 → 454건
+  [tiktok] iOS_논타겟_앱설치_25.11.25 → 391건
+  [instagram] Owned_media → 391건
+  [tiktok] AOS_SPC_구매_대형커버링봉투_26.03.06 → 356건
+  [apple.searchads] (직접)경쟁사_Exact_25.10.29 → 298건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.02.19_3 → 273건
+  [tiktok] None → 227건
+  [facebook.business] AOS_리타겟_구매_24.11.05 → 209건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.01.29_2 → 170건
+  [facebook.business] iOS_유사타겟_회원가입_26.01.28_2 → 145건
+  [airbridge.websdk] default_campaign → 139건
+  [facebook.business] iOS_리타겟_앱홍보(구매)_26.03.25 → 135건
+  [tiktok] iOS_논타겟_구매_26.04.02 → 106건
+  [tiktok] AOS_SPC_구매_인플루언서PA(1)_25.11.28 → 98건
+  [google.adwords] uac_aos_purchase_aim_(복합소구)_25.04.23 → 93건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.02.26 → 67건
+  [facebook.business] iOS_리타겟_앱홍보(구매)_26.03.25_2 → 64건
+  [facebook.business] iOS_리타겟_앱홍보(구매)_26.02.19 → 63건
+  [facebook.business] iOS_유사타겟_회원가입_26.01.28_1 → 55건
+  [product_brand] Crm → 54건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.04.04 → 50건
+  [apple.searchads] 탐색_Broad_25.10.29 → 49건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.03.20 → 48건
+  [facebook.business] iOS_리타겟_앱홍보(구매)_25.07.23 → 43건
+  [google.adwords] p_max_os_web2app_aim_(대전세종청주)_26.04.15 → 42건
+  [promotion_brand] Crm → 37건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.04.12 → 35건
+  [facebook.business] OS(Web2Form)_유사타겟_리드_26.03.17 → 34건
+  [facebook.business] {{campaign.name}} → 27건
+  [facebook.business] iOS_논타겟_앱홍보(구매)_26.04.23 → 26건
+  [facebook.business] iOS_리타겟_봉투구매_26.04.12 → 16건
+  [facebook.business] iOS_유사타겟_회원가입_26.04.23_6 → 14건
+  [instagram] Viral → 13건
+  [in_app] spot_organic → 6건
+  [app] large_waste_awareness_20260411_20260421 → 5건
+  [social_alimtalk] Crm → 4건
+  [in_app_share] spot-booking-complete → 4건
+
+=== [6] 천안아산 주목 유입 유저의 주문 전환 ===
+
+=== [7] 대전세종청주 신주목 유입 유저의 주문 전환 ===
+천안아산 주목: MMP유저 0 → 주문전환 0명 (None%) | 총주문 0건
+대전세종청주 신주목: MMP유저 42 → 주문전환 24명 (57.1%) | 총주문 48건
+
+=== 완료 ===

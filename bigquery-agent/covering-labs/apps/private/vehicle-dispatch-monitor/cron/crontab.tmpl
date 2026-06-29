@@ -1,0 +1,6 @@
+CRON_TZ=Asia/Seoul
+PATH=/usr/local/bin:/usr/bin:/bin:/snap/bin
+
+# vehicle-dispatch (21:00 KST daily — --loop으로 23시까지)
+# 참고: 실제 crontab은 deploy-app.sh가 deploy.yml의 schedule/command를 읽어 자동 등록
+0 21 * * * cd /shared/apps/vehicle-dispatch-monitor && python3 monitor.py --loop >> logs/batch.log 2>&1 # deploy:vehicle-dispatch-monitor

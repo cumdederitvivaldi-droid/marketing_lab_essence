@@ -1,0 +1,52 @@
+분석명: d30_retention_actual
+설명: 실제 D30 리텐션: 첫 주문 후 30일 초과 시점 재주문 여부 (B2C 기준)
+추출일시: 2026-04-22 20:00:42
+프로젝트: covering-app-ccd23
+비고: short_link_id 없음 → user.signup_referral_channel 대체
+
+=== 실행 SQL ===
+
+WITH first_orders AS (
+  SELECT
+    o.user_id,
+    MIN(DATE(o.created_at, 'Asia/Seoul')) AS first_order_date
+  FROM `covering-app-ccd23.secure_dataset.order_v2` o
+  WHERE o.company_id IS NULL AND o.deleted_at IS NULL
+    AND o.status IN ('COMPLETED','IN_PROGRESS','READY')
+  GROUP BY o.user_id
+),
+cohort_users AS (
+  SELECT
+    fo.user_id, fo.first_order_date,
+    DATE_TRUNC(fo.first_order_date, WEEK(MONDAY)) AS cohort_week,
+    COALESCE(NULLIF(TRIM(u.signup_referral_channel), ''), 'organic') AS campaign_name
+  FROM first_orders fo
+  JOIN `covering-app-ccd23.secure_dataset.user` u ON fo.user_id = u.id
+  WHERE fo.first_order_date >= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 16 WEEK)
+    AND fo.first_order_date <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 30 DAY)
+),
+reorder_check AS (
+  SELECT
+    cu.user_id, cu.cohort_week, cu.campaign_name,
+    MAX(CASE
+      WHEN DATE(o.created_at, 'Asia/Seoul') > DATE_ADD(cu.first_order_date, INTERVAL 30 DAY)
+      THEN 1 ELSE 0
+    END) AS retained_d30
+  FROM cohort_users cu
+  LEFT JOIN `covering-app-ccd23.secure_dataset.order_v2` o
+    ON cu.user_id = o.user_id
+    AND o.company_id IS NULL
+    AND o.deleted_at IS NULL
+    AND o.status IN ('COMPLETED','IN_PROGRESS','READY')
+  GROUP BY cu.user_id, cu.cohort_week, cu.campaign_name
+)
+SELECT
+  cohort_week,
+  campaign_name,
+  COUNT(*)                                                          AS total_first_order_users,
+  SUM(retained_d30)                                                 AS d30_retained,
+  ROUND(SAFE_DIVIDE(SUM(retained_d30)*100.0, COUNT(*)), 2)          AS d30_retention_rate_pct
+FROM reorder_check
+GROUP BY cohort_week, campaign_name
+ORDER BY cohort_week, campaign_name
+

@@ -1,0 +1,6 @@
+data/*.json
+data/*.md
+!data/.gitkeep
+logs/
+__pycache__/
+*.pyc

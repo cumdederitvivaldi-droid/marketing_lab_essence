@@ -1,0 +1,5 @@
+name: ai-productivity-scan-batch
+description: "AI생산성 채널을 매일 읽고 승인 대기 후보를 쌓는 배치"
+type: batch
+schedule: "0 8 * * *"
+command: "python3 src/main.py"

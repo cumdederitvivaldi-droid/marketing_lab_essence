@@ -1,0 +1,61 @@
+name: Setup Public VM Cron
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/publish-public-status.sh'
+  workflow_dispatch:
+
+jobs:
+  setup-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY_PUBLIC }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Clean OS Login profile
+        run: |
+          SA_EMAIL=$(jq -r '.client_email' "$GOOGLE_APPLICATION_CREDENTIALS")
+          SA_ID=$(jq -r '.client_id' "$GOOGLE_APPLICATION_CREDENTIALS")
+          TOKEN=$(gcloud auth print-access-token)
+          PROFILE=$(curl -sf -H "Authorization: Bearer $TOKEN" \
+            "https://oslogin.googleapis.com/v1/users/${SA_ID}/loginProfile" || echo '{}')
+          echo "$PROFILE" | jq -r '.sshPublicKeys // {} | keys[]' 2>/dev/null | while read fp; do
+            [ -n "$fp" ] && curl -sf -X DELETE -H "Authorization: Bearer $TOKEN" \
+              "https://oslogin.googleapis.com/v1/users/${SA_ID}/sshPublicKeys/${fp}" >/dev/null || true
+          done
+
+      - name: Copy script to public VM
+        run: |
+          SCRIPT_B64=$(base64 -w0 scripts/publish-public-status.sh)
+          gcloud compute ssh covering-labs-public \
+            --zone=asia-northeast3-a --project=covering-app-ccd23 \
+            --quiet \
+            --command="mkdir -p \$HOME/scripts && echo '${SCRIPT_B64}' | base64 -d > \$HOME/scripts/publish-public-status.sh && chmod +x \$HOME/scripts/publish-public-status.sh"
+
+      - name: Set up cron
+        run: |
+          gcloud compute ssh covering-labs-public \
+            --zone=asia-northeast3-a --project=covering-app-ccd23 \
+            --quiet \
+            --command="
+              CRON_ENTRY=\"* * * * * \$HOME/scripts/publish-public-status.sh >> /tmp/publish-public-status.log 2>&1\"
+              ( crontab -l 2>/dev/null | grep -v publish-public-status.sh; echo \"\$CRON_ENTRY\" ) | crontab -
+              echo 'Cron set up:'
+              crontab -l | grep publish-public-status.sh
+            "
+
+      - name: Run script once to seed initial status
+        run: |
+          gcloud compute ssh covering-labs-public \
+            --zone=asia-northeast3-a --project=covering-app-ccd23 \
+            --quiet \
+            --command="\$HOME/scripts/publish-public-status.sh && echo 'Initial status published'"

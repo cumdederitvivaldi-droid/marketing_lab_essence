@@ -1,0 +1,375 @@
+[
+  {
+    "id": "general_under_15_single",
+    "label": "일반 쓰레기 단독, 15kg 이하",
+    "input": {
+      "categories": [
+        "GENERAL_FOOD_RECYCLE"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_SINGLE",
+    "actualRecommendation": "GENERAL_BAG_SINGLE",
+    "pass": true,
+    "qaNote": "일반 쓰레기 단독은 방문수거로 가지 않는다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_SINGLE",
+      "action": "GENERAL_BAG_SINGLE",
+      "matchedRuleId": "general-only-default",
+      "matchedPriority": 20
+    }
+  },
+  {
+    "id": "general_over_25_multiple",
+    "label": "일반 쓰레기 단독, 25kg 이상",
+    "input": {
+      "categories": [
+        "GENERAL_FOOD_RECYCLE"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "OVER_25",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_MULTIPLE",
+    "actualRecommendation": "GENERAL_BAG_MULTIPLE",
+    "pass": true,
+    "qaNote": "일반 쓰레기 단독은 무거워도 일반 봉투 여러 장으로 안내한다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_MULTIPLE",
+      "action": "GENERAL_BAG_MULTIPLE",
+      "matchedRuleId": "general-only-heavy",
+      "matchedPriority": 10
+    }
+  },
+  {
+    "id": "appliance_over_25_visit",
+    "label": "가전·가구, 25kg 이상",
+    "input": {
+      "categories": [
+        "APPLIANCE_FURNITURE"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "OVER_25",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "VISIT_PICKUP",
+    "actualRecommendation": "VISIT_PICKUP",
+    "pass": true,
+    "qaNote": "혼자 옮기기 어려운 가전·가구는 방문수거로 안내한다.",
+    "trace": {
+      "recommendation": "VISIT_PICKUP",
+      "action": "VISIT_PICKUP",
+      "matchedRuleId": "weight-over-25",
+      "matchedPriority": 40
+    }
+  },
+  {
+    "id": "appliance_hard_to_lift_visit",
+    "label": "가전·가구, 체감상 혼자 들기 어려움",
+    "input": {
+      "categories": [
+        "APPLIANCE_FURNITURE"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "UNKNOWN",
+      "perceivedWeight": "HARD_TO_LIFT",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "VISIT_PICKUP",
+    "actualRecommendation": "VISIT_PICKUP",
+    "pass": true,
+    "qaNote": "정확한 무게를 몰라도 혼자 들기 어려우면 방문수거로 안내한다.",
+    "trace": {
+      "recommendation": "VISIT_PICKUP",
+      "action": "VISIT_PICKUP",
+      "matchedRuleId": "weight-over-25",
+      "matchedPriority": 40
+    }
+  },
+  {
+    "id": "bedding_over_25_multiple",
+    "label": "이불·의류·잡화 단독, 25kg 이상",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "OVER_25",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_MULTIPLE",
+    "actualRecommendation": "GENERAL_BAG_MULTIPLE",
+    "pass": true,
+    "qaNote": "나눠 담을 수 있는 품목은 무거워도 일반 봉투 여러 장으로 안내한다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_MULTIPLE",
+      "action": "GENERAL_BAG_MULTIPLE",
+      "matchedRuleId": "splittable-heavy-bag-length",
+      "matchedPriority": 30
+    }
+  },
+  {
+    "id": "bedding_with_appliance_over_25_visit",
+    "label": "이불·의류·잡화와 가전·가구 혼합, 25kg 이상",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC",
+        "APPLIANCE_FURNITURE"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "OVER_25",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "VISIT_PICKUP",
+    "actualRecommendation": "VISIT_PICKUP",
+    "pass": true,
+    "qaNote": "혼합 선택에 가전·가구가 포함되면 방문수거를 우선한다.",
+    "trace": {
+      "recommendation": "VISIT_PICKUP",
+      "action": "VISIT_PICKUP",
+      "matchedRuleId": "weight-over-25",
+      "matchedPriority": 40
+    }
+  },
+  {
+    "id": "length_74_under80_single",
+    "label": "길이 74cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_SINGLE",
+    "actualRecommendation": "GENERAL_BAG_SINGLE",
+    "pass": true,
+    "qaNote": "75cm 미만은 80cm 이하 구간이다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_SINGLE",
+      "action": "GENERAL_BAG_SINGLE",
+      "matchedRuleId": "bag-length-default",
+      "matchedPriority": 110
+    }
+  },
+  {
+    "id": "length_75_around80_single",
+    "label": "길이 75cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "AROUND_80",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_SINGLE",
+    "actualRecommendation": "GENERAL_BAG_SINGLE",
+    "pass": true,
+    "qaNote": "75~85cm는 80cm 내외 구간이다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_SINGLE",
+      "action": "GENERAL_BAG_SINGLE",
+      "matchedRuleId": "bag-length-default",
+      "matchedPriority": 110
+    }
+  },
+  {
+    "id": "length_85_around80_single",
+    "label": "길이 85cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "AROUND_80",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_SINGLE",
+    "actualRecommendation": "GENERAL_BAG_SINGLE",
+    "pass": true,
+    "qaNote": "85cm까지는 80cm 내외 구간이다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_SINGLE",
+      "action": "GENERAL_BAG_SINGLE",
+      "matchedRuleId": "bag-length-default",
+      "matchedPriority": 110
+    }
+  },
+  {
+    "id": "length_86_large",
+    "label": "길이 86cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "OVER_80_UNDER_140",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "LARGE_COVERING_BAG",
+    "actualRecommendation": "LARGE_COVERING_BAG",
+    "pass": true,
+    "qaNote": "86cm부터 일반 봉투 한 장 안내가 아니라 대형 봉투로 안내한다.",
+    "trace": {
+      "recommendation": "LARGE_COVERING_BAG",
+      "action": "LARGE_COVERING_BAG",
+      "matchedRuleId": "length-86-140-default",
+      "matchedPriority": 90
+    }
+  },
+  {
+    "id": "length_140_large",
+    "label": "길이 140cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "OVER_80_UNDER_140",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "LARGE_COVERING_BAG",
+    "actualRecommendation": "LARGE_COVERING_BAG",
+    "pass": true,
+    "qaNote": "140cm까지는 대형 봉투 구간이다.",
+    "trace": {
+      "recommendation": "LARGE_COVERING_BAG",
+      "action": "LARGE_COVERING_BAG",
+      "matchedRuleId": "length-86-140-default",
+      "matchedPriority": 90
+    }
+  },
+  {
+    "id": "length_141_large",
+    "label": "길이 141cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "OVER_140_UNDER_150",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "LARGE_COVERING_BAG",
+    "actualRecommendation": "LARGE_COVERING_BAG",
+    "pass": true,
+    "qaNote": "141~150cm는 대형 봉투 구간이다.",
+    "trace": {
+      "recommendation": "LARGE_COVERING_BAG",
+      "action": "LARGE_COVERING_BAG",
+      "matchedRuleId": "length-141-150",
+      "matchedPriority": 70
+    }
+  },
+  {
+    "id": "length_150_large",
+    "label": "길이 150cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "OVER_140_UNDER_150",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "LARGE_COVERING_BAG",
+    "actualRecommendation": "LARGE_COVERING_BAG",
+    "pass": true,
+    "qaNote": "150cm까지는 대형 봉투 구간이다.",
+    "trace": {
+      "recommendation": "LARGE_COVERING_BAG",
+      "action": "LARGE_COVERING_BAG",
+      "matchedRuleId": "length-141-150",
+      "matchedPriority": 70
+    }
+  },
+  {
+    "id": "length_151_visit",
+    "label": "길이 151cm 구간",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "OVER_150",
+      "weightRange": "UNDER_15",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "VISIT_PICKUP",
+    "actualRecommendation": "VISIT_PICKUP",
+    "pass": true,
+    "qaNote": "150cm 초과는 방문수거로 안내한다.",
+    "trace": {
+      "recommendation": "VISIT_PICKUP",
+      "action": "VISIT_PICKUP",
+      "matchedRuleId": "length-over-150",
+      "matchedPriority": 60
+    }
+  },
+  {
+    "id": "bedding_unknown_weight_hard_hold_multiple",
+    "label": "이불·의류·잡화, 무게 모름, 오래 들기 어려움",
+    "input": {
+      "categories": [
+        "BEDDING_CLOTHES_MISC"
+      ],
+      "lengthRange": "UNDER_80",
+      "weightRange": "UNKNOWN",
+      "perceivedWeight": "HARD_TO_HOLD_LONG",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_MULTIPLE",
+    "actualRecommendation": "GENERAL_BAG_MULTIPLE",
+    "pass": true,
+    "qaNote": "나눠 담을 수 있는 품목의 15~25kg 추정은 여러 장으로 안내한다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_MULTIPLE",
+      "action": "HEAVY_SPLIT_DECISION",
+      "heavySplitReason": "category_bedding_can_split",
+      "matchedRuleId": "bag-length-heavy",
+      "matchedPriority": 100
+    }
+  },
+  {
+    "id": "etc_around80_heavy_unknown_split_multiple",
+    "label": "기타, 80cm 내외, 15~25kg, 나눠 담기 모름",
+    "input": {
+      "categories": [
+        "ETC"
+      ],
+      "lengthRange": "AROUND_80",
+      "weightRange": "OVER_15_UNDER_25",
+      "hasFoodWaste": false,
+      "itemDescription": ""
+    },
+    "expectedRecommendation": "GENERAL_BAG_MULTIPLE",
+    "actualRecommendation": "GENERAL_BAG_MULTIPLE",
+    "pass": true,
+    "qaNote": "기타 품목이 80cm 내외이고 나눠 담기 여부가 없으면 현재 정책은 여러 장으로 안내한다.",
+    "trace": {
+      "recommendation": "GENERAL_BAG_MULTIPLE",
+      "action": "HEAVY_SPLIT_DECISION",
+      "heavySplitReason": "around_80_unknown_can_split",
+      "matchedRuleId": "bag-length-heavy",
+      "matchedPriority": 100
+    }
+  }
+]

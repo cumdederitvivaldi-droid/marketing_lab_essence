@@ -1,0 +1,6 @@
+name: largewaste-crosssell-report
+description: "[ENG-3199] 대형폐기물 크로스셀 일일 KPI 리포트 (BQ ledger 집계 → Slack)"
+type: batch
+# schedule 시각은 KST (Asia/Seoul, UTC+9) 기준 — VM cron 의 시스템 타임존 KST
+schedule: "0 9 * * *"
+command: "python3 src/main.py"

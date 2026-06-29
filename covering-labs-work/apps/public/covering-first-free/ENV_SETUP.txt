@@ -1,0 +1,37 @@
+covering-first-free 환경변수 정리
+================================
+
+배포 시 서버에서 직접 세팅 필요.
+- 위치: /shared/apps/covering-first-free/.env 또는 /shared/.env
+- 로컬 개발: .env.local (gitignore 대상)
+
+
+1. NEXT_PUBLIC_MIXPANEL_TOKEN
+   - 용도: Mixpanel 페이지뷰 + CTA 클릭 이벤트 송출
+   - 필수: 없으면 이벤트 안 나감 (페이지 동작은 정상)
+   - 값: 기존 친구초대 v2 .env 동일 토큰 재사용
+   - 이벤트:
+     · [ROUTE] FirstFreeLandingScreen — 페이지 진입 시 1회
+     · [CLICK] FirstFreeLandingScreen_primaryCta — CTA 클릭 시 (link_mode: onelink|fallback)
+     · [CLICK] FirstFreeLandingScreen_bagNoticeButton — 일반/대형 유의사항 버튼 클릭 시 (bag_type)
+   - 공통 props: variant, from, campaign (URL 쿼리에서), environment, url, timestamp
+
+
+Airbridge 원링크 (서버 env 불필요 — 클라이언트 코드에 하드코딩)
+- 위치: utils/airbridgeLink.ts → AIRBRIDGE_ONELINK 상수
+- 발급 방법:
+  · Airbridge 콘솔에서 tracking link 1개 생성 (또는 POST /v1/tracking-links 1회 호출)
+  · channel=first_free_landing, campaign=first_free_v1, ad_group=first_free_v1,
+    ad_creative=first_free_cta, deeplinkUrl=covering://?campaign=first_free_v1
+  · 발급된 link.covering.app/xxxxxx 또는 abr.ge/xxxxxx 값을 상수에 넣기
+- 발급 전까지는 abr.ge raw URL로 fallback (트래킹은 작동, shortUrl 형태만 아님)
+
+
+URL 쿼리 파라미터로 분기 (Mixpanel 트래킹용)
+- ?variant=…   → 모든 이벤트 props로 전달 (A/B 식별)
+- ?from=…      → 채널/푸시별 트래킹 (예: push_d1, push_d3, friend_invite)
+- ?campaign=…  → FlareLane 등 외부 캠페인 식별
+
+Airbridge ad_group은 원링크 발급 시 고정값(first_free_v1)이므로 variant 쿼리로
+A/B를 쪼개려면 원링크를 variant별로 따로 발급해서 분기하거나 (예: treatment/control용 2개),
+Mixpanel variant prop으로만 분석.

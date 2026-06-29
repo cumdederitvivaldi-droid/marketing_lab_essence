@@ -1,0 +1,3 @@
+name: crm-dashboard
+description: "VPN 전용 CRM 메시지 플로우와 시나리오 내부 대시보드"
+type: nextjs

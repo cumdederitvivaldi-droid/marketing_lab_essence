@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/covering-invite-v2/fonts/Pretendard-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('/covering-invite-v2/fonts/Pretendard-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: Pretendard;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('/covering-invite-v2/fonts/Pretendard-Bold.woff2') format('woff2');
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+
+html {
+  background-color: #ffffff;
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  font-family: Pretendard, sans-serif;
+  background-color: #ffffff;
+  overscroll-behavior: none;
+}
+
+@media (min-width: 768px) {
+  html,
+  body {
+    background-color: #F3F4F6;
+  }
+}
+
+.referral-rolling-track {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  will-change: transform;
+}
+
+.referral-rolling-slide {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+@keyframes bottomsheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes dim-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

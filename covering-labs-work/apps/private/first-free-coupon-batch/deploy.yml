@@ -1,0 +1,5 @@
+name: first-free-coupon-batch
+description: "첫 결제 0원 실험 쿠폰 자동발급 배치 — 5분마다 신규 가입자 51:49 A/B(treatment 우대) → treatment에 FlareLane 이벤트 발사"
+type: batch
+schedule: "*/5 * * * *"  # 5분마다 (KST)
+command: "python3 src/main.py"

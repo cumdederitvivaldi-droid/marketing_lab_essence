@@ -1,0 +1,83 @@
+분석명: d30_retention_actual
+설명: 실제 D30 리텐션 | Airbridge 귀속 첫 주문 기준 → secure_dataset 재주문 추적 | 30일 초과 재주문 여부 | n>=5
+추출일시: 2026-04-22 20:16:50
+프로젝트: covering-app-ccd23
+기준: Airbridge Channel/Campaign/Ad_Group (airbridge_dataset.app_events)
+채널매핑: google.adwords→Google, facebook.business→Meta, apple.searchads→Apple, tiktok→TikTok
+
+=== 실행 SQL ===
+
+WITH
+
+airbridge_first AS (
+  SELECT
+    SAFE_CAST(ae.User_ID AS INT64)                                 AS user_id,
+    CASE ae.Channel
+  WHEN 'google.adwords'   THEN 'Google'
+  WHEN 'facebook.business' THEN 'Meta'
+  WHEN 'apple.searchads'  THEN 'Apple'
+  WHEN 'tiktok'           THEN 'TikTok'
+  ELSE ae.Channel END                                                        AS channel,
+    ae.Campaign                                                     AS campaign,
+    ae.Ad_Group                                                     AS ad_group,
+    ROW_NUMBER() OVER (
+      PARTITION BY ae.User_ID
+      ORDER BY ae.Event_Date, ae.Event_Timestamp
+    ) AS rn
+  FROM `covering-app-ccd23.airbridge_dataset.app_events` ae
+  WHERE ae.Event_Category = 'Order Complete (App)'
+    AND ae.Channel IS NOT NULL
+    AND ae.Channel NOT IN ('unattributed', '')
+    AND ae.Ad_Group IS NOT NULL AND ae.Ad_Group != ''
+    AND ae.User_ID IS NOT NULL AND ae.User_ID != ''
+    AND SAFE_CAST(ae.User_ID AS INT64) IS NOT NULL
+),
+attr AS (
+  SELECT user_id, channel, campaign, ad_group
+  FROM airbridge_first
+  WHERE rn = 1
+),
+first_orders AS (
+  SELECT
+    o.user_id,
+    MIN(DATE(o.created_at, 'Asia/Seoul')) AS first_order_date
+  FROM `covering-app-ccd23.secure_dataset.order_v2` o
+  WHERE o.company_id IS NULL AND o.deleted_at IS NULL
+    AND o.status IN ('COMPLETED','IN_PROGRESS','READY')
+  GROUP BY o.user_id
+),
+cohort_users AS (
+  SELECT
+    a.user_id,
+    fo.first_order_date,
+    DATE_TRUNC(fo.first_order_date, WEEK(MONDAY)) AS cohort_week,
+    a.channel, a.campaign, a.ad_group
+  FROM attr a
+  JOIN first_orders fo ON a.user_id = fo.user_id
+  WHERE fo.first_order_date >= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 16 WEEK)
+    AND fo.first_order_date <= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 30 DAY)
+),
+reorder_check AS (
+  SELECT
+    cu.user_id, cu.cohort_week, cu.channel, cu.campaign, cu.ad_group,
+    MAX(CASE
+      WHEN DATE(o.created_at, 'Asia/Seoul') > DATE_ADD(cu.first_order_date, INTERVAL 30 DAY)
+      THEN 1 ELSE 0
+    END) AS retained_d30
+  FROM cohort_users cu
+  LEFT JOIN `covering-app-ccd23.secure_dataset.order_v2` o
+    ON cu.user_id = o.user_id
+    AND o.company_id IS NULL AND o.deleted_at IS NULL
+    AND o.status IN ('COMPLETED','IN_PROGRESS','READY')
+  GROUP BY cu.user_id, cu.cohort_week, cu.channel, cu.campaign, cu.ad_group
+)
+SELECT
+  cohort_week, channel, campaign, ad_group,
+  COUNT(*)                                                           AS total_users,
+  SUM(retained_d30)                                                  AS d30_retained,
+  ROUND(SAFE_DIVIDE(SUM(retained_d30)*100.0, COUNT(*)), 2)           AS d30_retention_rate_pct
+FROM reorder_check
+GROUP BY cohort_week, channel, campaign, ad_group
+HAVING COUNT(*) >= 5
+ORDER BY cohort_week, channel, campaign, ad_group
+

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bq ls:*)",
+      "Bash(bq show:*)",
+      "Bash(bq query:*)",
+      "Bash(python3:*)"
+    ]
+  }
+}

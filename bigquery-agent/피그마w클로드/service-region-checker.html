@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>서비스 지역 확인</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 40px 36px 36px;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #EFF6FF;
+      color: #2563EB;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 99px;
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+    }
+    .header-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .header-desc {
+      font-size: 14px;
+      color: #6B7280;
+      line-height: 1.7;
+    }
+
+    /* ── Search Phase ── */
+    #phase-search { display: block; }
+    #phase-lookup { display: none; }
+    #phase-result { display: none; }
+
+    /* ── Lookup (embedded postcode) ── */
+    .lookup-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    #postcode-embed {
+      width: 100%;
+      height: 400px;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.18s ease;
+      font-family: inherit;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: #2563EB;
+      color: #fff;
+    }
+    .btn-primary:hover { background: #1D4ED8; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.35); }
+    .btn-primary:active { transform: translateY(0); box-shadow: none; }
+
+    .btn-outline {
+      background: #fff;
+      color: #374151;
+      border: 1.5px solid #E5E7EB;
+      margin-top: 10px;
+    }
+    .btn-outline:hover { border-color: #9CA3AF; background: #F9FAFB; }
+
+    .btn-green {
+      background: #059669;
+      color: #fff;
+    }
+    .btn-green:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(5,150,105,0.35); }
+
+    .btn-notify {
+      background: #fff;
+      color: #374151;
+      border: 1.5px solid #E5E7EB;
+    }
+    .btn-notify:hover { border-color: #9CA3AF; background: #F9FAFB; }
+
+    .reset-link {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 13px;
+      color: #9CA3AF;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      width: 100%;
+    }
+    .reset-link:hover { color: #6B7280; text-decoration: underline; }
+
+    /* ── Result Card ── */
+    .result-box {
+      border-radius: 14px;
+      padding: 22px 20px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.35s ease;
+    }
+    .result-box.ok  { background: #ECFDF5; border: 1.5px solid #A7F3D0; }
+    .result-box.no  { background: #FFF7ED; border: 1.5px solid #FED7AA; }
+
+    .result-emoji { font-size: 30px; margin-bottom: 10px; line-height: 1; }
+    .result-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .result-box.ok  .result-title { color: #065F46; }
+    .result-box.no  .result-title { color: #92400E; }
+
+    .result-addr {
+      font-size: 13px;
+      color: #6B7280;
+      background: rgba(255,255,255,0.7);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+      word-break: keep-all;
+    }
+    .result-msg {
+      font-size: 13px;
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+    .result-box.ok  .result-msg { color: #047857; }
+    .result-box.no  .result-msg { color: #B45309; }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: #F3F4F6;
+      margin: 24px 0;
+    }
+
+    /* ── Coverage hint ── */
+    .coverage-hint {
+      font-size: 12px;
+      color: #9CA3AF;
+      text-align: center;
+      margin-top: 18px;
+      line-height: 1.6;
+    }
+    .coverage-hint span {
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    /* ── Animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Notify toast ── */
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      animation: fadeUp 0.3s ease;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- ── Phase 1: 초기 안내 ── -->
+  <div id="phase-search">
+    <div class="header">
+      <div class="header-badge">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M6 4v2l1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        서비스 지역 안내
+      </div>
+      <div class="header-title">내 집 주소로<br>서비스 가능 여부 확인</div>
+      <div class="header-desc">주소를 검색하면 서비스 가능 지역인지<br>바로 알려드려요.</div>
+    </div>
+
+    <button class="btn btn-primary" onclick="startLookup()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="white" stroke-width="1.7"/><path d="M11 11l2.5 2.5" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>
+      내 주소 검색하기
+    </button>
+
+    <div class="coverage-hint">
+      현재 서비스 지역 · <span>서울 전체 · 인천 전체 · 대전 전체 · 세종 · 경기 일부 · 충남 · 충북</span>
+    </div>
+  </div>
+
+  <!-- ── Phase 2: 주소 검색 임베드 ── -->
+  <div id="phase-lookup">
+    <div class="lookup-label">📍 주소 검색</div>
+    <div id="postcode-embed"></div>
+    <button class="btn btn-outline" onclick="cancelLookup()">취소</button>
+  </div>
+
+  <!-- ── Phase 3: 결과 ── -->
+  <div id="phase-result">
+    <div id="result-box-el" class="result-box">
+      <div class="result-emoji" id="res-emoji"></div>
+      <div class="result-title" id="res-title"></div>
+      <div class="result-addr"  id="res-addr"></div>
+      <div class="result-msg"   id="res-msg"></div>
+    </div>
+
+    <div id="res-cta"></div>
+
+    <button class="reset-link" onclick="reset()">↩ 다른 주소 검색하기</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Kakao 주소 API -->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  /* ====================================================
+     서비스 지역 데이터 (service_regions.csv 기반)
+     ==================================================== */
+  const SERVICE_REGIONS = {
+    '서울특별시': [
+      '강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구',
+      '노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구',
+      '성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'
+    ],
+    '인천광역시': ['계양구','남동구','동구','미추홀구','부평구','서구','연수구','중구'],
+    '대전광역시': ['대덕구','동구','서구','유성구','중구'],
+    '세종특별자치시': null, // 전 지역
+    '경기도': [
+      '고양시 덕양구','고양시 일산동구','고양시 일산서구',
+      '과천시','광명시','광주시','구리시','군포시','김포시','남양주시',
+      '부천시 소사구','부천시 오정구','부천시 원미구',
+      '성남시 분당구','성남시 수정구','성남시 중원구',
+      '수원시 권선구','수원시 영통구','수원시 장안구','수원시 팔달구',
+      '시흥시','안산시 단원구','안산시 상록구','안성시',
+      '안양시 동안구','안양시 만안구','오산시',
+      '용인시 기흥구','용인시 수지구','용인시 처인구',
+      '의왕시','의정부시','파주시','평택시','하남시',
+      '화성시','화성시 동탄구','화성시 병점구','화성시 효행구'
+    ],
+    '충청남도': ['아산시','천안시 동남구','천안시 서북구'],
+    '충청북도': ['청주시 상당구','청주시 서원구','청주시 청원구','청주시 흥덕구']
+  };
+
+  // 카카오 API가 반환하는 축약형 시도명 → 정규화
+  const SIDO_MAP = {
+    '서울': '서울특별시', '인천': '인천광역시', '대전': '대전광역시',
+    '세종': '세종특별자치시', '경기': '경기도', '충남': '충청남도', '충북': '충청북도'
+  };
+
+  /* ====================================================
+     지역 판별 로직
+     ==================================================== */
+  function isServiceArea(sido, sigungu) {
+    const normalSido = SIDO_MAP[sido] || sido;
+    if (!(normalSido in SERVICE_REGIONS)) return false;
+
+    const list = SERVICE_REGIONS[normalSido];
+    if (list === null) return true; // 세종 전체
+
+    // 완전 일치 먼저
+    if (list.includes(sigungu)) return true;
+
+    // 부분 매칭: "성남시"처럼 구 단위 없이 반환될 때 대비
+    // → 해당 시의 어떤 구든 서비스 중이면 true
+    const cityOnly = sigungu.split(' ')[0];
+    return list.some(item => item.split(' ')[0] === cityOnly);
+  }
+
+  /* ====================================================
+     화면 전환
+     ==================================================== */
+  function show(phaseId) {
+    ['phase-search','phase-lookup','phase-result'].forEach(id => {
+      document.getElementById(id).style.display = id === phaseId ? 'block' : 'none';
+    });
+  }
+
+  function startLookup() {
+    show('phase-lookup');
+    const container = document.getElementById('postcode-embed');
+    container.innerHTML = ''; // 초기화
+
+    new daum.Postcode({
+      oncomplete: function(data) {
+        const address  = data.roadAddress || data.jibunAddress;
+        const sido     = data.sido;
+        const sigungu  = data.sigungu;
+        renderResult(address, sido, sigungu);
+      },
+      width:  '100%',
+      height: '400px'
+    }).embed(container, { autoClose: true });
+  }
+
+  function cancelLookup() {
+    show('phase-search');
+  }
+
+  function reset() {
+    show('phase-search');
+  }
+
+  /* ====================================================
+     결과 렌더링
+     ==================================================== */
+  function renderResult(address, sido, sigungu) {
+    const ok = isServiceArea(sido, sigungu);
+
+    // 결과 박스
+    const box = document.getElementById('result-box-el');
+    box.className = 'result-box ' + (ok ? 'ok' : 'no');
+
+    document.getElementById('res-emoji').textContent = ok ? '✅' : '⚠️';
+    document.getElementById('res-title').textContent = ok
+      ? '서비스 신청 가능 지역이에요!'
+      : '현재 서비스 제공 지역이 아니에요';
+    document.getElementById('res-addr').textContent = '📍 ' + address;
+    document.getElementById('res-msg').textContent = ok
+      ? '해당 주소는 서비스 제공 지역입니다. 지금 바로 서비스를 신청해보세요!'
+      : '아직 해당 지역에는 서비스가 제공되지 않습니다. 서비스 지역이 확대되면 가장 먼저 알려드릴게요.';
+
+    // CTA 버튼
+    const cta = document.getElementById('res-cta');
+    if (ok) {
+      cta.innerHTML = `<a href="#apply" class="btn btn-green">서비스 신청하기 →</a>`;
+    } else {
+      cta.innerHTML = `<button class="btn btn-notify" onclick="subscribeNotify('${address.replace(/'/g,"\\'")}')">📬 서비스 지역 확대 알림 받기</button>`;
+    }
+
+    show('phase-result');
+  }
+
+  /* ====================================================
+     알림 신청 (여기에 실제 연동 로직을 추가하세요)
+     ==================================================== */
+  function subscribeNotify(address) {
+    // TODO: 서버 API 또는 Google Forms 등으로 연동
+    showToast('알림 신청이 완료되었습니다! 서비스 지역 확대 시 알려드릴게요 😊');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 3500);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+﻿cohort_week,channel,campaign,ad_group,total_users,d30_retained,d30_retention_rate_pct
+2025-12-29,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,5,5,100.0
+2025-12-29,social_alimtalk,Crm,쿠폰 만료 예정 안내5,10,10,100.0
+2026-01-05,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,6,6,100.0
+2026-01-05,social_alimtalk,Crm,수거 성공 안내-앱1,8,8,100.0
+2026-01-05,social_alimtalk,Crm,쿠폰 만료 예정 안내5,15,15,100.0
+2026-01-12,Apple,브랜드_Exact_25.10.29,브랜드_Exact_25.10.29,5,5,100.0
+2026-01-12,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,9,9,100.0
+2026-01-12,social_alimtalk,Crm,수거 성공 안내-앱1,5,5,100.0
+2026-01-12,social_alimtalk,Crm,쿠폰 만료 예정 안내5,22,22,100.0
+2026-01-19,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,10,9,90.0
+2026-01-19,social_alimtalk,Crm,수거 성공 안내-앱1,5,5,100.0
+2026-01-19,social_alimtalk,Crm,쿠폰 만료 예정 안내5,23,23,100.0
+2026-01-26,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,9,9,100.0
+2026-01-26,social_alimtalk,Crm,쿠폰 만료 예정 안내5,21,20,95.24
+2026-02-02,social_alimtalk,Crm,수거 성공 안내-앱1,5,5,100.0
+2026-02-02,social_alimtalk,Crm,쿠폰 만료 예정 안내5,20,20,100.0
+2026-02-09,Apple,브랜드_Exact_25.10.29,브랜드_Exact_25.10.29,5,5,100.0
+2026-02-09,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,10,10,100.0
+2026-02-09,social_alimtalk,Crm,수거 성공 안내-앱1,11,11,100.0
+2026-02-09,social_alimtalk,Crm,쿠폰 만료 예정 안내5,23,22,95.65
+2026-02-16,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,10,10,100.0
+2026-02-16,social_alimtalk,Crm,수거 성공 안내-앱1,10,10,100.0
+2026-02-16,social_alimtalk,Crm,장기 미이용 이벤트-28일(우선 발송)1,6,6,100.0
+2026-02-16,social_alimtalk,Crm,쿠폰 만료 예정 안내5,44,42,95.45
+2026-02-23,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,11,11,100.0
+2026-02-23,social_alimtalk,Crm,수거 성공 안내-앱1,18,18,100.0
+2026-02-23,social_alimtalk,Crm,장기 미이용 이벤트-28일(우선 발송)1,5,5,100.0
+2026-02-23,social_alimtalk,Crm,쿠폰 만료 예정 안내5,36,35,97.22
+2026-03-02,Apple,(직접)경쟁사_Exact_25.10.29,(직접)경쟁사_Exact_25.10.29,9,7,77.78
+2026-03-02,Apple,브랜드_Exact_25.10.29,브랜드_Exact_25.10.29,35,20,57.14
+2026-03-02,Apple,카테고리_Exact_25.10.29,카테고리_Exact_25.10.29,19,14,73.68
+2026-03-02,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(대형봉투)_26.03.06,17,6,35.29
+2026-03-02,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,45,33,73.33
+2026-03-02,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_lookalike(7%)_vd_인플루언서PA(1)_sj1_26.02.13,5,4,80.0
+2026-03-02,Meta,AOS_리타겟_구매_24.11.05,aos_purchase_re_vd_고효율소재모음(1)_25.07.23,5,5,100.0
+2026-03-02,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_복합소구모음_hn1_26.01.29,9,6,66.67
+2026-03-02,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_인플루언서PA(1)_hn1_26.01.29,17,13,76.47
+2026-03-02,Meta,iOS_리타겟_앱홍보(구매)_26.02.19,ios_purchase_re_vd_150L(대형폐기물)_hn1_26.02.19,5,4,80.0
+2026-03-02,Meta,iOS_유사타겟_회원가입_26.02.06_4,ios_registration_lookalike(7%)_vd_150L(대형폐기물)_hn1_26.02.19,19,7,36.84
+2026-03-02,instagram,Owned_media,인스타2이벤트2500,14,10,71.43
+2026-03-02,social_alimtalk,Crm,수거 성공 안내-앱1,11,11,100.0
+2026-03-02,social_alimtalk,Crm,장기 미이용 이벤트-45일1,6,6,100.0
+2026-03-02,social_alimtalk,Crm,쿠폰 만료 예정 안내5,45,38,84.44
+2026-03-09,Apple,(직접)경쟁사_Exact_25.10.29,(직접)경쟁사_Exact_25.10.29,11,7,63.64
+2026-03-09,Apple,브랜드_Exact_25.10.29,브랜드_Exact_25.10.29,58,33,56.9
+2026-03-09,Apple,카테고리_Exact_25.10.29,카테고리_Exact_25.10.29,34,15,44.12
+2026-03-09,Google,uac_aos_purchase_aim_(복합소구)_25.04.23,uac_aos_purchase_aim_(인플루언서PA_1)_26.02.06,5,3,60.0
+2026-03-09,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(대형봉투)_26.03.06,86,35,40.7
+2026-03-09,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,156,63,40.38
+2026-03-09,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_all_vd_복합소구모음_sj1_26.01.28,5,5,100.0
+2026-03-09,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_all_vd_폐기물모음_sj1_26.01.28,7,1,14.29
+2026-03-09,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_lookalike(7%)_vd_인플루언서PA(1)_sj1_26.02.13,12,9,75.0
+2026-03-09,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_lookalike(7%)_vd_인플루언서PA(2월)_hn1_26.02.23,5,1,20.0
+2026-03-09,Meta,AOS_리타겟_구매_24.11.05,aos_purchase_re_vd_고효율소재모음(1)_25.07.23,6,4,66.67
+2026-03-09,Meta,AOS_리타겟_구매_24.11.05,aos_trial_re_vd_고효율소재모음(2)_dh1_26.02.20,7,1,14.29
+2026-03-09,Meta,AOS_유사타겟_회원가입_26.01.28,aos_registration_lookalike(7%)_vd_150L(대형폐기물)_hn1_26.02.19,26,11,42.31
+2026-03-09,Meta,AOS_유사타겟_회원가입_26.01.28,aos_registration_lookalike(7%)_vd_인플루언서PA(2)_sj1_26.01.29,6,2,33.33
+2026-03-09,Meta,iOS(Web2App)_논타겟_판매_26.02.03,ios(Web2App)_purchase_all_vd_아귀찮아(음식물)_cr1_26.02.03,5,3,60.0
+2026-03-09,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_복합소구모음_hn1_26.01.29,21,7,33.33
+2026-03-09,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_이사모음_hn1_26.01.29,8,4,50.0
+2026-03-09,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_인플루언서PA(1)_hn1_26.01.29,28,11,39.29
+2026-03-09,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_2,ios_purchase_lookalike(7%)_vd_인플루언서PA(1)_mk1_26.02.12,18,7,38.89
+2026-03-09,Meta,iOS_논타겟_앱홍보(구매)_26.02.19_3,ios_purchase_lookalike(7%)_vd_여기서뭐해(음식물)_cr1_26.02.19,14,10,71.43
+2026-03-09,Meta,iOS_리타겟_앱홍보(구매)_26.02.19,ios_purchase_re_vd_150L(대형폐기물)_hn1_26.02.19,17,9,52.94
+2026-03-09,Meta,iOS_유사타겟_회원가입_26.02.06_4,ios_registration_lookalike(7%)_vd_150L(대형폐기물)_hn1_26.02.19,39,13,33.33
+2026-03-09,TikTok,AOS_SPC_구매_대형커버링봉투_26.03.06,aos_purcahse_all_vd_25.11.28,7,3,42.86
+2026-03-09,TikTok,AOS_SPC_구매_인플루언서PA(1)_25.11.28,aos_purcahse_all_vd_25.11.28,8,2,25.0
+2026-03-09,TikTok,iOS_논타겟_앱설치_25.11.25,ios_install_like(b)_vd_대형커버링봉투_26.03.06,10,3,30.0
+2026-03-09,instagram,Owned_media,인스타2이벤트2500,22,9,40.91
+2026-03-09,social_alimtalk,Crm,수거 성공 안내-앱1,12,8,66.67
+2026-03-09,social_alimtalk,Crm,장기 미이용 이벤트-16일1,5,0,0.0
+2026-03-09,social_alimtalk,Crm,쿠폰 만료 예정 안내5,49,26,53.06
+2026-03-16,Apple,(직접)경쟁사_Exact_25.10.29,(직접)경쟁사_Exact_25.10.29,21,6,28.57
+2026-03-16,Apple,브랜드_Exact_25.10.29,브랜드_Exact_25.10.29,130,13,10.0
+2026-03-16,Apple,카테고리_Exact_25.10.29,카테고리_Exact_25.10.29,60,15,25.0
+2026-03-16,Apple,탐색_Broad_25.10.29,탐색_Broad_25.10.29,6,1,16.67
+2026-03-16,Google,uac_aos_purchase_aim_(복합소구)_25.04.23,uac_aos_purchase_aim_(인플루언서PA_1)_26.02.06,10,1,10.0
+2026-03-16,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(대형봉투)_26.03.06,95,13,13.68
+2026-03-16,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,202,30,14.85
+2026-03-16,Google,uac_ios_purchase_aim_(복합소구)_26.03.18,uac_ios_purchase_aim_(대형봉투)_26.03.18,8,0,0.0
+2026-03-16,Meta,AOS(Web2App)_논타겟_판매_26.02.03,aos(Web2App)_purchase_all_vd_결산(대형폐기물)_mk1_26.03.06,7,0,0.0
+2026-03-16,Meta,AOS(Web2App)_논타겟_판매_26.02.03,aos(Web2App)_purchase_lookalike(7%)_vd_부럽다/천안100(음식물)_nk1_26.03.18,5,0,0.0
+2026-03-16,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_all_vd_복합소구모음_sj1_26.01.28,12,1,8.33
+2026-03-16,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_all_vd_음식물모음_sj1_26.01.28,12,3,25.0
+2026-03-16,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_all_vd_폐기물모음_sj1_26.01.28,12,0,0.0
+2026-03-16,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_lookalike(7%)_vd_인플루언서PA(1)_sj1_26.02.13,13,1,7.69
+2026-03-16,Meta,AOS_논타겟_앱홍보(구매)_26.01.28,aos_purchase_lookalike(7%)_vd_인플루언서PA(2월)_hn1_26.02.23,9,2,22.22
+2026-03-16,Meta,AOS_리타겟_구매_24.11.05,aos_trial_re_vd_고효율소재모음(2)_dh1_26.02.20,5,0,0.0
+2026-03-16,Meta,AOS_유사타겟_회원가입_26.01.28,aos_registration_lookalike(7%)_vd_150L(대형폐기물)_hn1_26.02.19,56,8,14.29
+2026-03-16,Meta,iOS(Web2App)_논타겟_판매_26.02.03,ios(Web2App)_purchase_all_vd_아귀찮아(음식물)_cr1_26.02.03,5,0,0.0
+2026-03-16,Meta,iOS(Web2App)_논타겟_판매_26.02.03,ios(Web2App)_purchase_lookalike(7%)_vd_부럽다/천안100(음식물)_nk1_26.03.18,7,1,14.29
+2026-03-16,Meta,iOS(Web2App)_논타겟_판매_26.02.03,ios(Web2App)_purchase_lookalike(7%)_vd_부럽다/천안50(음식물)_nk1_26.03.18,5,0,0.0
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_복합소구모음_hn1_26.01.29,15,0,0.0
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_음식물모음_hn1_26.01.29,8,2,25.0
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_이사모음_hn1_26.01.29,9,1,11.11
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_인플루언서PA(1)_hn1_26.01.29,40,8,20.0
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_2,ios_purchase_lookalike(7%)_vd_인플루언서PA(1)_mk1_26.02.12,18,3,16.67
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.02.19_3,ios_purchase_lookalike(7%)_vd_여기서뭐해(음식물)_cr1_26.02.19,19,5,26.32
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.02.19_3,ios_purchase_lookalike(7%)_vd_인플루언서PA(2월)_hn1_26.02.23,5,0,0.0
+2026-03-16,Meta,iOS_논타겟_앱홍보(구매)_26.02.26,"ios_purchase_천안,아산_vd_PA고효율소재모음(2)_hn1_26.03.05",7,3,42.86
+2026-03-16,Meta,iOS_리타겟_앱홍보(구매)_25.07.23,ios_purchase_re_vd_고효율소재모음(2)_25.07.23,9,4,44.44
+2026-03-16,Meta,iOS_리타겟_앱홍보(구매)_26.02.19,ios_purchase_re_vd_150L(대형폐기물)_hn1_26.02.19,13,4,30.77
+2026-03-16,Meta,iOS_유사타겟_회원가입_26.01.28_1,ios_registration_lookalike(7%)_vd_인플루언서PA(4)_hn1_26.01.28,7,1,14.29
+2026-03-16,Meta,iOS_유사타겟_회원가입_26.01.28_2,ios_registration_lookalike(7%)_vd_복합소구모음1_hn1_26.01.28,5,0,0.0
+2026-03-16,Meta,iOS_유사타겟_회원가입_26.02.06_4,ios_registration_lookalike(7%)_vd_150L(대형폐기물)_hn1_26.02.19,77,10,12.99
+2026-03-16,TikTok,AOS_SPC_구매_대형커버링봉투_26.03.06,aos_purcahse_all_vd_25.11.28,10,1,10.0
+2026-03-16,TikTok,AOS_SPC_구매_인플루언서PA(1)_25.11.28,aos_purcahse_all_vd_25.11.28,5,3,60.0
+2026-03-16,TikTok,iOS_논타겟_앱설치_25.11.25,ios_install_like(b)_vd_대형커버링봉투_26.03.06,10,2,20.0
+2026-03-16,instagram,Owned_media,인스타2이벤트2500,44,3,6.82
+2026-03-16,social_alimtalk,Crm,수거 성공 안내-앱1,17,2,11.76
+2026-03-16,social_alimtalk,Crm,쿠폰 만료 예정 안내5,51,8,15.69
+2026-03-23,Apple,(직접)경쟁사_Exact_25.10.29,(직접)경쟁사_Exact_25.10.29,5,0,0.0
+2026-03-23,Apple,브랜드_Exact_25.10.29,브랜드_Exact_25.10.29,34,0,0.0
+2026-03-23,Apple,카테고리_Exact_25.10.29,카테고리_Exact_25.10.29,10,0,0.0
+2026-03-23,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(대형봉투)_26.03.06,12,0,0.0
+2026-03-23,Google,uac_aos_purchase_aim_(엄마소구)_25.05.27,uac_aos_purchase_aim_(엄마소구)_25.12.31,36,0,0.0
+2026-03-23,Meta,iOS_논타겟_앱홍보(구매)_26.01.29_1,ios_purchase_all_vd_인플루언서PA(1)_hn1_26.01.29,6,0,0.0
+2026-03-23,Meta,iOS_유사타겟_회원가입_26.02.06_4,ios_registration_lookalike(7%)_vd_150L(대형폐기물)_hn1_26.02.19,13,0,0.0
+2026-03-23,social_alimtalk,Crm,쿠폰 만료 예정 안내5,8,0,0.0

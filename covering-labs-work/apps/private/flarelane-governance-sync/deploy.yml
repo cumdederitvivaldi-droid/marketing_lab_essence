@@ -1,0 +1,5 @@
+name: flarelane-governance-sync
+description: "FlareLane 실험 장부 누락 감시와 제품팀 Slack 알림 — 매일 10:00 KST 실행"
+type: batch
+schedule: "0 10 * * *"
+command: "python3 src/main.py audit --send-slack"

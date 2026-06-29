@@ -1,0 +1,26 @@
+{
+  "_comment": "실제 생성 전 반드시 dry-run으로 확인: python create_campaign.py job_example.json --dry-run",
+
+  "concept": "청소부2500",
+  "hook": "신고",
+  "version": 1,
+  "manager": "mk1",
+
+  "os": ["aos", "ios"],
+  "format": "vd",
+  "targeting": "all",
+
+  "daily_budget_krw": 30000,
+
+  "video_ids": {
+    "aos": "여기에_AOS_영상_ID_입력",
+    "ios": "여기에_iOS_영상_ID_입력"
+  },
+
+  "title": "커버링으로 빠르게 청소하기",
+  "message": null,
+
+  "campaign_id": null,
+
+  "status": "PAUSED"
+}

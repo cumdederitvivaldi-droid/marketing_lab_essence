@@ -1,0 +1,3 @@
+Row 0: ['기간', datetime.datetime(2026, 4, 14, 0, 0), datetime.datetime(2026, 4, 20, 0, 0), nan, nan, nan, nan, nan, nan]
+Row 1 (headers): ['광고 이름', '광고 세트 이름', '지출 금액 (KRW)', '노출', '고유 링크 클릭', '앱 설치', '등록 완료', '구매', '광고 세트 예산']
+Row 2 (sample): ['ios_vd_all_오순의집2_hn1_26.01.29', 'ios_purchase_all_vd_인플루언서PA(1)_hn1_26.01.29', 3707943, 513894, 2917, 207, 137, 90, 650000]

@@ -1,0 +1,19 @@
+분석: 세종·청주 DAU 저조 원인 분석
+실행일시: 2026-04-23 02:45:02
+대상: 세종특별자치시, 충청북도 vs 서울/경기 비교
+
+=== 1_service_coverage ===
+
+
+=== 2_dau_by_region ===
+
+
+=== 3_new_user_trend ===
+
+
+=== 4_retention_by_region ===
+
+
+=== 5_fulfillment_fail_by_region ===
+
+

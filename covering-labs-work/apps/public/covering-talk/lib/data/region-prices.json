@@ -1,0 +1,394 @@
+[
+  {
+    "region": "광진구",
+    "price1": 47000,
+    "price2": 71000,
+    "price3": 107000,
+    "lunchSmall": 27000
+  },
+  {
+    "region": "강동구",
+    "price1": 49000,
+    "price2": 74000,
+    "price3": 111000,
+    "lunchSmall": 29000
+  },
+  {
+    "region": "송파구",
+    "price1": 49000,
+    "price2": 74000,
+    "price3": 111000,
+    "lunchSmall": 29000
+  },
+  {
+    "region": "강남구",
+    "price1": 50000,
+    "price2": 75000,
+    "price3": 113000,
+    "lunchSmall": 30000
+  },
+  {
+    "region": "성동구",
+    "price1": 50000,
+    "price2": 75000,
+    "price3": 113000,
+    "lunchSmall": 30000
+  },
+  {
+    "region": "동대문구",
+    "price1": 49000,
+    "price2": 74000,
+    "price3": 111000,
+    "lunchSmall": 29000
+  },
+  {
+    "region": "중랑구",
+    "price1": 48000,
+    "price2": 72000,
+    "price3": 108000,
+    "lunchSmall": 28000
+  },
+  {
+    "region": "서초구",
+    "price1": 52000,
+    "price2": 78000,
+    "price3": 117000,
+    "lunchSmall": 32000
+  },
+  {
+    "region": "동작구",
+    "price1": 56000,
+    "price2": 84000,
+    "price3": 126000,
+    "lunchSmall": 36000
+  },
+  {
+    "region": "관악구",
+    "price1": 57000,
+    "price2": 86000,
+    "price3": 129000,
+    "lunchSmall": 37000
+  },
+  {
+    "region": "용산구",
+    "price1": 52000,
+    "price2": 78000,
+    "price3": 117000,
+    "lunchSmall": 32000
+  },
+  {
+    "region": "중구",
+    "price1": 51000,
+    "price2": 77000,
+    "price3": 116000,
+    "lunchSmall": 31000
+  },
+  {
+    "region": "종로구",
+    "price1": 52000,
+    "price2": 78000,
+    "price3": 117000,
+    "lunchSmall": 32000
+  },
+  {
+    "region": "성북구",
+    "price1": 50000,
+    "price2": 75000,
+    "price3": 113000,
+    "lunchSmall": 30000
+  },
+  {
+    "region": "강북구",
+    "price1": 52000,
+    "price2": 78000,
+    "price3": 117000,
+    "lunchSmall": 32000
+  },
+  {
+    "region": "도봉구",
+    "price1": 52000,
+    "price2": 78000,
+    "price3": 117000,
+    "lunchSmall": 32000
+  },
+  {
+    "region": "노원구",
+    "price1": 51000,
+    "price2": 77000,
+    "price3": 116000,
+    "lunchSmall": 31000
+  },
+  {
+    "region": "금천구",
+    "price1": 60000,
+    "price2": 90000,
+    "price3": 135000,
+    "lunchSmall": 40000
+  },
+  {
+    "region": "구로구",
+    "price1": 59000,
+    "price2": 89000,
+    "price3": 134000,
+    "lunchSmall": 39000
+  },
+  {
+    "region": "양천구",
+    "price1": 60000,
+    "price2": 90000,
+    "price3": 135000,
+    "lunchSmall": 40000
+  },
+  {
+    "region": "영등포구",
+    "price1": 59000,
+    "price2": 89000,
+    "price3": 134000,
+    "lunchSmall": 39000
+  },
+  {
+    "region": "강서구",
+    "price1": 61000,
+    "price2": 92000,
+    "price3": 138000,
+    "lunchSmall": 41000
+  },
+  {
+    "region": "마포구",
+    "price1": 59000,
+    "price2": 89000,
+    "price3": 134000,
+    "lunchSmall": 39000
+  },
+  {
+    "region": "서대문구",
+    "price1": 56000,
+    "price2": 84000,
+    "price3": 126000,
+    "lunchSmall": 36000
+  },
+  {
+    "region": "은평구",
+    "price1": 56000,
+    "price2": 84000,
+    "price3": 126000,
+    "lunchSmall": 36000
+  },
+  {
+    "region": "김포",
+    "price1": 69000,
+    "price2": 104000,
+    "price3": 156000,
+    "lunchSmall": 49000
+  },
+  {
+    "region": "파주",
+    "price1": 71000,
+    "price2": 107000,
+    "price3": 161000,
+    "lunchSmall": 51000
+  },
+  {
+    "region": "동두천",
+    "price1": 67000,
+    "price2": 101000,
+    "price3": 152000,
+    "lunchSmall": 47000
+  },
+  {
+    "region": "포천",
+    "price1": 67000,
+    "price2": 101000,
+    "price3": 152000,
+    "lunchSmall": 47000
+  },
+  {
+    "region": "양주",
+    "price1": 60000,
+    "price2": 90000,
+    "price3": 135000,
+    "lunchSmall": 40000
+  },
+  {
+    "region": "의정부",
+    "price1": 57000,
+    "price2": 86000,
+    "price3": 129000,
+    "lunchSmall": 37000
+  },
+  {
+    "region": "고양",
+    "price1": 62000,
+    "price2": 93000,
+    "price3": 140000,
+    "lunchSmall": 42000
+  },
+  {
+    "region": "남양주",
+    "price1": 50000,
+    "price2": 75000,
+    "price3": 113000,
+    "lunchSmall": 30000
+  },
+  {
+    "region": "구리",
+    "price1": 46000,
+    "price2": 69000,
+    "price3": 104000,
+    "lunchSmall": 26000
+  },
+  {
+    "region": "하남",
+    "price1": 51000,
+    "price2": 77000,
+    "price3": 116000,
+    "lunchSmall": 31000
+  },
+  {
+    "region": "가평",
+    "price1": 72000,
+    "price2": 108000,
+    "price3": 162000,
+    "lunchSmall": 52000
+  },
+  {
+    "region": "양평",
+    "price1": 65000,
+    "price2": 98000,
+    "price3": 147000,
+    "lunchSmall": 45000
+  },
+  {
+    "region": "여주",
+    "price1": 79000,
+    "price2": 119000,
+    "price3": 179000,
+    "lunchSmall": 59000
+  },
+  {
+    "region": "이천",
+    "price1": 72000,
+    "price2": 108000,
+    "price3": 162000,
+    "lunchSmall": 52000
+  },
+  {
+    "region": "안성",
+    "price1": 85000,
+    "price2": 128000,
+    "price3": 192000,
+    "lunchSmall": 65000
+  },
+  {
+    "region": "평택",
+    "price1": 83000,
+    "price2": 125000,
+    "price3": 188000,
+    "lunchSmall": 63000
+  },
+  {
+    "region": "화성",
+    "price1": 76000,
+    "price2": 114000,
+    "price3": 171000,
+    "lunchSmall": 56000
+  },
+  {
+    "region": "오산",
+    "price1": 72000,
+    "price2": 108000,
+    "price3": 162000,
+    "lunchSmall": 52000
+  },
+  {
+    "region": "용인",
+    "price1": 68000,
+    "price2": 102000,
+    "price3": 153000,
+    "lunchSmall": 48000
+  },
+  {
+    "region": "성남",
+    "price1": 56000,
+    "price2": 84000,
+    "price3": 126000,
+    "lunchSmall": 36000
+  },
+  {
+    "region": "수원",
+    "price1": 67000,
+    "price2": 101000,
+    "price3": 152000,
+    "lunchSmall": 47000
+  },
+  {
+    "region": "광주",
+    "price1": 56000,
+    "price2": 84000,
+    "price3": 126000,
+    "lunchSmall": 36000
+  },
+  {
+    "region": "안산",
+    "price1": 71000,
+    "price2": 107000,
+    "price3": 161000,
+    "lunchSmall": 51000
+  },
+  {
+    "region": "군포",
+    "price1": 65000,
+    "price2": 98000,
+    "price3": 147000,
+    "lunchSmall": 45000
+  },
+  {
+    "region": "의왕",
+    "price1": 64000,
+    "price2": 96000,
+    "price3": 144000,
+    "lunchSmall": 44000
+  },
+  {
+    "region": "과천",
+    "price1": 58000,
+    "price2": 87000,
+    "price3": 131000,
+    "lunchSmall": 38000
+  },
+  {
+    "region": "안양",
+    "price1": 61000,
+    "price2": 92000,
+    "price3": 138000,
+    "lunchSmall": 41000
+  },
+  {
+    "region": "부천",
+    "price1": 65000,
+    "price2": 98000,
+    "price3": 147000,
+    "lunchSmall": 45000
+  },
+  {
+    "region": "광명",
+    "price1": 61000,
+    "price2": 92000,
+    "price3": 138000,
+    "lunchSmall": 41000
+  },
+  {
+    "region": "인천",
+    "price1": 72000,
+    "price2": 108000,
+    "price3": 162000,
+    "lunchSmall": 52000
+  },
+  {
+    "region": "시흥",
+    "price1": 65000,
+    "price2": 98000,
+    "price3": 147000,
+    "lunchSmall": 44000
+  }
+]

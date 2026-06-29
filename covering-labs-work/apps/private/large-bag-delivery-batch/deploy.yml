@@ -1,0 +1,8 @@
+name: large-bag-delivery-batch
+description: "150L 봉투 두발히어로 배송 접수 자동화 — 매일 09:00, 15:00 KST 실행"
+type: batch
+schedule: "0 9,15 * * *"
+command: "python3 src/main.py --mode register"
+
+
+# redeploy: 2026-04-18h

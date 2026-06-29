@@ -1,0 +1,1472 @@
+{
+  "count": 163,
+  "rows": [
+    {
+      "date": "2024-09-01",
+      "day": "일요일",
+      "bk": "15",
+      "meta": 628063,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 669996
+    },
+    {
+      "date": "2024-09-02",
+      "day": "월요일",
+      "bk": "29",
+      "meta": 612977,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 655948
+    },
+    {
+      "date": "2024-09-03",
+      "day": "화요일",
+      "bk": "15",
+      "meta": 682536,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 758488
+    },
+    {
+      "date": "2024-09-04",
+      "day": "수요일",
+      "bk": "18",
+      "meta": 695915,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 784087
+    },
+    {
+      "date": "2024-09-05",
+      "day": "목요일",
+      "bk": "1",
+      "meta": 699121,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 768813
+    },
+    {
+      "date": "2024-09-06",
+      "day": "금요일",
+      "bk": "20",
+      "meta": 784743,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 831245
+    },
+    {
+      "date": "2024-09-07",
+      "day": "토요일",
+      "bk": "31",
+      "meta": 709047,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 758903
+    },
+    {
+      "date": "2024-09-08",
+      "day": "일요일",
+      "bk": "19",
+      "meta": 773151,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 817370
+    },
+    {
+      "date": "2024-09-09",
+      "day": "월요일",
+      "bk": "38",
+      "meta": 736593,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 789177
+    },
+    {
+      "date": "2024-09-10",
+      "day": "화요일",
+      "bk": "15",
+      "meta": 698412,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 742801
+    },
+    {
+      "date": "2024-09-11",
+      "day": "수요일",
+      "bk": "10",
+      "meta": 692037,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 734063
+    },
+    {
+      "date": "2024-09-12",
+      "day": "목요일",
+      "bk": "29",
+      "meta": 690383,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 732428
+    },
+    {
+      "date": "2024-09-13",
+      "day": "금요일",
+      "bk": "40",
+      "meta": 690812,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 733799
+    },
+    {
+      "date": "2024-09-14",
+      "day": "토요일",
+      "bk": "53",
+      "meta": 505593,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 549476
+    },
+    {
+      "date": "2024-09-15",
+      "day": "일요일",
+      "bk": "36",
+      "meta": 558779,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 610179
+    },
+    {
+      "date": "2024-09-20",
+      "day": "금요일",
+      "bk": "26",
+      "meta": 688473,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 729862
+    },
+    {
+      "date": "2024-09-21",
+      "day": "토요일",
+      "bk": "76",
+      "meta": 660694,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 704446
+    },
+    {
+      "date": "2024-09-22",
+      "day": "일요일",
+      "bk": "49",
+      "meta": 652647,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 698648
+    },
+    {
+      "date": "2024-09-23",
+      "day": "월요일",
+      "bk": "20",
+      "meta": 630602,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 672041
+    },
+    {
+      "date": "2024-09-24",
+      "day": "화요일",
+      "bk": "27",
+      "meta": 660684,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 710600
+    },
+    {
+      "date": "2024-09-25",
+      "day": "수요일",
+      "bk": "24",
+      "meta": 727629,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 774232
+    },
+    {
+      "date": "2024-09-26",
+      "day": "목요일",
+      "bk": "19",
+      "meta": 732900,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 780732
+    },
+    {
+      "date": "2024-09-27",
+      "day": "금요일",
+      "bk": "8",
+      "meta": 806798,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 930316
+    },
+    {
+      "date": "2024-09-28",
+      "day": "토요일",
+      "bk": "30",
+      "meta": 784934,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 929285
+    },
+    {
+      "date": "2024-09-29",
+      "day": "일요일",
+      "bk": "15",
+      "meta": 876387,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 1024186
+    },
+    {
+      "date": "2024-09-30",
+      "day": "월요일",
+      "bk": "26",
+      "meta": 829089,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 873439
+    },
+    {
+      "date": "2024-10-01",
+      "day": "화요일",
+      "bk": "25",
+      "meta": 801483,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 845459
+    },
+    {
+      "date": "2024-10-02",
+      "day": "수요일",
+      "bk": "27",
+      "meta": 781748,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 929539
+    },
+    {
+      "date": "2024-10-04",
+      "day": "금요일",
+      "bk": "11",
+      "meta": 843505,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 1027529
+    },
+    {
+      "date": "2024-10-05",
+      "day": "토요일",
+      "bk": "34",
+      "meta": 759078,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 949183
+    },
+    {
+      "date": "2024-10-06",
+      "day": "일요일",
+      "bk": "25",
+      "meta": 825925,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 998058
+    },
+    {
+      "date": "2024-10-07",
+      "day": "월요일",
+      "bk": "18",
+      "meta": 800082,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 898484
+    },
+    {
+      "date": "2024-10-08",
+      "day": "화요일",
+      "bk": "25",
+      "meta": 585943,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 745809
+    },
+    {
+      "date": "2024-10-09",
+      "day": "수요일",
+      "bk": "22",
+      "meta": 563502,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 697736
+    },
+    {
+      "date": "2024-10-10",
+      "day": "목요일",
+      "bk": "11",
+      "meta": 553283,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 765033
+    },
+    {
+      "date": "2024-10-11",
+      "day": "금요일",
+      "bk": "29",
+      "meta": 591777,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 948825
+    },
+    {
+      "date": "2024-10-12",
+      "day": "토요일",
+      "bk": "43",
+      "meta": 697627,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 1004053
+    },
+    {
+      "date": "2024-10-13",
+      "day": "일요일",
+      "bk": "30",
+      "meta": 766865,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 1040987
+    },
+    {
+      "date": "2024-10-14",
+      "day": "월요일",
+      "bk": "26",
+      "meta": 744268,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 1050599
+    },
+    {
+      "date": "2024-10-15",
+      "day": "화요일",
+      "bk": "29",
+      "meta": 778712,
+      "tiktok": NaN,
+      "paid_total": NaN,
+      "new_users": 1106090
+    },
+    {
+      "date": "2024-10-16",
+      "day": "수요일",
+      "bk": "19",
+      "meta": 812968,
+      "tiktok": 61375,
+      "paid_total": NaN,
+      "new_users": 1239392
+    },
+    {
+      "date": "2024-10-17",
+      "day": "목요일",
+      "bk": "25",
+      "meta": 839700,
+      "tiktok": 95740,
+      "paid_total": NaN,
+      "new_users": 1314176
+    },
+    {
+      "date": "2024-10-18",
+      "day": "금요일",
+      "bk": "14",
+      "meta": 828933,
+      "tiktok": 83552,
+      "paid_total": NaN,
+      "new_users": 1259937
+    },
+    {
+      "date": "2024-10-19",
+      "day": "토요일",
+      "bk": "29",
+      "meta": 748820,
+      "tiktok": 79333,
+      "paid_total": NaN,
+      "new_users": 1169564
+    },
+    {
+      "date": "2024-10-20",
+      "day": "일요일",
+      "bk": "36",
+      "meta": 817898,
+      "tiktok": 80746,
+      "paid_total": NaN,
+      "new_users": 1241388
+    },
+    {
+      "date": "2024-10-21",
+      "day": "월요일",
+      "bk": "23",
+      "meta": 806068,
+      "tiktok": 80870,
+      "paid_total": NaN,
+      "new_users": 1210824
+    },
+    {
+      "date": "2024-10-22",
+      "day": "화요일",
+      "bk": "21",
+      "meta": 732716,
+      "tiktok": 60274,
+      "paid_total": NaN,
+      "new_users": 974344
+    },
+    {
+      "date": "2024-10-23",
+      "day": "수요일",
+      "bk": "27",
+      "meta": 688309,
+      "tiktok": 39867,
+      "paid_total": NaN,
+      "new_users": 1244951
+    },
+    {
+      "date": "2024-10-24",
+      "day": "목요일",
+      "bk": "30",
+      "meta": 680629,
+      "tiktok": 40380,
+      "paid_total": NaN,
+      "new_users": 1175065
+    },
+    {
+      "date": "2024-10-25",
+      "day": "금요일",
+      "bk": "40",
+      "meta": 585747,
+      "tiktok": 40253,
+      "paid_total": NaN,
+      "new_users": 965126
+    },
+    {
+      "date": "2024-10-26",
+      "day": "토요일",
+      "bk": "59",
+      "meta": 522643,
+      "tiktok": 38321,
+      "paid_total": NaN,
+      "new_users": 921760
+    },
+    {
+      "date": "2024-10-27",
+      "day": "일요일",
+      "bk": "50",
+      "meta": 578964,
+      "tiktok": 39867,
+      "paid_total": NaN,
+      "new_users": 873013
+    },
+    {
+      "date": "2024-10-28",
+      "day": "월요일",
+      "bk": "48",
+      "meta": 548128,
+      "tiktok": 38321,
+      "paid_total": NaN,
+      "new_users": 794395
+    },
+    {
+      "date": "2024-10-29",
+      "day": "화요일",
+      "bk": "21",
+      "meta": 539349,
+      "tiktok": 35843,
+      "paid_total": NaN,
+      "new_users": 732604
+    },
+    {
+      "date": "2024-10-30",
+      "day": "수요일",
+      "bk": "19",
+      "meta": 568750,
+      "tiktok": 42951,
+      "paid_total": NaN,
+      "new_users": 875389
+    },
+    {
+      "date": "2024-10-31",
+      "day": "목요일",
+      "bk": "21",
+      "meta": 610307,
+      "tiktok": 45144,
+      "paid_total": NaN,
+      "new_users": 853777
+    },
+    {
+      "date": "2024-11-01",
+      "day": "금요일",
+      "bk": "30",
+      "meta": 545701,
+      "tiktok": 44693,
+      "paid_total": NaN,
+      "new_users": 779477
+    },
+    {
+      "date": "2024-11-02",
+      "day": "토요일",
+      "bk": "47",
+      "meta": 535392,
+      "tiktok": 21488,
+      "paid_total": NaN,
+      "new_users": 772308
+    },
+    {
+      "date": "2024-11-03",
+      "day": "일요일",
+      "bk": "12",
+      "meta": 568256,
+      "tiktok": 40572,
+      "paid_total": NaN,
+      "new_users": 811784
+    },
+    {
+      "date": "2024-11-04",
+      "day": "월요일",
+      "bk": "43",
+      "meta": 533135,
+      "tiktok": 40306,
+      "paid_total": NaN,
+      "new_users": 684103
+    },
+    {
+      "date": "2024-11-05",
+      "day": "화요일",
+      "bk": "63",
+      "meta": 782415,
+      "tiktok": 40533,
+      "paid_total": NaN,
+      "new_users": 995453
+    },
+    {
+      "date": "2024-11-06",
+      "day": "수요일",
+      "bk": "25",
+      "meta": 979683,
+      "tiktok": 40219,
+      "paid_total": NaN,
+      "new_users": 1229971
+    },
+    {
+      "date": "2024-11-07",
+      "day": "목요일",
+      "bk": "12",
+      "meta": 969703,
+      "tiktok": 66316,
+      "paid_total": NaN,
+      "new_users": 1306345
+    },
+    {
+      "date": "2024-11-08",
+      "day": "금요일",
+      "bk": "44",
+      "meta": 963512,
+      "tiktok": 73933,
+      "paid_total": NaN,
+      "new_users": 1375124
+    },
+    {
+      "date": "2024-11-09",
+      "day": "토요일",
+      "bk": "42",
+      "meta": 128207,
+      "tiktok": 75000,
+      "paid_total": NaN,
+      "new_users": 496190
+    },
+    {
+      "date": "2024-11-10",
+      "day": "일요일",
+      "bk": "47",
+      "meta": 1411489,
+      "tiktok": 60212,
+      "paid_total": NaN,
+      "new_users": 1646213
+    },
+    {
+      "date": "2024-11-11",
+      "day": "월요일",
+      "bk": "63",
+      "meta": 1021089,
+      "tiktok": 59737,
+      "paid_total": NaN,
+      "new_users": 1218752
+    },
+    {
+      "date": "2024-11-12",
+      "day": "화요일",
+      "bk": "35",
+      "meta": 948684,
+      "tiktok": 82489,
+      "paid_total": NaN,
+      "new_users": 1144552
+    },
+    {
+      "date": "2024-11-13",
+      "day": "수요일",
+      "bk": "41",
+      "meta": 1060065,
+      "tiktok": 140907,
+      "paid_total": NaN,
+      "new_users": 1357534
+    },
+    {
+      "date": "2024-11-14",
+      "day": "목요일",
+      "bk": "10",
+      "meta": 1023442,
+      "tiktok": 133319,
+      "paid_total": NaN,
+      "new_users": 1375999
+    },
+    {
+      "date": "2024-11-15",
+      "day": "금요일",
+      "bk": "40",
+      "meta": 1065321,
+      "tiktok": 124100,
+      "paid_total": NaN,
+      "new_users": 1432337
+    },
+    {
+      "date": "2024-11-16",
+      "day": "토요일",
+      "bk": "67",
+      "meta": 1127825,
+      "tiktok": 119185,
+      "paid_total": NaN,
+      "new_users": 1536869
+    },
+    {
+      "date": "2024-11-17",
+      "day": "일요일",
+      "bk": "57",
+      "meta": 1140473,
+      "tiktok": 120308,
+      "paid_total": NaN,
+      "new_users": 1486792
+    },
+    {
+      "date": "2024-11-18",
+      "day": "월요일",
+      "bk": "50",
+      "meta": 1103964,
+      "tiktok": 120268,
+      "paid_total": NaN,
+      "new_users": 1411415
+    },
+    {
+      "date": "2024-11-19",
+      "day": "화요일",
+      "bk": "43",
+      "meta": 999463,
+      "tiktok": 80066,
+      "paid_total": NaN,
+      "new_users": 1222780
+    },
+    {
+      "date": "2024-11-20",
+      "day": "수요일",
+      "bk": "51",
+      "meta": 874446,
+      "tiktok": 80315,
+      "paid_total": NaN,
+      "new_users": 1059624
+    },
+    {
+      "date": "2024-11-21",
+      "day": "목요일",
+      "bk": "24",
+      "meta": 843587,
+      "tiktok": 80142,
+      "paid_total": NaN,
+      "new_users": 1066645
+    },
+    {
+      "date": "2024-11-22",
+      "day": "금요일",
+      "bk": "27",
+      "meta": 804559,
+      "tiktok": 79921,
+      "paid_total": NaN,
+      "new_users": 1057123
+    },
+    {
+      "date": "2024-11-23",
+      "day": "토요일",
+      "bk": "46",
+      "meta": 797993,
+      "tiktok": 79556,
+      "paid_total": NaN,
+      "new_users": 1033180
+    },
+    {
+      "date": "2024-11-24",
+      "day": "일요일",
+      "bk": "46",
+      "meta": 905044,
+      "tiktok": 80252,
+      "paid_total": NaN,
+      "new_users": 1220320
+    },
+    {
+      "date": "2024-11-25",
+      "day": "월요일",
+      "bk": "38",
+      "meta": 869122,
+      "tiktok": 80039,
+      "paid_total": NaN,
+      "new_users": 1164429
+    },
+    {
+      "date": "2024-11-26",
+      "day": "화요일",
+      "bk": "56",
+      "meta": 906192,
+      "tiktok": 46815,
+      "paid_total": NaN,
+      "new_users": 1171772
+    },
+    {
+      "date": "2024-11-27",
+      "day": "수요일",
+      "bk": "107",
+      "meta": 977642,
+      "tiktok": 53430,
+      "paid_total": NaN,
+      "new_users": 1282234
+    },
+    {
+      "date": "2024-11-28",
+      "day": "목요일",
+      "bk": "68",
+      "meta": 963018,
+      "tiktok": 60007,
+      "paid_total": NaN,
+      "new_users": 1221680
+    },
+    {
+      "date": "2024-11-29",
+      "day": "금요일",
+      "bk": "63",
+      "meta": 1068125,
+      "tiktok": 83692,
+      "paid_total": NaN,
+      "new_users": 1752686
+    },
+    {
+      "date": "2024-11-30",
+      "day": "토요일",
+      "bk": "55",
+      "meta": 1094341,
+      "tiktok": 91097,
+      "paid_total": NaN,
+      "new_users": 1798792
+    },
+    {
+      "date": "2024-12-01",
+      "day": "일요일",
+      "bk": "46",
+      "meta": 1178677,
+      "tiktok": 80405,
+      "paid_total": NaN,
+      "new_users": 1738880
+    },
+    {
+      "date": "2024-12-02",
+      "day": "월요일",
+      "bk": "53",
+      "meta": 1086872,
+      "tiktok": 78502,
+      "paid_total": NaN,
+      "new_users": 1653033
+    },
+    {
+      "date": "2024-12-03",
+      "day": "화요일",
+      "bk": "28",
+      "meta": 1064694,
+      "tiktok": 75041,
+      "paid_total": NaN,
+      "new_users": 1616096
+    },
+    {
+      "date": "2024-12-04",
+      "day": "수요일",
+      "bk": "55",
+      "meta": 965443,
+      "tiktok": 55342,
+      "paid_total": NaN,
+      "new_users": 1501683
+    },
+    {
+      "date": "2024-12-05",
+      "day": "목요일",
+      "bk": "56",
+      "meta": 843606,
+      "tiktok": 55216,
+      "paid_total": NaN,
+      "new_users": 1328704
+    },
+    {
+      "date": "2024-12-06",
+      "day": "금요일",
+      "bk": "33",
+      "meta": 883584,
+      "tiktok": 95088,
+      "paid_total": NaN,
+      "new_users": 1319234
+    },
+    {
+      "date": "2024-12-07",
+      "day": "토요일",
+      "bk": "47",
+      "meta": 836455,
+      "tiktok": 103871,
+      "paid_total": NaN,
+      "new_users": 1225300
+    },
+    {
+      "date": "2024-12-08",
+      "day": "일요일",
+      "bk": "18",
+      "meta": 816374,
+      "tiktok": 99806,
+      "paid_total": NaN,
+      "new_users": 1229904
+    },
+    {
+      "date": "2024-12-09",
+      "day": "월요일",
+      "bk": "13",
+      "meta": 913178,
+      "tiktok": 142033,
+      "paid_total": NaN,
+      "new_users": 1475427
+    },
+    {
+      "date": "2024-12-10",
+      "day": "화요일",
+      "bk": "21",
+      "meta": 1067335,
+      "tiktok": 169155,
+      "paid_total": NaN,
+      "new_users": 1697485
+    },
+    {
+      "date": "2024-12-11",
+      "day": "수요일",
+      "bk": "48",
+      "meta": 988203,
+      "tiktok": 164913,
+      "paid_total": NaN,
+      "new_users": 1717231
+    },
+    {
+      "date": "2024-12-12",
+      "day": "목요일",
+      "bk": "38",
+      "meta": 1038831,
+      "tiktok": 161542,
+      "paid_total": NaN,
+      "new_users": 1733680
+    },
+    {
+      "date": "2024-12-13",
+      "day": "금요일",
+      "bk": "73",
+      "meta": 908003,
+      "tiktok": 125833,
+      "paid_total": NaN,
+      "new_users": 1647489
+    },
+    {
+      "date": "2024-12-14",
+      "day": "토요일",
+      "bk": "53",
+      "meta": 675549,
+      "tiktok": 123273,
+      "paid_total": NaN,
+      "new_users": 1331511
+    },
+    {
+      "date": "2024-12-15",
+      "day": "일요일",
+      "bk": "39",
+      "meta": 791028,
+      "tiktok": 123469,
+      "paid_total": NaN,
+      "new_users": 1454620
+    },
+    {
+      "date": "2024-12-16",
+      "day": "월요일",
+      "bk": "46",
+      "meta": 704005,
+      "tiktok": 124035,
+      "paid_total": NaN,
+      "new_users": 1356288
+    },
+    {
+      "date": "2024-12-17",
+      "day": "화요일",
+      "bk": "48",
+      "meta": 652325,
+      "tiktok": 118184,
+      "paid_total": NaN,
+      "new_users": 1445671
+    },
+    {
+      "date": "2024-12-18",
+      "day": "수요일",
+      "bk": "52",
+      "meta": 579899,
+      "tiktok": 82464,
+      "paid_total": NaN,
+      "new_users": 1286158
+    },
+    {
+      "date": "2024-12-19",
+      "day": "목요일",
+      "bk": "42",
+      "meta": 589037,
+      "tiktok": 82624,
+      "paid_total": NaN,
+      "new_users": 1305980
+    },
+    {
+      "date": "2024-12-20",
+      "day": "금요일",
+      "bk": "27",
+      "meta": 671848,
+      "tiktok": 82836,
+      "paid_total": NaN,
+      "new_users": 1422578
+    },
+    {
+      "date": "2024-12-21",
+      "day": "토요일",
+      "bk": "24",
+      "meta": 713370,
+      "tiktok": 111450,
+      "paid_total": NaN,
+      "new_users": 1599385
+    },
+    {
+      "date": "2024-12-22",
+      "day": "일요일",
+      "bk": "39",
+      "meta": 881355,
+      "tiktok": 112077,
+      "paid_total": NaN,
+      "new_users": 1622313
+    },
+    {
+      "date": "2024-12-23",
+      "day": "월요일",
+      "bk": "45",
+      "meta": 751496,
+      "tiktok": 111840,
+      "paid_total": NaN,
+      "new_users": 1492450
+    },
+    {
+      "date": "2024-12-25",
+      "day": "수요일",
+      "bk": "115",
+      "meta": 871933,
+      "tiktok": 188289,
+      "paid_total": NaN,
+      "new_users": 1925955
+    },
+    {
+      "date": "2024-12-27",
+      "day": "금요일",
+      "bk": "78",
+      "meta": 755609,
+      "tiktok": 241151,
+      "paid_total": NaN,
+      "new_users": 1753089
+    },
+    {
+      "date": "2024-12-28",
+      "day": "토요일",
+      "bk": "49",
+      "meta": 624935,
+      "tiktok": 305640,
+      "paid_total": NaN,
+      "new_users": 1571502
+    },
+    {
+      "date": "2024-12-29",
+      "day": "일요일",
+      "bk": "81",
+      "meta": 784802,
+      "tiktok": 281919,
+      "paid_total": NaN,
+      "new_users": 2316826
+    },
+    {
+      "date": "2024-12-30",
+      "day": "월요일",
+      "bk": "75",
+      "meta": 733102,
+      "tiktok": 271247,
+      "paid_total": NaN,
+      "new_users": 1919550
+    },
+    {
+      "date": "2025-01-02",
+      "day": "목요일",
+      "bk": "117",
+      "meta": 433845,
+      "tiktok": 180425,
+      "paid_total": NaN,
+      "new_users": 1025937
+    },
+    {
+      "date": "2025-01-03",
+      "day": "금요일",
+      "bk": "145",
+      "meta": 411783,
+      "tiktok": 100240,
+      "paid_total": NaN,
+      "new_users": 902764
+    },
+    {
+      "date": "2025-01-04",
+      "day": "토요일",
+      "bk": "65",
+      "meta": 397523,
+      "tiktok": 99760,
+      "paid_total": NaN,
+      "new_users": 908627
+    },
+    {
+      "date": "2025-01-05",
+      "day": "일요일",
+      "bk": "95",
+      "meta": 442167,
+      "tiktok": 100178,
+      "paid_total": NaN,
+      "new_users": 944144
+    },
+    {
+      "date": "2025-01-06",
+      "day": "월요일",
+      "bk": "135",
+      "meta": 395687,
+      "tiktok": 100132,
+      "paid_total": NaN,
+      "new_users": 862509
+    },
+    {
+      "date": "2025-01-07",
+      "day": "화요일",
+      "bk": "69",
+      "meta": 456088,
+      "tiktok": 100120,
+      "paid_total": NaN,
+      "new_users": 1063213
+    },
+    {
+      "date": "2025-01-08",
+      "day": "수요일",
+      "bk": "75",
+      "meta": 474892,
+      "tiktok": 100369,
+      "paid_total": NaN,
+      "new_users": 1058931
+    },
+    {
+      "date": "2025-01-09",
+      "day": "목요일",
+      "bk": "37",
+      "meta": 573616,
+      "tiktok": 99915,
+      "paid_total": NaN,
+      "new_users": 1098886
+    },
+    {
+      "date": "2025-01-10",
+      "day": "금요일",
+      "bk": "62",
+      "meta": 616542,
+      "tiktok": 60104,
+      "paid_total": NaN,
+      "new_users": 1018549
+    },
+    {
+      "date": "2025-01-11",
+      "day": "토요일",
+      "bk": "49",
+      "meta": 716648,
+      "tiktok": 59896,
+      "paid_total": NaN,
+      "new_users": 1688723
+    },
+    {
+      "date": "2025-01-12",
+      "day": "일요일",
+      "bk": "42",
+      "meta": 756403,
+      "tiktok": 60176,
+      "paid_total": NaN,
+      "new_users": 1450023
+    },
+    {
+      "date": "2025-01-13",
+      "day": "월요일",
+      "bk": "18",
+      "meta": 689036,
+      "tiktok": 60038,
+      "paid_total": NaN,
+      "new_users": 1369701
+    },
+    {
+      "date": "2025-01-14",
+      "day": "화요일",
+      "bk": "94",
+      "meta": 616921,
+      "tiktok": 60022,
+      "paid_total": NaN,
+      "new_users": 1162631
+    },
+    {
+      "date": "2025-01-15",
+      "day": "수요일",
+      "bk": "66",
+      "meta": 708604,
+      "tiktok": 60005,
+      "paid_total": NaN,
+      "new_users": 1289415
+    },
+    {
+      "date": "2025-01-16",
+      "day": "목요일",
+      "bk": "11",
+      "meta": 559449,
+      "tiktok": 60117,
+      "paid_total": NaN,
+      "new_users": 1083555
+    },
+    {
+      "date": "2025-01-17",
+      "day": "금요일",
+      "bk": "43",
+      "meta": 566651,
+      "tiktok": 59921,
+      "paid_total": NaN,
+      "new_users": 1084893
+    },
+    {
+      "date": "2025-01-18",
+      "day": "토요일",
+      "bk": "41",
+      "meta": 691702,
+      "tiktok": 59599,
+      "paid_total": NaN,
+      "new_users": 1175574
+    },
+    {
+      "date": "2025-01-19",
+      "day": "일요일",
+      "bk": "33",
+      "meta": 755880,
+      "tiktok": 60071,
+      "paid_total": NaN,
+      "new_users": 1446203
+    },
+    {
+      "date": "2025-04-16",
+      "day": "수요일",
+      "bk": "홀리(트위터)/6일",
+      "meta": 2091082,
+      "tiktok": "-",
+      "paid_total": 1550,
+      "new_users": 2396297
+    },
+    {
+      "date": "2025-05-20",
+      "day": "화요일",
+      "bk": "petite(트위터)/5일",
+      "meta": 1944626,
+      "tiktok": "-",
+      "paid_total": 20000,
+      "new_users": 2658132
+    },
+    {
+      "date": "2025-06-10",
+      "day": "화요일",
+      "bk": "민델리/30일",
+      "meta": 2124676,
+      "tiktok": "-",
+      "paid_total": 62333,
+      "new_users": 3027807
+    },
+    {
+      "date": "2025-06-16",
+      "day": "월요일",
+      "bk": "엘베광고/30일",
+      "meta": 2176665,
+      "tiktok": "-",
+      "paid_total": 205333,
+      "new_users": 3227798
+    },
+    {
+      "date": "2025-06-20",
+      "day": "금요일",
+      "bk": "원룸만들기/30일",
+      "meta": 1884958,
+      "tiktok": "-",
+      "paid_total": 333666,
+      "new_users": 3010817
+    },
+    {
+      "date": "2025-06-26",
+      "day": "목요일",
+      "bk": "미미짱/30일",
+      "meta": 1843647,
+      "tiktok": "-",
+      "paid_total": 480333,
+      "new_users": 3758470
+    },
+    {
+      "date": "2025-07-01",
+      "day": "화요일",
+      "bk": "GFA구독/30일",
+      "meta": 2459511,
+      "tiktok": NaN,
+      "paid_total": 590333,
+      "new_users": 5201893
+    },
+    {
+      "date": "2025-07-02",
+      "day": "수요일",
+      "bk": "유하맘/30일",
+      "meta": 2475633,
+      "tiktok": "-",
+      "paid_total": 599500,
+      "new_users": 5322983
+    },
+    {
+      "date": "2025-07-13",
+      "day": "일요일",
+      "bk": "땡스맘/비용x",
+      "meta": 2831541,
+      "tiktok": "-",
+      "paid_total": 537167,
+      "new_users": 5893435
+    },
+    {
+      "date": "2025-07-24",
+      "day": "목요일",
+      "bk": "7월 프로모션/5일",
+      "meta": 2679074,
+      "tiktok": "-",
+      "paid_total": 265834,
+      "new_users": 5459844
+    },
+    {
+      "date": "2025-07-26",
+      "day": "토요일",
+      "bk": "청산유수현/30일(기입 필요)",
+      "meta": 2870315,
+      "tiktok": "-",
+      "paid_total": 330834,
+      "new_users": 5032817
+    },
+    {
+      "date": "2025-07-30",
+      "day": "수요일",
+      "bk": "살림토끼/30일",
+      "meta": 2821121,
+      "tiktok": "-",
+      "paid_total": 232500,
+      "new_users": 4750021
+    },
+    {
+      "date": "2025-07-31",
+      "day": "목요일",
+      "bk": "리뷰한다송미니/30일",
+      "meta": 2781917,
+      "tiktok": "-",
+      "paid_total": 360833,
+      "new_users": 4752345
+    },
+    {
+      "date": "2025-09-19",
+      "day": "금요일",
+      "bk": "원룸만들기",
+      "meta": 1960580,
+      "tiktok": 85796,
+      "paid_total": 315333,
+      "new_users": 4262951
+    },
+    {
+      "date": "2025-10-10",
+      "day": "금요일",
+      "bk": "인프피리뷰",
+      "meta": 2941881,
+      "tiktok": 190401,
+      "paid_total": 425333,
+      "new_users": 6738579
+    },
+    {
+      "date": "2025-10-22",
+      "day": "수요일",
+      "bk": "시은니야",
+      "meta": 2885293,
+      "tiktok": 283220,
+      "paid_total": 370000,
+      "new_users": 6062144
+    },
+    {
+      "date": "2025-10-24",
+      "day": "금요일",
+      "bk": "셀프캠(이다인)",
+      "meta": 3081289,
+      "tiktok": 280811,
+      "paid_total": 386220,
+      "new_users": 6440837
+    },
+    {
+      "date": "2025-11-04",
+      "day": "화요일",
+      "bk": "셀프캠 (임세은)",
+      "meta": 3543823,
+      "tiktok": 351066,
+      "paid_total": 399113,
+      "new_users": 7439660
+    },
+    {
+      "date": "2025-11-20",
+      "day": "목요일",
+      "bk": "슈퍼차트 11월 PA 10명",
+      "meta": 2425258,
+      "tiktok": 392012,
+      "paid_total": 472446,
+      "new_users": 5911751
+    },
+    {
+      "date": "2025-11-22",
+      "day": "토요일",
+      "bk": "시은니야 2차 활용 +1개월",
+      "meta": 2556874,
+      "tiktok": 386157,
+      "paid_total": 232446,
+      "new_users": 5725575
+    },
+    {
+      "date": "2025-11-26",
+      "day": "수요일",
+      "bk": "슈퍼차트 11월 PA 2차활용 (5명)",
+      "meta": 2406210,
+      "tiktok": 375688,
+      "paid_total": 245559,
+      "new_users": 5253414
+    },
+    {
+      "date": "2025-12-04",
+      "day": "목요일",
+      "bk": "슈퍼차트 11월 PA 2차활용 (2명)",
+      "meta": 2873489,
+      "tiktok": 387420,
+      "paid_total": 256559,
+      "new_users": 5441989
+    },
+    {
+      "date": "2025-12-09",
+      "day": "화요일",
+      "bk": "슈퍼차트 12월 PA 7명",
+      "meta": 3698593,
+      "tiktok": 350994,
+      "paid_total": 439892,
+      "new_users": 6422531
+    },
+    {
+      "date": "2025-12-16",
+      "day": "화요일",
+      "bk": "슈퍼차트 12월 PA 2차 활용(7명)",
+      "meta": 5208606,
+      "tiktok": 431726,
+      "paid_total": 482058,
+      "new_users": 9681036
+    },
+    {
+      "date": "2026-01-01",
+      "day": "목요일",
+      "bk": "크리플래닛 1월 PA 20명",
+      "meta": 4353789,
+      "tiktok": 506867,
+      "paid_total": 603165,
+      "new_users": 10888508
+    },
+    {
+      "date": "2026-02-19",
+      "day": "목요일",
+      "bk": "크리플래닛 2월 PA 5명",
+      "meta": 4488466,
+      "tiktok": 224325,
+      "paid_total": 124666,
+      "new_users": 10322312
+    },
+    {
+      "date": "2026-02-23",
+      "day": "월요일",
+      "bk": "슈퍼차트 DM 바이럴 5명",
+      "meta": 6140602,
+      "tiktok": 264873,
+      "paid_total": 307999,
+      "new_users": 13366050
+    },
+    {
+      "date": "2026-03-06",
+      "day": "금요일",
+      "bk": "슈퍼차트 DM 바이럴 5명 2차 활용",
+      "meta": 6698939,
+      "tiktok": 474882,
+      "paid_total": 328165,
+      "new_users": 11700571
+    },
+    {
+      "date": "2026-03-25",
+      "day": "수요일",
+      "bk": "슈퍼차트 3월 PA 7명",
+      "meta": 6121666,
+      "tiktok": 737958,
+      "paid_total": 213399,
+      "new_users": 13959721
+    },
+    {
+      "date": "2026-03-27",
+      "day": "금요일",
+      "bk": "야호엔터 3월 PA 3명",
+      "meta": 7140038,
+      "tiktok": 734801,
+      "paid_total": 257399,
+      "new_users": 16035817
+    },
+    {
+      "date": "2026-04-22",
+      "day": "수요일",
+      "bk": "야호엔터 4월 PA 8명",
+      "meta": 6282041,
+      "tiktok": 835901,
+      "paid_total": 347233,
+      "new_users": 16530657
+    }
+  ]
+}

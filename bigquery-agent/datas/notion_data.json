@@ -1,0 +1,577 @@
+{
+  "tt_sum": {
+    "cost": 180398172,
+    "impressions": 72482668,
+    "clicks": 650818,
+    "installs": 13114,
+    "purchases": 12016,
+    "ctr": 0.9,
+    "cpi": 13756.0,
+    "cpa": 15013.0
+  },
+  "meta_sum": {
+    "cost": 1642542493,
+    "impressions": 152492062,
+    "clicks": 904106,
+    "installs": 235975,
+    "purchases": 100536,
+    "ctr": 0.59,
+    "cpi": 6961.0,
+    "cpa": 16338.0
+  },
+  "total_monthly": [
+    {
+      "ym": "2025-01",
+      "cost": 225695,
+      "purchases": 2.0,
+      "cpa": 112848.0
+    },
+    {
+      "ym": "2025-10",
+      "cost": 518283,
+      "purchases": 4.0,
+      "cpa": 129571.0
+    },
+    {
+      "ym": "2025-11",
+      "cost": 88424032,
+      "purchases": 2443.0,
+      "cpa": 36195.0
+    },
+    {
+      "ym": "2025-12",
+      "cost": 14459373,
+      "purchases": 302.0,
+      "cpa": 47879.0
+    },
+    {
+      "ym": "2026-01",
+      "cost": 82919867,
+      "purchases": 2002.0,
+      "cpa": 41419.0
+    },
+    {
+      "ym": "2026-02",
+      "cost": 31070553,
+      "purchases": 812.0,
+      "cpa": 38264.0
+    },
+    {
+      "ym": "2026-03",
+      "cost": 8522812,
+      "purchases": 759.0,
+      "cpa": 11229.0
+    },
+    {
+      "ym": "2026-04",
+      "cost": 11517035,
+      "purchases": 259.0,
+      "cpa": 44467.0
+    }
+  ],
+  "tt_monthly": [
+    {
+      "ym": "2025-11",
+      "cost": 32081087,
+      "purchases": 1382,
+      "installs": 2601,
+      "cpa": 23214.0
+    },
+    {
+      "ym": "2025-12",
+      "cost": 1277003,
+      "purchases": 78,
+      "installs": 107,
+      "cpa": 16372.0
+    },
+    {
+      "ym": "2026-04",
+      "cost": 120031,
+      "purchases": 0,
+      "installs": 0,
+      "cpa": 0.0
+    }
+  ],
+  "meta_monthly": [
+    {
+      "ym": "2025-01",
+      "cost": 225695,
+      "purchases": 2,
+      "installs": 22.0,
+      "cpa": 112848.0
+    },
+    {
+      "ym": "2025-10",
+      "cost": 518283,
+      "purchases": 4,
+      "installs": 13.0,
+      "cpa": 129571.0
+    },
+    {
+      "ym": "2025-11",
+      "cost": 56342945,
+      "purchases": 1061,
+      "installs": 3949.0,
+      "cpa": 53104.0
+    },
+    {
+      "ym": "2025-12",
+      "cost": 13182370,
+      "purchases": 224,
+      "installs": 1242.0,
+      "cpa": 58850.0
+    },
+    {
+      "ym": "2026-01",
+      "cost": 82919867,
+      "purchases": 2002,
+      "installs": 7672.0,
+      "cpa": 41419.0
+    },
+    {
+      "ym": "2026-02",
+      "cost": 31070553,
+      "purchases": 812,
+      "installs": 3601.0,
+      "cpa": 38264.0
+    },
+    {
+      "ym": "2026-03",
+      "cost": 8522812,
+      "purchases": 759,
+      "installs": 554.0,
+      "cpa": 11229.0
+    },
+    {
+      "ym": "2026-04",
+      "cost": 11397004,
+      "purchases": 259,
+      "installs": 1582.0,
+      "cpa": 44004.0
+    }
+  ],
+  "meta_top_creatives": [
+    {
+      "ad_name": "ios_vd_all_오순의집2_hn1_26.01.29",
+      "adset_name": "ios_purchase_all_vd_인플루언서PA(1)_hn1_26.01.29",
+      "cost": "44732608",
+      "impressions": "6327696",
+      "installs": "2975.0",
+      "purchases": "1048.0",
+      "cpa": "42683.78625954199",
+      "ym": "2026-01"
+    },
+    {
+      "ad_name": "ios_vd_all_오순의집2_hn1_25.11.26",
+      "adset_name": "ios_purchase_all_vd_인플루언서PA(1)_hn1_25.11.26",
+      "cost": "40121375",
+      "impressions": "4898082",
+      "installs": "2565.0",
+      "purchases": "775.0",
+      "cpa": "51769.51612903226",
+      "ym": "2025-11"
+    },
+    {
+      "ad_name": "aos_vd_all_오순의집2_hn1_26.02.13",
+      "adset_name": "aos_purchase_lookalike(7%)_vd_인플루언서PA(1)_sj1_26.02.13",
+      "cost": "7701990",
+      "impressions": "638984",
+      "installs": "871.0",
+      "purchases": "270.0",
+      "cpa": "28525.88888888889",
+      "ym": "2026-02"
+    },
+    {
+      "ad_name": "ios_vd_all_지지팀장7_hn1_26.01.29",
+      "adset_name": "ios_purchase_all_vd_인플루언서PA(1)_hn1_26.01.29",
+      "cost": "12700331",
+      "impressions": "2079714",
+      "installs": "900.0",
+      "purchases": "265.0",
+      "cpa": "47925.777358490566",
+      "ym": "2026-01"
+    },
+    {
+      "ad_name": "ios_vd_all_주도연(3월)4_hn1_26.03.26",
+      "adset_name": "ios(Web2App)_purchase_all_vd_PA(친구초대)_3월(1)_hn1_26.03.26",
+      "cost": "2411441",
+      "impressions": "271379",
+      "installs": "82.0",
+      "purchases": "258.0",
+      "cpa": "9346.670542635658",
+      "ym": "2026-03"
+    },
+    {
+      "ad_name": "aos_vd_all_조사마_1월14_hn1_26.01.29",
+      "adset_name": "aos_registration_lookalike(7%)_vd_인플루언서PA(4)_sj1_26.01.29",
+      "cost": "4991665",
+      "impressions": "387332",
+      "installs": "987.0",
+      "purchases": "201.0",
+      "cpa": "24834.15422885572",
+      "ym": "2026-01"
+    },
+    {
+      "ad_name": "aos_vd_all_오순의집2_hn1_25.11.26",
+      "adset_name": "aos_purchase_all_vd_인플루언서PA(1)_hn1_25.11.26",
+      "cost": "7044517",
+      "impressions": "636517",
+      "installs": "859.0",
+      "purchases": "178.0",
+      "cpa": "39575.93820224719",
+      "ym": "2025-11"
+    },
+    {
+      "ad_name": "ios_vd_lookalike(7%)_밍지의방_1월8_hn1_26.02.12",
+      "adset_name": "ios_purchase_lookalike(7%)_vd_인플루언서PA(1)_mk1_26.02.12",
+      "cost": "5842681",
+      "impressions": "467408",
+      "installs": "427.0",
+      "purchases": "154.0",
+      "cpa": "37939.48701298701",
+      "ym": "2026-02"
+    },
+    {
+      "ad_name": "aos_vd_all_밍지의방_1월8_hn1_26.01.29",
+      "adset_name": "aos_registration_lookalike(7%)_vd_인플루언서PA(2)_sj1_26.01.29",
+      "cost": "3701507",
+      "impressions": "313493",
+      "installs": "769.0",
+      "purchases": "141.0",
+      "cpa": "26251.822695035462",
+      "ym": "2026-01"
+    },
+    {
+      "ad_name": "aos_vd_all_주도연(3월)4_hn1_26.03.26",
+      "adset_name": "aos(Web2App)_purchase_all_vd_PA(친구초대)_3월(1)_hn1_26.03.26",
+      "cost": "651749",
+      "impressions": "51763",
+      "installs": "33.0",
+      "purchases": "132.0",
+      "cpa": "4937.492424242424",
+      "ym": "2026-03"
+    },
+    {
+      "ad_name": "ios_vd_all_비앳홈(2월DM)_sj1_26.04.07",
+      "adset_name": "ios_purchase_lookalike(7%)_vd_인플루언서PA(1)_mk1_26.02.12",
+      "cost": "3239831",
+      "impressions": "205421",
+      "installs": "373.0",
+      "purchases": "85.0",
+      "cpa": "38115.65882352941",
+      "ym": "2026-04"
+    },
+    {
+      "ad_name": "aos_vd_all_지지팀장7_hn1_26.02.14",
+      "adset_name": "aos_purchase_lookalike(7%)_vd_인플루언서PA(1)_sj1_26.02.13",
+      "cost": "2169903",
+      "impressions": "173663",
+      "installs": "328.0",
+      "purchases": "75.0",
+      "cpa": "28932.04",
+      "ym": "2026-02"
+    },
+    {
+      "ad_name": "aos_vd_all_진형(2월)1_hn1_26.02.23",
+      "adset_name": "aos_purchase_lookalike(7%)_vd_인플루언서PA(2월)_hn1_26.02.23",
+      "cost": "2614774",
+      "impressions": "158714",
+      "installs": "379.0",
+      "purchases": "72.0",
+      "cpa": "36316.305555555555",
+      "ym": "2026-02"
+    },
+    {
+      "ad_name": "ios_vd_lookalike(7%)_조사마_1월14_hn1_26.01.28",
+      "adset_name": "ios_registration_lookalike(7%)_vd_인플루언서PA(4)_hn1_26.01.28",
+      "cost": "2492905",
+      "impressions": "167288",
+      "installs": "239.0",
+      "purchases": "72.0",
+      "cpa": "34623.680555555555",
+      "ym": "2026-01"
+    },
+    {
+      "ad_name": "aos_vd_all_살림알림(3월)7_hn1_26.03.26",
+      "adset_name": "aos(Web2App)_purchase_all_vd_PA(친구초대)_3월(2)_hn1_26.03.26",
+      "cost": "264542",
+      "impressions": "16199",
+      "installs": "15.0",
+      "purchases": "69.0",
+      "cpa": "3833.942028985507",
+      "ym": "2026-03"
+    },
+    {
+      "ad_name": "ios_vd_all_이천커플1_hn1_25.12.03",
+      "adset_name": "ios_purchase_all_vd_인플루언서PA(2)_hn1_25.12.03",
+      "cost": "5270206",
+      "impressions": "459512",
+      "installs": "414.0",
+      "purchases": "68.0",
+      "cpa": "77503.0294117647",
+      "ym": "2025-12"
+    },
+    {
+      "ad_name": "ios_vd_all_진형(2월)1_hn1_26.02.23",
+      "adset_name": "ios_purchase_lookalike(7%)_vd_인플루언서PA(2월)_hn1_26.02.23",
+      "cost": "1973702",
+      "impressions": "147221",
+      "installs": "136.0",
+      "purchases": "67.0",
+      "cpa": "29458.238805970148",
+      "ym": "2026-02"
+    },
+    {
+      "ad_name": "aos_vd_all_김윤정(3월)9_hn1_26.03.26",
+      "adset_name": "aos(Web2App)_purchase_all_vd_PA(친구초대)_3월(3)_hn1_26.03.26",
+      "cost": "377913",
+      "impressions": "21599",
+      "installs": "10.0",
+      "purchases": "52.0",
+      "cpa": "7267.557692307692",
+      "ym": "2026-03"
+    },
+    {
+      "ad_name": "ios_vd_all_밍지의방_1월8_sj1_26.04.23",
+      "adset_name": "ios_purchase_all_vd_인플루언서PA_dcj_sj1_26.04.23",
+      "cost": "1413321",
+      "impressions": "258242",
+      "installs": "260.0",
+      "purchases": "49.0",
+      "cpa": "28843.285714285714",
+      "ym": "2026-04"
+    },
+    {
+      "ad_name": "aos_vd_all_데일리리본(2월)3_hn1_26.02.23",
+      "adset_name": "aos_purchase_lookalike(7%)_vd_인플루언서PA(2월)_hn1_26.02.23",
+      "cost": "2359379",
+      "impressions": "110335",
+      "installs": "527.0",
+      "purchases": "47.0",
+      "cpa": "50199.55319148936",
+      "ym": "2026-02"
+    }
+  ],
+  "tt_top_creatives": [
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "2282268",
+      "impressions": "598169",
+      "installs": "437",
+      "purchases": "325",
+      "cpa": "7022.363076923077",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "3385676",
+      "impressions": "1660348",
+      "installs": "566",
+      "purchases": "252",
+      "cpa": "13435.222222222223",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "6163244",
+      "impressions": "5879719",
+      "installs": "246",
+      "purchases": "137",
+      "cpa": "44987.18248175183",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "554044",
+      "impressions": "111112",
+      "installs": "100",
+      "purchases": "111",
+      "cpa": "4991.387387387387",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "533464",
+      "impressions": "132115",
+      "installs": "216",
+      "purchases": "100",
+      "cpa": "5334.64",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "1120827",
+      "impressions": "1234670",
+      "installs": "89",
+      "purchases": "75",
+      "cpa": "14944.36",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "924779",
+      "impressions": "174680",
+      "installs": "151",
+      "purchases": "72",
+      "cpa": "12844.152777777777",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "830436",
+      "impressions": "295901",
+      "installs": "126",
+      "purchases": "44",
+      "cpa": "18873.545454545456",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "486531",
+      "impressions": "87447",
+      "installs": "157",
+      "purchases": "44",
+      "cpa": "11057.522727272728",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "151646",
+      "impressions": "37737",
+      "installs": "33",
+      "purchases": "36",
+      "cpa": "4212.388888888889",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_프로모션_인플루언서PA(1)_25.12.10",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "395063",
+      "impressions": "261377",
+      "installs": "25",
+      "purchases": "31",
+      "cpa": "12743.967741935483",
+      "ym": "2025-12"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "247520",
+      "impressions": "59487",
+      "installs": "40",
+      "purchases": "27",
+      "cpa": "9167.407407407407",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_프로모션_인플루언서PA(1)_25.12.10",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "260725",
+      "impressions": "133616",
+      "installs": "19",
+      "purchases": "21",
+      "cpa": "12415.47619047619",
+      "ym": "2025-12"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_프로모션_인플루언서PA(1)_25.12.10",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "407341",
+      "impressions": "153405",
+      "installs": "38",
+      "purchases": "20",
+      "cpa": "20367.05",
+      "ym": "2025-12"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "1037664",
+      "impressions": "337712",
+      "installs": "101",
+      "purchases": "19",
+      "cpa": "54613.89473684211",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "490024",
+      "impressions": "224673",
+      "installs": "49",
+      "purchases": "17",
+      "cpa": "28824.941176470587",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "151354",
+      "impressions": "35517",
+      "installs": "30",
+      "purchases": "17",
+      "cpa": "8903.176470588236",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "147977",
+      "impressions": "34594",
+      "installs": "18",
+      "purchases": "17",
+      "cpa": "8704.529411764706",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "192737",
+      "impressions": "46172",
+      "installs": "23",
+      "purchases": "14",
+      "cpa": "13766.92857142857",
+      "ym": "2025-11"
+    },
+    {
+      "campaign_name": "AOS_SPC_구매_인플루언서PA(1)_25.11.28",
+      "adset_name": "aos_purcahse_all_vd_25.11.28",
+      "ad_name": "_001",
+      "cost": "141062",
+      "impressions": "31783",
+      "installs": "44",
+      "purchases": "14",
+      "cpa": "10075.857142857143",
+      "ym": "2025-11"
+    }
+  ]
+}

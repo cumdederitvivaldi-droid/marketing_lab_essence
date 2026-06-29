@@ -1,0 +1,1456 @@
+{
+  "id": null,
+  "uid": "cx-channel-talk-overview",
+  "title": "CX 채널톡 상담 대시보드",
+  "description": "채널톡 고객 상담 현황 모니터링 — 상담량, 응답시간, CSAT, 카테고리별 분석",
+  "tags": [
+    "cx",
+    "channel-talk",
+    "customer-support"
+  ],
+  "timezone": "Asia/Seoul",
+  "refresh": "5m",
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "fiscalYearStartMonth": 0,
+  "liveNow": false,
+  "weekStart": "monday",
+  "templating": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "핵심 지표",
+      "type": "row",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 10,
+      "title": "총 상담 건수",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT COUNT(*) AS value FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt)",
+          "format": 0
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "blue"
+              },
+              {
+                "value": 1000,
+                "color": "blue"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 11,
+      "title": "평균 대기시간",
+      "type": "stat",
+      "gridPos": {
+        "x": 6,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT ROUND(AVG(waitingTime) / 1000 / 60, 1) AS value FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) AND waitingTime IS NOT NULL",
+          "format": 0
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "min",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "green"
+              },
+              {
+                "value": 60,
+                "color": "yellow"
+              },
+              {
+                "value": 120,
+                "color": "orange"
+              },
+              {
+                "value": 180,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "평균 해결시간",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT ROUND(AVG(TIMESTAMP_DIFF(closedAt, createdAt, MINUTE)), 1) AS value FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) AND closedAt IS NOT NULL",
+          "format": 0
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "min",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "green"
+              },
+              {
+                "value": 200,
+                "color": "yellow"
+              },
+              {
+                "value": 400,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "title": "CSAT 평균",
+      "type": "stat",
+      "gridPos": {
+        "x": 18,
+        "y": 1,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT ROUND(AVG(profile_csat), 2) AS value FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) AND profile_csat IS NOT NULL",
+          "format": 0
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "background"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 2,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": null,
+                "color": "red"
+              },
+              {
+                "value": 3.0,
+                "color": "yellow"
+              },
+              {
+                "value": 4.0,
+                "color": "green"
+              },
+              {
+                "value": 4.5,
+                "color": "dark-green"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "상담량 & 응답시간 추이",
+      "type": "row",
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 20,
+      "title": "일별 상담 건수 (신규/기존)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 6,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT TIMESTAMP(DATE(createdAt)) AS time, COUNT(*) AS total_chats, COUNTIF(tags LIKE '%고객유형/FIRST%') AS new_customers, COUNTIF(tags LIKE '%고객유형/기존%') AS existing_customers FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) GROUP BY time ORDER BY time",
+          "format": 1
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "barAlignment": 0,
+            "fillOpacity": 80,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total_chats"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "전체"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "white",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "mode": "none"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "new_customers"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "신규고객"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "existing_customers"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "기존고객"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 21,
+      "title": "일별 평균 대기시간 & 응답시간 (분)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 6,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT TIMESTAMP(DATE(createdAt)) AS time, ROUND(AVG(waitingTime) / 1000 / 60, 1) AS avg_waiting_min, ROUND(AVG(avgReplyTime) / 1000 / 60, 1) AS avg_reply_min FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) AND waitingTime IS NOT NULL GROUP BY time ORDER BY time",
+          "format": 1
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "min",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "fillOpacity": 10,
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "auto"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_waiting_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 대기시간"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_reply_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 응답시간"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "시간대 & 요일 패턴",
+      "type": "row",
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 30,
+      "title": "시간대별 상담 건수 (KST)",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 0,
+        "y": 15,
+        "w": 14,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT CONCAT(LPAD(CAST(EXTRACT(HOUR FROM createdAt) AS STRING), 2, '0'), ':00') AS hour, COUNT(*) AS chat_count FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) GROUP BY hour ORDER BY hour",
+          "format": 0
+        }
+      ],
+      "transformations": [
+        {
+          "id": "rowsToFields",
+          "options": {
+            "mappings": [
+              { "fieldName": "hour", "type": "name" },
+              { "fieldName": "chat_count", "type": "value" }
+            ]
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "light-blue" },
+              { "value": 300, "color": "semi-dark-blue" },
+              { "value": 400, "color": "dark-orange" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": { "values": true, "calcs": [] },
+        "orientation": "vertical",
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "minVizWidth": 10,
+        "minVizHeight": 10
+      }
+    },
+    {
+      "id": 31,
+      "title": "요일별 상담 건수",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 14,
+        "y": 15,
+        "w": 10,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT CASE EXTRACT(DAYOFWEEK FROM createdAt) WHEN 2 THEN '1_월' WHEN 3 THEN '2_화' WHEN 4 THEN '3_수' WHEN 5 THEN '4_목' WHEN 6 THEN '5_금' WHEN 7 THEN '6_토' WHEN 1 THEN '7_일' END AS day_of_week, COUNT(*) AS chat_count FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) GROUP BY day_of_week ORDER BY day_of_week",
+          "format": 0
+        }
+      ],
+      "transformations": [
+        {
+          "id": "rowsToFields",
+          "options": {
+            "mappings": [
+              { "fieldName": "day_of_week", "type": "name" },
+              { "fieldName": "chat_count", "type": "value" }
+            ]
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "light-purple" },
+              { "value": 800, "color": "semi-dark-purple" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": { "values": true, "calcs": [] },
+        "orientation": "horizontal",
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "minVizWidth": 10,
+        "minVizHeight": 15
+      }
+    },
+    {
+      "id": 4,
+      "title": "문의 카테고리 분석",
+      "type": "row",
+      "gridPos": {
+        "x": 0,
+        "y": 23,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 40,
+      "title": "카테고리별 상담 건수 & 대기시간",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 14,
+        "h": 10
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT CASE WHEN tags LIKE '%차량등록%' THEN '차량등록' WHEN tags LIKE '%수거품목%' THEN '수거품목 문의' WHEN tags LIKE '%배출방법%' THEN '배출방법 문의' WHEN tags LIKE '%무응종결%' THEN '무응답 종결' WHEN tags LIKE '%미수거/주소착오%' THEN '미수거-주소착오' WHEN tags LIKE '%미수거/수거지연%' THEN '미수거-수거지연' WHEN tags LIKE '%미수거/미배출%' THEN '미수거-미배출' WHEN tags LIKE '%미수거/봉투미사용%' THEN '미수거-봉투미사용' WHEN tags LIKE '%미수거/누락%' THEN '미수거-누락' WHEN tags LIKE '%지역문의%' THEN '지역 문의' WHEN tags LIKE '%구독%' THEN '구독 관련' WHEN tags LIKE '%배송%' THEN '배송 관련' WHEN tags LIKE '%주문수정%' OR tags LIKE '%취소%' THEN '주문수정/취소' WHEN tags LIKE '%확인필요%' THEN '수거 확인필요' ELSE '기타' END AS category, COUNT(*) AS count, ROUND(AVG(waitingTime) / 1000 / 60, 1) AS avg_wait_min, ROUND(AVG(avgReplyTime) / 1000 / 60, 1) AS avg_reply_min, ROUND(AVG(replyCount), 1) AS avg_replies, ROUND(AVG(TIMESTAMP_DIFF(closedAt, createdAt, MINUTE)), 1) AS avg_resolution_min FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) AND tags IS NOT NULL AND tags != '' GROUP BY category ORDER BY count DESC",
+          "format": 0
+        }
+      ],
+      "fieldConfig": {
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "category"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "카테고리"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "건수"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "value": null,
+                      "color": "transparent"
+                    },
+                    {
+                      "value": 100,
+                      "color": "rgba(50, 116, 217, 0.2)"
+                    },
+                    {
+                      "value": 500,
+                      "color": "rgba(50, 116, 217, 0.4)"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_wait_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 대기(분)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "value": null,
+                      "color": "transparent"
+                    },
+                    {
+                      "value": 60,
+                      "color": "rgba(255, 152, 48, 0.2)"
+                    },
+                    {
+                      "value": 150,
+                      "color": "rgba(242, 73, 92, 0.3)"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_reply_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 응답(분)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_replies"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 응답횟수"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_resolution_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 해결(분)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "value": null,
+                      "color": "transparent"
+                    },
+                    {
+                      "value": 200,
+                      "color": "rgba(255, 152, 48, 0.2)"
+                    },
+                    {
+                      "value": 400,
+                      "color": "rgba(242, 73, 92, 0.3)"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "건수",
+            "desc": true
+          }
+        ],
+        "footer": {
+          "show": true,
+          "reducer": [
+            "sum"
+          ],
+          "fields": [
+            "count"
+          ]
+        }
+      }
+    },
+    {
+      "id": 41,
+      "title": "미수거 유형별 추이 (주간)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 14,
+        "y": 24,
+        "w": 10,
+        "h": 10
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT TIMESTAMP(DATE_TRUNC(DATE(createdAt), WEEK(MONDAY))) AS time, COUNTIF(tags LIKE '%미수거/주소착오%') AS addr_error, COUNTIF(tags LIKE '%미수거/수거지연%') AS delayed, COUNTIF(tags LIKE '%미수거/미배출%') AS not_placed, COUNTIF(tags LIKE '%미수거/봉투미사용%') AS no_bag, COUNTIF(tags LIKE '%미수거/누락%') AS missed FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) AND tags LIKE '%미수거%' GROUP BY time ORDER BY time",
+          "format": 1
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "fillOpacity": 20,
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "always",
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "addr_error"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "주소착오"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "delayed"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "수거지연"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "not_placed"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "미배출"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "no_bag"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "봉투미사용"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "missed"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "누락"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "상담원 성과",
+      "type": "row",
+      "gridPos": {
+        "x": 0,
+        "y": 34,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 50,
+      "title": "상담원별 성과 지표",
+      "type": "table",
+      "gridPos": {
+        "x": 0,
+        "y": 35,
+        "w": 14,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT m.name AS agent_name, COUNT(*) AS handled, ROUND(AVG(c.waitingTime) / 1000 / 60, 1) AS avg_wait_min, ROUND(AVG(c.avgReplyTime) / 1000 / 60, 1) AS avg_reply_min, ROUND(AVG(c.replyCount), 1) AS avg_replies, ROUND(AVG(TIMESTAMP_DIFF(c.closedAt, c.createdAt, MINUTE)), 1) AS avg_resolution_min FROM `covering-app-ccd23.cx_data.channel_talk_userchat` c JOIN `covering-app-ccd23.cx_data.channel_talk_managers` m ON c.assigneeId = m.id WHERE $__timeFilter(c.createdAt) AND c.assigneeId IS NOT NULL GROUP BY agent_name ORDER BY handled DESC",
+          "format": 0
+        }
+      ],
+      "fieldConfig": {
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "agent_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "상담원"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "handled"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "처리 건수"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_wait_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 대기(분)"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "value": null,
+                      "color": "transparent"
+                    },
+                    {
+                      "value": 60,
+                      "color": "rgba(50, 205, 50, 0.2)"
+                    },
+                    {
+                      "value": 120,
+                      "color": "rgba(255, 152, 48, 0.2)"
+                    },
+                    {
+                      "value": 180,
+                      "color": "rgba(242, 73, 92, 0.2)"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_reply_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 응답(분)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_replies"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 응답횟수"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_resolution_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 해결(분)"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "처리 건수",
+            "desc": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 51,
+      "title": "CSAT 점수 분포",
+      "type": "piechart",
+      "gridPos": {
+        "x": 14,
+        "y": 35,
+        "w": 10,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT CONCAT(CAST(profile_csat AS STRING), '점') AS csat_score, COUNT(*) AS count FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) AND profile_csat IS NOT NULL GROUP BY csat_score ORDER BY csat_score",
+          "format": 0
+        }
+      ],
+      "fieldConfig": {
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "1점"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2점"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "3점"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "4점"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "5점"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "values": true,
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "고객유형 & 신규유입 분석",
+      "type": "row",
+      "gridPos": {
+        "x": 0,
+        "y": 43,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false
+    },
+    {
+      "id": 60,
+      "title": "신규 vs 기존 고객 비율 추이 (주간)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 44,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT TIMESTAMP(DATE_TRUNC(DATE(createdAt), WEEK(MONDAY))) AS time, COUNTIF(tags LIKE '%고객유형/FIRST%') AS new_customers, COUNTIF(tags LIKE '%고객유형/기존%') AS existing_customers, ROUND(COUNTIF(tags LIKE '%고객유형/FIRST%') * 100.0 / NULLIF(COUNT(*), 0), 1) AS new_pct FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) GROUP BY time ORDER BY time",
+          "format": 1
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "stacking": {
+              "mode": "normal"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "new_customers"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "신규(FIRST)"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "existing_customers"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "기존고객"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "new_pct"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "신규 비율(%)"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.stacking",
+                "value": {
+                  "mode": "none"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 61,
+      "title": "고객유형별 핵심 지표 비교",
+      "type": "table",
+      "gridPos": {
+        "x": 12,
+        "y": 44,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "grafana-bigquery-datasource",
+        "uid": "bigquery-datasource"
+      },
+      "targets": [
+        {
+          "rawSql": "SELECT CASE WHEN tags LIKE '%고객유형/기존%' THEN '기존고객' WHEN tags LIKE '%고객유형/FIRST%' THEN '신규고객(FIRST)' ELSE '미분류' END AS customer_type, COUNT(*) AS chat_count, ROUND(AVG(waitingTime) / 1000 / 60, 1) AS avg_wait_min, ROUND(AVG(avgReplyTime) / 1000 / 60, 1) AS avg_reply_min, ROUND(AVG(TIMESTAMP_DIFF(closedAt, createdAt, MINUTE)), 1) AS avg_resolution_min, ROUND(AVG(profile_csat), 2) AS avg_csat FROM `covering-app-ccd23.cx_data.channel_talk_userchat` WHERE $__timeFilter(createdAt) GROUP BY customer_type ORDER BY chat_count DESC",
+          "format": 0
+        }
+      ],
+      "fieldConfig": {
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "customer_type"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "고객 유형"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "chat_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "건수"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_wait_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 대기(분)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_reply_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 응답(분)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_resolution_min"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "평균 해결(분)"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_csat"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CSAT 평균"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 2
+}

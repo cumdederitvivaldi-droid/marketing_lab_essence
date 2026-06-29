@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+src/added_*.json
+src/created_adset_*.json
+src/updated_*.json

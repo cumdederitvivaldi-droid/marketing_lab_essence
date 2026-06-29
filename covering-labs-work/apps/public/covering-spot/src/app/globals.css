@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ═══ Colors — Primitive (CDS brand) ═══ */
+  --color-brand-900: #000E1A;
+  --color-brand-800: #002B4D;
+  --color-brand-700: #004880;
+  --color-brand-600: #0068B2;
+  --color-brand-500: #008AE5;
+  --color-brand-400: #1AA3FF;
+  --color-brand-300: #4DB5FF;
+  --color-brand-200: #80CAFF;
+  --color-brand-100: #B2DFFF;
+  --color-brand-50: #E5F4FF;
+
+  /* ═══ Colors — Semantic (CDS 기반) ═══ */
+  --color-bg: #FFFFFF;
+  --color-bg-warm: #F8FAFB;
+  --color-bg-warm2: #EEF2F6;
+  --color-bg-warm3: #DEE3ED;
+  --color-text-primary: #16191D;
+  --color-text-sub: #5C6575;
+  --color-text-muted: #8A96A8;
+  --color-text-neutral: #434A56;
+  --color-primary: #1AA3FF;
+  --color-primary-dark: #0068B2;
+  --color-primary-light: #4DB5FF;
+  --color-primary-bg: rgba(26, 163, 255, 0.06);
+  --color-primary-tint: #E5F4FF;
+  --color-semantic-green: #07C576;
+  --color-semantic-green-tint: #EDFCF6;
+  --color-semantic-red: #FF3358;
+  --color-semantic-red-tint: #FFEBEE;
+  --color-semantic-orange: #FF9C1A;
+  --color-semantic-orange-tint: #FFF7E5;
+  --color-border: #C0C7D8;
+  --color-border-light: #EEF2F6;
+  --color-border-strong: #8A96A8;
+  --color-fill-tint: #EEF2F6;
+  --color-fill-assistive: #8A96A8;
+  --color-kakao: #FEE500;
+  --color-kakao-hover: #FADC00;
+  --color-scrim: rgba(22, 25, 29, 0.5);
+
+  /* ═══ Colors — Component (CDS disable/inactive) ═══ */
+  --color-disable-strong: #A3AEC2;
+  --color-disable-normal: #C0C7D8;
+  --color-disable-alt: #DEE3ED;
+  --color-disable-assistive: #EEF2F6;
+  --color-inactive: #8A96A8;
+
+  /* ═══ Spacing (CDS) ═══ */
+  --spacing-3xs: 2px;
+  --spacing-2xs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 40px;
+  --spacing-4xl: 48px;
+  --spacing-5xl: 64px;
+
+  /* ═══ Radius (CDS) ═══ */
+  --radius-2xs: 0px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-max: 999px;
+
+  /* ═══ Shadows (CDS elevation) ═══ */
+  --shadow-sm: 0 1px 3px rgba(22,25,29,0.04), 0 1px 2px rgba(22,25,29,0.06);
+  --shadow-md: 0 4px 16px rgba(22,25,29,0.06), 0 2px 4px rgba(22,25,29,0.04);
+  --shadow-lg: 0 12px 40px rgba(22,25,29,0.08), 0 4px 12px rgba(22,25,29,0.04);
+  --shadow-hover: 0 8px 30px rgba(22,25,29,0.10), 0 4px 8px rgba(22,25,29,0.06);
+
+  /* ═══ Transitions ═══ */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+
+  /* ═══ Font ═══ */
+  --font-sans: var(--font-pretendard), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* ═══ Global ═══ */
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip; /* body overflow가 viewport로 전파되지 않도록 — fixed 포지셔닝 보호 */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* clip = 가로 오버플로우 방지, BFC 생성 없음 → fixed 포지셔닝 정상 동작 */
+}
+
+/* ═══ Price bar animation (CSS 변수 기반) ═══ */
+.price-bar-fill {
+  width: 0%;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.price-bar-fill.animated {
+  width: var(--target-width);
+}
+
+/* ═══ Typing indicator animation ═══ */
+@keyframes typing {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-4px); }
+}
+
+/* ═══ Icon pop animation ═══ */
+@keyframes icon-pop {
+  0% { transform: scale(0.7); opacity: 0.5; }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ═══ Complete success animation ═══ */
+@keyframes success-circle-fill {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes success-check-draw {
+  0% { stroke-dashoffset: 30; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes success-ring-expand {
+  0% { transform: scale(0.8); opacity: 0.6; border-width: 3px; }
+  100% { transform: scale(2.2); opacity: 0; border-width: 0px; }
+}
+
+@keyframes success-ring-expand2 {
+  0% { transform: scale(0.8); opacity: 0.4; border-width: 2px; }
+  100% { transform: scale(2.8); opacity: 0; border-width: 0px; }
+}
+
+@keyframes success-shimmer {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+@keyframes success-confetti {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-80px) rotate(360deg) scale(0); opacity: 0; }
+}
+
+@keyframes success-fade-up {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-success-circle {
+  animation: success-circle-fill 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.animate-success-check {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: success-check-draw 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+}
+
+.animate-success-ring1 {
+  position: absolute; inset: -4px; border-radius: 9999px;
+  border: 3px solid #059669;
+  animation: success-ring-expand 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.animate-success-ring2 {
+  position: absolute; inset: -4px; border-radius: 9999px;
+  border: 2px solid #059669;
+  animation: success-ring-expand2 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+}
+
+.animate-success-shimmer::after {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: success-shimmer 0.6s ease-out 0.8s both;
+}
+
+.animate-success-fadeup {
+  opacity: 0;
+  animation: success-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ═══ Process icon bounce ═══ */
+@keyframes icon-bounce-in {
+  0% { transform: translateY(20px) scale(0.5); opacity: 0; }
+  50% { transform: translateY(-6px) scale(1.08); opacity: 1; }
+  70% { transform: translateY(2px) scale(0.97); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes icon-shimmer {
+  0% { left: -50%; }
+  100% { left: 150%; }
+}
+
+/* ═══ Carousel grab cursor ═══ */
+.carousel-track {
+  cursor: grab;
+  user-select: none;
+}
+.carousel-track:active {
+  cursor: grabbing;
+}
+
+/* ═══ Slide up animation (모바일 바텀시트) ═══ */
+@keyframes slide-up {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

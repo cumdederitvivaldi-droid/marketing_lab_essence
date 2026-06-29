@@ -1,0 +1,408 @@
+name: Deploy Apps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/private/**'
+      - 'apps/public/**'
+
+env:
+  PROJECT_ID: covering-app-ccd23
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_private_matrix: ${{ steps.set-matrix.outputs.deploy_private_matrix }}
+      has_deploy_private: ${{ steps.set-matrix.outputs.has_deploy_private }}
+      deploy_public_matrix: ${{ steps.set-matrix.outputs.deploy_public_matrix }}
+      has_deploy_public: ${{ steps.set-matrix.outputs.has_deploy_public }}
+      undeploy_private_matrix: ${{ steps.set-matrix.outputs.undeploy_private_matrix }}
+      has_undeploy_private: ${{ steps.set-matrix.outputs.has_undeploy_private }}
+      undeploy_public_matrix: ${{ steps.set-matrix.outputs.undeploy_public_matrix }}
+      has_undeploy_public: ${{ steps.set-matrix.outputs.has_undeploy_public }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed apps
+        id: set-matrix
+        run: |
+          # Private 배포: apps/private/[앱]/ 변경 감지 (NF>=4: README.md 등 루트 파일 제외)
+          DEPLOY_PRIVATE=$(git diff --name-only HEAD~1 HEAD --diff-filter=ACMR \
+            | grep '^apps/private/' \
+            | awk -F'/' 'NF>=4 {print $3}' \
+            | sort -u \
+            | grep -v '^$' \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          # Public 배포: apps/public/[앱]/ 변경 감지 (NF>=4: README.md 등 루트 파일 제외)
+          # disposal-guide는 별도 manual blue/green workflow로만 배포한다.
+          DEPLOY_PUBLIC=$(git diff --name-only HEAD~1 HEAD --diff-filter=ACMR \
+            | grep '^apps/public/' \
+            | grep -v '^apps/public/disposal-guide/' \
+            | awk -F'/' 'NF>=4 {print $3}' \
+            | sort -u \
+            | grep -v '^$' \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          # Private 제거: apps/private/[앱]/deploy.yml 삭제 감지
+          UNDEPLOY_PRIVATE=$(git diff --name-only HEAD~1 HEAD --diff-filter=D \
+            | grep '^apps/private/' \
+            | grep 'deploy\.yml$' \
+            | awk -F'/' '{print $3}' \
+            | sort -u \
+            | grep -v '^$' \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          # Public 제거: apps/public/[앱]/deploy.yml 삭제 감지
+          UNDEPLOY_PUBLIC=$(git diff --name-only HEAD~1 HEAD --diff-filter=D \
+            | grep '^apps/public/' \
+            | grep 'deploy\.yml$' \
+            | awk -F'/' '{print $3}' \
+            | sort -u \
+            | grep -v '^$' \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          echo "deploy_private_matrix={\"app\":$DEPLOY_PRIVATE}" >> $GITHUB_OUTPUT
+          echo "has_deploy_private=$([ "$DEPLOY_PRIVATE" = "[]" ] && echo false || echo true)" >> $GITHUB_OUTPUT
+          echo "deploy_public_matrix={\"app\":$DEPLOY_PUBLIC}" >> $GITHUB_OUTPUT
+          echo "has_deploy_public=$([ "$DEPLOY_PUBLIC" = "[]" ] && echo false || echo true)" >> $GITHUB_OUTPUT
+          echo "undeploy_private_matrix={\"app\":$UNDEPLOY_PRIVATE}" >> $GITHUB_OUTPUT
+          echo "has_undeploy_private=$([ "$UNDEPLOY_PRIVATE" = "[]" ] && echo false || echo true)" >> $GITHUB_OUTPUT
+          echo "undeploy_public_matrix={\"app\":$UNDEPLOY_PUBLIC}" >> $GITHUB_OUTPUT
+          echo "has_undeploy_public=$([ "$UNDEPLOY_PUBLIC" = "[]" ] && echo false || echo true)" >> $GITHUB_OUTPUT
+
+  # ── Private VM prepare ───────────────────────────────────────
+  prepare-private:
+    needs: detect
+    if: needs.detect.outputs.has_deploy_private == 'true' || needs.detect.outputs.has_undeploy_private == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Clean OS Login profile
+        run: |
+          SA_EMAIL=$(jq -r '.client_email' "$GOOGLE_APPLICATION_CREDENTIALS")
+          echo "Cleaning OS Login profile for: $SA_EMAIL"
+          PROFILE_ERR="$(mktemp)"
+          if ! PROFILE=$(gcloud compute os-login describe-profile \
+            --project="$PROJECT_ID" \
+            --format=json 2>"$PROFILE_ERR"); then
+            if grep -Eq 'NOT_FOUND|not found|404' "$PROFILE_ERR"; then
+              PROFILE='{}'
+            else
+              cat "$PROFILE_ERR" >&2
+              exit 1
+            fi
+          fi
+          rm -f "$PROFILE_ERR"
+          SSH_KEYS=$(printf '%s' "$PROFILE" | jq -r '.sshPublicKeys // {} | keys[]?')
+          SSH_COUNT=$(printf '%s\n' "$SSH_KEYS" | sed '/^$/d' | wc -l | tr -d ' ')
+          POSIX_COUNT=$(printf '%s' "$PROFILE" | jq '.posixAccounts // [] | length' 2>/dev/null || echo 0)
+          PROFILE_CHARS=$(printf '%s' "$PROFILE" | wc -c | tr -d ' ')
+          echo "Found $SSH_COUNT SSH key(s) to remove | $POSIX_COUNT POSIX account(s) | profile $PROFILE_CHARS chars"
+          REMOVE_FAILED=0
+          while IFS= read -r fp; do
+            [ -z "$fp" ] && continue
+            REMOVE_ERR="$(mktemp)"
+            if gcloud compute os-login ssh-keys remove \
+              --project="$PROJECT_ID" \
+              --key="$fp" \
+              --quiet 2>"$REMOVE_ERR"; then
+              echo "Removed SSH key: $fp"
+            elif grep -Eq 'NOT_FOUND|not found|404' "$REMOVE_ERR"; then
+              echo "SSH key already absent: $fp"
+            else
+              cat "$REMOVE_ERR" >&2
+              echo "::error::Failed to remove SSH key: $fp" >&2
+              REMOVE_FAILED=1
+            fi
+            rm -f "$REMOVE_ERR"
+          done < <(printf '%s\n' "$SSH_KEYS")
+          [ "$REMOVE_FAILED" -eq 0 ] || exit 1
+          echo "OS Login profile cleaned"
+
+  # ── Public VM prepare ────────────────────────────────────────
+  prepare-public:
+    needs: detect
+    if: needs.detect.outputs.has_deploy_public == 'true' || needs.detect.outputs.has_undeploy_public == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY_PUBLIC }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Clean OS Login profile
+        run: |
+          SA_EMAIL=$(jq -r '.client_email' "$GOOGLE_APPLICATION_CREDENTIALS")
+          echo "Cleaning OS Login profile for: $SA_EMAIL"
+          PROFILE_ERR="$(mktemp)"
+          if ! PROFILE=$(gcloud compute os-login describe-profile \
+            --project="$PROJECT_ID" \
+            --format=json 2>"$PROFILE_ERR"); then
+            if grep -Eq 'NOT_FOUND|not found|404' "$PROFILE_ERR"; then
+              PROFILE='{}'
+            else
+              cat "$PROFILE_ERR" >&2
+              exit 1
+            fi
+          fi
+          rm -f "$PROFILE_ERR"
+          SSH_KEYS=$(printf '%s' "$PROFILE" | jq -r '.sshPublicKeys // {} | keys[]?')
+          SSH_COUNT=$(printf '%s\n' "$SSH_KEYS" | sed '/^$/d' | wc -l | tr -d ' ')
+          POSIX_COUNT=$(printf '%s' "$PROFILE" | jq '.posixAccounts // [] | length' 2>/dev/null || echo 0)
+          PROFILE_CHARS=$(printf '%s' "$PROFILE" | wc -c | tr -d ' ')
+          echo "Found $SSH_COUNT SSH key(s) to remove | $POSIX_COUNT POSIX account(s) | profile $PROFILE_CHARS chars"
+          REMOVE_FAILED=0
+          while IFS= read -r fp; do
+            [ -z "$fp" ] && continue
+            REMOVE_ERR="$(mktemp)"
+            if gcloud compute os-login ssh-keys remove \
+              --project="$PROJECT_ID" \
+              --key="$fp" \
+              --quiet 2>"$REMOVE_ERR"; then
+              echo "Removed SSH key: $fp"
+            elif grep -Eq 'NOT_FOUND|not found|404' "$REMOVE_ERR"; then
+              echo "SSH key already absent: $fp"
+            else
+              cat "$REMOVE_ERR" >&2
+              echo "::error::Failed to remove SSH key: $fp" >&2
+              REMOVE_FAILED=1
+            fi
+            rm -f "$REMOVE_ERR"
+          done < <(printf '%s\n' "$SSH_KEYS")
+          [ "$REMOVE_FAILED" -eq 0 ] || exit 1
+          echo "OS Login profile cleaned"
+
+  # ── Private 배포 ─────────────────────────────────────────────
+  deploy-private:
+    needs: [detect, prepare-private]
+    if: needs.detect.outputs.has_deploy_private == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.detect.outputs.deploy_private_matrix) }}
+      fail-fast: false
+      max-parallel: 1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Copy scripts to VM
+        run: |
+          gcloud compute scp --recurse scripts \
+            covering-labs-instance-20260306-050059:/shared/ \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet
+
+      - name: Copy app to VM
+        run: |
+          gcloud compute scp --recurse apps/private/${{ matrix.app }} \
+            covering-labs-instance-20260306-050059:/shared/apps/ \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet
+
+      - name: FlareLane governance live check
+        if: matrix.app == 'flarelane-governance-sync'
+        run: |
+          gcloud compute ssh covering-labs-instance-20260306-050059 \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="cd /shared/apps/${{ matrix.app }} && export FLARELANE_MAX_MISSING_BIGQUERY_SIGNAL=4 FLARELANE_MAX_PRODUCT_LABS_REVISION=6 FLARELANE_MAX_MULTI_ARM_USERS=1 FLARELANE_MAX_CROSS_OVERLAP_RATE=86.70 FLARELANE_MAX_CANONICAL_EMPTY_TABLES=3 && if [ -f requirements.txt ]; then pip install --break-system-packages -q -r requirements.txt; fi && python3 -m py_compile src/config.py src/queries.py src/main.py && python3 src/main.py check"
+
+      - name: Run deploy script
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          FLARELANE_API_KEY: ${{ secrets.FLARELANE_API_KEY }}
+          DEPLOY_ACTOR: ${{ github.actor }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          gcloud compute ssh covering-labs-instance-20260306-050059 \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="SLACK_BOT_TOKEN='${SLACK_BOT_TOKEN}' FLARELANE_API_KEY='${FLARELANE_API_KEY}' DEPLOY_ACTOR='${DEPLOY_ACTOR}' COMMIT_SHA='${COMMIT_SHA}' bash /shared/scripts/deploy-app.sh ${{ matrix.app }}"
+
+  # ── Public 배포 ──────────────────────────────────────────────
+  deploy-public:
+    needs: [detect, prepare-public, undeploy-public]
+    if: |
+      always() &&
+      needs.detect.outputs.has_deploy_public == 'true' &&
+      (needs['undeploy-public'].result == 'success' || needs['undeploy-public'].result == 'skipped')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.detect.outputs.deploy_public_matrix) }}
+      fail-fast: false
+      max-parallel: 1
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate app type (public = nextjs | nestjs only, batch 금지)
+        run: |
+          DEPLOY_CONF="apps/public/${{ matrix.app }}/deploy.yml"
+          if [ ! -f "$DEPLOY_CONF" ]; then
+            echo "::error::deploy.yml 없음: $DEPLOY_CONF"
+            exit 1
+          fi
+          APP_TYPE=$(grep '^type:' "$DEPLOY_CONF" | awk '{print $2}' | tr -d '"')
+          echo "App type: $APP_TYPE"
+          case "$APP_TYPE" in
+            nextjs|nestjs)
+              echo "✅ Public VM에 허용되는 타입: $APP_TYPE"
+              ;;
+            batch)
+              echo "::error::batch 앱은 public VM에 배포할 수 없습니다. apps/private/${{ matrix.app }}/ 로 이동하세요."
+              exit 1
+              ;;
+            *)
+              echo "::error::알 수 없는 또는 지원하지 않는 타입: $APP_TYPE (public은 nextjs | nestjs만 허용)"
+              exit 1
+              ;;
+          esac
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY_PUBLIC }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Copy scripts to VM
+        run: |
+          gcloud compute scp --recurse scripts \
+            covering-labs-public:/shared/ \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet
+
+      - name: Copy app to VM
+        run: |
+          gcloud compute scp --recurse apps/public/${{ matrix.app }} \
+            covering-labs-public:/shared/apps/ \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet
+
+      - name: Run deploy script
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          DEPLOY_ACTOR: ${{ github.actor }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          gcloud compute ssh covering-labs-public \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="SLACK_BOT_TOKEN='${SLACK_BOT_TOKEN}' DEPLOY_ACTOR='${DEPLOY_ACTOR}' COMMIT_SHA='${COMMIT_SHA}' bash /shared/scripts/deploy-app.sh ${{ matrix.app }}"
+
+  # ── Private 제거 ─────────────────────────────────────────────
+  undeploy-private:
+    needs: [detect, prepare-private]
+    if: needs.detect.outputs.has_undeploy_private == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.detect.outputs.undeploy_private_matrix) }}
+      max-parallel: 1
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Copy scripts to VM
+        run: |
+          gcloud compute scp --recurse scripts \
+            covering-labs-instance-20260306-050059:/shared/ \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet
+
+      - name: Run undeploy script
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          DEPLOY_ACTOR: ${{ github.actor }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          gcloud compute ssh covering-labs-instance-20260306-050059 \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="SLACK_BOT_TOKEN='${SLACK_BOT_TOKEN}' DEPLOY_ACTOR='${DEPLOY_ACTOR}' COMMIT_SHA='${COMMIT_SHA}' bash /shared/scripts/undeploy-app.sh ${{ matrix.app }}"
+
+  # ── Public 제거 ──────────────────────────────────────────────
+  undeploy-public:
+    needs: [detect, prepare-public]
+    if: needs.detect.outputs.has_undeploy_public == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.detect.outputs.undeploy_public_matrix) }}
+      max-parallel: 1
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY_PUBLIC }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Copy scripts to VM
+        run: |
+          gcloud compute scp --recurse scripts \
+            covering-labs-public:/shared/ \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet
+
+      - name: Run undeploy script
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          DEPLOY_ACTOR: ${{ github.actor }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          gcloud compute ssh covering-labs-public \
+            --zone=asia-northeast3-a --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="SLACK_BOT_TOKEN='${SLACK_BOT_TOKEN}' DEPLOY_ACTOR='${DEPLOY_ACTOR}' COMMIT_SHA='${COMMIT_SHA}' bash /shared/scripts/undeploy-app.sh ${{ matrix.app }}"

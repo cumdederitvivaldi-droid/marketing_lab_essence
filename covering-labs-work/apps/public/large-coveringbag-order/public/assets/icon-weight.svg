@@ -1,0 +1,8 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 원형 배경 -->
+  <circle cx="40" cy="40" r="38" fill="#434A56"/>
+  <!-- 25 텍스트 -->
+  <text x="40" y="44" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="28" font-weight="800" fill="white">25</text>
+  <!-- kg 텍스트 -->
+  <text x="40" y="58" text-anchor="middle" font-family="Pretendard, sans-serif" font-size="12" font-weight="600" fill="white">kg</text>
+</svg>
