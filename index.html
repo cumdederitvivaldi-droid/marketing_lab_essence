@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>이도형 | 성장 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #ffffff;
+    padding: 24px;
+  }
+  .card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    padding: 22px 22px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .card h3 { font-size: 15px; font-weight: 700; color: #111827; }
+  .card .desc { font-size: 12px; color: #6B7280; margin-top: 3px; margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 340px; }
+  .legend-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #6B7280; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .join-label { font-size: 11px; color: #60A5FA; text-align: center; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h3>7대 성장 지표 통합 (입사 시점 = 100 기준)</h3>
+  <div class="desc">입사(2024-05) 당시 값을 100으로 정규화 — 공헌이익률은 우측 축 실제 % 값</div>
+  <div class="chart-wrap"><canvas id="chartAll"></canvas></div>
+  <div class="legend-row">
+    <div class="legend-item"><span class="legend-dot" style="background:#DC2626"></span>매출 (우축 억원)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1A56DB"></span>30DAU</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#10B981"></span>신규 유저</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#8B5CF6"></span>신규 가입자</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#EC4899"></span>첫 이용</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#6366F1"></span>앱 설치수</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#F59E0B; border-radius:50%"></span>공헌이익률 (우축 %)</div>
+  </div>
+  <div class="join-label">▏ 입사 시점 (2024-05) · 점선 좌측은 입사 전 기준선</div>
+</div>
+
+<script>
+const labels = [
+  '2024-01','2024-02','2024-03','2024-04','2024-05','2024-06',
+  '2024-07','2024-08','2024-09','2024-10','2024-11','2024-12',
+  '2025-01','2025-02','2025-03','2025-04','2025-05','2025-06',
+  '2025-07','2025-08','2025-09','2025-10','2025-11','2025-12',
+  '2026-01','2026-02','2026-03','2026-04'
+];
+const JOIN = 4;
+
+const cmRate    = [-25.3,-30.0,-32.7,-32.8,-5.1,-39.3,9.8,12.1,12.6,13.1,16.4,19.1,21.0,21.9,21.7,22.6,27.0,26.0,27.2,29.4,30.6,32.2,37.0,33.5,39.6,31.3,32.6,33.4];
+const revenue   = [61835700.223,71248774,76276477,88026517,107032587,99056069,176823278,212386043,204365316,241567668,241791183,256569395,290140406,331630160,381394182,449985376,520865048,601055339,743389269,810644472,839142451,954951892,950903259,1085256507,1215766356,1282992054,1671119065,1757436603];
+const dau30     = [970,1296,1452,1721,2234,3182,4214,5583,6003,6662,7050,8183,8767,9952,12430,15366,17757,21671,26683,28965,30861,34597,35069,40222,43317,49125,56736,63845];
+const newUser   = [363,548,501,600,864,1373,1807,2321,1853,1933,1893,2512,2691,2692,4896,5783,6235,7517,10211,9440,8441,10111,8802,12506,12051,12935,18717,20123];
+const appInstall= [2808,3286,3427,3562,6389,10975,12251,12794,11022,14758,17492,22584,14594,11658,21594,17815,19561,25741,35054,41421,36364,43324,29265,38275,47724,53362,71316,63902];
+const newSignup = [756,1069,1100,1355,2170,4385,5617,6256,5190,6037,5937,7642,6591,5761,11583,11586,13368,16670,22582,22532,19551,24449,18618,24481,25115,29467,43057,38970];
+const firstUse  = [363,599,585,600,864,1373,1843,2371,1853,1959,1876,2545,2722,2700,4921,5800,6293,7587,10300,9549,8660,10220,8912,12663,12182,13119,18918,20328];
+
+function normalize(arr, idx) {
+  const base = arr[idx];
+  return arr.map(v => v === null ? null : parseFloat((v / base * 100).toFixed(2)));
+}
+
+const joinLine = {
+  type:'line', xMin:JOIN-0.5, xMax:JOIN-0.5,
+  borderColor:'rgba(96,165,250,0.7)', borderWidth:2, borderDash:[5,4],
+  label:{ display:true, content:'입사', position:'start', color:'#60A5FA', font:{size:10,weight:'bold'}, backgroundColor:'rgba(17,24,39,0.85)', padding:{x:6,y:3}, yAdjust:-8 }
+};
+
+new Chart(document.getElementById('chartAll').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      { label:'매출',     data:revenue.map(v=>v/1e8),     borderColor:'#DC2626', backgroundColor:'transparent', borderWidth:3,   pointRadius:2.5, tension:0.35, yAxisID:'yRev' },
+      { label:'30DAU',    data:normalize(dau30,JOIN),     borderColor:'#1A56DB', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y' },
+      { label:'신규 유저', data:normalize(newUser,JOIN),   borderColor:'#10B981', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y' },
+      { label:'신규 가입자',data:normalize(newSignup,JOIN),borderColor:'#8B5CF6', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, borderDash:[4,3], yAxisID:'y' },
+      { label:'첫 이용',  data:normalize(firstUse,JOIN),  borderColor:'#EC4899', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, borderDash:[4,3], yAxisID:'y' },
+      { label:'앱 설치수', data:normalize(appInstall,JOIN),borderColor:'#6366F1', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, yAxisID:'y' },
+      { label:'공헌이익률',data:cmRate,                   borderColor:'#F59E0B', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y2' }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins: {
+      legend:{ display:false },
+      tooltip:{ callbacks:{ label: ctx => {
+        if(ctx.dataset.label==='공헌이익률') return `공헌이익률: ${ctx.raw.toFixed(1)}%`;
+        if(ctx.dataset.label==='매출') return `매출: ${ctx.raw.toFixed(2)}억원`;
+        return `${ctx.dataset.label}: ${ctx.raw.toFixed(0)} (기준 100)`;
+      }}},
+      annotation:{ annotations:{ joinLine,
+        zero:{ type:'line', yMin:100, yMax:100, yScaleID:'y', borderColor:'rgba(156,163,175,0.4)', borderWidth:1, borderDash:[3,3] }
+      }}
+    },
+    scales: {
+      x:  { ticks:{ font:{size:9}, maxRotation:45, color:'#9CA3AF' }, grid:{ display:false } },
+      y:  { position:'left',  title:{ display:true, text:'성장 지수 (입사=100)', font:{size:10}, color:'#9CA3AF' }, ticks:{ font:{size:9}, color:'#9CA3AF' }, grid:{ color:'#F3F4F6' } },
+      yRev:{ position:'right', title:{ display:true, text:'매출 (억원)',         font:{size:10}, color:'#DC2626' }, ticks:{ font:{size:9}, color:'#DC2626', callback: v=>v+'억' }, grid:{ display:false }, beginAtZero:true },
+      y2: { position:'right', title:{ display:true, text:'공헌이익률 (%)',       font:{size:10}, color:'#F59E0B' }, ticks:{ font:{size:9}, color:'#F59E0B', callback: v=>v+'%' }, grid:{ display:false } }
+    }
+  }
+});
+</script>
+</body>
+</html>

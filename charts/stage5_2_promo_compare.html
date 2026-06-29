@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>990원 vs 식목일 페이백 — 리텐션 비교</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --blue-500:#2D5BFF; --blue-600:#1B45E0;
+    --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB;
+    --ink-400:#8B95A6; --ink-500:#5B6675; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
+    --mint-500:#10C390; --mint-700:#067B5A; --mint-100:#D5F5E8;
+    --sun-500:#F5B400; --sun-700:#A37300; --sun-100:#FFF1C9;
+    --rose-500:#EF4444;
+    --font-sans:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font-sans); color:var(--ink-800); background:var(--ink-50);
+    font-feature-settings:"ss01" 1,"tnum" 1;
+    -webkit-font-smoothing:antialiased; padding:18px 20px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+
+  .eyebrow{font-family:var(--font-mono); font-size:10px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--ink-700); margin-bottom:6px;}
+  h1.title{font-size:20px; font-weight:800; letter-spacing:-.015em; line-height:1.25;
+    margin:0 0 6px; color:var(--ink-900);}
+  h1.title .sun{color:#A37300;}
+  h1.title .mint{color:var(--mint-700);}
+  .sub{font-size:12.5px; color:var(--ink-500); line-height:1.55; margin:0 0 14px;}
+  .sub b{color:var(--ink-800); font-weight:700;}
+
+  .card{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:14px 16px 12px; margin-bottom:10px;}
+  .card-title{font-size:13px; font-weight:700; color:var(--ink-800); margin-bottom:2px;}
+  .card-sub{font-size:11px; color:var(--ink-500); margin-bottom:10px;}
+  .legend{display:flex; flex-wrap:wrap; gap:12px; row-gap:6px; font-size:11px; color:var(--ink-600);
+    margin-bottom:10px; align-items:center;}
+  .lg-item{display:inline-flex; align-items:center; gap:5px;}
+  .lg-line{width:14px; height:2.5px; border-radius:2px; display:inline-block;}
+  .lg-dash{width:14px; height:0; border-top:2px dashed currentColor; display:inline-block;}
+  .lg-sep{width:1px; height:11px; background:var(--ink-200);}
+  .chart-wrap{position:relative; height:300px;}
+
+  .insight-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .insight{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:12px 14px; border-left:3px solid currentColor;}
+  .insight.sun{color:#A37300;}
+  .insight.mint{color:var(--mint-700);}
+  .insight-tag{font-family:var(--font-mono); font-size:9.5px; font-weight:700; letter-spacing:.08em;
+    padding:2px 7px; border-radius:4px; color:#fff; display:inline-block; margin-bottom:8px;}
+  .insight.sun .insight-tag{background:#F5B400;}
+  .insight.mint .insight-tag{background:#10C390;}
+  .insight-head{font-size:13px; font-weight:700; color:var(--ink-900); margin-bottom:5px;}
+  .insight-body{font-size:11.5px; color:var(--ink-600); line-height:1.55;}
+  .insight-body b{color:var(--ink-900);}
+
+  table.cmp{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:10px;}
+  table.cmp thead th{
+    text-align:right; padding:7px 9px; font-family:var(--font-mono); font-size:9.5px;
+    font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-400);
+    background:var(--ink-50); border-bottom:1.5px solid var(--ink-200);
+  }
+  table.cmp thead th:first-child{text-align:left;}
+  table.cmp tbody td{padding:7px 9px; border-bottom:1px solid var(--ink-100);
+    text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums;
+    color:var(--ink-700);}
+  table.cmp tbody td:first-child{text-align:left; font-weight:700; color:var(--ink-800);
+    font-family:var(--font-sans);}
+  table.cmp tbody tr:last-child td{border-bottom:none;}
+  table.cmp td.sun{color:#A37300;}
+  table.cmp td.mint{color:var(--mint-700); font-weight:700;}
+  table.cmp td.gap{font-weight:700; color:var(--mint-700);}
+
+  @media (max-width: 700px){
+    .insight-grid{grid-template-columns:1fr;}
+    .chart-wrap{height:260px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">PROMO RETENTION COMPARISON · 990 VS ARBOR</div>
+  <h1 class="title"><span class="sun">990원 이벤트</span> vs <span class="mint">식목일 페이백</span> — 6개월 리텐션 비교</h1>
+  <p class="sub">
+    같은 6개월 윈도우, 다른 이벤트 설계의 결과. <b>식목일 처치군 M1 89.5%</b>로 990 처치(37.7%) 대비 압도적.
+    설계 차이(신규 vs 기존 고객, 자기선택 vs RCT)가 곡선을 가른 핵심.
+  </p>
+
+  <div class="card">
+    <div class="card-title">6개월 리텐션 곡선 — 처치군 + 베이스라인</div>
+    <div class="card-sub">실선 = 처치(쿠폰 받은 코호트) · 점선 = 베이스라인(쿠폰 없음)</div>
+    <div class="legend">
+      <span class="lg-item" style="color:#10C390;"><span class="lg-line" style="background:#10C390;"></span> 식목일 처치 (874명, RCT)</span>
+      <span class="lg-item" style="color:#10C390;"><span class="lg-dash"></span> 식목일 대조 (6,564명)</span>
+      <span class="lg-sep"></span>
+      <span class="lg-item" style="color:#F5B400;"><span class="lg-line" style="background:#F5B400;"></span> 990 쿠폰 실사용 (579명)</span>
+      <span class="lg-item" style="color:#F5B400;"><span class="lg-dash"></span> 990 비쿠폰 신규 (2,492명)</span>
+    </div>
+    <div class="chart-wrap"><canvas id="c-cmp"></canvas></div>
+
+    <table class="cmp">
+      <thead>
+        <tr>
+          <th>월</th>
+          <th>식목일 처치</th>
+          <th>식목일 대조</th>
+          <th>990 쿠폰</th>
+          <th>990 비쿠폰</th>
+          <th>처치 갭 (식목일 − 990)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>M1</td><td class="mint">89.5%</td><td>37.5%</td><td class="sun">37.7%</td><td>34.7%</td><td class="gap">+51.8%p</td></tr>
+        <tr><td>M2</td><td class="mint">66.9%</td><td>30.4%</td><td class="sun">29.4%</td><td>26.5%</td><td class="gap">+37.5%p</td></tr>
+        <tr><td>M3</td><td class="mint">61.1%</td><td>27.8%</td><td class="sun">25.2%</td><td>24.5%</td><td class="gap">+35.9%p</td></tr>
+        <tr><td>M4</td><td class="mint">56.2%</td><td>26.4%</td><td class="sun">25.6%</td><td>23.4%</td><td class="gap">+30.6%p</td></tr>
+        <tr><td>M5</td><td class="mint">54.7%</td><td>24.1%</td><td class="sun">23.8%</td><td>22.7%</td><td class="gap">+30.9%p</td></tr>
+        <tr><td>M6</td><td class="mint">52.9%</td><td>24.8%</td><td class="sun">23.3%</td><td>23.2%</td><td class="gap">+29.6%p</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-grid">
+    <div class="insight sun">
+      <span class="insight-tag">990 이벤트</span>
+      <div class="insight-head">신규 유입 + 자기선택 코호트</div>
+      <div class="insight-body">
+        2024-12 신규 가입자 대상 · 990원 첫 이용 쿠폰 실사용자 추적.
+        쿠폰 사용 코호트가 비쿠폰 대비 <b>M1에 +3pp</b> 우위지만, 곡선은 거의 평행.
+        진입장벽 제거에는 성공했지만 <b>장기 리텐션 차별화는 미미</b>.
+      </div>
+    </div>
+    <div class="insight mint">
+      <span class="insight-tag">식목일 페이백</span>
+      <div class="insight-head">기존 1~5회 유저 + 무작위 RCT</div>
+      <div class="insight-body">
+        이미 정상가로 이용한 기존 고객 대상 · M0 매출 그대로 + 사용 직후 페이백.
+        쿠폰 소멸 후 M2~M6에서도 <b>+28~37%p 격차 유지</b> → 단순 할인 효과가 아닌
+        <b>서비스 이용 습관 형성</b>의 증거.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
+  Chart.defaults.font.size = 10.5;
+  Chart.defaults.color = '#5B6675';
+  Chart.defaults.plugins.legend.display = false;
+
+  new Chart(document.getElementById('c-cmp'), {
+    type:'line',
+    data:{
+      labels:['M1','M2','M3','M4','M5','M6'],
+      datasets:[
+        {
+          label:'식목일 처치 (874명)',
+          data:[89.5, 66.9, 61.1, 56.2, 54.7, 52.9],
+          borderColor:'#10C390',
+          backgroundColor:'rgba(16,195,144,0.10)',
+          borderWidth:2.6, tension:.3, fill:false,
+          pointRadius:3.5, pointHoverRadius:5.5,
+          pointBackgroundColor:'#10C390', pointBorderColor:'#fff', pointBorderWidth:1.5,
+        },
+        {
+          label:'식목일 대조 (6,564명)',
+          data:[37.5, 30.4, 27.8, 26.4, 24.1, 24.8],
+          borderColor:'#10C390',
+          backgroundColor:'transparent',
+          borderWidth:1.5, tension:.3, borderDash:[5,4],
+          pointRadius:2.5, pointHoverRadius:4.5,
+          pointBackgroundColor:'#10C390', pointBorderColor:'#fff', pointBorderWidth:1,
+        },
+        {
+          label:'990 쿠폰 (579명)',
+          data:[37.7, 29.4, 25.2, 25.6, 23.8, 23.3],
+          borderColor:'#F5B400',
+          backgroundColor:'rgba(245,180,0,0.06)',
+          borderWidth:2.6, tension:.3, fill:false,
+          pointRadius:3.5, pointHoverRadius:5.5,
+          pointBackgroundColor:'#F5B400', pointBorderColor:'#fff', pointBorderWidth:1.5,
+        },
+        {
+          label:'990 비쿠폰 (2,492명)',
+          data:[34.7, 26.5, 24.5, 23.4, 22.7, 23.2],
+          borderColor:'#F5B400',
+          backgroundColor:'transparent',
+          borderWidth:1.5, tension:.3, borderDash:[5,4],
+          pointRadius:2.5, pointHoverRadius:4.5,
+          pointBackgroundColor:'#F5B400', pointBorderColor:'#fff', pointBorderWidth:1,
+        },
+      ]
+    },
+    options:{
+      maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        tooltip:{
+          backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
+          padding:10, cornerRadius:7, displayColors:true, boxWidth:8, boxHeight:8,
+          callbacks:{ label:(c)=> ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` }
+        }
+      },
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } },
+        y:{
+          beginAtZero:true, max:100,
+          grid:{ color:'#EEF1F6', drawBorder:false },
+          ticks:{ callback:(v)=> v+'%', font:{ size:9.5 } },
+          title:{ display:true, text:'리텐션 (%)', color:'#8B95A6', font:{ size:10.5, weight:'600' } }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
