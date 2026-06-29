@@ -1,0 +1,142 @@
+[
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "40",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 7�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "41",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 14�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "42",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 21�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "43",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 28�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "44",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 28�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "45",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 28�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "46",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 28�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "47",
+    "max_discount_amount": "2500",
+    "remark": "ȸ������ �� �߱޵Ǵ� �����Դϴ�. (�߱��� ���� 28�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "48",
+    "max_discount_amount": "2500",
+    "remark": "����� ���� �ۼ� �� �߱޵Ǵ� �����Դϴ�."
+  },
+  {
+    "amount": "10",
+    "discount_type": "PERCENTAGE",
+    "id": "64",
+    "max_discount_amount": "5000",
+    "remark": "�����ٷ� �߱� �����Դϴ�."
+  },
+  {
+    "amount": "5",
+    "discount_type": "PERCENTAGE",
+    "id": "73",
+    "max_discount_amount": "2500",
+    "remark": "���� �⺻ ��� ���� �̺�Ʈ�� �߱޵Ǵ� �����Դϴ�. (5%�� ����)"
+  },
+  {
+    "amount": "2500",
+    "discount_type": "FIXED",
+    "id": "85",
+    "max_discount_amount": "2500",
+    "remark": "���� �⺻ ��� ���� �̺�Ʈ�� �߱޵Ǵ� �����Դϴ�. (�ű� ȸ�� 3���� ����)"
+  },
+  {
+    "amount": "30",
+    "discount_type": "PERCENTAGE",
+    "id": "97",
+    "max_discount_amount": "15000",
+    "remark": "���� �����ٷ� �߱� �����Դϴ�."
+  },
+  {
+    "amount": "100",
+    "discount_type": "PERCENTAGE",
+    "id": "98",
+    "max_discount_amount": "50000",
+    "remark": "�ǹ� ����"
+  },
+  {
+    "amount": "20",
+    "discount_type": "PERCENTAGE",
+    "id": "101",
+    "max_discount_amount": "30000",
+    "remark": "������ ����� �����Դϴ�."
+  },
+  {
+    "amount": "100",
+    "discount_type": "PERCENTAGE",
+    "id": "105",
+    "max_discount_amount": "50000",
+    "remark": null
+  },
+  {
+    "amount": "20",
+    "discount_type": "PERCENTAGE",
+    "id": "111",
+    "max_discount_amount": "30000",
+    "remark": "���÷�� ���ϸ� 20% ���� ����"
+  },
+  {
+    "amount": "20",
+    "discount_type": "PERCENTAGE",
+    "id": "136",
+    "max_discount_amount": "30000",
+    "remark": "���÷�� ��õĿ�� 20% ���� ����"
+  },
+  {
+    "amount": "5900",
+    "discount_type": "FIXED",
+    "id": "143",
+    "max_discount_amount": "5900",
+    "remark": "���� ���� 5,900�� ���� ����"
+  },
+  {
+    "amount": "20",
+    "discount_type": "PERCENTAGE",
+    "id": "149",
+    "max_discount_amount": "30000",
+    "remark": "26�� 1�� ����ũ�� ���÷�� �������� ����Ǵ� �����ڵ�"
+  }
+]

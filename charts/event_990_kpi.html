@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>990원 이벤트 KPI 증분 — 2024.11 → 12 비교</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: #f8f9fa; padding: 24px; color: #1a1a1a; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .grid { display: grid; gap: 16px; margin-bottom: 16px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); }
+  .card h3 { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 12px; }
+  canvas { max-height: 260px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .kpi .value { font-size: 20px; font-weight: 700; }
+  .kpi .sub { font-size: 11px; color: #666; margin-top: 3px; }
+  .kpi .value.green { color: #16a34a; }
+  .kpi .value.blue { color: #2563eb; }
+  .kpi .value.purple { color: #7c3aed; }
+  .kpi .value.orange { color: #ea580c; }
+  .legend { display: flex; gap: 14px; font-size: 11px; color: #666; flex-wrap: wrap; margin-bottom: 8px; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+  .footer { font-size: 11px; color: #888; margin-top: 8px; text-align: right; }
+</style>
+</head>
+<body>
+<h2>🎉 990원 이벤트 — 핵심 KPI 증분 (2024.11 → 12)</h2>
+<p class="subtitle">첫 이용 990원 쿠폰 + 기존 고객 배출 이벤트 + 인스타 친구 태그 챌린지 — 3-track 동시 집행</p>
+
+<div class="kpi-grid">
+  <div class="kpi"><div class="label">월 신규 유저</div><div class="value blue">+36%</div><div class="sub">1,876 → 2,545명</div></div>
+  <div class="kpi"><div class="label">브랜드 검색량</div><div class="value purple">2.4배</div><div class="sub">1,810 → 4,400회 (+143%)</div></div>
+  <div class="kpi"><div class="label">CAC (실측)</div><div class="value green">-194원</div><div class="sub">19,250 → 19,056원</div></div>
+  <div class="kpi"><div class="label">인스타 바이럴 노출</div><div class="value orange">6,471명</div><div class="sub">친구 태그 챌린지</div></div>
+</div>
+
+<div class="grid grid-2">
+  <div class="card">
+    <h3>📈 월 신규 유저 — 이벤트 전후 36% 증가</h3>
+    <div class="legend">
+      <span><span class="dot" style="background:#94a3b8"></span>11월 (이벤트 전)</span>
+      <span><span class="dot" style="background:#2563eb"></span>12월 (이벤트 후)</span>
+    </div>
+    <canvas id="newUserChart"></canvas>
+  </div>
+  <div class="card">
+    <h3>🔎 네이버 브랜드 검색량 — 광고 도달 밖 인지 확장</h3>
+    <div class="legend">
+      <span><span class="dot" style="background:#94a3b8"></span>11월</span>
+      <span><span class="dot" style="background:#7c3aed"></span>12월</span>
+    </div>
+    <canvas id="searchChart"></canvas>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:16px;">
+  <h3>🧪 990원 쿠폰 코호트 6개월 리텐션 — 비쿠폰 신규 대비 전 구간 우위</h3>
+  <div class="legend">
+    <span><span class="dot" style="background:#16a34a"></span>990원 쿠폰 실사용 (579명)</span>
+    <span><span class="dot" style="background:#94a3b8"></span>동기간 비쿠폰 신규 (2,492명)</span>
+  </div>
+  <canvas id="retentionChart"></canvas>
+</div>
+
+<div class="card">
+  <h3>📊 핵심 지표 한눈에 — 11월 vs 12월</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:12px;">
+    <thead style="background:#fafafa;">
+      <tr><th style="padding:8px;text-align:left;">지표</th><th style="padding:8px;text-align:right;">11월 (Before)</th><th style="padding:8px;text-align:right;">12월 (After)</th><th style="padding:8px;text-align:right;color:#16a34a;">변화</th></tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:8px;border-bottom:1px solid #eee;">월 신규 유저</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">1,876명</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;"><strong>2,545명</strong></td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;color:#16a34a;font-weight:700;">+36%</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #eee;">CAC (실측)</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">19,250원</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;"><strong>19,056원</strong></td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;color:#16a34a;font-weight:700;">-194원 ↓</td></tr>
+      <tr><td style="padding:8px;border-bottom:1px solid #eee;">네이버 브랜드 검색량</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">1,810회</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;"><strong>4,400회</strong></td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;color:#16a34a;font-weight:700;">+143% (2.4배)</td></tr>
+      <tr><td style="padding:8px;">기존 고객 매출</td><td style="padding:8px;text-align:right;">하락 예상</td><td style="padding:8px;text-align:right;"><strong>오히려 상승</strong></td><td style="padding:8px;text-align:right;color:#16a34a;font-weight:700;">예상 대비 역전</td></tr>
+    </tbody>
+  </table>
+  <div class="footer">출처: Airbridge·BigQuery 실측, 네이버 브랜드 검색량 트래커</div>
+</div>
+
+<script>
+new Chart(document.getElementById('newUserChart'), {
+  type: 'bar',
+  data: {
+    labels: ['월 신규 유저'],
+    datasets: [
+      { label: '11월', data: [1876], backgroundColor: 'rgba(148,163,184,0.85)' },
+      { label: '12월', data: [2545], backgroundColor: 'rgba(37,99,235,0.9)' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw.toLocaleString() + '명' } } },
+    scales: { x: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() + '명' } } }
+  }
+});
+
+new Chart(document.getElementById('searchChart'), {
+  type: 'bar',
+  data: {
+    labels: ['네이버 브랜드 검색량'],
+    datasets: [
+      { label: '11월', data: [1810], backgroundColor: 'rgba(148,163,184,0.85)' },
+      { label: '12월', data: [4400], backgroundColor: 'rgba(124,58,237,0.9)' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw.toLocaleString() + '회' } } },
+    scales: { x: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() + '회' } } }
+  }
+});
+
+new Chart(document.getElementById('retentionChart'), {
+  type: 'line',
+  data: {
+    labels: ['M1','M2','M3','M4','M5','M6'],
+    datasets: [
+      { label: '990원 쿠폰 코호트', data: [37.7,29.4,25.2,25.6,23.8,23.3], borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.15)', fill: true, borderWidth: 3, pointRadius: 5, tension: 0.3 },
+      { label: '동기간 비쿠폰 신규', data: [34.7,26.5,24.5,23.4,22.7,23.2], borderColor: '#94a3b8', backgroundColor: 'rgba(148,163,184,0.15)', fill: true, borderWidth: 3, pointRadius: 5, tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw + '%' } } },
+    scales: { y: { beginAtZero: true, max: 50, ticks: { callback: v => v + '%' }, title: { display: true, text: '리텐션 (%)' } } }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+name: airbridge-ads-cost-sync
+description: "Airbridge 광고비를 소재 단위로 BigQuery에 적재하는 배치 — 매일 09:45 KST 실행"
+type: batch
+schedule: "45 9 * * *"
+command: "BQ_STREAMING_BUFFER_RETRIES=24 python3 src/main.py sync --date yesterday --approve-bq-write"

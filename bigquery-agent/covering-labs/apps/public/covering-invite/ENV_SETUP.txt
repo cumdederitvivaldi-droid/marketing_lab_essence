@@ -1,0 +1,33 @@
+covering-invite 환경변수 정리
+================================
+
+배포 시 서버에서 직접 세팅 필요.
+- 위치: /shared/apps/covering-invite/.env 또는 /shared/.env
+- 로컬 개발: .env.local (gitignore 대상)
+
+
+1. NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
+   - 용도: 카카오톡 공유 SDK 초기화 (초대자 "친구에게 알려주기" 버튼)
+   - 필수: 카카오 공유 사용 시 필수
+   - 없으면: 클립보드 복사로 폴백
+   - 담당: 환희 — 카카오 개발자 콘솔에서 공용 키 발급 후 세팅
+   - 참고: 인준님(개발팀장)한테 키 전달 필요
+
+2. AIRBRIDGE_TOKEN
+   - 용도: 피초대자 가입 시 Airbridge API로 트래킹 링크 생성 (누가 누구를 초대했는지 추적)
+   - 필수: 원래 설계 의도상 필요
+   - 없으면: 앱스토어 링크로 대체 — 가입은 되지만 트래킹 정확도 떨어짐
+   - 담당: 기존 Vercel 프로젝트(covering-invite) Settings > Environment Variables에서 가져오기
+
+
+3. NEXT_PUBLIC_MIXPANEL_TOKEN
+   - 용도: Mixpanel 클라이언트 SDK 초기화 (페이지뷰·클릭 이벤트 트래킹)
+   - 필수: 이벤트 트래킹 필요 시 필수
+   - 없으면: 모든 Mixpanel 이벤트가 무시됨 (initAnalytics early return)
+   - 값: Mixpanel > Project Settings > Project Token
+   - 참고: API Key / API Secret은 서버 전용이므로 코드에 넣지 말 것 (public 레포)
+
+
+※ 아래는 코드에 하드코딩 완료 (환경변수 불필요)
+- 1:1 문의 URL: https://covering-app.channel.io/home
+- OG 메타 origin: https://public-labs.covering.app

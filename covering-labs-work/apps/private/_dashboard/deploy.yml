@@ -1,0 +1,5 @@
+name: _dashboard
+description: "앱/배치 실행 현황 모니터링 대시보드 (수정 금지)"
+type: nextjs
+
+# redeploy: 2026-04-18h

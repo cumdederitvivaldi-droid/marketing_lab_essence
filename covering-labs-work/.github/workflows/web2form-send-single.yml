@@ -1,0 +1,102 @@
+name: web2form 단건 발송
+
+on:
+  workflow_dispatch:
+    inputs:
+      row:
+        description: '발송 대상 행 번호 (스프레드시트 행, 헤더 제외 — 예: 77)'
+        required: true
+        type: number
+      dry_run:
+        description: 'Dry-run (실제 발송 없이 대상 행만 확인)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: web2form-send-single
+  cancel-in-progress: false
+
+env:
+  PROJECT_ID: covering-app-ccd23
+  INSTANCE: covering-labs-instance-20260306-050059
+  ZONE: asia-northeast3-a
+  APP_DIR: /shared/apps/web2form-alimtalk-batch
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+
+      - name: Clean OS Login profile
+        timeout-minutes: 5
+        run: |
+          SA_EMAIL=$(jq -r '.client_email' "$GOOGLE_APPLICATION_CREDENTIALS")
+          echo "Cleaning OS Login profile for: $SA_EMAIL"
+          PROFILE_ERR="$(mktemp)"
+          if ! PROFILE=$(gcloud compute os-login describe-profile \
+            --project="$PROJECT_ID" \
+            --format=json 2>"$PROFILE_ERR"); then
+            if grep -Eq 'NOT_FOUND|not found|404' "$PROFILE_ERR"; then
+              PROFILE='{}'
+            else
+              cat "$PROFILE_ERR" >&2
+              exit 1
+            fi
+          fi
+          rm -f "$PROFILE_ERR"
+          SSH_KEYS=$(printf '%s' "$PROFILE" | jq -r '.sshPublicKeys // {} | keys[]?')
+          SSH_COUNT=$(printf '%s\n' "$SSH_KEYS" | sed '/^$/d' | wc -l | tr -d ' ')
+          POSIX_COUNT=$(printf '%s' "$PROFILE" | jq '.posixAccounts // [] | length' 2>/dev/null || echo 0)
+          PROFILE_CHARS=$(printf '%s' "$PROFILE" | wc -c | tr -d ' ')
+          echo "Found $SSH_COUNT SSH key(s) to remove | $POSIX_COUNT POSIX account(s) | profile $PROFILE_CHARS chars"
+          REMOVE_FAILED=0
+          while IFS= read -r fp; do
+            [ -z "$fp" ] && continue
+            REMOVE_ERR="$(mktemp)"
+            if gcloud compute os-login ssh-keys remove \
+              --project="$PROJECT_ID" \
+              --key="$fp" \
+              --quiet 2>"$REMOVE_ERR"; then
+              echo "Removed SSH key: $fp"
+            elif grep -Eq 'NOT_FOUND|not found|404' "$REMOVE_ERR"; then
+              echo "SSH key already absent: $fp"
+            else
+              cat "$REMOVE_ERR" >&2
+              echo "::error::Failed to remove SSH key: $fp" >&2
+              REMOVE_FAILED=1
+            fi
+            rm -f "$REMOVE_ERR"
+          done < <(printf '%s\n' "$SSH_KEYS")
+          [ "$REMOVE_FAILED" -eq 0 ] || exit 1
+          echo "OS Login profile cleaned"
+
+      - name: Validate row input
+        run: |
+          RAW_ROW="${{ inputs.row }}"
+          if ! [[ "$RAW_ROW" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::row 입력값이 유효하지 않습니다: '$RAW_ROW' (1 이상의 정수여야 합니다)"
+            exit 1
+          fi
+          echo "ROW=$RAW_ROW" >> "$GITHUB_ENV"
+
+      - name: Run send_single_phone.py
+        timeout-minutes: 15
+        run: |
+          DRY_RUN_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+          fi
+
+          gcloud compute ssh "$INSTANCE" \
+            --zone="$ZONE" --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="cd $APP_DIR && python3 scripts/send_single_phone.py --row $ROW $DRY_RUN_FLAG"

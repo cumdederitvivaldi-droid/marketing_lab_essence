@@ -1,0 +1,5 @@
+name: auth-verification-monitor
+description: "인증번호 퍼널 Slack 모니터 — 매일 09:00/18:00 KST 인증번호 입력·완료 전환율 보고"
+type: batch
+schedule: "0 9,18 * * *"
+command: "python3 src/main.py"

@@ -1,0 +1,27 @@
+﻿쿼리 설명: 2026-04-23 가입 유저의 첫 SERVICE 주문까지 소요 일수 누적 분포 (전환율 분석)
+기준일: 2026-04-23 가입자
+테이블: order_v2, order_line, product, user
+추출 일시: 2026-04-27 09:28:33
+
+[원본 쿼리 변환 내역]
+- order.name='DEFAULT_GARBAGE' -> product.product_type='SERVICE' (대응 상품 코드 없음, SERVICE 타입 전체로 대체)
+- user_address 테이블 없음 -> 전체 당일 가입자(탈퇴 제외) 기준으로 분모 대체
+- o.status LIKE '%COMPLETED' -> o.status = 'COMPLETED'
+- to_char(...) >= / <= 같은 날 -> DATE(col, 'Asia/Seoul') = '2026-04-23'
+
+[컬럼 설명]
+- within_n_days: 가입 후 N일 이내 첫 주문 완료
+- cum_users: 누적 신청 유저 수
+- total_signups_cnt: 2026-04-23 전체 가입자 수 (탈퇴 제외)
+- ratio_pct: 전환율 (%) = cum_users / total_signups_cnt * 100
+
+[결과 요약]
+- 전체 가입자: 1,416명
+- 1일 이내: 74명 (5.2%)
+- 2일 이내: 158명 (11.2%)
+- 3일 이내: 209명 (14.8%)
+- 4일 이내: 242명 (17.1%)  <- 오늘(2026-04-27) 기준 최대치
+
+[주의]
+today = 2026-04-27 기준으로 최대 4일차까지만 집계 가능.
+이후 날짜 데이터는 시간이 지남에 따라 계속 누적됨.

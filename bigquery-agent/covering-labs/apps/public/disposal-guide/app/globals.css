@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #ffffff;
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans), -apple-system, 'Apple SD Gothic Neo', sans-serif;
+  background-color: #ffffff;
+  overscroll-behavior: none;
+  /* 한글 어절 단위 줄바꿈 — 단어 중간에서 잘리지 않도록 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+  html,
+  body {
+    background-color: #f3f4f6;
+  }
+}
+
+.slider-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #1AA3FF;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.slider-range::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #1AA3FF;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ── 분석 중 / 결과 진입 애니메이션 ─────────────────── */
+@keyframes dot-pulse {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+.dg-dot {
+  display: inline-block;
+  animation: dot-pulse 1.4s ease-in-out infinite;
+}
+.dg-dot-1 { animation-delay: 0s; }
+.dg-dot-2 { animation-delay: 0.2s; }
+.dg-dot-3 { animation-delay: 0.4s; }
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.dg-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.dg-fade-in-up {
+  animation: fade-in-up 0.45s ease-out both;
+}
+.dg-fade-in-up-delay-1 { animation-delay: 0.05s; }
+.dg-fade-in-up-delay-2 { animation-delay: 0.15s; }
+.dg-fade-in-up-delay-3 { animation-delay: 0.25s; }
+.dg-fade-in-up-delay-4 { animation-delay: 0.35s; }
+
+/* opacity 전용 fade-in — fixed 자식의 containing block을 변경하지 않음 */
+@keyframes fade-in-opacity {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.dg-fade-in {
+  animation: fade-in-opacity 0.2s ease-out both;
+}

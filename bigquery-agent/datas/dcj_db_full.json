@@ -1,0 +1,44 @@
+[
+  {
+    "avg_first_receipt": "10354.0",
+    "coupon_label": "DCJ100 (100%)",
+    "earliest_first_order": "2026-04-04",
+    "estimated_coupon_cost": "200000",
+    "first_canceled": "2",
+    "first_completed": "10",
+    "first_completion_rate": "83.3",
+    "latest_first_order": "2026-04-19",
+    "repurchase_rate": "90.0",
+    "repurchase_users": "9",
+    "total_revenue": "163120",
+    "unique_users": "10"
+  },
+  {
+    "avg_first_receipt": "5740.0",
+    "coupon_label": "DCJ25 (2500���)",
+    "earliest_first_order": "2026-04-09",
+    "estimated_coupon_cost": "7500",
+    "first_canceled": "0",
+    "first_completed": "3",
+    "first_completion_rate": "100.0",
+    "latest_first_order": "2026-04-09",
+    "repurchase_rate": "100.0",
+    "repurchase_users": "1",
+    "total_revenue": "13000",
+    "unique_users": "1"
+  },
+  {
+    "avg_first_receipt": "9056.0",
+    "coupon_label": "DCJ50 (50%)",
+    "earliest_first_order": "2026-04-11",
+    "estimated_coupon_cost": "90558",
+    "first_canceled": "1",
+    "first_completed": "10",
+    "first_completion_rate": "83.3",
+    "latest_first_order": "2026-04-21",
+    "repurchase_rate": "100.0",
+    "repurchase_users": "11",
+    "total_revenue": "215840",
+    "unique_users": "11"
+  }
+]

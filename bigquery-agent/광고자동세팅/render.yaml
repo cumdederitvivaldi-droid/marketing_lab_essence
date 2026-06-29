@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: covering-meta-ads
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: FACEBOOK_ACCESS_TOKEN
+        sync: false   # Render 대시보드에서 직접 입력 (코드에 기록 금지)

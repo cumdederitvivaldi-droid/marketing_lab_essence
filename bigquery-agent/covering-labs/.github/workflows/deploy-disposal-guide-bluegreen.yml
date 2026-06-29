@@ -1,0 +1,405 @@
+name: Deploy Disposal Guide Blue/Green
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type deploy-disposal-guide to deploy, or check-disposal-guide-env to verify env only"
+        required: true
+        type: string
+      mode:
+        description: "deploy runs blue/green deployment; check-env verifies feedback env/schema; scan-env-names lists relevant env names without values"
+        required: true
+        default: deploy
+        type: choice
+        options:
+          - deploy
+          - check-env
+          - scan-env-names
+
+env:
+  PROJECT_ID: covering-app-ccd23
+  ZONE: asia-northeast3-a
+  INSTANCE: covering-labs-public
+  APP_DIR: apps/public/disposal-guide
+
+concurrency:
+  group: disposal-guide-bluegreen-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate manual confirmation
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Production blue/green deploy must run from main."
+            exit 1
+          fi
+          case "$MODE" in
+            deploy)
+              if [ "$CONFIRM" != "deploy-disposal-guide" ]; then
+                echo "::error::Confirmation mismatch. Type deploy-disposal-guide."
+                exit 1
+              fi
+              ;;
+            check-env)
+              if [ "$CONFIRM" != "check-disposal-guide-env" ]; then
+                echo "::error::Confirmation mismatch. Type check-disposal-guide-env."
+                exit 1
+              fi
+              ;;
+            scan-env-names)
+              if [ "$CONFIRM" != "scan-disposal-guide-env-names" ]; then
+                echo "::error::Confirmation mismatch. Type scan-disposal-guide-env-names."
+                exit 1
+              fi
+              ;;
+            *)
+              echo "::error::Unknown mode: $MODE"
+              exit 1
+              ;;
+          esac
+
+      - name: Local preflight
+        if: inputs.mode == 'deploy'
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          npm ci --legacy-peer-deps --silent
+          npm run typecheck
+          npm test -- --runInBand
+          npm run build
+
+      - name: Package release
+        if: inputs.mode == 'deploy'
+        id: package
+        run: |
+          SHORT_SHA="${GITHUB_SHA:0:12}"
+          ARCHIVE="/tmp/disposal-guide-${SHORT_SHA}.tar.gz"
+          tar \
+            --exclude='node_modules' \
+            --exclude='.next' \
+            -C "$APP_DIR" \
+            -czf "$ARCHIVE" \
+            .
+          echo "short_sha=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          echo "archive=${ARCHIVE}" >> "$GITHUB_OUTPUT"
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY_PUBLIC }}'
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Clean OS Login profile
+        if: inputs.mode == 'deploy'
+        run: |
+          SA_EMAIL=$(jq -r '.client_email' "$GOOGLE_APPLICATION_CREDENTIALS")
+          echo "Cleaning OS Login profile for: $SA_EMAIL"
+          PROFILE_ERR="$(mktemp)"
+          if ! PROFILE=$(gcloud compute os-login describe-profile \
+            --project="$PROJECT_ID" \
+            --format=json 2>"$PROFILE_ERR"); then
+            if grep -Eq 'NOT_FOUND|not found|404' "$PROFILE_ERR"; then
+              PROFILE='{}'
+            else
+              cat "$PROFILE_ERR" >&2
+              exit 1
+            fi
+          fi
+          rm -f "$PROFILE_ERR"
+          SSH_KEYS=$(printf '%s' "$PROFILE" | jq -r '.sshPublicKeys // {} | keys[]?')
+          SSH_COUNT=$(printf '%s\n' "$SSH_KEYS" | sed '/^$/d' | wc -l | tr -d ' ')
+          POSIX_COUNT=$(printf '%s' "$PROFILE" | jq '.posixAccounts // [] | length' 2>/dev/null || echo 0)
+          PROFILE_CHARS=$(printf '%s' "$PROFILE" | wc -c | tr -d ' ')
+          echo "Found $SSH_COUNT SSH key(s) to remove | $POSIX_COUNT POSIX account(s) | profile $PROFILE_CHARS chars"
+          REMOVE_FAILED=0
+          while IFS= read -r fp; do
+            [ -z "$fp" ] && continue
+            REMOVE_ERR="$(mktemp)"
+            if gcloud compute os-login ssh-keys remove \
+              --project="$PROJECT_ID" \
+              --key="$fp" \
+              --quiet 2>"$REMOVE_ERR"; then
+              echo "Removed SSH key: $fp"
+            elif grep -Eq 'NOT_FOUND|not found|404' "$REMOVE_ERR"; then
+              echo "SSH key already absent: $fp"
+            else
+              cat "$REMOVE_ERR" >&2
+              REMOVE_FAILED=1
+            fi
+            rm -f "$REMOVE_ERR"
+          done < <(printf '%s\n' "$SSH_KEYS")
+          [ "$REMOVE_FAILED" -eq 0 ] || exit 1
+          echo "OS Login profile cleaned"
+
+      - name: Warm up SSH access to public VM
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if gcloud compute ssh "$INSTANCE" \
+              --zone="$ZONE" \
+              --project="$PROJECT_ID" \
+              --ssh-key-expire-after=10m \
+              --quiet \
+              --command="true"; then
+              echo "SSH warm-up succeeded on attempt $attempt"
+              exit 0
+            fi
+
+            echo "SSH warm-up failed on attempt $attempt; retrying in 15s" >&2
+            sleep 15
+          done
+
+          echo "::error::SSH warm-up failed after 6 attempts" >&2
+          PROFILE="$(gcloud compute os-login describe-profile --project="$PROJECT_ID" --format=json 2>/dev/null || echo '{}')"
+          SSH_COUNT=$(printf '%s' "$PROFILE" | jq '.sshPublicKeys // {} | length' 2>/dev/null || echo 0)
+          POSIX_COUNT=$(printf '%s' "$PROFILE" | jq '.posixAccounts // [] | length' 2>/dev/null || echo 0)
+          echo "OS Login profile after warm-up failure: $SSH_COUNT SSH key(s), $POSIX_COUNT POSIX account(s)" >&2
+          exit 1
+
+      - name: Check feedback env and schema on public VM
+        if: inputs.mode == 'check-env'
+        run: |
+          gcloud compute ssh "$INSTANCE" \
+            --zone="$ZONE" \
+            --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="bash -s" <<'REMOTE'
+          set -Eeuo pipefail
+
+          env_files=(
+            "ENV_FILE_SHARED:/shared/.env"
+            "ENV_FILE_APP_ALIAS:/shared/apps/disposal_guide/.env"
+            "ENV_FILE_APP_ALIAS_PRODUCTION:/shared/apps/disposal_guide/.env.production"
+            "ENV_FILE_APP_ALIAS_LOCAL:/shared/apps/disposal_guide/.env.local"
+            "ENV_FILE_APP_ALIAS_PRODUCTION_LOCAL:/shared/apps/disposal_guide/.env.production.local"
+            "ENV_FILE_APP:/shared/apps/disposal-guide/.env"
+            "ENV_FILE_APP_PRODUCTION:/shared/apps/disposal-guide/.env.production"
+            "ENV_FILE_APP_LOCAL:/shared/apps/disposal-guide/.env.local"
+            "ENV_FILE_APP_PRODUCTION_LOCAL:/shared/apps/disposal-guide/.env.production.local"
+          )
+          loaded_any=0
+
+          load_env_file() {
+            local label="$1"
+            local path="$2"
+            local line
+            local line_no=0
+            local name
+            local value
+            if [ -f "$path" ]; then
+              echo "${label}=present"
+              while IFS= read -r line || [ -n "$line" ]; do
+                line_no=$((line_no + 1))
+                line="${line%$'\r'}"
+                [[ "$line" =~ ^[[:space:]]*$ ]] && continue
+                [[ "$line" =~ ^[[:space:]]*# ]] && continue
+                line="${line#"${line%%[![:space:]]*}"}"
+                if [[ "$line" =~ ^export[[:space:]]+(.+)$ ]]; then
+                  line="${BASH_REMATCH[1]}"
+                fi
+                if [[ "$line" =~ ^([A-Za-z_][A-Za-z0-9_]*)[[:space:]]*=(.*)$ ]]; then
+                  name="${BASH_REMATCH[1]}"
+                  value="${BASH_REMATCH[2]}"
+                else
+                  echo "::error::Invalid env line in ${path}:${line_no}"
+                  exit 1
+                fi
+                value="${value#"${value%%[![:space:]]*}"}"
+                if [[ "$value" == \"*\" && "$value" == *\" ]]; then
+                  value="${value:1:${#value}-2}"
+                elif [[ "$value" == \'*\' && "$value" == *\' ]]; then
+                  value="${value:1:${#value}-2}"
+                fi
+                export "${name}=${value}"
+              done < "$path"
+              loaded_any=1
+            else
+              echo "${label}=missing"
+            fi
+          }
+
+          for entry in "${env_files[@]}"; do
+            load_env_file "${entry%%:*}" "${entry#*:}"
+          done
+
+          if [ "$loaded_any" -eq 0 ]; then
+            echo "::error::No env file found"
+            exit 1
+          fi
+
+          report_presence() {
+            local name="$1"
+            if [ -n "${!name:-}" ]; then
+              echo "${name}=present"
+            else
+              echo "${name}=missing"
+            fi
+          }
+
+          report_presence SUPABASE_URL
+          report_presence NEXT_PUBLIC_SUPABASE_URL
+          report_presence COVERING_SUPABASE_URL
+          report_presence SUPABASE_SERVICE_ROLE_KEY
+          report_presence SUPABASE_SERVICE_KEY
+          report_presence COVERING_SUPABASE_KEY
+          report_presence SLACK_BOT_TOKEN
+
+          feedback_table="${DISPOSAL_GUIDE_FEEDBACK_TABLE:-disposal_guide_feedback}"
+          if [ -n "${DISPOSAL_GUIDE_FEEDBACK_TABLE:-}" ]; then
+            echo "DISPOSAL_GUIDE_FEEDBACK_TABLE=present(${feedback_table})"
+          else
+            echo "DISPOSAL_GUIDE_FEEDBACK_TABLE=missing(default:${feedback_table})"
+          fi
+
+          supabase_url="${SUPABASE_URL:-${NEXT_PUBLIC_SUPABASE_URL:-${COVERING_SUPABASE_URL:-}}}"
+          supabase_key="${SUPABASE_SERVICE_ROLE_KEY:-${SUPABASE_SERVICE_KEY:-${COVERING_SUPABASE_KEY:-}}}"
+
+          if [ -z "$supabase_url" ]; then
+            echo "::error::SUPABASE_URL, NEXT_PUBLIC_SUPABASE_URL, or COVERING_SUPABASE_URL is missing"
+            exit 1
+          fi
+          if [ -z "$supabase_key" ]; then
+            echo "::error::SUPABASE_SERVICE_ROLE_KEY, SUPABASE_SERVICE_KEY, or COVERING_SUPABASE_KEY is missing"
+            exit 1
+          fi
+
+          body="$(mktemp)"
+          cleanup() {
+            rm -f "$body"
+          }
+          trap cleanup EXIT
+
+          if ! code="$(curl -sS -o "$body" -w "%{http_code}" --max-time 10 \
+            -H "apikey: ${supabase_key}" \
+            -H "Authorization: Bearer ${supabase_key}" \
+            "${supabase_url%/}/rest/v1/${feedback_table}?select=id,message,slack_status&limit=0")"; then
+            echo "::error::feedback schema check request failed"
+            head -c 500 "$body" | sed -E 's/[A-Za-z0-9_=-]{24,}/[redacted]/g' >&2 || true
+            exit 1
+          fi
+
+          echo "FEEDBACK_SCHEMA_HTTP=${code}"
+          if [ "$code" != "200" ]; then
+            echo "::error::feedback table or required columns are not ready"
+            head -c 500 "$body" | sed -E 's/[A-Za-z0-9_=-]{24,}/[redacted]/g' >&2 || true
+            exit 1
+          fi
+
+          echo "FEEDBACK_SCHEMA=ok"
+          REMOTE
+
+      - name: Scan Supabase env names on public VM
+        if: inputs.mode == 'scan-env-names'
+        run: |
+          gcloud compute ssh "$INSTANCE" \
+            --zone="$ZONE" \
+            --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="bash -s" <<'REMOTE'
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          import shlex
+
+          env_files = [
+              ("shared", Path("/shared/.env")),
+              ("app_alias", Path("/shared/apps/disposal_guide/.env")),
+              ("app_alias_production", Path("/shared/apps/disposal_guide/.env.production")),
+              ("app_alias_local", Path("/shared/apps/disposal_guide/.env.local")),
+              ("app_alias_production_local", Path("/shared/apps/disposal_guide/.env.production.local")),
+              ("app", Path("/shared/apps/disposal-guide/.env")),
+              ("app_production", Path("/shared/apps/disposal-guide/.env.production")),
+              ("app_local", Path("/shared/apps/disposal-guide/.env.local")),
+              ("app_production_local", Path("/shared/apps/disposal-guide/.env.production.local")),
+          ]
+
+          present_count = 0
+          matched = []
+          for label, env_file in env_files:
+              if not env_file.exists():
+                  print(f"ENV_FILE_{label}=missing")
+                  continue
+
+              present_count += 1
+              print(f"ENV_FILE_{label}=present")
+              for raw_line in env_file.read_text(encoding="utf-8", errors="replace").splitlines():
+                  line = raw_line.strip()
+                  if not line or line.startswith("#"):
+                      continue
+                  if line.startswith("export "):
+                      line = line[len("export "):].strip()
+                  match = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)\s*=", line)
+                  if not match:
+                      try:
+                          parts = shlex.split(line, comments=False, posix=True)
+                      except ValueError:
+                          continue
+                      if not parts:
+                          continue
+                      match = re.match(r"^([A-Za-z_][A-Za-z0-9_]*)=", parts[0])
+                  if match:
+                      name = match.group(1)
+                      if any(token in name.upper() for token in ("SUPABASE", "DISPOSAL", "FEEDBACK", "SLACK")):
+                          matched.append((label, name))
+
+          if present_count == 0:
+              print("ENV_FILES_PRESENT=0")
+              raise SystemExit(1)
+
+          print(f"ENV_FILES_PRESENT={present_count}")
+          unique = sorted(set(matched))
+          print(f"MATCHED_ENV_NAME_COUNT={len(unique)}")
+          for label, name in unique:
+              print(f"ENV_NAME={label}:{name}")
+          PY
+          REMOTE
+
+      - name: Copy release and deploy script to public VM
+        if: inputs.mode == 'deploy'
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if gcloud compute scp \
+              "${{ steps.package.outputs.archive }}" \
+              scripts/deploy-disposal-guide-bluegreen.sh \
+              "${INSTANCE}:/tmp/" \
+              --zone="$ZONE" \
+              --project="$PROJECT_ID" \
+              --ssh-key-expire-after=10m \
+              --quiet; then
+              echo "Release copy succeeded on attempt $attempt"
+              exit 0
+            fi
+
+            echo "Release copy failed on attempt $attempt; retrying in 15s" >&2
+            sleep 15
+          done
+
+          echo "::error::Release copy failed after 5 attempts" >&2
+          PROFILE="$(gcloud compute os-login describe-profile --project="$PROJECT_ID" --format=json 2>/dev/null || echo '{}')"
+          SSH_COUNT=$(printf '%s' "$PROFILE" | jq '.sshPublicKeys // {} | length' 2>/dev/null || echo 0)
+          POSIX_COUNT=$(printf '%s' "$PROFILE" | jq '.posixAccounts // [] | length' 2>/dev/null || echo 0)
+          echo "OS Login profile after copy failure: $SSH_COUNT SSH key(s), $POSIX_COUNT POSIX account(s)" >&2
+          exit 1
+
+      - name: Run blue/green deploy
+        if: inputs.mode == 'deploy'
+        run: |
+          REMOTE_ARCHIVE="/tmp/disposal-guide-${{ steps.package.outputs.short_sha }}.tar.gz"
+          gcloud compute ssh "$INSTANCE" \
+            --zone="$ZONE" \
+            --project="$PROJECT_ID" \
+            --ssh-key-expire-after=10m \
+            --quiet \
+            --command="COMMIT_SHA='${GITHUB_SHA}' DEPLOY_RUN_ID='${GITHUB_RUN_ID}' RELEASE_ARCHIVE='${REMOTE_ARCHIVE}' bash /tmp/deploy-disposal-guide-bluegreen.sh --execute"

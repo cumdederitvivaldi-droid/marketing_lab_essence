@@ -1,0 +1,17 @@
+쿼리 설명: 최근 2일 내 0kg 배출 고객 고유 user_id 수
+테이블: secure_dataset.order_v2, secure_dataset.fulfillment, secure_dataset.fulfillment_item
+추출 일시: 2026-04-14 16:30:02
+조건: 최근 2일(KST 기준), fulfillment_item.actual_weight_grams = 0 또는 NULL (미배출 포함), 삭제되지 않은 주문
+컬럼 설명: unique_user_count=0kg 배출 고유 유저 수
+
+=== 실행 쿼리 ===
+SELECT COUNT(DISTINCT o.user_id) AS unique_user_count
+FROM `covering-app-ccd23.secure_dataset.order_v2` o
+JOIN `covering-app-ccd23.secure_dataset.fulfillment` f ON o.id = f.order_id
+LEFT JOIN `covering-app-ccd23.secure_dataset.fulfillment_item` fi
+  ON f.id = fi.fulfillment_id
+  AND fi.deleted_at IS NULL
+WHERE DATE(DATETIME(f.created_at, 'Asia/Seoul')) >= DATE_SUB(CURRENT_DATE('Asia/Seoul'), INTERVAL 2 DAY)
+  AND o.deleted_at IS NULL
+  AND o.user_id IS NOT NULL
+  AND COALESCE(fi.actual_weight_grams, 0) = 0

@@ -1,0 +1,5 @@
+name: yagan-sugeo-report
+description: "야간 수거 주문을 매일 오전 8시에 #운영_야간수거 채널로 리포트하는 배치"
+type: batch
+schedule: "0 8 * * *"
+command: "python3 src/main.py"

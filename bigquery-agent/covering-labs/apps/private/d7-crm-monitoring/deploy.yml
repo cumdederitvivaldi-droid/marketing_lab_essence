@@ -1,0 +1,5 @@
+name: d7-crm-monitoring
+description: "D7 CRM 봉투 구매 후 수거 전환 모니터링 — 매일 09:30 KST 실행"
+type: batch
+schedule: "30 9 * * *"
+command: "python3 src/d7crm_monitoring.py daily"

@@ -1,0 +1,124 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 || { echo '[필수] Python3가 설치되지 않았습니다. 훅 실행에 필요합니다. 설치: macOS → brew install python3  |  Ubuntu → sudo apt install python3' >&2; exit 2; }",
+            "statusMessage": "Python3 설치 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "TODAY=$(date +%Y-%m-%d); echo \"[WORKS PRD] 작업 시작 전 works/plan/ 에 PRD/플랜 문서가 있는지 확인하세요. 없다면 works/plan/${TODAY}-covering-labs-{task-slug}.md 로 생성하세요. (단순 질문/조회는 생략 가능)\"",
+            "statusMessage": "PRD 플랜 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/security-keyword-guard.py\" 2>/dev/null || true",
+            "statusMessage": "보안 키워드 감지 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/deploy-workflow-guide.py\" 2>/dev/null || true",
+            "statusMessage": "배포 워크플로우 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/git-pull-reminder.py\" 2>/dev/null || true",
+            "statusMessage": "git pull 동기화 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/app-purpose-guard.py\"",
+            "statusMessage": "앱 개발 목적 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/release-file-guard.py\"",
+            "statusMessage": "출고 전 파일 필터 확인 중"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 || { echo '[필수] Python3가 설치되지 않았습니다. 설치: macOS → brew install python3  |  Ubuntu → sudo apt install python3' >&2; exit 2; }",
+            "statusMessage": "Python3 설치 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/protected-file-guard.py\",
+            "statusMessage": "수정 금지 파일 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/deploy-yml-guard.py\"",
+            "statusMessage": "deploy.yml 규칙 검증 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/security-check.py\" 2>/dev/null || true",
+            "statusMessage": "보안 스캔 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/env-var-registry-check.py\" 2>/dev/null || true",
+            "statusMessage": "ENV 레지스트리 확인 중"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v python3 >/dev/null 2>&1 || { echo '[필수] Python3가 설치되지 않았습니다. 설치: macOS → brew install python3  |  Ubuntu → sudo apt install python3' >&2; exit 2; }",
+            "statusMessage": "Python3 설치 확인 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/git-add-secret-guard.py\" 2>/dev/null || true",
+            "statusMessage": "보안 점검 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/dangerous-command-guard.py\",
+            "statusMessage": "위험 명령 감지 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/pr-policy-guard.py\"",
+            "statusMessage": "PR 정책 검증 중"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/release-file-guard.py\"",
+            "statusMessage": "출고 전 파일 필터 확인 중"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[WORKS PRD] 프로젝트 파일을 수정했습니다. works/plan/ 의 PRD 문서에 변경 내용을 반영하세요.'",
+            "statusMessage": "PRD 업데이트 알림"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/.hooks/readme-missing-guard.py\" 2>/dev/null || true",
+            "statusMessage": "README 누락 확인 중"
+          }
+        ]
+      }
+    ]
+  }
+}

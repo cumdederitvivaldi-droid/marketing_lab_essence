@@ -1,0 +1,21 @@
+틱톡 iOS 구매 캠페인 주간 구매 추이 (DB 기준)
+추출일시: 2026-05-12 22:21:22
+
+
+SELECT
+  ad_campaign,
+  DATE_TRUNC(DATE(o.created_at), WEEK(MONDAY)) AS week_start,
+  DATE_ADD(DATE_TRUNC(DATE(o.created_at), WEEK(MONDAY)), INTERVAL 6 DAY) AS week_end,
+  COUNT(DISTINCT o.user_id) AS purchase_users,
+  COUNT(o.id) AS purchase_count,
+  COUNTIF(o.status = 'COMPLETED') AS completed_count,
+  COUNTIF(o.status = 'CANCELED') AS canceled_count
+FROM `covering-app-ccd23.ads_data.user_acquisition_channel` uac
+JOIN `covering-app-ccd23.secure_dataset.order_v2` o ON uac.user_id = o.user_id
+WHERE uac.ad_channel = 'tiktok'
+  AND LOWER(uac.ad_campaign) LIKE '%ios%'
+  AND LOWER(uac.ad_campaign) LIKE '%구매%'
+  AND o.deleted_at IS NULL
+  AND DATE(o.created_at) >= '2026-04-01'
+GROUP BY ad_campaign, week_start, week_end
+ORDER BY ad_campaign, week_start

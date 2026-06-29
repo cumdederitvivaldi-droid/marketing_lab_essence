@@ -1,0 +1,55 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Next.js
+.next/
+out/
+*.tsbuildinfo
+
+# NestJS build output
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Logs
+*.log
+logs/
+apps/*/logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Env (민감 정보 — 커밋 금지)
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Runtime 생성 파일
+port-registry.json
+.pm2/
+apps/*/state/alert_state.json
+
+# meta-ads-automation 실행 결과 (개인 생성 파일 — 커밋 금지)
+apps/private/meta-ads-automation/src/created_*.json
+apps/private/meta-ads-automation/src/saved_message.json
+
+# OMC / Claude Code runtime state
+.omc/
+apps/_dashboard/next-env.d.ts

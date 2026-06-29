@@ -1,0 +1,5 @@
+name: yagan-large-bag-daily-report
+description: "매일 08:00 전날 야간 대형 봉투 수거 주문 상태별 일일 리포트를 #운영_야간수거 채널에 발송"
+type: batch
+schedule: "0 8 * * *"
+command: "python3 src/main.py"

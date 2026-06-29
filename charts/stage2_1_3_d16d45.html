@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D16 / D45 미전환 개입 효과</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --blue-500:#2D5BFF; --blue-600:#1B45E0;
+    --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB;
+    --ink-400:#8B95A6; --ink-500:#5B6675; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
+    --mint-500:#10C390; --mint-100:#D5F5E8;
+    --rose-500:#EF4444; --rose-100:#FEE2E2;
+    --font-sans:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--font-sans); color:var(--ink-800); background:var(--ink-50);
+    font-feature-settings:"ss01" 1,"tnum" 1;
+    -webkit-font-smoothing:antialiased; padding:18px 20px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+  .eyebrow{font-family:var(--font-mono); font-size:10px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--blue-500); margin-bottom:6px;}
+  h1.title{font-size:20px; font-weight:800; letter-spacing:-.015em; line-height:1.25;
+    margin:0 0 6px; color:var(--ink-900);}
+  h1.title .blue{color:var(--blue-500);}
+  .sub{font-size:12.5px; color:var(--ink-500); line-height:1.55; margin:0 0 14px;}
+  .sub b{color:var(--ink-800); font-weight:700;}
+
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;}
+  .kpi{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:12px 14px; display:flex; align-items:center; gap:12px;}
+  .kpi.d16{border-left:3px solid #2D5BFF;}
+  .kpi.d45{border-left:3px solid #10C390;}
+  .kpi-tag{font-family:var(--font-mono); font-weight:700; font-size:11px; letter-spacing:.06em;
+    padding:4px 9px; border-radius:999px; color:#fff; flex-shrink:0;}
+  .kpi.d16 .kpi-tag{background:#2D5BFF;}
+  .kpi.d45 .kpi-tag{background:#10C390;}
+  .kpi-body{flex:1; min-width:0;}
+  .kpi-num{font-size:18px; font-weight:800; color:var(--ink-900); letter-spacing:-.02em;
+    line-height:1.05; font-variant-numeric:tabular-nums;}
+  .kpi-num .from{color:var(--ink-400); font-weight:600; text-decoration:line-through;
+    text-decoration-color:rgba(139,149,166,.5); font-size:14px; margin-right:5px;}
+  .kpi-num .arrow{color:var(--ink-400); font-weight:600; font-size:14px; margin-right:5px;}
+  .kpi-delta{font-family:var(--font-mono); font-size:10.5px; font-weight:700; color:#10C390;
+    margin-top:2px;}
+  .kpi-meta{font-size:10.5px; color:var(--ink-500); margin-top:3px; line-height:1.45;}
+
+  .card{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
+    padding:14px 16px 12px;}
+  .card-title{font-size:13px; font-weight:700; color:var(--ink-800); margin-bottom:2px;}
+  .card-sub{font-size:11px; color:var(--ink-500); margin-bottom:10px;}
+  .chart-wrap{position:relative; height:230px;}
+
+  table.scenario{width:100%; border-collapse:collapse; font-size:11.5px; margin-top:10px;}
+  table.scenario thead th{
+    text-align:left; padding:7px 9px; font-family:var(--font-mono); font-size:9px;
+    font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-400);
+    background:var(--ink-50); border-bottom:1.5px solid var(--ink-200);
+  }
+  table.scenario thead th.num{text-align:right;}
+  table.scenario tbody td{padding:7px 9px; border-bottom:1px solid var(--ink-100);
+    color:var(--ink-700); font-variant-numeric:tabular-nums;}
+  table.scenario tbody tr:last-child td{border-bottom:none;}
+  td.num{text-align:right; font-family:var(--font-mono);}
+  .tag-d16{display:inline-block; background:#2D5BFF; color:#fff; font-family:var(--font-mono);
+    font-weight:700; font-size:9.5px; letter-spacing:.04em; padding:2px 6px; border-radius:4px;}
+  .tag-d45{display:inline-block; background:#10C390; color:#fff; font-family:var(--font-mono);
+    font-weight:700; font-size:9.5px; letter-spacing:.04em; padding:2px 6px; border-radius:4px;}
+  .row-before td{background:var(--ink-50);}
+
+  @media (max-width: 640px){
+    .grid-2{grid-template-columns:1fr;}
+    .chart-wrap{height:200px;}
+    table.scenario{font-size:10.5px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">CVR · D16 / D45 ALARM TALK</div>
+  <h1 class="title">미전환 개입 — <span class="blue">D16 +99% · D45 +231%</span></h1>
+  <p class="sub">가입 후 16일·45일 미전환자에게 알림톡 발송 (D16: 30% 할인 / D45: 무료 이용권) · <b>도입 ±6개월 코호트 비교</b></p>
+
+  <div class="grid-2">
+    <div class="kpi d16">
+      <span class="kpi-tag">D16</span>
+      <div class="kpi-body">
+        <div class="kpi-num"><span class="from">1.94%</span><span class="arrow">→</span>3.86%</div>
+        <div class="kpi-delta">+1.92%p (+99%)</div>
+        <div class="kpi-meta">미전환 49,271명 → 1,900명 전환</div>
+      </div>
+    </div>
+    <div class="kpi d45">
+      <span class="kpi-tag">D45</span>
+      <div class="kpi-body">
+        <div class="kpi-num"><span class="from">0.83%</span><span class="arrow">→</span>2.75%</div>
+        <div class="kpi-delta">+1.92%p (+231%)</div>
+        <div class="kpi-meta">미전환 41,591명 → 1,142명 전환</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">전환율 비교 + 근거 데이터</div>
+    <div class="card-sub">D16 도입 2025-02-10 · D45 도입 2025-01-12 · 도입일 기준 ±6개월</div>
+    <div class="chart-wrap"><canvas id="c-bars"></canvas></div>
+
+    <table class="scenario">
+      <thead>
+        <tr>
+          <th>구분</th>
+          <th>기간</th>
+          <th class="num">코호트</th>
+          <th class="num">미전환</th>
+          <th class="num">전환</th>
+          <th class="num">전환율</th>
+          <th class="num">개선</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-before">
+          <td><span class="tag-d16">D16</span></td>
+          <td>2024-08-10 ~ 2025-02-09</td>
+          <td class="num">51,679</td>
+          <td class="num">37,663</td>
+          <td class="num">732</td>
+          <td class="num">1.94%</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td><span class="tag-d16">D16</span></td>
+          <td>2025-02-10 ~ 2025-08-09</td>
+          <td class="num">96,976</td>
+          <td class="num">49,271</td>
+          <td class="num">1,900</td>
+          <td class="num" style="color:#2D5BFF;font-weight:700;">3.86%</td>
+          <td class="num" style="color:#10C390;font-weight:700;">+99%</td>
+        </tr>
+        <tr class="row-before">
+          <td><span class="tag-d45">D45</span></td>
+          <td>2024-07-12 ~ 2025-01-11</td>
+          <td class="num">50,551</td>
+          <td class="num">35,597</td>
+          <td class="num">295</td>
+          <td class="num">0.83%</td>
+          <td class="num">—</td>
+        </tr>
+        <tr>
+          <td><span class="tag-d45">D45</span></td>
+          <td>2025-01-12 ~ 2025-07-11</td>
+          <td class="num">83,386</td>
+          <td class="num">41,591</td>
+          <td class="num">1,142</td>
+          <td class="num" style="color:#10C390;font-weight:700;">2.75%</td>
+          <td class="num" style="color:#10C390;font-weight:700;">+231%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
+  Chart.defaults.font.size = 10.5;
+  Chart.defaults.color = '#5B6675';
+  Chart.defaults.plugins.legend.display = false;
+
+  new Chart(document.getElementById('c-bars'), {
+    type:'bar',
+    data:{
+      labels:['D16 도입 전','D16 도입 후','D45 도입 전','D45 도입 후'],
+      datasets:[{
+        data:[1.94, 3.86, 0.83, 2.75],
+        backgroundColor:['#DCE5FF','#2D5BFF','#D5F5E8','#10C390'],
+        borderColor:['#8FAEFF','#1B45E0','#5EE3B6','#067B5A'],
+        borderWidth:1.2, borderRadius:6, maxBarThickness:60,
+      }]
+    },
+    options:{
+      maintainAspectRatio:false,
+      plugins:{
+        tooltip:{
+          backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
+          padding:9, cornerRadius:7, displayColors:false,
+          callbacks:{ label:(c)=> ` 전환율: ${c.parsed.y.toFixed(2)}%` }
+        }
+      },
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ font:{ size:10, weight:'600' } } },
+        y:{ beginAtZero:true, max:4.5, grid:{ color:'#EEF1F6' },
+            ticks:{ callback:(v)=> v+'%', font:{ size:9.5 } } }
+      }
+    }
+  });
+</script>
+</body>
+</html>

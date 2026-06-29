@@ -67,10 +67,10 @@ new Chart(document.getElementById('revenueChart'), {
   type: 'bar',
   data: {
     labels: ['24.04 (입사전)', '24.05 (입사)', '24.06'],
-    datasets: [{ label: 'B2C 매출 (만원)', data: [4520, 5780, 7428],
+    datasets: [{ label: 'B2C 매출 성장지수(예측)', data: [100, 128, 164],
       backgroundColor: [red+'99', blue+'99', green+'99'], borderColor: [red, blue, green], borderWidth: 2, borderRadius: 8 }]
   },
-  options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString()+'만' } } } }
+  options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `성장지수(예측): ${ctx.raw.toLocaleString()}` } } }, scales: { y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() } } } }
 });
 new Chart(document.getElementById('userChart'), {
   type: 'bar',

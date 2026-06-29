@@ -1,0 +1,2 @@
+# 현재는 stdlib(urllib, subprocess)만 사용. 빈 파일이어도 deploy-app.sh가 pip install을 수행한다.
+# 새 의존성 추가 시 이 파일에 기재.

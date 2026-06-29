@@ -1,0 +1,296 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* shadcn base tokens (light) */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* === 프로젝트 전용 토큰 (shadcn 충돌 회피 prefix) === */
+  --brand: #1AA3FF;          /* CTA 전용 brand blue */
+  --brand-dark: #0E86D4;
+  --brand-soft: #E8F5FF;
+  --ink-dark: #020810;       /* 다크 섹션 배경 (ajd 톤) */
+  --ink-soft: #1F2937;
+  --line: #E5E7EB;
+  --surface: #F7FAFD;
+  --hl-yellow: #FFE45C;      /* 형광 옐로 하이라이트 */
+}
+
+@theme inline {
+  /* shadcn tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* 프로젝트 토큰 */
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-soft: var(--brand-soft);
+  --color-ink-dark: var(--ink-dark);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
+  --color-hl-yellow: var(--hl-yellow);
+
+  --font-sans: var(--font-pretendard);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html, body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont,
+      "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    word-break: keep-all;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  button {
+    font-family: inherit;
+  }
+}
+
+/* 형광펜 하이라이트 — 헤드라인의 핵심 단어 1개에만 사용 */
+.hl {
+  background: linear-gradient(transparent 55%, var(--hl-yellow) 55%);
+  padding: 0 0.1em;
+}
+
+/* (효과 1) 강조어 빛 박동 — 강도 강화 + 스케일 미세 변동 */
+@keyframes accent-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 6px rgba(171, 255, 56, 0.35),
+      0 0 18px rgba(171, 255, 56, 0.45);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow:
+      0 0 28px rgba(171, 255, 56, 0.9),
+      0 0 60px rgba(171, 255, 56, 0.55),
+      0 0 120px rgba(171, 255, 56, 0.25);
+    transform: scale(1.025);
+  }
+}
+.accent-pulse {
+  display: inline-block;
+  animation: accent-pulse 2.2s ease-in-out infinite;
+  transform-origin: center;
+  will-change: text-shadow, transform;
+}
+
+/* (효과 2) 강조어 밑줄 sweep — 좌→우 그려졌다가 우→좌로 사라짐 무한 반복 */
+.accent-underline {
+  position: relative;
+  display: inline-block;
+}
+.accent-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 4px;
+  border-radius: 2px;
+  background: #ABFF38;
+  box-shadow: 0 0 12px rgba(171, 255, 56, 0.5);
+  transform-origin: left center;
+  animation: underline-sweep 2.6s ease-in-out infinite;
+}
+@keyframes underline-sweep {
+  0%       { transform: scaleX(0); transform-origin: left center; }
+  45%      { transform: scaleX(1); transform-origin: left center; }
+  55%      { transform: scaleX(1); transform-origin: right center; }
+  100%     { transform: scaleX(0); transform-origin: right center; }
+}
+
+/* (효과 3) Fade-Up Reveal — 스크롤 진입 시 위로 부드럽게 등장 */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@supports (animation-timeline: view()) {
+  .fade-up {
+    animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 55%;
+  }
+  .fade-up-stagger > *:nth-child(1) { animation-delay: 0s; }
+  .fade-up-stagger > *:nth-child(2) { animation-delay: 0.08s; }
+  .fade-up-stagger > *:nth-child(3) { animation-delay: 0.16s; }
+}
+
+/* 모션 축소 선호 사용자: 지속/스크롤 애니메이션 비활성화 (접근성) */
+@media (prefers-reduced-motion: reduce) {
+  .accent-pulse,
+  .accent-underline::after,
+  .fade-up {
+    animation: none !important;
+  }
+}
+
+/* 모바일에서만 하단 sticky CTA bar 높이를 토큰화 → floating CTA / main padding이 회피 */
+:root {
+  --sticky-cta-h: 12px;
+}
+@media (max-width: 639px) {
+  :root {
+    --sticky-cta-h: 84px;
+  }
+}
+
+/* 다크 섹션 안 이미지의 사각 경계 부드럽게 — 가장자리 페이드 마스크 */
+.img-fade-edges {
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    black 50%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse at center,
+    black 50%,
+    transparent 100%
+  );
+}
+
+/* Higgsfield 자리 이미지 플레이스홀더 */
+.ph-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: repeating-linear-gradient(45deg, #F1F5F9 0 12px, #E2E8F0 12px 24px);
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 12px;
+  text-align: center;
+  padding: 16px;
+}
+
+.ph-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px dashed var(--brand);
+  color: var(--brand);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+}

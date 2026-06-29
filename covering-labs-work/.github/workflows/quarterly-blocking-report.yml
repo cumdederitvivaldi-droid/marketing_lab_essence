@@ -1,0 +1,239 @@
+name: Quarterly Blocking Rate Report
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  # 매일 KST 19:00 (UTC 10:00)
+  workflow_dispatch:
+    inputs:
+      quarter_start_override:
+        description: '집계 시작일 override (YYYY-MM-DD, 기본: 현재 분기 시작)'
+        required: false
+
+permissions:
+  pull-requests: read
+  issues: read
+
+jobs:
+  report:
+    name: 분기 누적 차단율 집계
+    runs-on: ubuntu-latest
+    steps:
+      - name: 집계 및 Slack 전송
+        uses: actions/github-script@v7
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          QUARTER_START_OVERRIDE: ${{ inputs.quarter_start_override || '' }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // 표준 캘린더 분기 (Q1=1/1, Q2=4/1, Q3=7/1, Q4=10/1) — KST 자정 기준
+            const now = new Date();
+            const kstNow = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+            let since;
+            const override = process.env.QUARTER_START_OVERRIDE;
+            if (override) {
+              // override 유효성 검사: YYYY-MM-DD 형식 + 유효 날짜
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(override)) {
+                core.setFailed(`quarter_start_override 형식 오류: '${override}' — YYYY-MM-DD 형식이어야 합니다.`);
+                return;
+              }
+              since = new Date(`${override}T00:00:00+09:00`);
+              if (isNaN(since.getTime())) {
+                core.setFailed(`quarter_start_override 파싱 실패: '${override}' — 유효한 날짜가 아닙니다.`);
+                return;
+              }
+            } else {
+              const currentMonth = kstNow.getUTCMonth();
+              const currentYear = kstNow.getUTCFullYear();
+              const currentQuarterStartMonth = Math.floor(currentMonth / 3) * 3;
+              since = new Date(Date.UTC(currentYear, currentQuarterStartMonth, 1) - 9 * 60 * 60 * 1000);
+            }
+
+            // 라벨 계산은 since 기반 (override 시 정확한 분기 표기)
+            const sinceKst = new Date(since.getTime() + 9 * 60 * 60 * 1000);
+            const labelYear = sinceKst.getUTCFullYear();
+            const labelQuarter = Math.floor(sinceKst.getUTCMonth() / 3) + 1;
+
+            // 분기 시작일부터 머지된 PR 수집
+            let page = 1;
+            let allPRs = [];
+            while (true) {
+              const { data: prs } = await github.rest.pulls.list({
+                owner, repo, state: 'closed', per_page: 100, page,
+                sort: 'updated', direction: 'desc'
+              });
+              const merged = prs.filter(pr => pr.merged_at && new Date(pr.merged_at) >= since);
+              allPRs = allPRs.concat(merged);
+              if (prs.length < 100) break;
+              const oldestUpdated = new Date(prs[prs.length - 1].updated_at);
+              if (oldestUpdated < since) break;
+              page++;
+              if (page > 50) break;
+            }
+
+            // 라벨 조회 — rate limit 방지를 위해 10개씩 batch 처리
+            const prWithLabels = [];
+            const BATCH = 10;
+            for (let i = 0; i < allPRs.length; i += BATCH) {
+              const slice = allPRs.slice(i, i + BATCH);
+              const results = await Promise.all(slice.map(async pr => {
+                const { data: labelData } = await github.rest.issues.listLabelsOnIssue({
+                  owner, repo, issue_number: pr.number
+                });
+                return { ...pr, labelNames: labelData.map(l => l.name) };
+              }));
+              prWithLabels.push(...results);
+            }
+
+            const blockedPRs = [];
+            const unblockedPRs = [];
+
+            for (const pr of prWithLabels) {
+              const l = pr.labelNames;
+              if (l.includes('critical-detected') && !l.includes('had-followup')) {
+                blockedPRs.push(`#${pr.number} ${pr.title}`);
+              }
+              if (l.includes('critical-detected') && l.includes('had-followup')) {
+                unblockedPRs.push(`#${pr.number} ${pr.title}`);
+              }
+            }
+
+            const blocked = blockedPRs.length;
+            const unblocked = unblockedPRs.length;
+            const total = blocked + unblocked;
+            const rate = total > 0 ? Math.round((blocked / total) * 100) : null;
+
+            const fmt = d => d.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', month: 'long', day: 'numeric' });
+            const periodLabel = `Q${labelQuarter} ${labelYear} (${fmt(since)} ~ ${fmt(now)})`;
+
+            const rateText = rate === null ? '집계 대상 없음' : `${rate}%`;
+            const rateGoal = rate === null ? '' : rate >= 80 ? ' (목표 달성)' : ' (목표 미달)';
+            const headerIcon = rate === null ? '' : rate >= 80 ? ' ✓' : ' ✗';
+
+            // Slack context 텍스트 3000자 제한 대비 truncate 헬퍼
+            const CONTEXT_LIMIT = 2900; // 안전 마진
+            const buildContext = (label, items) => {
+              const prefix = `*${label}*  `;
+              let text = prefix;
+              const formatted = items.map(p => `\`${p}\``);
+              const remaining = [];
+              for (const f of formatted) {
+                if ((text + f + '  ').length > CONTEXT_LIMIT) {
+                  remaining.push(f);
+                } else {
+                  text += f + '  ';
+                }
+              }
+              if (remaining.length > 0) {
+                text += `_(외 ${remaining.length}건 생략 — Slack context 3000자 제한)_`;
+              }
+              return text.trim();
+            };
+
+            const blocks = [
+              {
+                type: 'header',
+                text: { type: 'plain_text', text: `AI PR 차단율 — 분기 누적${headerIcon}`, emoji: true }
+              },
+              {
+                type: 'section',
+                fields: [
+                  { type: 'mrkdwn', text: `*기간*\n${periodLabel}` },
+                  { type: 'mrkdwn', text: `*차단율*\n${rateText}${rateGoal}` }
+                ]
+              }
+            ];
+
+            if (rate !== null) {
+              blocks.push({
+                type: 'section',
+                fields: [
+                  { type: 'mrkdwn', text: `*차단된 PR*\n${blocked}건` },
+                  { type: 'mrkdwn', text: `*미차단된 PR*\n${unblocked}건` }
+                ]
+              });
+            }
+
+            if (blockedPRs.length > 0 || unblockedPRs.length > 0) {
+              blocks.push({ type: 'divider' });
+            }
+            if (blockedPRs.length > 0) {
+              blocks.push({
+                type: 'context',
+                elements: [{ type: 'mrkdwn', text: buildContext('차단된 PR', blockedPRs) }]
+              });
+            }
+            if (unblockedPRs.length > 0) {
+              blocks.push({
+                type: 'context',
+                elements: [{ type: 'mrkdwn', text: buildContext('미차단된 PR', unblockedPRs) }]
+              });
+            }
+
+            console.log(JSON.stringify(blocks, null, 2));
+
+            if (!process.env.SLACK_BOT_TOKEN) {
+              console.log('SLACK_BOT_TOKEN 미설정 — Slack 전송 생략');
+              return;
+            }
+
+            // Slack 전송 + ok:false 검증 (HTTP 200 + ok:false 가능)
+            const https = require('https');
+            const payload = JSON.stringify({ channel: 'C0AUK6902BE', blocks });
+            const slackResponse = await new Promise((resolve, reject) => {
+              const req = https.request({
+                hostname: 'slack.com',
+                path: '/api/chat.postMessage',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json; charset=utf-8',
+                  'Authorization': `Bearer ${process.env.SLACK_BOT_TOKEN}`,
+                  'Content-Length': Buffer.byteLength(payload)
+                }
+              }, res => {
+                let body = '';
+                res.setEncoding('utf8');
+                res.on('data', chunk => { body += chunk; });
+                res.on('end', () => resolve({ statusCode: res.statusCode, body }));
+              });
+              req.on('error', reject);
+              req.write(payload);
+              req.end();
+            });
+
+            if (slackResponse.statusCode < 200 || slackResponse.statusCode >= 300) {
+              core.setFailed(`Slack HTTP ${slackResponse.statusCode}: ${slackResponse.body}`);
+              return;
+            }
+            let parsed;
+            try {
+              parsed = JSON.parse(slackResponse.body);
+            } catch (e) {
+              core.setFailed(`Slack 응답 JSON 파싱 실패: ${slackResponse.body}`);
+              return;
+            }
+            if (!parsed.ok) {
+              core.setFailed(`Slack API ok:false — error=${parsed.error || 'unknown'} (${slackResponse.body})`);
+              return;
+            }
+            console.log('Slack 전송 완료 (#개발팀_커버링랩스)');
+
+  notify-failure:
+    name: 장애 알림
+    runs-on: ubuntu-latest
+    needs: [report]
+    if: failure()
+    steps:
+      - name: Slack 장애 알림 전송
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: |
+          [ -z "$SLACK_BOT_TOKEN" ] && exit 0
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -sf -X POST "https://slack.com/api/chat.postMessage" \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -d "{\"channel\":\"C0AUK6902BE\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*quarterly-blocking-report 실패*  — 오늘 분기 누적 차단율 집계 누락\n<${RUN_URL}|수동 재실행>\"}}]}" || true

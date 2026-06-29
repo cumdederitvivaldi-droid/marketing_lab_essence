@@ -1,0 +1,48 @@
+name: FlareLane Governance Guard
+
+on:
+  pull_request:
+    paths:
+      - 'apps/private/flarelane-governance-sync/**'
+      - '.github/workflows/flarelane-governance-guard.yml'
+      - '.github/workflows/deploy.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/private/flarelane-governance-sync/**'
+      - '.github/workflows/flarelane-governance-guard.yml'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  APP_DIR: apps/private/flarelane-governance-sync
+  FLARELANE_MAX_MISSING_BIGQUERY_SIGNAL: "4"
+  FLARELANE_MAX_PRODUCT_LABS_REVISION: "6"
+  FLARELANE_MAX_MULTI_ARM_USERS: "1"
+  FLARELANE_MAX_CROSS_OVERLAP_RATE: "86.70"
+  FLARELANE_MAX_CANONICAL_EMPTY_TABLES: "3"
+
+jobs:
+  unit:
+    name: PR code check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pytest
+
+      - name: Compile and test
+        run: |
+          python -m py_compile "$APP_DIR/src/config.py" "$APP_DIR/src/queries.py" "$APP_DIR/src/main.py"
+          python -m pytest "$APP_DIR/tests"

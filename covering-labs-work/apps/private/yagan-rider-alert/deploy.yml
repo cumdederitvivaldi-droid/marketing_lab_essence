@@ -1,0 +1,5 @@
+name: yagan-rider-alert
+description: "당일 배차된 야간기사 중 22:20 기준 수거 완료 건 없는 기사를 #운영_야간수거 채널에 알림"
+type: batch
+schedule: "20 22 * * *"
+command: "python3 src/main.py"

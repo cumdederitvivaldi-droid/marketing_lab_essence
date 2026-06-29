@@ -1,0 +1,5 @@
+name: yagan-rider-gap-alert
+description: "야간기사 완료 후 30분간 다음 완료 없으면 #운영_야간수거 알림 (22:30~08:00, 매 5분)"
+type: batch
+schedule: "*/5 22-23,0-7 * * *"
+command: "python3 src/main.py"

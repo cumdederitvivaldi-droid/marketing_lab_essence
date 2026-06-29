@@ -59,7 +59,7 @@
     <canvas id="cpiChart"></canvas>
   </div>
   <div class="card">
-    <h3>📈 소재 교체 후 월별 매출 추이</h3>
+    <h3>📈 소재 교체 후 월별 매출 성장지수 (입사=100, 예측)</h3>
     <canvas id="revenueChart"></canvas>
   </div>
 </div>
@@ -111,8 +111,8 @@ new Chart(document.getElementById('revenueChart'), {
   data: {
     labels: ["24.04\n(입사 전)", "24.05\n(집행 시작)", "24.06\n(증액)"],
     datasets: [{
-      label: 'B2C 매출 (만원)',
-      data: [4520, 5780, 7428],
+      label: 'B2C 매출 성장지수(예측)',
+      data: [100, 128, 164],
       backgroundColor: [gray + 'aa', blue + 'bb', blue + 'cc'],
       borderRadius: 8,
       borderSkipped: false,
@@ -122,10 +122,10 @@ new Chart(document.getElementById('revenueChart'), {
     responsive: true, maintainAspectRatio: true,
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `${ctx.raw.toLocaleString()}만원` } }
+      tooltip: { callbacks: { label: ctx => `성장지수(예측): ${ctx.raw.toLocaleString()}` } }
     },
     scales: {
-      y: { beginAtZero: true, ticks: { callback: v => (v/1000).toFixed(1) + '억' }, grid: { color: '#f0f0f0' } },
+      y: { beginAtZero: true, ticks: { callback: v => v.toLocaleString() }, grid: { color: '#f0f0f0' } },
       x: { grid: { display: false } }
     }
   }

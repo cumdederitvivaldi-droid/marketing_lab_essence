@@ -1,0 +1,5 @@
+name: flarelane-live-monitoring
+description: "FlareLane 핵심 실험 슬랙 모니터링 — 매일 09:00 KST 친구초대와 첫 봉투 D+3/D+8 여정 리포트"
+type: batch
+schedule: "0 9 * * *"
+command: "python3 src/main.py"
