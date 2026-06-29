@@ -34,16 +34,16 @@
 </head>
 <body>
 <div class="card">
-  <h3>6대 성장 지표 통합 (입사 시점 대비 성장율)</h3>
-  <div class="desc">입사(2024-05) 시점 대비 성장율(%)로 표시 — 절대 수치는 비공개, 성장 추이(예측)만 노출</div>
+  <h3>6대 성장 지표 통합 (입사 시점 = 100 기준)</h3>
+  <div class="desc">입사(2024-05) 당시 값을 100으로 정규화 — 공헌이익률은 우측 축 실제 % 값</div>
   <div class="chart-wrap"><canvas id="chartAll"></canvas></div>
   <div class="legend-row">
-    <div class="legend-item"><span class="legend-dot" style="background:#DC2626"></span>매출 (예측 성장지수)</div>
     <div class="legend-item"><span class="legend-dot" style="background:#1A56DB"></span>30DAU</div>
     <div class="legend-item"><span class="legend-dot" style="background:#10B981"></span>신규 유저</div>
     <div class="legend-item"><span class="legend-dot" style="background:#8B5CF6"></span>신규 가입자</div>
     <div class="legend-item"><span class="legend-dot" style="background:#EC4899"></span>첫 이용</div>
     <div class="legend-item"><span class="legend-dot" style="background:#6366F1"></span>앱 설치수</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#F59E0B; border-radius:50%"></span>공헌이익률 (우축 %)</div>
   </div>
   <div class="join-label">▏ 입사 시점 (2024-05) · 점선 좌측은 입사 전 기준선</div>
 </div>
@@ -58,8 +58,7 @@ const labels = [
 ];
 const JOIN = 4;
 
-// 매출 절대액은 비공개 — 입사(2024-05) 시점 대비 성장율(%)만 노출
-const revenueIndex = [58,67,71,82,100,93,165,198,191,226,226,240,271,310,356,420,487,562,695,757,784,892,888,1014,1136,1199,1561,1642];
+const cmRate    = [-25.3,-30.0,-32.7,-32.8,-5.1,-39.3,9.8,12.1,12.6,13.1,16.4,19.1,21.0,21.9,21.7,22.6,27.0,26.0,27.2,29.4,30.6,32.2,37.0,33.5,39.6,31.3,32.6,33.4];
 const dau30     = [970,1296,1452,1721,2234,3182,4214,5583,6003,6662,7050,8183,8767,9952,12430,15366,17757,21671,26683,28965,30861,34597,35069,40222,43317,49125,56736,63845];
 const newUser   = [363,548,501,600,864,1373,1807,2321,1853,1933,1893,2512,2691,2692,4896,5783,6235,7517,10211,9440,8441,10111,8802,12506,12051,12935,18717,20123];
 const appInstall= [2808,3286,3427,3562,6389,10975,12251,12794,11022,14758,17492,22584,14594,11658,21594,17815,19561,25741,35054,41421,36364,43324,29265,38275,47724,53362,71316,63902];
@@ -68,7 +67,7 @@ const firstUse  = [363,599,585,600,864,1373,1843,2371,1853,1959,1876,2545,2722,2
 
 function normalize(arr, idx) {
   const base = arr[idx];
-  return arr.map(v => v === null ? null : parseFloat((v / base * 100 - 100).toFixed(2)));
+  return arr.map(v => v === null ? null : parseFloat((v / base * 100).toFixed(2)));
 }
 
 const joinLine = {
@@ -82,12 +81,12 @@ new Chart(document.getElementById('chartAll').getContext('2d'), {
   data: {
     labels,
     datasets: [
-      { label:'매출',     data:revenueIndex.map(v=>v-100), borderColor:'#DC2626', backgroundColor:'transparent', borderWidth:3,   pointRadius:2.5, tension:0.35, yAxisID:'y' },
       { label:'30DAU',    data:normalize(dau30,JOIN),     borderColor:'#1A56DB', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y' },
       { label:'신규 유저', data:normalize(newUser,JOIN),   borderColor:'#10B981', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y' },
       { label:'신규 가입자',data:normalize(newSignup,JOIN),borderColor:'#8B5CF6', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, borderDash:[4,3], yAxisID:'y' },
       { label:'첫 이용',  data:normalize(firstUse,JOIN),  borderColor:'#EC4899', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, borderDash:[4,3], yAxisID:'y' },
-      { label:'앱 설치수', data:normalize(appInstall,JOIN),borderColor:'#6366F1', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, yAxisID:'y' }
+      { label:'앱 설치수', data:normalize(appInstall,JOIN),borderColor:'#6366F1', backgroundColor:'transparent', borderWidth:2,   pointRadius:2, tension:0.35, yAxisID:'y' },
+      { label:'공헌이익률',data:cmRate,                   borderColor:'#F59E0B', backgroundColor:'transparent', borderWidth:2.5, pointRadius:2, tension:0.35, yAxisID:'y2' }
     ]
   },
   options: {
@@ -95,17 +94,15 @@ new Chart(document.getElementById('chartAll').getContext('2d'), {
     interaction:{ mode:'index', intersect:false },
     plugins: {
       legend:{ display:false },
-      tooltip:{ callbacks:{ label: ctx => {
-        const v = ctx.raw; const s = v >= 0 ? '+' : '';
-        return `${ctx.dataset.label}: ${s}${v.toFixed(0)}% (입사 대비)`;
-      }}},
+      tooltip:{ callbacks:{ label: ctx => ctx.dataset.label==='공헌이익률' ? `공헌이익률: ${ctx.raw.toFixed(1)}%` : `${ctx.dataset.label}: ${ctx.raw.toFixed(0)} (기준 100)` }},
       annotation:{ annotations:{ joinLine,
-        zero:{ type:'line', yMin:0, yMax:0, yScaleID:'y', borderColor:'rgba(156,163,175,0.4)', borderWidth:1, borderDash:[3,3] }
+        zero:{ type:'line', yMin:100, yMax:100, yScaleID:'y', borderColor:'rgba(156,163,175,0.4)', borderWidth:1, borderDash:[3,3] }
       }}
     },
     scales: {
       x:  { ticks:{ font:{size:9}, maxRotation:45, color:'#9CA3AF' }, grid:{ display:false } },
-      y:  { position:'left',  title:{ display:true, text:'입사 대비 성장율 (%)', font:{size:10}, color:'#9CA3AF' }, ticks:{ font:{size:9}, color:'#9CA3AF', callback: v=>v+'%' }, grid:{ color:'#F3F4F6' } }
+      y:  { position:'left',  title:{ display:true, text:'성장 지수 (입사=100)', font:{size:10}, color:'#9CA3AF' }, ticks:{ font:{size:9}, color:'#9CA3AF' }, grid:{ color:'#F3F4F6' } },
+      y2: { position:'right', title:{ display:true, text:'공헌이익률 (%)',       font:{size:10}, color:'#F59E0B' }, ticks:{ font:{size:9}, color:'#F59E0B', callback: v=>v+'%' }, grid:{ display:false } }
     }
   }
 });

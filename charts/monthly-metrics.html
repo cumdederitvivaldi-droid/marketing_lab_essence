@@ -63,17 +63,17 @@
   <h1 class="title">월별 6대 지표 통합 — <span class="blue">매출 ×13 · CAC 안정 · 흑자 전환</span></h1>
   <p class="sub">
     <span class="ms start">2024-05 입사 = 100</span> 기준 정규화 ·
-    <span class="ms multi">2025-01 멀티채널 시작</span> 이후 매출·유저 동시 폭발 · 우측 축: 공헌이익 개선지수(예측) + MoM 성장률(%)
+    <span class="ms multi">2025-01 멀티채널 시작</span> 이후 매출·유저 동시 폭발 · 우측 축: 공헌이익률 + MoM 성장률(%)
   </p>
 
   <div class="card">
     <div class="legend">
-      <span class="lg-item" style="color:#2D5BFF;"><span class="lg-line" style="background:#2D5BFF;"></span> B2C 매출 성장지수(예측)</span>
+      <span class="lg-item" style="color:#2D5BFF;"><span class="lg-line" style="background:#2D5BFF;"></span> B2C 매출</span>
       <span class="lg-item" style="color:#10C390;"><span class="lg-line" style="background:#10C390;"></span> 신규 유저</span>
       <span class="lg-item" style="color:#F5B400;"><span class="lg-line" style="background:#F5B400;"></span> 마케팅비</span>
       <span class="lg-item" style="color:#1F2837;"><span class="lg-dash"></span> CAC</span>
       <span class="lg-sep"></span>
-      <span class="lg-item" style="color:#EF4444;"><span class="lg-line" style="background:#EF4444;"></span> 공헌이익률 (예측 개선지수)</span>
+      <span class="lg-item" style="color:#EF4444;"><span class="lg-line" style="background:#EF4444;"></span> 공헌이익률 (우축 %)</span>
       <span class="lg-item" style="color:#8B95A6;"><span class="lg-bar" style="background:#8B95A6;"></span> MoM 성장률 (우축 %)</span>
     </div>
     <div class="chart-wrap"><canvas id="c-all"></canvas></div>
@@ -83,21 +83,19 @@
 <script>
   // ─── data ────────────────────────────────────────────────
   const labels    = ['24.05','06','07','08','09','10','11','12','25.01','02','03','04','05','06','07','08'];
-  // 매출은 절대액 미공개 — 입사(=100) 대비 성장지수(예측)만 사용
-  const revenue   = [100,128,174,233,248,300,292,300,331,417,417,654,769,769,1194,1304]; // 성장지수(예측, 입사=100)
-  const marketing = [0.0433,0.1630,0.2279,0.2368,0.2030,0.2854,0.3461,0.3498,0.6228,0.3303,0.4518,0.6679,0.7480,0.7649,1.40,1.14]; // 억(광고비)
+  const revenue   = [0.578,0.7428,1.006,1.349,1.435,1.733,1.685,1.735,1.914,2.410,2.410,3.778,4.447,4.447,6.901,7.535]; // 억
+  const marketing = [0.0433,0.1630,0.2279,0.2368,0.2030,0.2854,0.3461,0.3498,0.6228,0.3303,0.4518,0.6679,0.7480,0.7649,1.40,1.14]; // 억
   const newUsers  = [600,864,1373,1807,2321,1853,1933,1893,2512,2692,2692,5783,6235,6235,10211,9440]; // 명
   const cac       = [14260,13394,13054,10515,11849,15735,19250,19056,19056,13223,13223,11940,12467,12467,16253,13626]; // 원
-  // 공헌이익률 실제 %는 비공개 — 상대 개선지수(예측, 최저=0·최고=100)
-  const contrib   = [46,0,71,75,76,82,77,87,87,85,91,86,94,100,94,98]; // 개선지수(예측)
+  const contrib   = [-5.1,-32.8,9.8,12.1,12.6,16.4,13.1,19.1,19.1,18.2,21.9,18.9,23.3,27.0,23.5,25.6]; // %
   const growth    = [null,28.5,35.4,34.1,6.4,20.8,-2.8,3.0,10.3,14.3,25.9,18.0,15.8,84.5,23.7,9.0]; // %
 
   // 입사(2024-05 = index 0) 기준 정규화
   function norm(arr){ const base = arr[0]; return arr.map(v => v == null ? null : +(v/base*100).toFixed(2)); }
 
-  // 포맷 (매출은 성장지수, 절대액 미공개)
+  // 절대값 포맷
   const fmt = {
-    revenue:   v => v.toLocaleString() + ' (예측 지수)',
+    revenue:   v => v.toFixed(2) + '억',
     marketing: v => v >= 1 ? v.toFixed(2) + '억' : Math.round(v*10000).toLocaleString() + '만원',
     newUsers:  v => v.toLocaleString() + '명',
     cac:       v => v.toLocaleString() + '원',
@@ -128,13 +126,13 @@
         },
         // 좌축 정규화 라인들
         {
-          type:'line', label:'B2C 매출 성장지수(예측)',
+          type:'line', label:'B2C 매출',
           data: norm(revenue),
           borderColor:'#2D5BFF', backgroundColor:'rgba(45,91,255,0.06)',
           borderWidth: 2.6, tension: .3, pointRadius: 2.5, pointHoverRadius: 5,
           pointBackgroundColor:'#2D5BFF', pointBorderColor:'#fff', pointBorderWidth: 1,
           yAxisID: 'y', order: 1,
-          _fmt: 'revenue',
+          _abs: revenue, _fmt: 'revenue',
         },
         {
           type:'line', label:'신규 유저',
@@ -188,12 +186,14 @@
             title: items => '20' + items[0].label.replace('.','-') + '월'.replace('월','') + (items[0].label.includes('.') ? '' : ''),
             label: ctx => {
               const ds = ctx.dataset;
-              if(ds.label === '공헌이익률') return ` 공헌이익률(예측 개선지수): ${ctx.parsed.y.toFixed(0)}`;
+              if(ds.label === '공헌이익률') return ` 공헌이익률: ${ctx.parsed.y.toFixed(1)}%`;
               if(ds.label === 'MoM 성장률') {
                 if(ctx.parsed.y == null) return ` MoM 성장률: —`;
                 return ` MoM 성장률: ${ctx.parsed.y > 0 ? '+' : ''}${ctx.parsed.y.toFixed(1)}%`;
               }
-              return ` ${ds.label}: ${ctx.parsed.y.toFixed(0)}`;
+              const abs = ds._abs[ctx.dataIndex];
+              const absStr = abs == null ? '—' : fmt[ds._fmt](abs);
+              return ` ${ds.label}: ${ctx.parsed.y.toFixed(0)} (${absStr})`;
             },
           },
         },
@@ -234,7 +234,7 @@
         },
         y2: {
           position: 'right',
-          title: { display: true, text: 'MoM 성장률(%) · 공헌이익 개선지수', color: '#EF4444', font: { size: 10.5, weight: '600' } },
+          title: { display: true, text: '비율 (%)', color: '#EF4444', font: { size: 10.5, weight: '600' } },
           grid: { display: false },
           ticks: { font: { size: 9.5 }, callback: v => v + '%' },
           suggestedMin: -40,

@@ -3,20 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
 <title>봉투 신청 → 수거 신청 퍼널 — 도입 전/후 비교</title>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root{
     --blue-500:#2D5BFF; --blue-600:#1B45E0;
     --ink-50:#F7F9FD; --ink-100:#EEF1F6; --ink-200:#DDE2EB;
     --ink-400:#8B95A6; --ink-500:#5B6675; --ink-700:#1F2837; --ink-800:#131A26; --ink-900:#0A0E16;
-    --mint-500:#10C390; --mint-700:#067B5A; --mint-100:#D5F5E8;
-    --rose-500:#EF4444; --rose-100:#FEE2E2;
+    --mint-500:#10C390;
+    --rose-500:#EF4444;
     --sun-500:#F5B400; --sun-100:#FFF1C9;
     --font-sans:'Pretendard Variable',Pretendard,-apple-system,system-ui,sans-serif;
     --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
@@ -35,30 +31,18 @@
   .sub{font-size:12.5px; color:var(--ink-500); line-height:1.55; margin:0 0 12px;}
   .sub b{color:var(--ink-800); font-weight:700;}
 
-  .kpi-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px;}
-  .kpi{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
-    padding:12px 14px; border-top:3px solid var(--mint-500);}
-  .kpi-lab{font-family:var(--font-mono); font-size:9.5px; font-weight:600; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--ink-400); margin-bottom:6px;}
-  .kpi-vals{display:flex; align-items:baseline; gap:6px; margin-bottom:4px;}
-  .kpi-before{font-family:var(--font-mono); font-size:13px; color:var(--ink-400); font-weight:600;
-    text-decoration:line-through; text-decoration-color:rgba(139,149,166,.5);}
-  .kpi-arrow{color:var(--ink-400); font-size:13px;}
-  .kpi-after{font-family:var(--font-mono); font-size:17px; font-weight:800; color:var(--ink-900);
-    letter-spacing:-.01em; font-variant-numeric:tabular-nums;}
-  .kpi-delta{font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--mint-700);}
+  .alert{background:#FFF8E1; border:1px solid #F5D77F; border-left:3px solid var(--sun-500);
+    border-radius:8px; padding:10px 14px; margin-bottom:12px;
+    display:flex; align-items:flex-start; gap:10px;}
+  .alert-tag{font-family:var(--font-mono); font-size:9.5px; font-weight:700; letter-spacing:.08em;
+    background:var(--sun-500); color:#fff; padding:3px 7px; border-radius:4px; flex-shrink:0; margin-top:1px;}
+  .alert-body{font-size:11.5px; color:var(--ink-700); line-height:1.55;}
+  .alert-body b{color:var(--ink-900);}
 
   .card{background:#fff; border:1px solid var(--ink-100); border-radius:10px;
     padding:14px 16px 12px; margin-bottom:10px;}
   .card-title{font-size:13px; font-weight:700; color:var(--ink-800); margin-bottom:2px;}
   .card-sub{font-size:11px; color:var(--ink-500); margin-bottom:10px;}
-
-  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
-  .legend{display:flex; flex-wrap:wrap; gap:12px; font-size:11px; color:var(--ink-600);
-    margin-bottom:8px; align-items:center;}
-  .lg-item{display:inline-flex; align-items:center; gap:5px;}
-  .lg-bar{width:12px; height:9px; border-radius:2px; display:inline-block;}
-  .chart-wrap{position:relative; height:220px;}
 
   table.cmp{width:100%; border-collapse:collapse; font-size:12px;}
   table.cmp thead th{
@@ -72,6 +56,8 @@
   table.cmp tbody tr:last-child td{border-bottom:none;}
   table.cmp td.label{font-weight:700; color:var(--ink-800);}
   table.cmp td.num{text-align:right; font-family:var(--font-mono);}
+  table.cmp .placeholder{color:var(--ink-400); font-style:italic; font-size:11px;}
+  table.cmp .placeholder::before{content:'⚠ '; color:var(--sun-500); font-style:normal;}
   table.cmp tr.improve td{background:var(--ink-50); font-weight:700;}
   table.cmp tr.improve td.label{color:var(--ink-900);}
 
@@ -103,66 +89,21 @@
   details.ref code{font-family:var(--font-mono); background:#EEF1F6; padding:0 5px;
     border-radius:3px; font-size:10.5px; color:var(--ink-700);}
   details.ref .why-bad{color:var(--rose-500); font-weight:600; font-size:10.5px; margin-left:4px;}
-
-  @media (max-width: 700px){
-    .kpi-row{grid-template-columns:1fr;}
-    .grid-2{grid-template-columns:1fr;}
-  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="eyebrow">CVR · ENVELOPE → PICKUP FUNNEL</div>
-  <h1 class="title">봉투 → 수거 퍼널 — <span class="blue">알림톡 도입 ±3개월 +9.4%p (+14.8%)</span></h1>
+  <h1 class="title">봉투 → 수거 퍼널 — <span class="blue">알림톡 도입 ±3개월 비교</span></h1>
   <p class="sub">
     봉투 사용 유도 알림(봉투 신청 후 D+16 미신청 시 발송) 도입 효과 측정 ·
     <b>도입 전 3개월 vs 도입 후 3개월</b> 코호트의 봉투 신청자 → 수거 전환율 비교 ·
-    도입일 기준 <b>2024-08-28</b> (CRM 자동화 도입일)
+    도입일 기준 <b>2024-07-11</b>
   </p>
-
-  <div class="kpi-row">
-    <div class="kpi">
-      <div class="kpi-lab">봉투 → 수거 전환율</div>
-      <div class="kpi-vals">
-        <span class="kpi-before">63.7%</span>
-        <span class="kpi-arrow">→</span>
-        <span class="kpi-after">73.1%</span>
-      </div>
-      <div class="kpi-delta">↑ +9.4%p (+14.8%)</div>
-    </div>
-    <div class="kpi" style="border-top-color:#2D5BFF;">
-      <div class="kpi-lab">봉투 신청자 (분모)</div>
-      <div class="kpi-vals">
-        <span class="kpi-before">5,721명</span>
-        <span class="kpi-arrow">→</span>
-        <span class="kpi-after">4,360명</span>
-      </div>
-      <div class="kpi-delta" style="color:var(--ink-500);">3개월 코호트 모수</div>
-    </div>
-    <div class="kpi" style="border-top-color:#F5B400;">
-      <div class="kpi-lab">수거 신청 전환자 (분자)</div>
-      <div class="kpi-vals">
-        <span class="kpi-before">3,647명</span>
-        <span class="kpi-arrow">→</span>
-        <span class="kpi-after">3,185명</span>
-      </div>
-      <div class="kpi-delta" style="color:var(--ink-500);">90일 내 수거 전환 인원</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">봉투 → 수거 전환율 비교</div>
-    <div class="card-sub">모수 감소(-1,361명)에도 전환율 +9.4%p 상승 · 알림톡 효과 명확</div>
-    <div class="legend">
-      <span class="lg-item"><span class="lg-bar" style="background:#FEE2E2; border:1px solid #EF4444;"></span> 도입 전 3개월</span>
-      <span class="lg-item"><span class="lg-bar" style="background:#D5F5E8; border:1px solid #10C390;"></span> 도입 후 3개월</span>
-    </div>
-    <div class="chart-wrap" style="max-width:480px; margin:0 auto;"><canvas id="c-rate"></canvas></div>
-  </div>
 
   <div class="card">
     <div class="card-title">도입 전/후 전환율 비교</div>
-    <div class="card-sub">도입 전: 2024-05-29 ~ 2024-08-27 · 도입 후: 2024-08-28 ~ 2024-11-26 · 측정 윈도우: 봉투 신청 후 90일</div>
+    <div class="card-sub">도입 전: 2024-04-11 ~ 2024-07-10 · 도입 후: 2024-07-11 ~ 2024-10-09 · 측정 윈도우: 봉투 신청 후 90일</div>
     <table class="cmp">
       <thead>
         <tr>
@@ -175,24 +116,33 @@
       <tbody>
         <tr>
           <td class="label">봉투 신청자 (분모)</td>
-          <td class="num">5,721명</td>
-          <td class="num">4,360명</td>
+          <td class="num">3,548명</td>
+          <td class="num">5,138명</td>
           <td class="num">—</td>
         </tr>
         <tr>
           <td class="label">수거 신청 전환자 (분자)</td>
-          <td class="num">3,647명</td>
-          <td class="num">3,185명</td>
+          <td class="num">2,177명</td>
+          <td class="num">3,643명</td>
           <td class="num">—</td>
         </tr>
         <tr class="improve">
           <td class="label">봉투 → 수거 전환율</td>
-          <td class="num">63.7%</td>
-          <td class="num">73.1%</td>
-          <td class="num" style="color:var(--mint-500)">+9.4pp (+14.8%)</td>
+          <td class="num">61.4%</td>
+          <td class="num">70.9%</td>
+          <td class="num" style="color:var(--mint-500)">+9.5pp (+15.5%)</td>
         </tr>
       </tbody>
     </table>
+
+    <div class="needed">
+      <h4>📌 쿼리 정의 · BigQuery <code>covering-app-ccd23.secure_dataset.order</code></h4>
+      <ol>
+        <li>봉투 신청: <code>name IN ('FREE_HOME_KIT_DELIVERY', 'PAID_HOME_KIT_DELIVERY')</code> · <code>status IN ('PAYMENT_COMPLETED', 'COMPLETED')</code></li>
+        <li>수거 전환: <code>name = 'DEFAULT_GARBAGE'</code> · 봉투 신청 후 <code>90일 이내</code> · 취소·실패 제외</li>
+        <li>도입일 <b>2024-07-11</b> 확인 완료</li>
+      </ol>
+    </div>
   </div>
 
   <details class="ref">
@@ -206,44 +156,5 @@
     </div>
   </details>
 </div>
-
-<script>
-  Chart.defaults.font.family = '"Pretendard Variable", -apple-system, sans-serif';
-  Chart.defaults.font.size = 10.5;
-  Chart.defaults.color = '#5B6675';
-  Chart.defaults.plugins.legend.display = false;
-
-  const tipBase = {
-    backgroundColor:'#0A0E16', titleColor:'#fff', bodyColor:'#DDE2EB',
-    padding:9, cornerRadius:7, displayColors:false,
-  };
-
-  // ─── 전환율 비교 ────────────────────────────────────────
-  new Chart(document.getElementById('c-rate'), {
-    type:'bar',
-    data:{
-      labels:['도입 전','도입 후'],
-      datasets:[{
-        data:[63.7, 73.1],
-        backgroundColor:['#FEE2E2','#D5F5E8'],
-        borderColor:['#EF4444','#10C390'],
-        borderWidth:1.8, borderRadius:7, maxBarThickness:80,
-      }]
-    },
-    options:{
-      maintainAspectRatio:false,
-      plugins:{
-        tooltip:{ ...tipBase, callbacks:{ label:(c)=> ` 전환율: ${c.parsed.y.toFixed(1)}%` } }
-      },
-      scales:{
-        x:{ grid:{ display:false }, ticks:{ font:{ size:11, weight:'600' } } },
-        y:{ beginAtZero:true, max:90,
-          grid:{ color:'#EEF1F6', drawBorder:false },
-          ticks:{ callback:(v)=> v+'%', font:{ size:9.5 } } }
-      }
-    }
-  });
-
-</script>
 </body>
 </html>
