@@ -261,7 +261,7 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
     <div><div class="kicker rose">빈틈 ③ · 탐색 길잃음</div><h2>한 번 걸러도 여전히 방대 — "뭘 눌러야 하죠?"</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="grid" style="grid-template-columns:0.6fr 1fr;flex:1;align-content:start">
+  <div class="grid" style="grid-template-columns:0.6fr 1fr;align-content:start">
     <div class="shotwrap" style="text-align:center">
       <span class="badge">온보딩 · 관심사 질문</span>
       <img class="shot phone" style="height:300px" src="images/ohouse-interest-onboarding.png" alt="오늘의집 관심사 온보딩 팝업" />
@@ -370,33 +370,32 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
     <div><div class="kicker teal">레버 A · 가격 신뢰</div><h2>단품 상세를, '비교가 끝나는 화면'으로</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr;align-content:start">
-    <div class="card out">
-      <h3>무엇을 더하나</h3>
-      <ul class="clean teal" style="margin-top:8px">
-        <li><b>타사 가격 비교 위젯</b> — 같은 SKU의 네이버·쿠팡 최저가를 상세에 노출(이미 가진 패키지 최저가보장 로직을 단품까지 확장)</li>
-        <li><b>'왜 여기가 믿을 만한가' 근거</b> — 정품 인증·AS·무료배송·리뷰 수를 가격 옆에 묶어 표시</li>
-        <li><b>최저가 보장 배지</b> — "더 싼 곳 있으면 차액 보상"을 단품에도</li>
-      </ul>
+  <div class="grid" style="grid-template-columns:1fr 1.15fr;align-content:start">
+    <div>
+      <div class="shotwrap"><span class="badge rose">AS-IS · 지금</span><img class="shot crop" src="images/comp-ohouse-price.png" alt="오늘의집 단일 가격" /></div>
+      <div class="cap">가격 '하나'만 — 이게 싼 건지 비교할 방법이 없어 네이버로 이탈</div>
     </div>
-    <div class="card dark">
-      <h3>왜 activation이 열리나</h3>
-      <p style="margin-top:6px">유저가 <b style="color:#8FB6FF">네이버로 이탈해 비교하던 행동을, 상세페이지 안에서 끝내게</b> 만든다. "여기가 제일 이득"이 화면에서 증명되면 결제 직전 망설임이 사라진다.</p>
-      <p style="margin-top:10px;font-size:13px;color:#B9C0CC"><b style="color:#fff">측정</b> — 상세→이탈 후 재방문율↓, 상세→장바구니→결제 전환율↑</p>
-    </div>
-  </div>
-  <div class="card out" style="margin-top:12px;padding:13px 18px">
-    <div style="display:flex;align-items:center;gap:13px;flex-wrap:wrap">
-      <span style="font-weight:800;font-size:14px;color:var(--ink)">예시 · 상세페이지 비교 위젯</span>
-      <span style="background:var(--teal-soft);color:var(--teal-d);font-weight:800;font-size:13px;padding:5px 11px;border-radius:8px">오늘의집 329,000 · 최저 ✓</span>
-      <span style="font-size:13px;color:var(--gray2);text-decoration:line-through">네이버 331,000</span>
-      <span style="font-size:13px;color:var(--gray2);text-decoration:line-through">쿠팡 335,000</span>
-      <span style="font-size:12.5px;color:var(--gray)">정품·무료배송·리뷰 1,602</span>
-      <span style="margin-left:auto;font-weight:800;font-size:13.5px;color:var(--blue-d)">→ "비교 끝, 여기가 최저"</span>
+    <div>
+      <div class="card teal" style="padding:14px 16px">
+        <h3 style="color:var(--teal-d)">TO-BE · 상세페이지에서 비교를 끝낸다</h3>
+        <div style="background:#fff;border-radius:12px;padding:11px 14px;margin-top:9px">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px">
+            <span style="font-weight:800;color:var(--ink)">시디즈 T50</span>
+            <span style="background:var(--teal-soft);color:var(--teal-d);font-weight:800;padding:4px 9px;border-radius:7px">오늘의집 329,000 · 최저 ✓</span>
+            <span style="color:var(--gray2);text-decoration:line-through">네이버 331,000</span>
+            <span style="color:var(--gray2);text-decoration:line-through">쿠팡 335,000</span>
+          </div>
+          <div style="margin-top:7px;font-size:12px;color:var(--gray)">정품 인증 · 무료배송 · 리뷰 1,602 · <b style="color:var(--blue-d)">더 싸면 차액 보상</b></div>
+        </div>
+        <ul class="clean teal" style="margin-top:10px">
+          <li><b>타사 비교 위젯</b> + 정품·AS·리뷰 '신뢰 근거'를 가격 옆에 (패키지 최저가보장 로직을 단품까지 확장)</li>
+          <li>네이버 재검색 행동을 <b>상세 안에서 종료</b> → "비교 끝, 여기가 최저"</li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="callout" style="margin-top:12px">
-    <p style="font-size:15px"><b style="color:#fff">net-new인 이유</b> — 패키지엔 최저가 보장이 있지만 <b style="color:#fff">단품 상세엔 타사 비교·신뢰 근거가 상시 노출되지 않음</b>(검증 완료). 기존 로직의 '적용 범위 확장'이라 실행 난도도 낮다.</p>
+    <p style="font-size:14.5px"><b style="color:#fff">net-new인 이유</b> — 패키지엔 최저가 보장이 있지만 단품 상세엔 타사 비교·신뢰 근거가 상시 노출 안 됨(검증 완료). <b style="color:#fff">측정</b> — 상세→이탈 후 재방문율↓, 상세→결제 전환율↑.</p>
   </div>
   <div class="foot">
     <span class="src"><b>근거</b> 패키지 최저가보장 존재·단품 미적용 [자사발표/실측 검증]. 실행은 본인 제안.</span>
@@ -412,12 +411,12 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
   </div>
   <div class="grid" style="grid-template-columns:0.62fr 1fr;flex:1;align-content:start">
     <div class="shotwrap" style="text-align:center">
-      <span class="badge rose">BEFORE · 지금</span>
+      <span class="badge rose">AS-IS · 지금</span>
       <img class="shot phone" src="images/ohouse-faucet-service.png" alt="현재 수전 설치 결제 화면" />
     </div>
     <div style="display:flex;flex-direction:column;gap:11px">
       <div class="card teal">
-        <h3 style="color:var(--teal-d)">AFTER · 같은 화면에 4가지를 더한다</h3>
+        <h3 style="color:var(--teal-d)">TO-BE · 같은 화면에 4가지를 더한다</h3>
         <ul class="clean teal" style="margin-top:8px">
           <li><b>가격 내역 분해</b> — 출장비 ₩ / 공임비 ₩ / 자재비 ₩ (이미 가진 '자재가 600종 DB' 활용)</li>
           <li><b>담당 기사 카드</b> — 사진·평점·시공 건수·실제 후기 (시공 리뷰 3만건 자산 연결)</li>
@@ -436,34 +435,77 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
   </div>
 </section>
 
-<!-- 12 액션 C+D: 탐색 + CRM -->
+<!-- 12 레버 C: 탐색 -->
 <section class="slide">
   <div class="head">
-    <div><div class="kicker teal">레버 C · D</div><h2>'한 단계 더' 좁히고, '무료견적' 너머로 잇는다</h2></div>
+    <div><div class="kicker teal">레버 C · 탐색</div><h2>방대한 목록을, '한 단계 더'로 좁힌다</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
-    <div>
-      <div class="card blue" style="margin-bottom:11px"><div class="num" style="color:var(--blue-d)">레버 C · 탐색</div><h3 style="color:var(--blue-d)">점진적 재세그먼트</h3><p style="margin-top:4px">필터 후 <b>스크롤만 하고 클릭이 없으면</b>(무액션 감지) → "예산? 평수? 무드 중 뭐가 제일 중요해요?" 한 번 더 물어 결과를 5~10개로 추려준다.</p></div>
-      <div class="flow">
-        <div class="step"><div style="font-size:11.5px;font-weight:800;color:var(--blue-d)">필터</div></div>
-        <div class="arr">→</div>
-        <div class="step off"><div style="font-size:11.5px;font-weight:800;color:#d8412e">무액션</div></div>
-        <div class="arr">→</div>
-        <div class="step on"><div style="font-size:11.5px;font-weight:800;color:var(--teal-d)">재질문→압축</div></div>
+  <div class="grid" style="grid-template-columns:1fr 0.58fr;align-content:start">
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div class="card rose tight">
+        <div class="num" style="color:#d8412e">AS-IS · 지금</div>
+        <p style="margin-top:2px">필터를 한 번 걸어도 <b>결과가 수천 개</b>. 더 좁혀주지 않으니 "뭘 눌러야 하지?"에서 <b>선택 마비 → 이탈</b>.</p>
+        <div class="flow" style="margin-top:9px">
+          <div class="step"><div style="font-size:11px;font-weight:800;color:var(--gray2)">필터</div></div>
+          <div class="arr">→</div>
+          <div class="step off"><div style="font-size:11px;font-weight:800;color:#d8412e">무액션</div></div>
+          <div class="arr">→</div>
+          <div class="step off"><div style="font-size:11px;font-weight:800;color:#d8412e">선택 마비</div></div>
+        </div>
+      </div>
+      <div class="card teal tight">
+        <div class="num">TO-BE · 점진적 재세그먼트</div>
+        <p style="margin-top:2px"><b>스크롤만 하고 클릭이 없으면</b>(무액션 감지) → "예산·평수·무드 중 뭐가 제일 중요해요?" 한 번 더 물어 <b>3,589개 → 8개</b>로 압축. 온보딩 관심사·평수 데이터 재활용.</p>
+      </div>
+      <div class="verify" style="margin-top:0">
+        <div class="v ok"><span class="lab">이미 함</span>온보딩·집들이 필터·AI 추천.</div>
+        <div class="v gap"><span class="lab">net-new</span>무액션 감지 후 '한 단계 더' 재질문은 없음.</div>
       </div>
     </div>
-    <div>
-      <div class="card teal" style="margin-bottom:11px"><div class="num">레버 D · CRM</div><h3 style="color:var(--teal-d)">activation 루프</h3><p style="margin-top:4px">'무료견적' 단일 CTA를 <b>다음 행동 넛지</b>로 분기 — 장바구니·찜 미결제 리타게팅, 견적 후 "비슷한 시공 후기·예상 일정" 푸시, 가격 인하 알림.</p></div>
-      <div class="card dark"><p style="font-size:13px;color:#D5D9E2"><b style="color:#fff">공통 측정</b> — 탐색→첫구매 전환율, 견적→계약 전환율, 세그먼트별 누수 단계. activation이 '보이게' 만든다.</p></div>
+    <div class="shotwrap" style="text-align:center">
+      <span class="badge">TO-BE · 재세그먼트 UI</span>
+      <img class="shot phone" style="height:392px" src="images/ohouse-narrow-tobe.png" alt="점진적 재세그먼트 목업" />
     </div>
   </div>
-  <div class="verify">
-    <div class="v ok"><span class="lab">이미 함</span>온보딩·필터·AI추천 / 세그먼트 CRM·재입고 알림.</div>
-    <div class="v gap"><span class="lab">net-new</span>무액션 기반 재세그먼트 / 미결제·미계약 activation 넛지 — 둘 다 미확인 빈틈.</div>
+  <div class="foot">
+    <span class="src"><b>근거</b> 개인화·필터 현황 [자사발표/제3자]. progressive narrowing 부재 [추정]. UI는 본인 개념안.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 13 레버 D: CRM -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">레버 D · CRM</div><h2>'무료견적' 단일 CTA를, activation 루프로</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 0.58fr;align-content:start">
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div class="card rose tight">
+        <div class="num" style="color:#d8412e">AS-IS · 지금</div>
+        <p style="margin-top:2px">모든 길이 <b>'무료 견적 문의'라는 단일 CTA</b>로 수렴. "이 가격 맞아? 믿을 만해?"라는 진짜 페인을 안 건드려 구매·계약 의향이 안 생기고, 견적 후엔 업체가 끌고 간다.</p>
+      </div>
+      <div class="card teal tight">
+        <div class="num">TO-BE · 다음 행동 넛지로 분기</div>
+        <ul class="clean teal" style="margin-top:5px">
+          <li><b>장바구니·찜 미결제 리타게팅</b> — "지금이 최저가" 가격 안심 메시지</li>
+          <li><b>견적 후 후속</b> — 비슷한 시공 후기·예상 일정·총비용 푸시</li>
+          <li><b>가격 인하 알림</b> — 찜한 상품 할인 시 즉시</li>
+        </ul>
+      </div>
+      <div class="verify" style="margin-top:0">
+        <div class="v ok"><span class="lab">이미 함</span>세그먼트 CRM(알림톡·SMS)·재입고 알림.</div>
+        <div class="v gap"><span class="lab">net-new</span>미결제·미계약 activation 넛지 시퀀스.</div>
+      </div>
+    </div>
+    <div class="shotwrap" style="text-align:center">
+      <span class="badge">TO-BE · activation 알림</span>
+      <img class="shot phone" style="height:392px" src="images/ohouse-crm-tobe.png" alt="CRM 액티베이션 알림 목업" />
+    </div>
   </div>
   <div class="foot">
-    <span class="src"><b>근거</b> 개인화·CRM 현황 [자사발표/제3자], progressive narrowing·activation 넛지 부재 [추정]. 실행은 본인 제안.</span>
+    <span class="src"><b>근거</b> 세그먼트 CRM 운영 [자사발표], 견적→계약 넛지 부재 [추정]. 메시지는 본인 개념안.</span>
     <span>오늘의집 Activation · 이도형</span>
   </div>
 </section>
