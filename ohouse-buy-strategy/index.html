@@ -370,7 +370,7 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
     <div><div class="kicker teal">레버 A · 가격 신뢰</div><h2>단품 상세를, '비교가 끝나는 화면'으로</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
+  <div class="grid" style="grid-template-columns:1fr 1fr;align-content:start">
     <div class="card out">
       <h3>무엇을 더하나</h3>
       <ul class="clean teal" style="margin-top:8px">
@@ -385,7 +385,17 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
       <p style="margin-top:10px;font-size:13px;color:#B9C0CC"><b style="color:#fff">측정</b> — 상세→이탈 후 재방문율↓, 상세→장바구니→결제 전환율↑</p>
     </div>
   </div>
-  <div class="callout" style="margin-top:13px">
+  <div class="card out" style="margin-top:12px;padding:13px 18px">
+    <div style="display:flex;align-items:center;gap:13px;flex-wrap:wrap">
+      <span style="font-weight:800;font-size:14px;color:var(--ink)">예시 · 상세페이지 비교 위젯</span>
+      <span style="background:var(--teal-soft);color:var(--teal-d);font-weight:800;font-size:13px;padding:5px 11px;border-radius:8px">오늘의집 329,000 · 최저 ✓</span>
+      <span style="font-size:13px;color:var(--gray2);text-decoration:line-through">네이버 331,000</span>
+      <span style="font-size:13px;color:var(--gray2);text-decoration:line-through">쿠팡 335,000</span>
+      <span style="font-size:12.5px;color:var(--gray)">정품·무료배송·리뷰 1,602</span>
+      <span style="margin-left:auto;font-weight:800;font-size:13.5px;color:var(--blue-d)">→ "비교 끝, 여기가 최저"</span>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:12px">
     <p style="font-size:15px"><b style="color:#fff">net-new인 이유</b> — 패키지엔 최저가 보장이 있지만 <b style="color:#fff">단품 상세엔 타사 비교·신뢰 근거가 상시 노출되지 않음</b>(검증 완료). 기존 로직의 '적용 범위 확장'이라 실행 난도도 낮다.</p>
   </div>
   <div class="foot">
@@ -458,7 +468,61 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
   </div>
 </section>
 
-<!-- 13 측정 / NSM -->
+<!-- 13 광고 라이브러리 분석 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">PAID DIAGNOSIS · 광고 라이브러리</div><h2>지금 광고는 '할인'은 외치는데, '왜 여기서'가 없다</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="grid" style="grid-template-columns:0.92fr 1.08fr;flex:1;align-content:start">
+    <div class="shotwrap">
+      <span class="badge">Meta 광고 라이브러리 · 게재 중</span>
+      <img class="shot crop" src="images/ohouse-adlibrary.png" alt="오늘의집 메타 광고 라이브러리" />
+      <div class="cap">현재 게재 중인 오늘의집 광고 — 실측(Meta Ad Library, 활성 ~690건)</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card out tight">
+        <div class="num">현재 패턴</div>
+        <ul class="clean" style="margin-top:6px">
+          <li><b>메시지</b> — "집꾸미기 필수템·역대급 특가", 신규 2만원·첫구매 10% 쿠폰 = <b>할인·프로모션 일색</b></li>
+          <li><b>크리에이티브</b> — 단일 상품 정적 이미지 + ✓혜택 불릿(범용, 세그먼트 구분 없음)</li>
+          <li><b>랜딩</b> — Shop Now→단일 상품 / Install Now→앱스토어 (도착 페이지가 세그먼트와 무관)</li>
+        </ul>
+      </div>
+      <div class="card rose tight">
+        <div class="num" style="color:#d8412e">activation 관점 진단</div>
+        <p style="margin-top:3px">전부 <b>'모으기' 소구</b>다. "왜 굳이 여기서·믿을 만한가·내 상황에 맞나"라는 <b>activation 질문엔 광고도 답하지 않는다.</b> 클릭해서 들어와도 같은 망설임 화면.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> Meta 광고 라이브러리 '오늘의집' 실측 [Playwright 2026.06, 자체 광고 기준]. 제3자 셀러 광고는 제외.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 14 크리에이티브 × 딥링크 제안 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">CREATIVE × DEEP LINK</div><h2>같은 예산으로 — '세그먼트 영상 → 맞춤 랜딩'으로 바꾼다</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <img src="images/ohouse-ad-after.png" alt="제안 크리에이티브 — 세그먼트별 광고 + 딥링크 랜딩" style="display:block;height:300px;width:auto;margin:0 auto;border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow)" />
+  <div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
+    <div class="card teal tight"><div class="num">① 크리에이티브</div><p style="margin-top:2px">'할인' 단일 소구 → <b>세그먼트 페인 hook + activation 소구</b>(타사 비교·기사 후기·정찰가). 세그먼트별 영상으로.</p></div>
+    <div class="card blue tight"><div class="num">② 영상마다 딥링크</div><p style="margin-top:2px">단일 상품·앱스토어가 아니라 — <b>세그먼트에 맞는 페이지로 딥링크</b>. 원룸편→평수·관심사 prefill 큐레이션, 설치편→신뢰 페이지.</p></div>
+    <div class="card dark tight"><div class="num" style="color:#8FB6FF">③ 효과</div><p style="margin-top:2px;color:#D5D9E2">광고 클릭이 곧 <b style="color:#fff">activation 진입</b>. acquisition 예산이 슬라이드 6(재세그먼트)·5·11(시공 신뢰)의 화면으로 바로 연결된다.</p></div>
+  </div>
+  <div class="callout" style="margin-top:13px">
+    <p style="font-size:15px">핵심 — <b style="color:#fff">광고를 '더 모으는' 도구에서 '바로 사게 하는' 도구로.</b> 영상→딥링크→맞춤 랜딩이 acquisition과 activation을 한 줄로 잇는다.</p>
+  </div>
+  <div class="foot">
+    <span class="src"><b>제안</b> 크리에이티브·딥링크 랜딩 시안은 본인 개념안. 세그먼트는 온보딩 관심사·평수 데이터 활용.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 15 측정 / NSM -->
 <section class="slide">
   <div class="head">
     <div><div class="kicker">HOW WE MEASURE</div><h2>이 퍼널이 잘 되는지, 비로소 보이게 한다</h2></div>
