@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- 오늘의집 구매심리 해부 × 약점 돌파(경쟁사 벤치마크) 풀펀널 전략 발표덱 · 이도형 -->
+<!-- 오늘의집 Activation 전략 발표덱 · 이도형 — acquisition은 증명됐다, activation을 푼다 -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>왜 굳이 오늘의집인가 — 구매심리 × 약점 돌파 전략 · 이도형</title>
+<title>모으는 건 잘합니다 — 오늘의집 Activation 전략 · 이도형</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
@@ -14,7 +14,6 @@
   --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
   --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
   --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
-  /* 오늘의집 브랜드 톤 — 코발트 블루 + 따뜻한 코랄 */
   --blue:#3E7BF6; --blue-d:#1B5FE0; --blue-soft:#E9F1FE;
   --violet:#5A6CF0; --violet-d:#3A4BD6; --violet-soft:#EAECFE;
   --teal:#0FB6A8; --teal-d:#079184; --teal-soft:#DBF5F1;
@@ -31,17 +30,16 @@ html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-sm
 
 .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);text-transform:uppercase;margin-bottom:10px}
 .kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#d8412e} .kicker.gray{color:var(--gray)}
-h1{font-size:49px;font-weight:800;line-height:1.16;color:var(--ink);letter-spacing:-.02em}
-h2{font-size:32px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
-h3{font-size:19.5px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+h1{font-size:46px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:31px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
 p,li{font-size:16px;line-height:1.6;color:#2C313C}
-.lead{font-size:19.5px;line-height:1.62;color:var(--gray2);font-weight:500}
+.lead{font-size:19px;line-height:1.62;color:var(--gray2);font-weight:500}
 .hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
 .hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
 .hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
 .hl.amber{background:linear-gradient(transparent 58%, var(--amber-soft) 58%)}
 b,strong{font-weight:800;color:var(--ink)}
-.mono{font-variant-numeric:tabular-nums}
 
 .head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
 .logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:16.5px;letter-spacing:-.01em;color:var(--ink)}
@@ -61,31 +59,31 @@ b,strong{font-weight:800;color:var(--ink)}
 .pill.k{background:var(--ink);color:#fff}
 .pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)} .pill.teal{background:var(--teal-soft);color:var(--teal-d)} .pill.rose{background:var(--rose-soft);color:#d8412e}
 
-.goal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:800;margin-bottom:12px}
-.goal b{color:#8FB6FF}
-
-.metric .big{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
-.metric .big.blue{color:var(--blue-d)} .metric .big.vio{color:var(--violet-d)} .metric .big.teal{color:var(--teal-d)} .metric .big.rose{color:var(--rose)} .metric .big.amber{color:var(--amber-d)}
+.metric .big{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
+.metric .big.blue{color:var(--blue-d)} .metric .big.teal{color:var(--teal-d)} .metric .big.rose{color:var(--rose)} .metric .big.amber{color:var(--amber-d)}
 .metric .lab{font-size:13px;color:var(--gray2);margin-top:6px;font-weight:600;line-height:1.4}
-
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:8.5px 11px;border-bottom:1px solid var(--line);vertical-align:middle}
-th{font-size:12px;color:var(--gray);font-weight:700;letter-spacing:.02em}
-td b{font-weight:800}
-tr.hi td{background:var(--blue-soft)}
-.chk{color:var(--teal-d);font-weight:800} .x{color:var(--rose);font-weight:800}
 
 .shot{border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block}
 .shot.crop{width:100%;height:auto;display:block}
+.shot.phone{height:380px;width:auto;display:block;margin:0 auto}
 .cap{font-size:12px;color:var(--gray);margin-top:6px;text-align:center;line-height:1.4}
 .shotwrap{position:relative}
 .shotwrap .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;z-index:2}
+.shotwrap .badge.rose{background:#d8412e}
 
 .callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:16px 22px}
 .callout h3{color:#fff} .callout p{color:#D5D9E2}
-.quote{background:linear-gradient(120deg,#172033,#1E2A4E);color:#fff;border-radius:var(--radius);padding:24px 28px}
-.quote .q{font-size:24px;font-weight:800;line-height:1.38;color:#fff}
+.quote{background:linear-gradient(120deg,#172033,#1E2A4E);color:#fff;border-radius:var(--radius);padding:22px 28px}
+.quote .q{font-size:23px;font-weight:800;line-height:1.4;color:#fff}
 .quote .q .g{background:linear-gradient(90deg,#8FB6FF,#A6B4FF,#7FE6DA);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* 검증 박스: 이미 함(인정) ↔ 남은 빈틈 */
+.verify{display:flex;gap:10px;margin-top:11px}
+.verify .v{flex:1;border-radius:13px;padding:11px 14px;font-size:13px;line-height:1.5}
+.verify .ok{background:var(--teal-soft)} .verify .ok b{color:var(--teal-d)}
+.verify .gap{background:var(--rose-soft)} .verify .gap b{color:#c0392b}
+.verify .lab{display:block;font-size:11px;font-weight:800;letter-spacing:.03em;margin-bottom:4px}
+.verify .ok .lab{color:var(--teal-d)} .verify .gap .lab{color:#c0392b}
 
 .flag{font-size:12px;color:var(--gray);font-style:italic}
 .src{font-size:11px;color:var(--gray);line-height:1.5}
@@ -94,25 +92,22 @@ tr.hi td{background:var(--blue-soft)}
 .foot .src{flex:1}
 
 ul.clean{list-style:none}
-ul.clean li{position:relative;padding-left:20px;margin-bottom:6px;font-size:14.5px;line-height:1.48}
+ul.clean li{position:relative;padding-left:20px;margin-bottom:6px;font-size:14.5px;line-height:1.5}
 ul.clean li:before{content:"";position:absolute;left:4px;top:7px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
-ul.clean.vio li:before{background:var(--violet)} ul.clean.teal li:before{background:var(--teal)} ul.clean.rose li:before{background:var(--rose)} ul.clean.amber li:before{background:var(--amber)}
+ul.clean.teal li:before{background:var(--teal)} ul.clean.rose li:before{background:var(--rose)} ul.clean.amber li:before{background:var(--amber)}
 .card.dark ul.clean li:before{background:#8FB6FF}
+ul.x{list-style:none}
+ul.x li{position:relative;padding-left:24px;margin-bottom:7px;font-size:14.5px;line-height:1.45}
+ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);font-weight:800;font-size:14px}
 
 .flow{display:flex;align-items:stretch;gap:0}
 .flow .step{flex:1;background:var(--soft);border-radius:13px;padding:12px;text-align:center}
+.flow .step.on{background:var(--teal-soft)} .flow .step.off{background:var(--rose-soft)}
 .flow .arr{display:flex;align-items:center;padding:0 7px;font-size:19px;color:var(--gray);font-weight:800}
 
-.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow)}
-.adcard .ad{font-size:9px;font-weight:800;color:var(--teal-d);border:1px solid var(--teal);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:5px}
-.adcard .u{font-size:10px;color:var(--gray)}
-.adcard .ti{font-size:13px;font-weight:800;color:#1a0dab;line-height:1.3;margin:2px 0}
-.adcard .ds{font-size:10.5px;color:#4a4f5e;line-height:1.4}
-
-/* 돌파 슬라이드 — 약점→강점레버 연결 카드 */
 .brk{background:var(--soft);border-radius:16px;padding:14px 16px;border:1px solid var(--line)}
 .brk .lab{font-size:11.5px;font-weight:800;letter-spacing:.03em;margin-bottom:3px}
-.brk .lab.r{color:#d8412e} .brk .lab.b{color:var(--blue-d)}
+.brk .lab.r{color:#d8412e} .brk .lab.b{color:var(--blue-d)} .brk .lab.t{color:var(--teal-d)}
 .brk p{font-size:13.5px;line-height:1.5;color:#2C313C}
 .brk .arrow{text-align:center;font-size:16px;color:var(--gray);font-weight:800;margin:7px 0}
 
@@ -132,380 +127,391 @@ ul.clean.vio li:before{background:var(--violet)} ul.clean.teal li:before{backgro
 <section class="slide active" style="justify-content:center;background:
   radial-gradient(900px 520px at 84% -10%, var(--blue-soft) 0%, transparent 55%),
   radial-gradient(720px 520px at -5% 110%, var(--rose-soft) 0%, transparent 55%), #fff">
-  <div class="logo" style="margin-bottom:28px"><span class="ic">⌂</span>오늘의집</div>
-  <div class="kicker">구매심리 해부 · 약점 돌파 · 풀펀널 전략</div>
-  <h1>왜 굳이, <span class="hl">오늘의집</span>에서 사는가.<br>그리고 <span class="hl">'안 사는 이유'</span>를 어떻게 돌파하는가.</h1>
-  <p class="lead" style="margin-top:22px;max-width:980px">사는 이유(강점)를 레버로, 경쟁사의 실제 액션을 벤치마크해 — 오늘의집의 <b>이탈 요인을 하나씩 돌파</b>하는 마케터의 실행안</p>
-  <div style="margin-top:32px;display:flex;gap:10px">
+  <div class="logo" style="margin-bottom:26px"><span class="ic">⌂</span>오늘의집</div>
+  <div class="kicker">Growth Marketer · Activation 전략</div>
+  <h1>모으는 건, 이미 잘합니다.<br>문제는 <span class="hl">"왜 굳이 여기서 사야 하죠?"</span>입니다.</h1>
+  <p class="lead" style="margin-top:22px;max-width:1000px">오늘의집은 발견형 커머스로 유저를 <b>모으는 일(Acquisition)</b>은 최고 수준입니다. 하지만 결제·계약 '직전'에서 — 가격·시공·신뢰의 <b>"왜 오늘의집?"</b>에 답하지 못해 <b>Activation이 샙니다.</b> 그 퍼널을 풀겠습니다.</p>
+  <div style="margin-top:30px;display:flex;gap:10px">
     <span class="pill k">버킷플레이스 · 오늘의집</span>
     <span class="pill blue">Growth Marketer 지원</span>
     <span class="pill vio">이도형</span>
   </div>
 </section>
 
-<!-- 2 프레임 -->
+<!-- 2 FRAME: 퍼널 진단 -->
 <section class="slide">
   <div class="head">
-    <div><div class="kicker">FRAME · 발견형 커머스</div><h2>오늘의집은 '물건'이 아니라 '라이프스타일'을 판다</h2></div>
+    <div><div class="kicker">FUNNEL DIAGNOSIS</div><h2>Acquisition은 증명됐다 — 다음 병목은 Activation</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="quote" style="margin-bottom:16px">
-    <div class="q" style="font-size:21px">다른 곳은 <span style="color:#ffb4ab">살 물건을 "검색"</span>해서 들어가지만,<br>오늘의집은 <span class="g">"남들은 어떻게 살지?" 구경하다 홀린 듯 결제</span>하게 만든다.</div>
-  </div>
-  <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:start">
-    <div class="card blue"><div class="num">강점 · WHY BUY</div><h3 style="color:var(--blue-d)">사는 이유 4가지</h3><p style="margin-top:4px">발견-콘텐츠-구매-시공으로 이어지는 독보적 구매 여정. 대체 불가능한 락인의 원천.</p></div>
-    <div class="card rose"><div class="num">이면 · WHY NOT</div><h3 style="color:#d8412e">안 사는 이유 4가지</h3><p style="margin-top:4px">빛이 강할수록 그림자도 짙다. 같은 강점이 특정 유저에겐 강력한 이탈 요인이 된다.</p></div>
-    <div class="card teal"><div class="num">처방 · BREAKTHROUGH</div><h3 style="color:var(--teal-d)">강점으로 약점을 돌파</h3><p style="margin-top:4px">사는 이유를 레버로, 경쟁사 액션을 벤치마크해 이탈 요인을 정면 돌파한다.</p></div>
-  </div>
-  <div class="callout" style="margin-top:14px">
-    <p style="font-size:15.5px">이 발표의 구조 — <b style="color:#fff">사는 이유(4) → 안 사는 이유(4) → 강점 레버로 약점 돌파(4, 경쟁사 캡처 포함)</b>.</p>
-  </div>
-  <div class="foot">
-    <span class="src"><b>관점</b> 소비자·UX·마케팅 3중 렌즈로 오늘의집 구매 경험을 직접 분해한 분석.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
-  </div>
-</section>
-
-<!-- 3 WHY BUY 4 -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker">WHY BUY</div><h2>여기서 '사야만 하는' 네 가지 이유</h2></div>
-    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
-    <div class="card out"><div class="num">01 · 맥락 구매</div><h3>UGC 기반 '실제 남의 집' 구매</h3><p>뻔한 흰 배경 상세페이지가 아니라 <b>평수·구조가 비슷한 실제 집</b>을 보고 산다. 사진 속 가구의 <b>태그를 누르면 바로 구매</b> — "이 소파 어디 거지?"의 탐색비용을 0으로.</p></div>
-    <div class="card out"><div class="num">02 · 개인화 탐색</div><h3>내 공간에 맞춘 고도화 필터링</h3><p>주거형태(아파트·원룸)·평수·스타일(모던·내추럴·북유럽)·색상까지 세밀하게 거른다. <b>제품과 연출샷을 동시에</b> 보여줘 '우리 집에 맞나' 실패 확률을 줄인다.</p></div>
-    <div class="card out"><div class="num">03 · 리얼 리뷰</div><h3>'실패 없는' 공간정보 리뷰 생태계</h3><p>리뷰에 작성자의 <b>주거형태(원룸 7평·아파트 30평)</b>가 함께 표시. 스튜디오 연출컷이 아니라 <b>형광등 아래 진짜 발색·사이즈감</b>이 구매 확신을 준다.</p></div>
-    <div class="card out"><div class="num">04 · End-to-End 케어</div><h3>배송부터 시공까지 한 번에</h3><p>가구의 골칫거리 '배송일 맞추기'를 <b>지정일 배송·설치</b>로 해결. 도배·조명·커튼 시공까지 한 플랫폼에서 검증된 후기로 — 강력한 <b>락인(Lock-in)</b>.</p></div>
-  </div>
-  <div class="callout" style="margin-top:14px">
-    <p style="font-size:15.5px">네 이유의 공통점 — <b style="color:#fff">'발견 → 영감 → 구매 → 시공'</b>이 한 흐름. 제품이 아니라 구매 여정 자체가 경쟁우위. <b style="color:#fff">이 네 강점이 곧 약점 돌파의 레버</b>가 됩니다.</p>
-  </div>
-  <div class="foot">
-    <span class="src"><b>참고</b> 집들이 UGC 1,200만건·앱 다운로드 3,000만+ [버킷플레이스 자사발표]. 분석은 본인 UX 관점.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
-  </div>
-</section>
-
-<!-- 4 심화 — 탐색비용 0 -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker blue">DEEP DIVE</div><h2>핵심 USP — '태그'가 만든 탐색비용 0</h2></div>
-    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
-  </div>
-  <div class="grid" style="grid-template-columns:1.05fr 1fr;flex:1;align-content:start">
+  <div class="grid" style="grid-template-columns:1fr 1.1fr;flex:1;align-content:start">
     <div class="shotwrap">
       <span class="badge">ohou.se · 집들이 피드</span>
       <img class="shot" src="images/ohouse-service.png" alt="오늘의집 집들이 피드" />
-      <div class="cap">예쁜 집 사진 → 태그 클릭 → 구매 페이지. 발견과 구매 사이의 거리를 없앤 UX</div>
+      <div class="cap">'남의 집' 콘텐츠로 발견·영감·유입을 만든다 — 여기까진 압도적</div>
     </div>
-    <div>
-      <div class="card blue" style="margin-bottom:12px">
-        <h3>왜 강력한가</h3>
-        <p style="margin-top:4px">일반 커머스는 <b>'욕구 → 검색 → 비교 → 구매'</b> 4단계. 오늘의집은 콘텐츠를 구경하다 <b>'발견 → 태그 → 구매'</b>로 단축 — 구매를 결심하기 <i>전에</i> 욕구가 먼저 생긴다.</p>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="flow">
+        <div class="step on"><div style="font-size:12.5px;font-weight:800;color:var(--teal-d)">발견·유입</div><div style="font-size:11px;color:var(--gray2);margin-top:2px">Acquisition ✓</div></div>
+        <div class="arr">→</div>
+        <div class="step"><div style="font-size:12.5px;font-weight:800;color:var(--gray2)">탐색·비교</div><div style="font-size:11px;color:var(--gray);margin-top:2px">흔들림</div></div>
+        <div class="arr">→</div>
+        <div class="step off"><div style="font-size:12.5px;font-weight:800;color:#d8412e">결제·계약</div><div style="font-size:11px;color:#d8412e;margin-top:2px">Activation 누수</div></div>
       </div>
-      <div class="flow" style="margin-bottom:12px">
-        <div class="step"><div style="font-size:12px;font-weight:800;color:var(--blue-d)">남의 집 구경</div></div>
-        <div class="arr">→</div>
-        <div class="step"><div style="font-size:12px;font-weight:800;color:var(--blue-d)">태그 클릭</div></div>
-        <div class="arr">→</div>
-        <div class="step"><div style="font-size:12px;font-weight:800;color:var(--blue-d)">홀린 듯 결제</div></div>
+      <div class="card blue">
+        <h3>모으기는 성공의 증거가 있다</h3>
+        <p style="margin-top:4px">집들이 UGC 1,200만·앱 3,000만+ 다운로드, 개인화 추천으로 <b>홈 클릭 전환율 약 2배</b>(자사). 발견형 커머스로 트래픽을 만드는 역량은 검증됨.</p>
       </div>
       <div class="card dark">
-        <h3>마케터에게 주는 의미</h3>
-        <p style="margin-top:4px">목적형 키워드 광고보다 <b style="color:#8FB6FF">'맥락 속에 제품을 녹이는 것'</b>이 유입의 본질. → 모든 약점 돌파의 출발점.</p>
+        <h3>그런데 '사게 만드는' 구간은?</h3>
+        <p style="margin-top:4px">결제·계약 직전, 유저는 묻습니다 — <b style="color:#fff">"이거 여기서 사는 게 맞아?"</b> 이 질문에 답을 못 주면 모은 트래픽이 결제로 안 넘어갑니다. <b style="color:#8FB6FF">이 발표는 acquisition이 아니라 그 다음, activation을 다룹니다.</b></p>
       </div>
     </div>
   </div>
   <div class="foot">
-    <span class="src"><b>캡처</b> 오늘의집 서비스 화면 실측 [Playwright]. 퍼널 단계는 본인 분석.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
+    <span class="src"><b>출처</b> UGC·다운로드·개인화 전환율 버킷플레이스/디지털투데이 2023 [자사발표]. 퍼널 해석은 본인 분석.</span>
+    <span>오늘의집 Activation · 이도형</span>
   </div>
 </section>
 
-<!-- 5 WHY NOT 4 -->
+<!-- 3 CORE PROBLEM: 네 빈틈 -->
 <section class="slide">
   <div class="head">
-    <div><div class="kicker rose">WHY NOT</div><h2>반대로, '안 사게 되는' 네 가지 이유</h2></div>
+    <div><div class="kicker rose">CORE PROBLEM</div><h2>"정말, 믿고 사도 될까?" — 망설이게 하는 네 빈틈</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <p class="lead" style="font-size:16px;margin-bottom:13px">공통 원인 하나 — <b>"굳이 오늘의집이어야 할 이유"</b>를 결제·계약 직전에 못 준다.</p>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
+    <div class="card rose"><div class="num">빈틈 ① · 가격 신뢰</div><h3 style="color:#d8412e">"제일 싸다는데" 비교가 안 된다</h3><p style="margin-top:4px">플랫폼 내 단일 가격만. 타 사이트 대비 싼지 알 길이 없어 결국 네이버에서 재검색 → 이탈.</p></div>
+    <div class="card rose"><div class="num">빈틈 ② · 시공 신뢰</div><h3 style="color:#d8412e">굳이 '오늘의집 시공'일 이유가 없다</h3><p style="margin-top:4px">설치 결제화면이 가격만 덩그러니. 누가·얼마가 적정·믿을 만한지 안 풀려 '다음'을 못 누른다.</p></div>
+    <div class="card rose"><div class="num">빈틈 ③ · 탐색 길잃음</div><h3 style="color:#d8412e">한 번 걸러도 여전히 방대</h3><p style="margin-top:4px">세그먼트 시도는 좋은데, 필터 후에도 볼 게 너무 많아 "뭘 눌러야 하지?"에서 멈춘다.</p></div>
+    <div class="card rose"><div class="num">빈틈 ④ · CRM 단일 CTA</div><h3 style="color:#d8412e">결국 '무료 견적 문의'로만 떨군다</h3><p style="margin-top:4px">진짜 페인(이 가격 맞나·믿을만한가)을 안 건드리고 견적 문의로만 보내니 구매 의향이 안 생긴다.</p></div>
+  </div>
+  <div class="callout" style="margin-top:13px">
+    <p style="font-size:15.5px">네 빈틈 모두 <b style="color:#fff">결제·계약 '직전'</b>에 있습니다 = 전부 <b style="color:#fff">Activation 누수</b>. 지금부터 하나씩, '이미 하는 것'과 '빈틈'을 구분해 풉니다.</p>
+  </div>
+  <div class="foot">
+    <span class="src"><b>관점</b> 소비자(본인)·마케터 시선의 진단. 각 빈틈은 다음 장에서 경쟁사·자사 현황과 교차 검증.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 4 PAIN 1: 가격 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">빈틈 ① · 가격 신뢰</div><h2>"제일 싸다는데" — 비교할 방법이 없다</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
   <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
-    <div class="card rose"><div class="num">이탈 01 · 취향 하향 평준화</div><h3>'모나미 인테리어'의 늪</h3><p>트렌드를 따라 사다 보면 <b>'어디서 많이 본 집'</b>이 된다. 화이트&우드 미니멀에 갇혀, 빈티지·하이엔드·독창적 취향을 찾는 유저에겐 매력도 하락.</p></div>
-    <div class="card rose"><div class="num">이탈 02 · UGC의 함정</div><h3>보정 필터와 '감성 왜곡'</h3><p>베스트컷은 완벽한 채광에 보정된 사진. 좁고 어두운 내 방에선 그 느낌이 안 산다. <b>마감·내구성 등 하드웨어 퀄리티</b>는 감성 사진으로 파악 불가.</p></div>
-    <div class="card rose"><div class="num">이탈 03 · 최저가 메리트 부족</div><h3>"오늘의집이 제일 싸진 않다"</h3><p>발견형 커머스라 <b>발견 후 네이버·쿠팡에서 모델명 검색 → 최저가 이탈</b>이 빈번. 입점 수수료 구조상 가격이 높게 책정되기도. 영감만 얻는 <b>체리피커</b> 발생.</p></div>
-    <div class="card rose"><div class="num">이탈 04 · 파편화된 배송·CS</div><h3>익일 배송에 길들여진 눈높이</h3><p>직배송 외엔 <b>브랜드별 개별 배송비·제각각 배송일</b>. 로켓·샛별배송에 익숙한 유저에겐 느린 배송이 피로. 중개 특성상 <b>CS가 즉각적이지 않다</b>는 불만.</p></div>
-  </div>
-  <div class="callout" style="margin-top:14px">
-    <p style="font-size:15.5px">한 줄 요약 — <b style="color:#fff">최저가·빠른 배송이 최우선이거나, '양산형 감성'을 거부하는 유저</b>에게 오늘의집은 매력적이지 않다. ← 지금부터 이 4가지를 하나씩 돌파합니다.</p>
-  </div>
-  <div class="foot">
-    <span class="src"><b>관점</b> 소비자 이탈 패턴에 대한 본인 분석. 일부는 발견형 커머스의 구조적 특성에서 도출.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
-  </div>
-</section>
-
-<!-- 6 빛과 그림자 대칭표 -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker amber">LIGHT & SHADOW</div><h2>강점이 곧 약점이 된다 — 그래서 강점으로 돌파한다</h2></div>
-    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
-  </div>
-  <table style="margin-top:2px">
-    <thead><tr><th style="width:22%">강점 (사는 이유)</th><th style="width:28%">그 이면의 그림자 (안 사는 이유)</th><th style="width:24%">돌파에 쓸 레버</th><th style="width:26%">경쟁사 벤치마크</th></tr></thead>
-    <tbody>
-      <tr><td><b>① UGC 맥락 구매</b></td><td><span class="x">취향 하향 평준화·클론 디자인</span></td><td>큐레이션·필터로 '취향'을 판다</td><td>29CM (매거진·룩북)</td></tr>
-      <tr><td><b>③ 리얼 리뷰</b></td><td><span class="x">보정 왜곡·디테일 확인 어려움</span></td><td>동영상·공간정보 리뷰 강화</td><td>무신사 (실착 스냅·후기)</td></tr>
-      <tr><td><b>①·④ 발견 + 케어</b></td><td><span class="x">최저가 아님·타 플랫폼 이탈</span></td><td>단독 구성·번들·포인트</td><td>컬리 (단독·멤버십)</td></tr>
-      <tr><td><b>④ End-to-End 케어</b></td><td><span class="x">파편 배송·느린 CS</span></td><td>지정일 배송·설치 전면화</td><td>쿠팡 (로켓·지정일설치)</td></tr>
-      <tr class="hi"><td colspan="2"><b>핵심 통찰</b></td><td colspan="2"><b class="chk">약점은 강점의 그림자 → 없애는 게 아니라 '강점을 더 밀어' 가린다</b></td></tr>
-    </tbody>
-  </table>
-  <div class="callout" style="margin-top:14px">
-    <p style="font-size:15.5px">다음 4장 — 각 약점을 <b style="color:#fff">①강점 레버 → ②경쟁사 실제 액션(캡처) → ③오늘의집 액션</b> 순서로 돌파합니다.</p>
-  </div>
-  <div class="foot">
-    <span class="src"><b>설계</b> 사는 이유 4 ↔ 안 사는 이유 4를 1:1로 대응, 돌파 레버와 벤치마크를 매핑.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
-  </div>
-</section>
-
-<!-- 7 돌파① 취향 평준화 — 29CM -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker rose">돌파 ① · 취향 하향 평준화</div><h2>'양산형 감성'을, 취향 큐레이션으로 돌파</h2></div>
-    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1.05fr;flex:1;align-content:start">
-    <div style="display:flex;flex-direction:column;gap:11px">
-      <div class="brk">
-        <div class="lab r">안 사는 이유</div>
-        <p>"오늘의집 따라 사면 다 똑같은 집이 된다" — 화이트&우드 미니멀에 갇혀 독창적 취향 유저가 이탈.</p>
-        <div class="arrow">↓ 강점 ①·② 로 돌파</div>
-        <div class="lab b">레버 = UGC 다양성 + 개인화 필터</div>
-        <p>이미 1,200만 집들이 안에 온갖 취향이 있다. '평균'만 노출하니 평준화로 보일 뿐 — 니치 취향을 <b>큐레이션·필터로 끌어올리면</b> 강점이 된다.</p>
-      </div>
-      <div class="card dark">
-        <h3>오늘의집 액션</h3>
-        <ul class="clean" style="margin-top:7px">
-          <li>미드센추리·빈티지·맥시멀 등 <b style="color:#fff">니치 스타일 큐레이션관</b> + 전문가/디자이너 에디토리얼 시리즈</li>
-          <li>추천 알고리즘에 <b style="color:#fff">'비슷한데 색다른'</b> 발견 슬롯 — 베스트만 미는 평준화 방지</li>
-          <li>취향 필터를 색상·무드·소재까지 세분화해 '나만의 집' 경로 강화</li>
-        </ul>
-      </div>
+    <div>
+      <div class="shotwrap"><span class="badge rose">오늘의집 · 단일 가격</span><img class="shot crop" src="images/comp-ohouse-price.png" alt="오늘의집 가격" /></div>
+      <div class="cap">시디즈 T50 = 329,000원. 가격 '하나'만 — 이게 싼 건지 알 수 없다</div>
     </div>
     <div>
-      <div class="shotwrap">
-        <span class="badge">경쟁사 · 29CM</span>
-        <img class="shot crop" src="images/comp-29cm.png" alt="29CM 큐레이션" />
-      </div>
-      <div class="cap">29CM — Showcase·PT·29Magazine·Lookbook으로 '감도 깊은 취향'을 큐레이션. 상품이 아니라 취향·브랜드 스토리를 판다.</div>
-      <div class="card amber tight" style="margin-top:10px">
-        <div class="num" style="color:var(--amber-d)">벤치마크 포인트</div>
-        <p>에디토리얼·셀렉트 큐레이션으로 '대중 트렌드'와 차별화 → 오늘의집은 같은 무기를 <b>UGC 규모로</b> 할 수 있다.</p>
-      </div>
+      <div class="shotwrap"><span class="badge">다나와 · 가격 비교</span><img class="shot crop" src="images/comp-danawa-price.png" alt="다나와 가격비교" /></div>
+      <div class="cap">같은 상품군이 몰별 가격·구매수·최저가까지 투명하게 비교된다</div>
     </div>
   </div>
+  <div class="verify">
+    <div class="v ok"><span class="lab">오늘의집은 이미</span><b>패키지할인 최저가 보장</b>(타 몰보다 비싸면 차액 포인트)·오마트 200% 보상 운영 — '묶음 구매'엔 가격 자신감이 있음. <span class="flag">[자사발표 2025]</span></div>
+    <div class="v gap"><span class="lab">남은 빈틈</span><b>단품 상세엔 타사 실시간 비교·신뢰 근거가 상시 노출되지 않음</b>(자사 과거가 기준 할인율만). → 결국 네이버에서 재검색 → 이탈·망설임.</div>
+  </div>
   <div class="foot">
-    <span class="src"><b>캡처</b> 29cm.co.kr 메인 실측 [Playwright, 2026.06]. 액션은 본인 제안.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
+    <span class="src"><b>출처</b> 오늘의집·다나와 화면 실측 [Playwright 2026.06]. 패키지 최저가보장 파트너센터 공지·뉴시스 2025.05 [자사발표/제3자]. <span class="flag">동일 SKU 정밀비교 아님 — '비교 가능성'의 차이를 보임.</span></span>
+    <span>오늘의집 Activation · 이도형</span>
   </div>
 </section>
 
-<!-- 8 돌파② UGC 함정/현실 괴리 — 무신사 -->
+<!-- 5 PAIN 2: 시공 (사용자 실제 경험) -->
 <section class="slide">
   <div class="head">
-    <div><div class="kicker rose">돌파 ② · 보정 왜곡 / 현실 괴리</div><h2>'사진과 현실의 괴리'를, 리얼 리뷰로 돌파</h2></div>
+    <div><div class="kicker rose">빈틈 ② · 시공 신뢰</div><h2>굳이 '오늘의집 시공'일 이유가, 이 화면엔 없다</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="grid" style="grid-template-columns:1fr 1.05fr;flex:1;align-content:start">
+  <div class="grid" style="grid-template-columns:0.62fr 1fr;flex:1;align-content:start">
+    <div class="shotwrap" style="text-align:center">
+      <span class="badge rose">실제 겪은 화면 · 수전 교체</span>
+      <img class="shot phone" src="images/ohouse-faucet-service.png" alt="오늘의집 수전 설치 서비스 신청 화면" />
+    </div>
     <div style="display:flex;flex-direction:column;gap:11px">
-      <div class="brk">
-        <div class="lab r">안 사는 이유</div>
-        <p>보정된 베스트컷이 내 좁고 어두운 방에선 안 산다. 마감·내구성 등 하드웨어 디테일은 감성 사진으로 확인 불가.</p>
-        <div class="arrow">↓ 강점 ③ 으로 돌파</div>
-        <div class="lab b">레버 = 공간정보가 담긴 리얼 리뷰 생태계</div>
-        <p>오늘의집은 이미 '주거형태·평수'가 붙은 리뷰를 가졌다. 여기에 <b>보정 없는 동영상·디테일</b>을 더하면 '실패 없는 구매'가 완성된다.</p>
-      </div>
-      <div class="card dark">
-        <h3>오늘의집 액션</h3>
-        <ul class="clean" style="margin-top:7px">
-          <li>전환 구간 상세페이지에 <b style="color:#fff">보정 없는 동영상·움짤 리뷰 + 마감 클로즈업</b> 우선 노출</li>
-          <li>리뷰에 <b style="color:#fff">평수·채광·천장고</b> 등 공간 메타데이터 입력 유도 → "우리 집 핏" 매칭</li>
-          <li>AR 배치 미리보기로 '내 공간에 둔 모습'을 결제 전에 확인</li>
+      <div class="card rose">
+        <h3 style="color:#d8412e">'80,000원'만 덩그러니 — 판단할 정보가 없다</h3>
+        <ul class="x" style="margin-top:8px">
+          <li><b>내역 분해 없음</b> — 출장비·공임비가 각각 얼마인지 모름</li>
+          <li><b>누가 오는지 모름</b> — 기사 프로필·평점·후기 없음</li>
+          <li><b>적정성 판단 불가</b> — 동종 시공 사례·소요시간·타 업체 시세 비교 없음</li>
+          <li><b>책임 주체 불명</b> — 하자 시 누가 보증하는지 화면에 없음</li>
         </ul>
       </div>
-    </div>
-    <div>
-      <div class="shotwrap">
-        <span class="badge">경쟁사 · 무신사</span>
-        <img class="shot crop" src="images/comp-musinsa.png" alt="무신사 스냅·후기" />
-      </div>
-      <div class="cap">무신사 — 실착 (S)SNAP + 별점·리뷰 수(4.9·5.0) + 도착보장으로 '연출컷 불신'을 보강. 진짜 착용샷이 전환을 만든다.</div>
-      <div class="card amber tight" style="margin-top:10px">
-        <div class="num" style="color:var(--amber-d)">벤치마크 포인트</div>
-        <p>스냅(실착 UGC)과 체형·사이즈 후기로 '사진≠현실' 불안을 해소 → 오늘의집은 <b>공간정보 리뷰</b>로 더 강하게 가능.</p>
+      <div class="verify" style="margin-top:0">
+        <div class="v ok"><span class="lab">오늘의집은 이미</span><b>큰 인테리어 시공엔</b> 표준 견적서·자재가 600종 공개·리뷰 3만건·시공 하자보증까지 갖춤. <span class="flag">[제3자 2023–26]</span></div>
+        <div class="v gap"><span class="lab">남은 빈틈</span>그 신뢰 자산이 <b>'소형 설치 서비스 결제화면'엔 하나도 안 닿는다.</b> → "믿고 맡겨도 되나" 못 풀고 이탈.</div>
       </div>
     </div>
   </div>
   <div class="foot">
-    <span class="src"><b>캡처</b> musinsa.com 검색결과 실측 [Playwright, 2026.06]. 액션은 본인 제안.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
+    <span class="src"><b>출처</b> 본인 수전 교체 진행 중 실제 캡처(재현). 시공 자산 현황 news2day 2026.06·아시아에이 2023·녹색경제 [제3자]. <span class="flag">대형 인테리어 시공 ≠ 소형 설치 서비스 — 빈틈은 후자.</span></span>
+    <span>오늘의집 Activation · 이도형</span>
   </div>
 </section>
 
-<!-- 9 돌파③ 최저가 이탈 — 컬리 -->
+<!-- 6 PAIN 3: 탐색 -->
 <section class="slide">
   <div class="head">
-    <div><div class="kicker rose">돌파 ③ · 최저가 이탈 / 체리피커</div><h2>'네이버 최저가 검색'을, 단독 혜택으로 돌파</h2></div>
+    <div><div class="kicker rose">빈틈 ③ · 탐색 길잃음</div><h2>한 번 걸러도 여전히 방대 — "뭘 눌러야 하죠?"</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="grid" style="grid-template-columns:1fr 1.05fr;flex:1;align-content:start">
-    <div style="display:flex;flex-direction:column;gap:11px">
-      <div class="brk">
-        <div class="lab r">안 사는 이유</div>
-        <p>"여기서 발견 → 네이버·쿠팡에서 모델명 검색 → 최저가로 이탈". 영감만 얻는 체리피커가 매출을 샌다.</p>
-        <div class="arrow">↓ 강점 ①·④ 로 돌파</div>
-        <div class="lab b">레버 = 발견의 맥락 + End-to-End</div>
-        <p>가격 비교가 <b>불가능한 구성</b>을 만들면 된다. 발견한 그 자리에서, 다른 데 없는 단독 구성·번들·포인트로 즉시 결제하게.</p>
-      </div>
-      <div class="card dark">
-        <h3>오늘의집 액션</h3>
-        <ul class="clean" style="margin-top:7px">
-          <li>상세 최상단 <b style="color:#fff">[오늘의집 단독 구성·단독 컬러·단독 특가]</b> 배지로 가격 비교 자체를 무력화</li>
-          <li><b style="color:#fff">소품+가구 번들가</b> — 모델명 단일 비교가 안 되게 묶음 구성</li>
-          <li>리뷰 작성 시 <b style="color:#fff">포인트 100% 적립</b> + 멤버십으로 "여기가 제일 이득" 각인</li>
-        </ul>
-      </div>
-    </div>
-    <div>
-      <div class="shotwrap">
-        <span class="badge">경쟁사 · 마켓컬리</span>
-        <img class="shot crop" src="images/comp-kurly.png" alt="컬리 첫구매 단독혜택" />
-      </div>
-      <div class="cap">컬리 — "오직 앱에서만, 첫 구매 시 최대 12,000원 할인" + 무료배송 쿠폰 + 멤버스특가. 단독 혜택으로 가격 비교·이탈을 차단.</div>
-      <div class="card amber tight" style="margin-top:10px">
-        <div class="num" style="color:var(--amber-d)">벤치마크 포인트</div>
-        <p>첫 구매 단독 혜택·멤버십으로 '여기서 사는 이유'를 가격으로 못박음 → 오늘의집은 <b>단독 구성+포인트</b>로 응용.</p>
-      </div>
-    </div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>캡처</b> kurly.com 메인 실측 [Playwright, 2026.06]. 액션은 본인 제안.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
-  </div>
-</section>
-
-<!-- 10 돌파④ 배송·CS — 쿠팡 -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker rose">돌파 ④ · 파편 배송 / 느린 CS</div><h2>'느리고 제각각인 배송'을, 지정일·설치로 돌파</h2></div>
-    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1.05fr;flex:1;align-content:start">
-    <div style="display:flex;flex-direction:column;gap:11px">
-      <div class="brk">
-        <div class="lab r">안 사는 이유</div>
-        <p>브랜드별 개별 배송비·제각각 도착일, 중개 특성상 느린 CS. 로켓·샛별에 익숙한 눈높이엔 큰 피로.</p>
-        <div class="arrow">↓ 강점 ④ 로 돌파</div>
-        <div class="lab b">레버 = 이미 가진 지정일 배송·설치</div>
-        <p>가구는 '빠름'보다 <b>'원하는 날, 설치까지'</b>가 핵심. 오늘의집은 이미 이 강점을 가졌다 — 전면에 내세우고 표준화하면 약점이 무기가 된다.</p>
-      </div>
-      <div class="card dark">
-        <h3>오늘의집 액션</h3>
-        <ul class="clean" style="margin-top:7px">
-          <li><b style="color:#fff">직매입(오늘의집 배송) 지정일·설치</b>를 상세·검색에 배지로 전면 노출</li>
-          <li>입점사 <b style="color:#fff">배송 SLA 표준화 + 통합 배송추적</b>으로 '제각각' 경험 제거</li>
-          <li>설치·하자 <b style="color:#fff">CS 책임 응대(중개 책임제)</b>로 "느린 CS" 불안 차단</li>
-        </ul>
-      </div>
-    </div>
-    <div>
-      <div class="shotwrap">
-        <span class="badge">경쟁사 · 쿠팡</span>
-        <img class="shot crop" src="images/comp-coupang.png" alt="쿠팡 로켓배송·지정일설치" />
-      </div>
-      <div class="cap">쿠팡 — "오늘 밤 12시까지 주문해도 내일 도착". 가구 입점 광고조차 "내일·지정일배송·전문기사 직접설치"를 전면에.</div>
-      <div class="card amber tight" style="margin-top:10px">
-        <div class="num" style="color:var(--amber-d)">벤치마크 포인트</div>
-        <p>속도(로켓)는 못 이겨도 — 가구는 '지정일+설치'가 진짜 페인. 오늘의집의 기존 강점을 <b>경험 표준으로</b> 끌어올린다.</p>
-      </div>
-    </div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>캡처</b> coupang.com 검색결과 실측 [Playwright, 2026.06]. 액션은 본인 제안.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
-  </div>
-</section>
-
-<!-- 11 통합 — 풀펀널로 잇기 + 치트키 -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker teal">CONNECT</div><h2>네 돌파를 하나의 풀펀널로 잇는다</h2></div>
-    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
-  </div>
-  <p class="lead" style="font-size:15.5px;margin-bottom:13px">약점을 따로따로 막는 게 아니라 — 네 돌파를 <b>유입 → 확신 → 전환 → 재구매</b> 하나의 흐름으로 연결합니다.</p>
   <div class="flow" style="margin-bottom:14px">
-    <div class="step"><div style="font-size:12.5px;font-weight:800;color:var(--blue-d)">유입 · 취향 콘텐츠</div><div style="font-size:11px;color:var(--gray2);margin-top:3px">돌파① 큐레이션</div></div>
+    <div class="step on"><div style="font-size:13px;font-weight:800;color:var(--teal-d)">세그먼트 시도</div><div style="font-size:11px;color:var(--gray2);margin-top:2px">온보딩·필터·AI추천 ✓</div></div>
     <div class="arr">→</div>
-    <div class="step"><div style="font-size:12.5px;font-weight:800;color:var(--blue-d)">확신 · 리얼 리뷰</div><div style="font-size:11px;color:var(--gray2);margin-top:3px">돌파② 현실감</div></div>
+    <div class="step"><div style="font-size:13px;font-weight:800;color:var(--gray2)">1회 필터 적용</div><div style="font-size:11px;color:var(--gray);margin-top:2px">결과 수천 개</div></div>
     <div class="arr">→</div>
-    <div class="step"><div style="font-size:12.5px;font-weight:800;color:var(--blue-d)">전환 · 단독 혜택</div><div style="font-size:11px;color:var(--gray2);margin-top:3px">돌파③ 이탈 차단</div></div>
-    <div class="arr">→</div>
-    <div class="step"><div style="font-size:12.5px;font-weight:800;color:var(--blue-d)">재구매 · 배송 신뢰</div><div style="font-size:11px;color:var(--gray2);margin-top:3px">돌파④ 경험</div></div>
+    <div class="step off"><div style="font-size:13px;font-weight:800;color:#d8412e">선택 마비</div><div style="font-size:11px;color:#d8412e;margin-top:2px">"뭘 눌러야?" → 이탈</div></div>
   </div>
   <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
-    <div class="card amber">
-      <div class="num">치트키 1 · 폭발적 유입</div>
-      <h3>기획전 · '오하특' 메인 구좌 + FOMO</h3>
-      <p style="margin-top:6px">MD 협업으로 메인 구좌를 확보해 폭발적 유입을. 들어온 트래픽이 새지 않게 <b>한정 수량 타임세일</b>로 '지금 안 사면 손해'를 건다.</p>
-    </div>
-    <div class="card amber">
-      <div class="num">치트키 2 · 첫 구매 허들 낮추기</div>
-      <h3>소품 레이어링 → 메인 가구 리타게팅</h3>
-      <p style="margin-top:6px">고가 가구는 전환이 길다. <b>저렴한 소품으로 첫 구매</b> 장벽을 낮추고, 만족 유저에게 <b>메인 가구를 리타게팅</b>해 객단가를 키운다.</p>
-    </div>
+    <div class="card out"><h3>좋은 시도, 아쉬운 끝맺음</h3><p style="margin-top:4px">유저별로 맞춤 정보를 보여주려는 방향은 옳다. 문제는 <b>한 번 필터링한 뒤에도 봐야 할 게 방대</b>하다는 것 — 좁혀줬다기보다 '큰 묶음'을 줬을 뿐.</p></div>
+    <div class="card blue"><h3 style="color:var(--blue-d)">필요한 건 '한 단계 더'</h3><p style="margin-top:4px">필터 후에도 행동이 없으면 — <b>"이 중에 뭐가 제일 중요해요?"</b>를 한 번 더 물어 결과를 추려주는 점진적(progressive) 재세그먼트가 빠져 있다.</p></div>
   </div>
-  <div class="callout" style="margin-top:14px">
-    <p style="font-size:15.5px">관통 원칙 — <b style="color:#fff">"내 제품이 '광고'로 보였나, '영감'으로 보였나"</b>. 후자면 유입·전환·재구매는 자연스럽게 따라온다.</p>
+  <div class="verify">
+    <div class="v ok"><span class="lab">오늘의집은 이미</span>온보딩 공간 질문·집들이 다중 필터·행동 기반 AI 추천을 운영. <span class="flag">[자사발표/제3자]</span></div>
+    <div class="v gap"><span class="lab">남은 빈틈</span><b>필터 후 '무액션'을 감지해 한 번 더 좁혀주는' 재질문·재추천은 없음.</b> 한 번 거르고 방대한 목록을 그대로 던진다.</div>
   </div>
   <div class="foot">
-    <span class="src"><b>구조</b> 4개 돌파 = 유입→확신→전환→재구매 풀펀널. 치트키 2종이 유입과 전환을 연결.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
+    <span class="src"><b>출처</b> 개인화·필터 현황 디지털투데이 2023·아시아경제 2021·PM다이닝 2024 [자사발표/제3자]. progressive narrowing 부재는 공개자료 미확인 [추정].</span>
+    <span>오늘의집 Activation · 이도형</span>
   </div>
 </section>
 
-<!-- 12 why me -->
+<!-- 7 PAIN 4: CRM -->
 <section class="slide">
   <div class="head">
-    <div><div class="kicker vio">WHY ME</div><h2>이 분석을 실행으로 옮길 사람</h2></div>
+    <div><div class="kicker rose">빈틈 ④ · CRM 단일 CTA</div><h2>결국 '무료 견적 문의'로만 떨군다</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
   <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
-    <div class="card out"><h3 style="color:var(--blue-d)">발견형 커머스 퍼널을 이해한다</h3><p style="margin-top:4px">'영감 → 발견 → 전환'으로 이어지는 콘텐츠 커머스 구조를 소비자·마케터 양쪽 시선으로 분해 — 이 발표가 그 증거.</p></div>
-    <div class="card out"><h3 style="color:var(--blue-d)">경쟁사를 뜯어보고 액션으로 옮긴다</h3><p style="margin-top:4px">29CM·무신사·컬리·쿠팡의 실제 액션을 직접 캡처·해부해 오늘의집 맥락의 실행안으로 번역.</p></div>
-    <div class="card out"><h3 style="color:var(--blue-d)">데이터로 이탈을 잡아본 5년차</h3><p style="margin-top:4px">퍼포먼스·CRM 운영으로 유입→전환 퍼널의 누수 지점을 SQL·코호트로 찾아 액션으로 닫아온 경험.</p></div>
-    <div class="card out"><h3 style="color:var(--blue-d)">콘텐츠를 '광고' 아닌 '영감'으로</h3><p style="margin-top:4px">맥락형 UGC·썸네일 최적화로 광고 피로 없이 유입을 만들고, 단독 혜택·리얼 리뷰로 전환을 닫는 접근.</p></div>
+    <div class="card rose">
+      <h3 style="color:#d8412e">모든 길이 '무료 견적'으로 수렴</h3>
+      <p style="margin-top:4px">유저의 진짜 질문은 <b>"이 가격 맞아? 믿을 만해? 우리 집에 맞아?"</b>인데, 화면은 그걸 안 건드리고 <b>'무료 견적 문의'라는 단일 CTA</b>로만 보낸다. 페인이 안 풀리니 구매·계약 의향이 생기지 않는다.</p>
+    </div>
+    <div class="card out">
+      <h3>견적 이후도 플랫폼이 안 끌고 간다</h3>
+      <p style="margin-top:4px">견적 문의 후엔 <b>업체가 연락·미팅으로 끌고 가고</b>, 플랫폼 차원의 후속 넛지(미결제·미계약 리마인드, 페인 해소형 메시지)는 거의 없다. acquisition은 플랫폼이, activation은 '남'이 책임지는 구조.</p>
+    </div>
   </div>
-  <div class="quote" style="margin-top:14px;padding:16px 24px">
-    <div class="q" style="font-size:18px">"저는 오늘의집을 이미 <span class="g">소비자이자 마케터의 눈으로 분해</span>했습니다. 입사 후엔 이 돌파안을 데이터로 검증하고 실행하겠습니다."</div>
+  <div class="verify">
+    <div class="v ok"><span class="lab">오늘의집은 이미</span>가입·구매·활동 기반 <b>세그먼트 CRM</b>(알림톡·SMS·이메일)·재입고 알림을 운영. <span class="flag">[자사발표 블로그]</span></div>
+    <div class="v gap"><span class="lab">남은 빈틈</span><b>견적·관심 → 계약·구매로 잇는 activation 넛지</b>(장바구니 미결제 리타게팅, 견적 후 후속, 페인 해소형 메시지)는 확인되지 않음.</div>
+  </div>
+  <div class="callout" style="margin-top:13px">
+    <p style="font-size:15px">즉, CRM이 <b style="color:#fff">'더 모으기'에는 쓰이지만 '사게 만들기'에는 덜 쓰인다.</b> — 다시, activation의 빈자리.</p>
   </div>
   <div class="foot">
-    <span class="src"><b>매핑</b> 구매심리·경쟁사 분석 → 마케터 역량으로 연결. 구체 실적은 면접에서 보강.</span>
-    <span>오늘의집 구매전략 · 이도형</span>
+    <span class="src"><b>출처</b> 세그먼트 CRM·푸시 버킷플레이스 블로그 2021 [자사발표]. 견적→계약 흐름 casalight 발췌 [제3자]. activation 넛지 부재 [추정].</span>
+    <span>오늘의집 Activation · 이도형</span>
   </div>
 </section>
 
-<!-- 13 closing -->
+<!-- 8 진단 종합 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker amber">DIAGNOSIS</div><h2>정리 — Acquisition은 O, Activation은 물음표</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="flow" style="margin-bottom:16px">
+    <div class="step on"><div style="font-size:13px;font-weight:800;color:var(--teal-d)">발견·유입</div><div style="font-size:11px;color:var(--gray2);margin-top:2px">강함</div></div>
+    <div class="arr">→</div>
+    <div class="step off"><div style="font-size:12px;font-weight:800;color:#d8412e">가격 신뢰</div><div style="font-size:10.5px;color:#d8412e;margin-top:2px">빈틈①</div></div>
+    <div class="arr">＋</div>
+    <div class="step off"><div style="font-size:12px;font-weight:800;color:#d8412e">시공 신뢰</div><div style="font-size:10.5px;color:#d8412e;margin-top:2px">빈틈②</div></div>
+    <div class="arr">＋</div>
+    <div class="step off"><div style="font-size:12px;font-weight:800;color:#d8412e">탐색·CRM</div><div style="font-size:10.5px;color:#d8412e;margin-top:2px">빈틈③④</div></div>
+    <div class="arr">→</div>
+    <div class="step"><div style="font-size:13px;font-weight:800;color:var(--ink)">결제·계약</div><div style="font-size:11px;color:var(--gray2);margin-top:2px">누수 ?</div></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
+    <div class="card dark"><h3>측정의 빈틈</h3><p style="margin-top:4px">acquisition 지표(유입·MAU·노출)는 화려하지만, <b style="color:#8FB6FF">activation 지표(견적→계약, 탐색→첫구매)의 단계별 누수는 잘 안 보인다.</b> 이 퍼널이 잘 되고 있는지조차 명확하지 않다.</p></div>
+    <div class="card blue"><h3 style="color:var(--blue-d)">그래서 내가 할 일</h3><p style="margin-top:4px">① 측정으로 activation 누수를 드러내고 → ② '이미 가진 자산'을 결제·계약 직전까지 끌어와 네 빈틈을 닫는다. <b>모은 유저를 '사게' 만든다.</b></p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>설계</b> 네 빈틈을 하나의 activation 퍼널로 통합. 다음 장부터 검증된 'net-new'만 제안(이미 하는 건 제외).</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 9 액션 개요 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">MY PLAY</div><h2>활성화 4 레버 — '이미 가진 자산'을 결제 직전까지</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <p class="lead" style="font-size:16px;margin-bottom:13px">관통 원칙 — 없는 걸 새로 만들기보다, <b>오늘의집이 이미 가진 자산(리뷰·자재가·견적서·세그먼트)을 '망설이는 그 화면'으로 옮긴다.</b></p>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
+    <div class="card teal"><div class="num">레버 A · 빈틈① 가격</div><h3 style="color:var(--teal-d)">단품 상세에 '비교 + 신뢰 근거' 상시화</h3><p style="margin-top:4px">패키지에만 있던 최저가 자신감을 단품까지 — 타사 비교·정품·AS·리뷰로 "다른 데 검색할 필요 없음".</p></div>
+    <div class="card teal"><div class="num">레버 B · 빈틈② 시공</div><h3 style="color:var(--teal-d)">설치 결제화면을 '신뢰 화면'으로</h3><p style="margin-top:4px">80,000원 내역 분해 + 기사 프로필·평점 + 동종 전후·소요시간 + 하자보증을 결제 직전에.</p></div>
+    <div class="card teal"><div class="num">레버 C · 빈틈③ 탐색</div><h3 style="color:var(--teal-d)">'한 단계 더' 점진적 재세그먼트</h3><p style="margin-top:4px">필터 후 무액션 감지 → "뭐가 제일 중요해요?" 재질문으로 방대한 목록을 좁혀준다.</p></div>
+    <div class="card teal"><div class="num">레버 D · 빈틈④ CRM</div><h3 style="color:var(--teal-d)">'무료견적' 너머 activation 루프</h3><p style="margin-top:4px">미결제·미계약 리타게팅, 견적 후 후속, 페인 해소형 메시지로 관심을 계약·구매까지.</p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>검증</b> 동영상 리뷰·지정일 배송·패키지 최저가보장·시공 견적서는 '이미 함'으로 확인 → 제안에서 제외. 위 4개는 미충족 'net-new'.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 10 액션 A: 가격 신뢰 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">레버 A · 가격 신뢰</div><h2>단품 상세를, '비교가 끝나는 화면'으로</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
+    <div class="card out">
+      <h3>무엇을 더하나</h3>
+      <ul class="clean teal" style="margin-top:8px">
+        <li><b>타사 가격 비교 위젯</b> — 같은 SKU의 네이버·쿠팡 최저가를 상세에 노출(이미 가진 패키지 최저가보장 로직을 단품까지 확장)</li>
+        <li><b>'왜 여기가 믿을 만한가' 근거</b> — 정품 인증·AS·무료배송·리뷰 수를 가격 옆에 묶어 표시</li>
+        <li><b>최저가 보장 배지</b> — "더 싼 곳 있으면 차액 보상"을 단품에도</li>
+      </ul>
+    </div>
+    <div class="card dark">
+      <h3>왜 activation이 열리나</h3>
+      <p style="margin-top:6px">유저가 <b style="color:#8FB6FF">네이버로 이탈해 비교하던 행동을, 상세페이지 안에서 끝내게</b> 만든다. "여기가 제일 이득"이 화면에서 증명되면 결제 직전 망설임이 사라진다.</p>
+      <p style="margin-top:10px;font-size:13px;color:#B9C0CC"><b style="color:#fff">측정</b> — 상세→이탈 후 재방문율↓, 상세→장바구니→결제 전환율↑</p>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:13px">
+    <p style="font-size:15px"><b style="color:#fff">net-new인 이유</b> — 패키지엔 최저가 보장이 있지만 <b style="color:#fff">단품 상세엔 타사 비교·신뢰 근거가 상시 노출되지 않음</b>(검증 완료). 기존 로직의 '적용 범위 확장'이라 실행 난도도 낮다.</p>
+  </div>
+  <div class="foot">
+    <span class="src"><b>근거</b> 패키지 최저가보장 존재·단품 미적용 [자사발표/실측 검증]. 실행은 본인 제안.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 11 액션 B: 시공 신뢰 (before→after) -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">레버 B · 시공 신뢰</div><h2>그 '80,000원' 화면을, 신뢰 화면으로 바꾼다</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="grid" style="grid-template-columns:0.62fr 1fr;flex:1;align-content:start">
+    <div class="shotwrap" style="text-align:center">
+      <span class="badge rose">BEFORE · 지금</span>
+      <img class="shot phone" src="images/ohouse-faucet-service.png" alt="현재 수전 설치 결제 화면" />
+    </div>
+    <div style="display:flex;flex-direction:column;gap:11px">
+      <div class="card teal">
+        <h3 style="color:var(--teal-d)">AFTER · 같은 화면에 4가지를 더한다</h3>
+        <ul class="clean teal" style="margin-top:8px">
+          <li><b>가격 내역 분해</b> — 출장비 ₩ / 공임비 ₩ / 자재비 ₩ (이미 가진 '자재가 600종 DB' 활용)</li>
+          <li><b>담당 기사 카드</b> — 사진·평점·시공 건수·실제 후기 (시공 리뷰 3만건 자산 연결)</li>
+          <li><b>동종 시공 전/후 + 소요시간</b> — "수전 교체 보통 30분·이런 결과"</li>
+          <li><b>오늘의집 책임 보증 배지</b> — 하자 시 보장 주체를 결제 전에 명시</li>
+        </ul>
+      </div>
+      <div class="card dark">
+        <p style="font-size:13.5px;color:#D5D9E2"><b style="color:#fff">왜 activation이 열리나</b> — "이 가격 맞나·믿어도 되나"가 그 화면에서 풀리면 <b style="color:#8FB6FF">'다음' 버튼의 망설임이 사라진다.</b> 측정: 견적 화면 진입→신청 완료 전환율.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>net-new 근거</b> 대형 인테리어엔 견적서·리뷰·자재가 존재하나 소형 설치 결제화면엔 미적용(검증). 기존 자산의 '재배치'.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 12 액션 C+D: 탐색 + CRM -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">레버 C · D</div><h2>'한 단계 더' 좁히고, '무료견적' 너머로 잇는다</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
+    <div>
+      <div class="card blue" style="margin-bottom:11px"><div class="num" style="color:var(--blue-d)">레버 C · 탐색</div><h3 style="color:var(--blue-d)">점진적 재세그먼트</h3><p style="margin-top:4px">필터 후 <b>스크롤만 하고 클릭이 없으면</b>(무액션 감지) → "예산? 평수? 무드 중 뭐가 제일 중요해요?" 한 번 더 물어 결과를 5~10개로 추려준다.</p></div>
+      <div class="flow">
+        <div class="step"><div style="font-size:11.5px;font-weight:800;color:var(--blue-d)">필터</div></div>
+        <div class="arr">→</div>
+        <div class="step off"><div style="font-size:11.5px;font-weight:800;color:#d8412e">무액션</div></div>
+        <div class="arr">→</div>
+        <div class="step on"><div style="font-size:11.5px;font-weight:800;color:var(--teal-d)">재질문→압축</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card teal" style="margin-bottom:11px"><div class="num">레버 D · CRM</div><h3 style="color:var(--teal-d)">activation 루프</h3><p style="margin-top:4px">'무료견적' 단일 CTA를 <b>다음 행동 넛지</b>로 분기 — 장바구니·찜 미결제 리타게팅, 견적 후 "비슷한 시공 후기·예상 일정" 푸시, 가격 인하 알림.</p></div>
+      <div class="card dark"><p style="font-size:13px;color:#D5D9E2"><b style="color:#fff">공통 측정</b> — 탐색→첫구매 전환율, 견적→계약 전환율, 세그먼트별 누수 단계. activation이 '보이게' 만든다.</p></div>
+    </div>
+  </div>
+  <div class="verify">
+    <div class="v ok"><span class="lab">이미 함</span>온보딩·필터·AI추천 / 세그먼트 CRM·재입고 알림.</div>
+    <div class="v gap"><span class="lab">net-new</span>무액션 기반 재세그먼트 / 미결제·미계약 activation 넛지 — 둘 다 미확인 빈틈.</div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>근거</b> 개인화·CRM 현황 [자사발표/제3자], progressive narrowing·activation 넛지 부재 [추정]. 실행은 본인 제안.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 13 측정 / NSM -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">HOW WE MEASURE</div><h2>이 퍼널이 잘 되는지, 비로소 보이게 한다</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="card out" style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:15px;font-weight:800;color:var(--ink)">
+      <span style="color:var(--teal-d)">발견·유입</span><span style="color:var(--gray)">→</span>
+      <span>탐색 압축률</span><span style="color:var(--gray)">→</span>
+      <span>상세→결제 전환</span><span style="color:var(--gray)">→</span>
+      <span>견적→계약 전환</span><span style="color:var(--gray)">→</span>
+      <span style="color:var(--blue-d)">재구매·LTV</span>
+    </div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:start">
+    <div class="card teal metric"><div class="big teal">NSM</div><div class="lab">유입 유저당 '실제 결제·계약까지 간 비율' (Activation Rate) — acquisition 너머를 본다</div></div>
+    <div class="card blue metric"><div class="big blue">단계별</div><div class="lab">상세→장바구니→결제 / 견적→계약 각 구간 전환·누수율을 분리 측정</div></div>
+    <div class="card amber metric"><div class="big amber">세그</div><div class="lab">신규·재방문·고관여 세그먼트별로 어디서 새는지 — CRM·UX 액션의 타겟</div></div>
+  </div>
+  <div class="callout" style="margin-top:13px">
+    <p style="font-size:15px">"이 퍼널이 잘 되고 있는지 모르겠다"는 상태를 끝낸다 — <b style="color:#fff">activation을 단일 북극성과 단계별 누수로 가시화</b>하고, 그 위에서 4개 레버를 실험으로 검증.</p>
+  </div>
+  <div class="foot">
+    <span class="src"><b>원칙</b> 측정 먼저 → 실험으로 개선. 기준선·목표는 입사 후 내부 데이터로 확정.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 14 why me / 포부 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker vio">WHY ME · 나의 포부</div><h2>모으는 데서 멈추지 않고, 사게 만들겠습니다</h2></div>
+    <div class="logo"><span class="ic">⌂</span>오늘의집</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
+    <div class="card out"><h3 style="color:var(--blue-d)">퍼널 누수를 데이터로 닫아본 5년차</h3><p style="margin-top:4px">퍼포먼스·CRM 운영으로 유입→전환 누수 지점을 SQL·코호트로 찾아 액션으로 닫아온 경험. acquisition이 아니라 activation에서 성과를 내왔다.</p></div>
+    <div class="card out"><h3 style="color:var(--blue-d)">소비자로 직접 페인을 겪었다</h3><p style="margin-top:4px">수전 교체 결제 화면 앞에서 '다음'을 못 누른 그 경험 — 유저의 망설임을 직접 알기에, 추상이 아닌 '그 화면'을 고치는 안을 만든다.</p></div>
+    <div class="card out"><h3 style="color:var(--blue-d)">'이미 있는 것'과 '빈틈'을 가른다</h3><p style="margin-top:4px">제안 전에 동영상 리뷰·지정일 배송·패키지 보장이 이미 있는지 검증부터 했다. 회사가 한 일을 존중하고, 진짜 빈자리만 짚는다.</p></div>
+    <div class="card out"><h3 style="color:var(--blue-d)">큰 자산을 작은 화면까지 잇는다</h3><p style="margin-top:4px">리뷰 3만건·자재가 DB·세그먼트 CRM 같은 자산을, 유저가 망설이는 '바로 그 화면'으로 옮기는 일 — 신규 개발보다 재배치로 빠르게 성과.</p></div>
+  </div>
+  <div class="quote" style="margin-top:13px;padding:16px 24px">
+    <div class="q" style="font-size:18px">"오늘의집은 잘 모읍니다. 저는 그 다음, <span class="g">'왜 굳이 여기서 사야 하는가'에 답해 activation을 끌어올리겠습니다.</span>"</div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>매핑</b> 진단·검증·실행을 마케터 역량으로 연결. 구체 실적은 면접에서 보강.</span>
+    <span>오늘의집 Activation · 이도형</span>
+  </div>
+</section>
+
+<!-- 15 closing -->
 <section class="slide" style="justify-content:center;background:
   radial-gradient(900px 520px at 86% -12%, var(--blue-soft) 0%, transparent 55%),
   radial-gradient(720px 520px at -6% 112%, var(--rose-soft) 0%, transparent 55%), #fff">
   <div class="logo" style="margin-bottom:22px"><span class="ic">⌂</span>오늘의집</div>
-  <div class="kicker vio">CHECKLIST · 마지막으로</div>
-  <h1 style="font-size:40px">약점은 <span class="hl rose">강점의 그림자</span>다.<br>그래서 <span class="hl">강점을 더 밀어</span> 돌파한다.</h1>
-  <p class="lead" style="margin-top:20px;max-width:980px">취향은 큐레이션으로, 보정 불신은 리얼 리뷰로, 최저가 이탈은 단독 혜택으로, 배송 피로는 지정일·설치로 — <b>경쟁사가 증명한 방법을 오늘의집의 자산으로 더 크게</b> 실행하면, 유입·전환·재구매가 따라옵니다.</p>
-  <div style="margin-top:30px;display:flex;gap:10px;align-items:center">
+  <div class="kicker vio">CLOSING</div>
+  <h1 style="font-size:40px">잘 모으는 건, 이미 증명됐습니다.<br>이제 <span class="hl">'왜 굳이 여기서'</span>에 답할 차례입니다.</h1>
+  <p class="lead" style="margin-top:20px;max-width:1000px">가격은 비교가 끝나는 화면으로, 시공은 믿어도 되는 화면으로, 탐색은 한 단계 더 좁혀주고, CRM은 무료견적 너머로 — <b>오늘의집이 이미 가진 자산을 '망설이는 그 화면'으로 옮겨</b>, 모은 유저를 사게 만들겠습니다.</p>
+  <div style="margin-top:28px;display:flex;gap:10px;align-items:center">
     <span class="pill k">감사합니다</span>
-    <span class="pill blue">Growth Marketer</span>
+    <span class="pill blue">Growth Marketer · Activation</span>
     <span class="pill vio">이도형</span>
   </div>
 </section>
