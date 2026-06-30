@@ -261,16 +261,23 @@ ul.x li:before{content:"✕";position:absolute;left:2px;top:0;color:var(--rose);
     <div><div class="kicker rose">빈틈 ③ · 탐색 길잃음</div><h2>한 번 걸러도 여전히 방대 — "뭘 눌러야 하죠?"</h2></div>
     <div class="logo"><span class="ic">⌂</span>오늘의집</div>
   </div>
-  <div class="flow" style="margin-bottom:14px">
-    <div class="step on"><div style="font-size:13px;font-weight:800;color:var(--teal-d)">세그먼트 시도</div><div style="font-size:11px;color:var(--gray2);margin-top:2px">온보딩·필터·AI추천 ✓</div></div>
-    <div class="arr">→</div>
-    <div class="step"><div style="font-size:13px;font-weight:800;color:var(--gray2)">1회 필터 적용</div><div style="font-size:11px;color:var(--gray);margin-top:2px">결과 수천 개</div></div>
-    <div class="arr">→</div>
-    <div class="step off"><div style="font-size:13px;font-weight:800;color:#d8412e">선택 마비</div><div style="font-size:11px;color:#d8412e;margin-top:2px">"뭘 눌러야?" → 이탈</div></div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;align-content:start">
-    <div class="card out"><h3>좋은 시도, 아쉬운 끝맺음</h3><p style="margin-top:4px">유저별로 맞춤 정보를 보여주려는 방향은 옳다. 문제는 <b>한 번 필터링한 뒤에도 봐야 할 게 방대</b>하다는 것 — 좁혀줬다기보다 '큰 묶음'을 줬을 뿐.</p></div>
-    <div class="card blue"><h3 style="color:var(--blue-d)">필요한 건 '한 단계 더'</h3><p style="margin-top:4px">필터 후에도 행동이 없으면 — <b>"이 중에 뭐가 제일 중요해요?"</b>를 한 번 더 물어 결과를 추려주는 점진적(progressive) 재세그먼트가 빠져 있다.</p></div>
+  <div class="grid" style="grid-template-columns:0.6fr 1fr;flex:1;align-content:start">
+    <div class="shotwrap" style="text-align:center">
+      <span class="badge">온보딩 · 관심사 질문</span>
+      <img class="shot phone" style="height:300px" src="images/ohouse-interest-onboarding.png" alt="오늘의집 관심사 온보딩 팝업" />
+      <div class="cap">오늘의집은 이렇게 '관심사'를 묻는다 — 세그먼트의 좋은 시작</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="flow">
+        <div class="step on"><div style="font-size:12.5px;font-weight:800;color:var(--teal-d)">관심사·필터</div><div style="font-size:10.5px;color:var(--gray2);margin-top:2px">시도 ✓</div></div>
+        <div class="arr">→</div>
+        <div class="step"><div style="font-size:12.5px;font-weight:800;color:var(--gray2)">1회 적용</div><div style="font-size:10.5px;color:var(--gray);margin-top:2px">결과 수천 개</div></div>
+        <div class="arr">→</div>
+        <div class="step off"><div style="font-size:12.5px;font-weight:800;color:#d8412e">선택 마비</div><div style="font-size:10.5px;color:#d8412e;margin-top:2px">"뭘 눌러야?"</div></div>
+      </div>
+      <div class="card out tight"><h3>좋은 시도, 아쉬운 끝맺음</h3><p style="margin-top:3px">관심사를 묻는 방향은 옳다. 문제는 <b>한 번 거른 뒤에도 봐야 할 게 방대</b>하다는 것 — 좁혀줬다기보다 '큰 묶음'을 줬을 뿐.</p></div>
+      <div class="card blue tight"><h3 style="color:var(--blue-d)">필요한 건 '한 단계 더'</h3><p style="margin-top:3px">행동이 없으면 <b>"이 중에 뭐가 제일 중요해요?"</b>를 한 번 더 물어 결과를 추려주는 점진적 재세그먼트가 빠져 있다.</p></div>
+    </div>
   </div>
   <div class="verify">
     <div class="v ok"><span class="lab">오늘의집은 이미</span>온보딩 공간 질문·집들이 다중 필터·행동 기반 AI 추천을 운영. <span class="flag">[자사발표/제3자]</span></div>
