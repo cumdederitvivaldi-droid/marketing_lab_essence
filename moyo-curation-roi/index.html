@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모요 통합 큐레이션 ROI 검증 ｜ 내부 실행 제안</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --ink:#191f28; --charcoal:#343a40; --gray:#7c848c; --faint:#aeb4bb; --line:#edeff2;
+    --indigo:#516aec; --indigo-d:#3a52cc; --indigo-l:#7086fb; --indigo-bg:#eef1ff;
+    --red:#fa5252; --red-d:#e03e3e; --red-bg:#fff0f0;
+    --tint:#f7f8fa; --green:#12a886; --navy:#0b0f30;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:'Pretendard','Pretendard Variable',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--charcoal);background:#dcdfe4;line-height:1.55;}
+  .hint{position:fixed;top:14px;right:14px;z-index:99;background:var(--indigo);color:#fff;font-size:13px;padding:9px 14px;border-radius:30px;box-shadow:0 4px 16px rgba(81,106,236,.3);}
+  .hint b{color:#fff;text-decoration:underline;}
+  .deck{display:flex;flex-direction:column;align-items:center;gap:26px;padding:40px 0 64px;}
+  .slide{width:1280px;height:720px;background:#fff;position:relative;overflow:hidden;padding:44px 58px 52px;box-shadow:0 12px 44px rgba(25,31,40,.14);display:flex;flex-direction:column;}
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex:0 0 auto;}
+  .stepper{display:flex;align-items:center;}
+  .step{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--faint);}
+  .step .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:#eef0f3;color:var(--faint);}
+  .step.done{color:var(--indigo-d);} .step.done .n{background:var(--indigo-bg);color:var(--indigo-d);}
+  .step.active{color:var(--ink);} .step.active .n{background:var(--indigo);color:#fff;box-shadow:0 0 0 4px var(--indigo-bg);}
+  .sep{width:30px;height:2px;background:#e6e8ec;margin:0 12px;border-radius:2px;}
+  .brandtag{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--faint);}
+  .brandtag b{color:var(--indigo);}
+
+  .lede{font-size:14px;color:var(--gray);font-weight:700;margin-bottom:5px;}
+  .stitle{font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-1.1px;line-height:1.24;}
+  .stitle .i{color:var(--indigo);} .stitle .r{color:var(--red-d);}
+  .body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;}
+  .take{font-size:18px;font-weight:700;color:var(--ink);line-height:1.5;}
+  .take .hi{background:linear-gradient(transparent 58%,var(--indigo-bg) 58%);padding:0 3px;}
+  .take .hir{background:linear-gradient(transparent 58%,var(--red-bg) 58%);padding:0 3px;}
+  .pageno{position:absolute;right:58px;bottom:24px;font-size:12px;color:var(--faint);font-weight:700;}
+  b.k{font-weight:800;color:var(--ink);}
+  .i{color:var(--indigo);} .r{color:var(--red-d);}
+
+  .row{display:flex;gap:18px;}
+  .col{flex:1;min-width:0;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .card.tint{background:var(--tint);box-shadow:none;}
+  .card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .card p{font-size:14px;color:#525a62;}
+  ul.clean{list-style:none;} ul.clean li{position:relative;padding-left:19px;font-size:14px;color:#4a525a;margin:8px 0;}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--indigo);}
+  .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:20px;}
+  .tag.i{background:var(--indigo-bg);color:var(--indigo-d);} .tag.r{background:var(--red-bg);color:var(--red-d);} .tag.g{background:#e7f8f3;color:var(--green);}
+  .big{font-size:42px;font-weight:800;color:var(--indigo);letter-spacing:-1.5px;line-height:1;}
+  .big .u{font-size:16px;font-weight:700;color:var(--gray);letter-spacing:0;}
+  .num-l{font-size:13px;color:#525a62;margin-top:8px;font-weight:600;}
+  .src{font-size:10.5px;color:var(--faint);}
+  .note{font-size:11px;color:var(--faint);margin-top:10px;}
+  .gloss{background:var(--indigo-bg);border-radius:12px;padding:10px 16px;font-size:13px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:8px;}
+  .gloss b{color:var(--indigo-d);font-weight:800;}
+  .gloss.warn{background:var(--red-bg);}
+  .gloss.warn b{color:var(--red-d);}
+
+  /* COVER (dark, pure CSS/SVG — no raster images) */
+  .cover{padding:0;position:relative;background:#0b0f30;overflow:hidden;}
+  .coverbg{position:absolute;inset:0;background:radial-gradient(120% 100% at 82% 12%,#1b2566 0%,#0b0f30 55%),radial-gradient(80% 60% at 10% 90%,#141a44 0%,#0b0f30 60%);}
+  .coverscrim{position:absolute;inset:0;background:linear-gradient(90deg,#0b0f30 0%,#0b0f30 30%,rgba(11,15,48,.4) 52%,rgba(11,15,48,0) 72%);}
+  .cover .left{position:relative;z-index:3;width:60%;padding:0 60px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+  .cover .right{position:relative;z-index:2;width:40%;height:100%;display:flex;align-items:center;justify-content:center;}
+  .wordmark{font-size:26px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,#7df9ff,#7aa6ff,#b18cff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:30px;}
+  .cover .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:2.5px;color:#8fa0ff;margin-bottom:18px;}
+  .cover h1{font-size:40px;font-weight:800;color:#fff;letter-spacing:-1.6px;line-height:1.36;}
+  .cover h1 .g{background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cover .spine{margin-top:24px;font-size:17px;font-weight:700;color:#c7cdf0;line-height:1.55;border-left:3px solid var(--indigo-l);padding-left:15px;}
+  .cover .spine b{color:#fff;}
+  .cover .meta{margin-top:44px;font-size:13px;color:#8a92c4;}
+  .cover .meta b{color:#dfe3ff;}
+  .holo{width:100%;height:100%;}
+
+  /* stats */
+  .stats{display:flex;gap:13px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:0;background:var(--tint);border-radius:16px;padding:16px 14px;text-align:center;}
+
+  /* strategy header */
+  .strathead{display:flex;align-items:center;gap:14px;background:var(--indigo-bg);border-radius:14px;padding:13px 18px;margin-bottom:16px;}
+  .strathead .b{background:var(--red);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;flex:0 0 auto;}
+  .strathead .t{font-size:14.5px;font-weight:700;color:var(--charcoal);}
+  .strathead .t b{color:var(--indigo-d);}
+  .actcard{flex:1;border-radius:16px;border:1px solid var(--line);padding:17px 19px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .actcard h3{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+
+  /* before/after mechanism diagram */
+  .mech{display:flex;align-items:stretch;gap:14px;}
+  .mc{flex:1;border-radius:18px;padding:19px 20px;border:1.5px solid var(--line);}
+  .mc.before{background:var(--red-bg);border-color:#ffd3d3;}
+  .mc.after{background:var(--indigo-bg);border-color:#d4dbff;}
+  .mc .mlabel{font-size:11.5px;font-weight:800;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:12px;}
+  .mc.before .mlabel{background:var(--red);color:#fff;}
+  .mc.after .mlabel{background:var(--indigo);color:#fff;}
+  .mc .mbig{font-size:38px;font-weight:800;letter-spacing:-1.5px;line-height:1;}
+  .mc.before .mbig{color:var(--red-d);}
+  .mc.after .mbig{color:var(--indigo-d);}
+  .mc .mdesc{font-size:13px;color:#525a62;margin-top:8px;line-height:1.5;}
+  .chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+  .chip{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:20px;background:#fff;border:1px solid var(--line);color:#525a62;}
+  .mc.before .chip{border-color:#ffc9c9;color:#a13a3a;}
+  .arr2{display:flex;align-items:center;color:var(--faint);font-size:24px;font-weight:800;padding:0 2px;}
+  .abclist{display:flex;gap:8px;margin-top:12px;}
+  .abcpill{flex:1;background:#fff;border-radius:10px;padding:8px 6px;text-align:center;border:1px solid #d4dbff;}
+  .abcpill .lbl{font-size:10.5px;font-weight:800;color:var(--indigo-d);}
+  .abcpill .val{font-size:15px;font-weight:800;color:var(--ink);margin-top:2px;}
+
+  /* premise stat tiles */
+  .premise{display:flex;gap:14px;}
+  .pt{flex:1;background:var(--tint);border-radius:18px;padding:20px 16px;text-align:center;}
+  .pt .pv{font-size:32px;font-weight:800;color:var(--indigo);letter-spacing:-1.2px;}
+  .pt .pl{font-size:12.5px;color:#5b636b;margin-top:8px;font-weight:600;line-height:1.4;}
+  .pt .ptag{font-size:10px;color:var(--faint);margin-top:4px;font-weight:700;}
+
+  /* scenario table */
+  table.kpi{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.kpi th,table.kpi td{border-bottom:1px solid var(--line);padding:12px 14px;text-align:center;vertical-align:middle;}
+  table.kpi th{background:var(--indigo);color:#fff;font-weight:700;font-size:12.5px;border:none;}
+  table.kpi th.target{background:var(--indigo-d);position:relative;}
+  table.kpi td:first-child,table.kpi th:first-child{text-align:left;}
+  table.kpi tr td:first-child{font-weight:800;color:var(--indigo-d);width:24%;}
+  table.kpi tbody tr:nth-child(even){background:var(--tint);}
+  table.kpi td.target{background:var(--indigo-bg);font-weight:800;color:var(--indigo-d);}
+
+  /* CAC effect */
+  .cacwrap{display:flex;gap:16px;align-items:stretch;}
+  .cacflow{flex:1.15;display:flex;flex-direction:column;gap:10px;justify-content:center;}
+  .cacstep{background:var(--tint);border-radius:14px;padding:13px 16px;font-size:13.5px;color:#3a4048;font-weight:600;display:flex;align-items:center;gap:10px;}
+  .cacstep .num{width:24px;height:24px;border-radius:50%;background:var(--indigo);color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center;flex:0 0 auto;}
+  .cacstep.hi{background:var(--indigo-bg);}
+  .cacstep.hi .num{background:var(--indigo-d);}
+  .cacbox{flex:1;background:radial-gradient(120% 140% at 80% 0%,#1a2156,#0b0f30);border-radius:20px;padding:24px 22px;color:#fff;display:flex;flex-direction:column;justify-content:center;}
+  .cacbox .cl{font-size:12.5px;color:#9aa4de;font-weight:700;}
+  .cacbox .cv{font-size:30px;font-weight:800;margin-top:8px;line-height:1.2;background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cacbox .cd{font-size:12.5px;color:#c7cdf0;margin-top:10px;line-height:1.55;}
+
+  /* roadmap */
+  .phase{display:flex;gap:13px;}
+  .pc{flex:1;border-radius:18px;padding:17px;border:1px solid var(--line);}
+  .pc.p1{background:var(--indigo-bg);border-color:#d4dbff;} .pc.p2{background:var(--tint);} .pc.p3{background:var(--tint);}
+  .pn{font-size:11.5px;font-weight:800;color:#fff;background:var(--indigo);padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+  .p2 .pn,.p3 .pn{background:var(--indigo-l);}
+  .pc h3{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .pc li{font-size:12.5px;color:#4a525a;margin:5px 0;padding-left:15px;position:relative;list-style:none;}
+  .pc li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--indigo);}
+
+  /* ask box */
+  .askbox{background:var(--ink);border-radius:14px;padding:15px 20px;color:#fff;font-size:14px;line-height:1.6;margin-top:16px;display:flex;align-items:center;gap:12px;}
+  .askbox b{color:var(--indigo-l);}
+  .askbox .askicon{font-size:11.5px;font-weight:800;background:var(--indigo);padding:5px 12px;border-radius:20px;flex:0 0 auto;}
+
+  /* impact recap (closing) */
+  .impact{display:flex;gap:14px;}
+  .ic{flex:1;background:var(--tint);border-radius:18px;padding:18px 16px;text-align:center;}
+  .ic .iv{font-size:28px;font-weight:800;color:var(--indigo);letter-spacing:-1.2px;line-height:1.05;}
+  .ic .iv .ar{color:var(--green);}
+  .ic .il{font-size:12px;color:#5b636b;margin-top:9px;font-weight:600;line-height:1.4;}
+  .ic .ib{font-size:10.5px;color:var(--faint);margin-top:5px;}
+  .ic.target{background:var(--indigo-bg);}
+
+  @media print{
+    body{background:#fff;} .hint{display:none;}
+    .deck{gap:0;padding:0;}
+    .slide{box-shadow:none;page-break-after:always;break-after:page;}
+    @page{size:1280px 720px;margin:0;}
+  }
+</style>
+</head>
+<body>
+<div class="hint">키보드 <b>Ctrl/⌘+P</b> → "PDF로 저장", 용지 가로 → 10p PDF 완성</div>
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <div class="coverbg"></div>
+  <div class="coverscrim"></div>
+  <div class="left">
+    <div class="wordmark">moyo</div>
+    <div class="eyebrow">GROWTH 전략⑤ 딥다이브 · 내부 실행 제안</div>
+    <h1>통합 큐레이션 ROI 검증<br><span class="g">— 서비스가 늘수록<br>이기는 건 안내하는 쪽</span></h1>
+    <div class="spine">"전략⑤ 통합 큐레이션" 아이디어에<br><b>ROI 검증 · 실행 로드맵</b>을 더한 내부 실행안</div>
+    <div class="meta"><b>모요 Growth Team</b> ｜ 2026 ｜ 문제 → 해법 → ROI 검증 → 실행</div>
+  </div>
+  <div class="right">
+    <svg class="holo" viewBox="0 0 560 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8be9ff"/><stop offset="0.4" stop-color="#7aa6ff"/>
+          <stop offset="0.7" stop-color="#9b7bff"/><stop offset="1" stop-color="#c98bff"/>
+        </linearGradient>
+        <linearGradient id="holo2" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#6ad9ff"/><stop offset="0.5" stop-color="#8aa0ff"/><stop offset="1" stop-color="#b58bff"/>
+        </linearGradient>
+        <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#6a7bff" stop-opacity="0.55"/><stop offset="1" stop-color="#6a7bff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="300" cy="330" r="280" fill="url(#glow)"/>
+      <!-- compass / guide icon (represents curation guidance) -->
+      <g transform="translate(300,300)">
+        <circle cx="0" cy="0" r="150" fill="none" stroke="url(#holo)" stroke-width="6" stroke-opacity="0.85"/>
+        <circle cx="0" cy="0" r="112" fill="none" stroke="url(#holo2)" stroke-width="2" stroke-opacity="0.5"/>
+        <path d="M0 -95 L28 -20 L0 0 L-28 -20 Z" fill="url(#holo)" opacity="0.95"/>
+        <path d="M0 95 L28 20 L0 0 L-28 20 Z" fill="url(#holo2)" opacity="0.7"/>
+        <circle cx="0" cy="0" r="10" fill="#fff" opacity="0.9"/>
+      </g>
+      <!-- scattered nodes representing many services, converging -->
+      <g stroke="url(#holo2)" stroke-width="2" stroke-opacity="0.55" fill="none">
+        <path d="M120 130 C 180 200 220 250 262 268"/>
+        <path d="M470 150 C 400 210 350 245 300 262"/>
+        <path d="M100 560 C 180 500 230 460 262 420"/>
+        <path d="M460 580 C 390 510 340 470 302 424"/>
+      </g>
+      <circle cx="120" cy="130" r="18" fill="url(#holo)" opacity="0.85"/>
+      <circle cx="470" cy="150" r="14" fill="url(#holo2)" opacity="0.75"/>
+      <circle cx="100" cy="560" r="16" fill="url(#holo2)" opacity="0.8"/>
+      <circle cx="460" cy="580" r="13" fill="url(#holo)" opacity="0.7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 2 문제/기회 리캡 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step active"><span class="n">1</span>문제</span><span class="sep"></span>
+      <span class="step"><span class="n">2</span>해법</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag"><b>moyo</b> ｜ 문제 리캡</span>
+  </div>
+  <div class="lede">문제 리캡 ｜ 서비스가 늘수록 커지는 온보딩 이탈</div>
+  <h1 class="stitle">서비스가 풍부해질수록, <span class="r">신규·시니어 유저는 길을 잃는다</span></h1>
+  <div class="body">
+    <div class="gloss" style="margin-bottom:16px;">🧭 <b>현재 서비스 구성</b> — 요금제 비교 · 휴대폰(자급제) · 인터넷 결합 · 랭킹 · 커뮤니티까지 폭넓게 운영 중 → 무엇을 먼저 봐야 할지 안내가 없음</div>
+    <div class="row" style="align-items:stretch;">
+      <div class="col" style="flex:1.15;">
+        <div class="card" style="height:100%;">
+          <h3>왜 문제인가</h3>
+          <ul class="clean">
+            <li>신규 앱설치 유저는 <b class="k">"무엇을 찾아야 할지"</b> 판단할 사전 지식이 없음</li>
+            <li>시니어 유저는 다수 메뉴·비교 화면 자체가 진입장벽</li>
+            <li>결과적으로 <b class="k">핵심서비스(요금제 비교 등) 도달 전에 이탈</b></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col" style="flex:.85;">
+        <div class="card tint" style="height:100%;text-align:center;display:flex;flex-direction:column;justify-content:center;">
+          <div class="big" style="font-size:52px;">40<span class="u">%</span></div>
+          <div class="num-l">신규 앱설치 → 첫 핵심서비스 도달 전 <b class="k">이탈률(가정)</b></div>
+          <div class="src" style="margin-top:10px;">온보딩 복잡도로 인한 이탈로 가정</div>
+        </div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:18px;">10명 중 <span class="hir">4명이 요금제 비교조차 보지 못하고</span> 이탈 — 이미 광고비를 쓰고 데려온 유저인데도.</p>
+  </div>
+  <div class="pageno">02 / 10</div>
+</section>
+
+<!-- 3 해법 두 축 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>해법</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">해법 두 축</span>
+  </div>
+  <div class="lede">해법 ｜ 큐레이션 온보딩 + 개인화 홈 대시보드</div>
+  <h1 class="stitle">많이 가진 쪽이 아니라 <span class="i">쉽게 안내하는 쪽</span>이 이긴다</h1>
+  <div class="body">
+    <div class="row">
+      <div class="actcard"><span class="tag i">① 단계별 큐레이션 온보딩</span>
+        <h3 style="margin-top:8px;">"무엇을 찾으세요?" 3~4개 질문으로 안내</h3>
+        <ul class="clean">
+          <li>신규 진입 시 짧은 질문으로 <b class="k">요금제·폰·결합까지</b> 서비스 전체를 안내</li>
+          <li>통신을 잘 몰라도, 시니어여도 <b class="k">길을 잃지 않는</b> 첫 화면</li>
+          <li>질문에 따라 첫 핵심서비스로 바로 연결 → 이탈 지점 자체를 줄임</li>
+        </ul>
+      </div>
+      <div class="actcard"><span class="tag g">② 개인화 홈 대시보드</span>
+        <h3 style="margin-top:8px;">진단·알림·추천을 한 화면에</h3>
+        <ul class="clean">
+          <li>내 통신 현황·진단·할 일·추천을 <b class="k">홈 한 화면</b>에 통합</li>
+          <li>재방문 시에도 <b class="k">"다음에 뭐 하지?"</b>를 모요가 먼저 제안</li>
+          <li>여러 서비스가 흩어져 있던 경험을 하나의 축으로 재구성</li>
+        </ul>
+      </div>
+    </div>
+    <div class="gloss" style="margin-top:18px;">🏦 <b>벤치마킹</b> — 토스 홈: 수십 개 금융 서비스 중 <b>"내게 필요한 것만" 큐레이션</b>해 보여주는 구조. 모요도 같은 원리를 온보딩·홈에 적용.</div>
+  </div>
+  <div class="pageno">03 / 10</div>
+</section>
+
+<!-- 4 개선 메커니즘 (Before/After) -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">개선 메커니즘</span>
+  </div>
+  <div class="lede">ROI 검증 ① ｜ 무엇이 바뀌는가</div>
+  <h1 class="stitle">복잡한 메뉴 구조를 <span class="i">안내형 구조</span>로 바꾸면 이탈이 줄어든다</h1>
+  <div class="body">
+    <div class="mech">
+      <div class="mc before">
+        <span class="mlabel">BEFORE</span>
+        <div class="mbig">40%</div>
+        <div class="mdesc">신규 앱설치 후 첫 핵심서비스 도달 전 <b class="k">이탈</b> (가정)</div>
+        <div class="chiprow">
+          <span class="chip">요금제</span><span class="chip">휴대폰</span><span class="chip">인터넷</span><span class="chip">랭킹</span><span class="chip">커뮤니티</span>
+        </div>
+        <div class="mdesc" style="margin-top:10px;">→ 서비스는 많지만, 무엇을 먼저 봐야 할지 안내가 없는 <b class="k">복잡한 메뉴 구조</b></div>
+      </div>
+      <div class="arr2">→</div>
+      <div class="mc after">
+        <span class="mlabel">AFTER</span>
+        <div class="mbig">35~25%</div>
+        <div class="mdesc">큐레이션 온보딩 도입 후 <b class="k">이탈률 개선</b> (시나리오별)</div>
+        <div class="abclist">
+          <div class="abcpill"><div class="lbl">A 보수</div><div class="val">-5%p</div></div>
+          <div class="abcpill"><div class="lbl">B 중립</div><div class="val">-10%p</div></div>
+          <div class="abcpill"><div class="lbl">C 공격</div><div class="val">-15%p</div></div>
+        </div>
+        <div class="mdesc" style="margin-top:10px;">→ "무엇을 찾으세요?" 질문이 <b class="k">첫 핵심서비스까지 최단 경로</b>를 만들어줌</div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:18px;">같은 유저, 같은 광고비 — <span class="hi">안내 구조만 바꿔도</span> 도달률이 달라진다는 것이 이 제안의 핵심 가설.</p>
+  </div>
+  <div class="pageno">04 / 10</div>
+</section>
+
+<!-- 5 ROI 모델 전제 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">ROI 모델 전제</span>
+  </div>
+  <div class="lede">ROI 검증 ② ｜ 계산에 사용한 전제치</div>
+  <h1 class="stitle">ROI 계산은 <span class="i">4가지 전제</span> 위에서 출발한다</h1>
+  <div class="body">
+    <div class="premise">
+      <div class="pt"><div class="pv">5<span class="u" style="font-size:16px;">만명</span></div><div class="pl">월 신규 앱설치</div><div class="ptag">가정치</div></div>
+      <div class="pt"><div class="pv">40<span class="u" style="font-size:16px;">%</span></div><div class="pl">현재 온보딩 이탈률<br>(첫 핵심서비스 도달 전)</div><div class="ptag">가정치</div></div>
+      <div class="pt"><div class="pv">10<span class="u" style="font-size:16px;">%</span></div><div class="pl">회생 유저의<br>최종 개통전환율</div><div class="ptag">가정치</div></div>
+      <div class="pt"><div class="pv">3<span class="u" style="font-size:16px;">만원</span></div><div class="pl">인당 정산수수료</div><div class="ptag">타 growth안과 통일 가정치</div></div>
+    </div>
+    <p class="take" style="margin-top:22px;">계산 순서 — <span class="hi">월 신규 5만명 × 이탈률 개선폭 = 추가 도달</span> → <span class="hi">×연 12개월</span> → <span class="hi">×개통전환율 10%</span> → <span class="hi">×인당 3만원</span> = 연 매출.</p>
+    <p class="note">본 전제치는 재무모델링 단계에서 확정된 가정으로, 실측 데이터가 아닌 시나리오 산출용 가정임을 명시.</p>
+  </div>
+  <div class="pageno">05 / 10</div>
+</section>
+
+<!-- 6 시나리오 A/B/C -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">시나리오 A/B/C</span>
+  </div>
+  <div class="lede">ROI 검증 ③ ｜ 시나리오별 매출 임팩트</div>
+  <h1 class="stitle">보수·중립·공격 — <span class="i">3가지 시나리오</span>로 본 매출 규모</h1>
+  <div class="body">
+    <table class="kpi">
+      <tr><th>구분</th><th>A · 보수</th><th class="target">B · 중립 (1년 목표)</th><th>C · 공격</th></tr>
+      <tr><td>이탈률 개선폭</td><td>5%p (40%→35%)</td><td class="target">10%p (40%→30%)</td><td>15%p (40%→25%)</td></tr>
+      <tr><td>월 추가 도달</td><td>2,500명</td><td class="target">5,000명</td><td>7,500명</td></tr>
+      <tr><td>연 추가 도달</td><td>3만명</td><td class="target">6만명</td><td>9만명</td></tr>
+      <tr><td>연 신규 개통 (전환율 10%)</td><td>3,000명</td><td class="target">6,000명</td><td>9,000명</td></tr>
+      <tr><td>예상 매출 (인당 3만원)</td><td>9,000만원</td><td class="target">1.8억원</td><td>2.7억원</td></tr>
+    </table>
+    <p class="take" style="margin-top:20px;"><span class="hi">1년 목표는 시나리오 B — 매출 1.8억원.</span> A는 최소 하방, C는 온보딩 완주율이 크게 뛸 경우의 상방.</p>
+  </div>
+  <div class="pageno">06 / 10</div>
+</section>
+
+<!-- 7 CAC 관점 부가효과 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">CAC 관점 부가효과</span>
+  </div>
+  <div class="lede">ROI 검증 ④ ｜ 이 매출의 성격</div>
+  <h1 class="stitle">이 매출은 <span class="i">"추가 광고비 없이"</span> 발생하는 순증분이다</h1>
+  <div class="body">
+    <div class="cacwrap">
+      <div class="cacflow">
+        <div class="cacstep"><span class="num">1</span>유저는 이미 광고비(CAC)를 지불하고 <b class="k">앱을 설치</b>한 상태</div>
+        <div class="cacstep"><span class="num">2</span>기존에는 온보딩 복잡도 때문에 <b class="k">핵심서비스 도달 전 이탈</b></div>
+        <div class="cacstep hi"><span class="num">3</span>큐레이션 온보딩으로 <b class="k">이미 유입된 유저를 회생</b>시키는 구조</div>
+        <div class="cacstep hi"><span class="num">4</span>새 유저를 사는 것이 아니므로 <b class="k">CAC 재투입이 필요 없음</b></div>
+      </div>
+      <div class="cacbox">
+        <div class="cl">시나리오 B 기준</div>
+        <div class="cv">1.8억원 매출<br>= 추가 광고비 0원</div>
+        <div class="cd">신규 획득(CAC 지불) 없이, 이미 유입된 유저의 온보딩 이탈만 줄여서 만드는 매출 — 광고비 낭비 감소와 매출 증가가 동시에 일어나는 구조.</div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:18px;">즉 이 ROI는 <span class="hi">기존 마케팅 예산과 경쟁하지 않는</span> 순증분 — 예산 재배분 없이도 실행 가능하다.</p>
+  </div>
+  <div class="pageno">07 / 10</div>
+</section>
+
+<!-- 8 실행 로드맵 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI 검증</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">실행 로드맵</span>
+  </div>
+  <div class="lede">실행 ① ｜ 단계별 로드맵</div>
+  <h1 class="stitle">프로토타입 → 실측 → 롤아웃, <span class="i">3단계</span>로 검증한다</h1>
+  <div class="body">
+    <div class="phase">
+      <div class="pc p1"><span class="pn">0–1개월 · 설계</span><h3>프로토타입 설계</h3>
+        <ul><li>온보딩 질문 플로우 설계(3~4문항)</li><li>개인화 홈 대시보드 프로토타입 제작</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p2"><span class="pn">1–3개월 · 실측</span><h3>A/B 테스트</h3>
+        <ul><li>기존 온보딩 vs 큐레이션 온보딩 A/B 테스트</li><li>실제 이탈률 개선폭을 측정해 A/B/C 시나리오 검증</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p3"><span class="pn">3개월~ · 확장</span><h3>전체 롤아웃</h3>
+        <ul><li>실측 개선폭 기준으로 전체 유저 대상 롤아웃</li><li>개인화 홈을 서비스 전체 진입점으로 확장</li></ul></div>
+    </div>
+    <p class="take" style="margin-top:22px;">핵심은 <span class="hi">가정치(40%→A/B/C)를 실측으로 검증</span>한 뒤 확장하는 것 — 소규모 A/B 테스트가 선행 관문.</p>
+  </div>
+  <div class="pageno">08 / 10</div>
+</section>
+
+<!-- 9 KPI & Ask -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI 검증</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">KPI & Ask</span>
+  </div>
+  <div class="lede">실행 ② ｜ 측정 지표 & 요청 사항</div>
+  <h1 class="stitle">무엇을 보고 판단하고, <span class="i">무엇이 필요</span>한가</h1>
+  <div class="body">
+    <table class="kpi">
+      <tr><th>KPI</th><th>정의</th><th>의미</th></tr>
+      <tr><td>온보딩 완료율</td><td>큐레이션 질문 플로우를 끝까지 완료한 비율</td><td>안내 설계의 완주력</td></tr>
+      <tr><td>첫 핵심서비스 도달률</td><td>신규 설치 후 요금제 비교 등 핵심서비스 도달 비율</td><td>이탈률 개선 실측 (40%→A/B/C 검증)</td></tr>
+      <tr><td>온보딩 경유 개통전환율</td><td>온보딩 경유 유저 중 최종 개통까지 이어진 비율</td><td>매출 임팩트의 직접 근거 (10% 가정 검증)</td></tr>
+    </table>
+    <div class="askbox"><span class="askicon">ASK</span><div>A/B 테스트를 위한 <b>개발 리소스 소액 배정</b> 요청 — 온보딩 질문 플로우 + 개인화 홈 대시보드 프로토타입 구현 범위로 한정.</div></div>
+  </div>
+  <div class="pageno">09 / 10</div>
+</section>
+
+<!-- 10 클로징 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI 검증</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>실행</span>
+    </div><span class="brandtag">맺음말</span>
+  </div>
+  <div class="lede">맺음말 ｜ 핵심 수치 재강조</div>
+  <h1 class="stitle">서비스가 늘수록 이기는 건 <span class="i">쉽게 안내하는 쪽</span></h1>
+  <div class="body">
+    <div class="card" style="background:radial-gradient(120% 140% at 80% 0%,#1a2156,#0b0f30);border:none;text-align:center;padding:22px;">
+      <p style="color:#fff;font-size:24px;font-weight:800;line-height:1.45;">많이 가진 쪽이 아니라,<br><span style="background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;">쉽게 안내하는 쪽이 이긴다.</span></p>
+      <p style="color:#aab2e6;font-size:13.5px;margin-top:10px;">큐레이션 온보딩 + 개인화 홈 — 이미 유입된 유저를 <b style="color:#fff;">추가 광고비 없이</b> 회생시키는 구조.</p>
+    </div>
+    <p style="font-size:12px;font-weight:800;color:var(--gray);margin:16px 0 9px;text-align:center;">핵심 수치 재강조</p>
+    <div class="impact">
+      <div class="ic"><div class="iv">40%</div><div class="il">현재 온보딩 이탈률</div><div class="ib">가정치</div></div>
+      <div class="ic target"><div class="iv">-10%p<span class="ar">↓</span></div><div class="il">1년 목표 개선폭 (시나리오 B)</div><div class="ib">40%→30%</div></div>
+      <div class="ic target"><div class="iv">1.8억</div><div class="il">시나리오 B 연 매출</div><div class="ib">연 신규개통 6,000명 기준</div></div>
+      <div class="ic"><div class="iv">0원</div><div class="il">추가 광고비(CAC)</div><div class="ib">기존 유입 유저 회생분</div></div>
+    </div>
+    <p class="take" style="text-align:center;margin-top:16px;font-size:15px;">Ask — <span class="hi">A/B 테스트 개발 리소스 소액 배정</span>으로, 가정을 실측으로 증명하겠습니다.</p>
+  </div>
+  <div class="pageno">10 / 10</div>
+</section>
+
+</div>
+</body>
+</html>

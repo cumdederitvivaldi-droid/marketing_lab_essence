@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모요 인사이드 ROI 검증 ｜ 내부 실행 제안</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --ink:#191f28; --charcoal:#343a40; --gray:#7c848c; --faint:#aeb4bb; --line:#edeff2;
+    --indigo:#516aec; --indigo-d:#3a52cc; --indigo-l:#7086fb; --indigo-bg:#eef1ff;
+    --red:#fa5252; --red-d:#e03e3e; --red-bg:#fff0f0;
+    --tint:#f7f8fa; --green:#12a886; --navy:#0b0f30;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:'Pretendard','Pretendard Variable',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--charcoal);background:#dcdfe4;line-height:1.55;}
+  .hint{position:fixed;top:14px;right:14px;z-index:99;background:var(--indigo);color:#fff;font-size:13px;padding:9px 14px;border-radius:30px;box-shadow:0 4px 16px rgba(81,106,236,.3);}
+  .hint b{color:#fff;text-decoration:underline;}
+  .deck{display:flex;flex-direction:column;align-items:center;gap:26px;padding:40px 0 64px;}
+  .slide{width:1280px;height:720px;background:#fff;position:relative;overflow:hidden;padding:44px 58px 52px;box-shadow:0 12px 44px rgba(25,31,40,.14);display:flex;flex-direction:column;}
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex:0 0 auto;}
+  .stepper{display:flex;align-items:center;}
+  .step{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--faint);}
+  .step .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:#eef0f3;color:var(--faint);}
+  .step.done{color:var(--indigo-d);} .step.done .n{background:var(--indigo-bg);color:var(--indigo-d);}
+  .step.active{color:var(--ink);} .step.active .n{background:var(--indigo);color:#fff;box-shadow:0 0 0 4px var(--indigo-bg);}
+  .sep{width:30px;height:2px;background:#e6e8ec;margin:0 12px;border-radius:2px;}
+  .brandtag{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--faint);}
+  .brandtag b{color:var(--indigo);}
+
+  .lede{font-size:14px;color:var(--gray);font-weight:700;margin-bottom:5px;}
+  .stitle{font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-1.1px;line-height:1.24;}
+  .stitle .i{color:var(--indigo);} .stitle .r{color:var(--red-d);}
+  .body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;}
+  .take{font-size:18px;font-weight:700;color:var(--ink);line-height:1.5;}
+  .take .hi{background:linear-gradient(transparent 58%,var(--indigo-bg) 58%);padding:0 3px;}
+  .take .hir{background:linear-gradient(transparent 58%,var(--red-bg) 58%);padding:0 3px;}
+  .pageno{position:absolute;right:58px;bottom:24px;font-size:12px;color:var(--faint);font-weight:700;}
+  b.k{font-weight:800;color:var(--ink);}
+  .i{color:var(--indigo);} .r{color:var(--red-d);}
+
+  .row{display:flex;gap:18px;}
+  .col{flex:1;min-width:0;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .card.tint{background:var(--tint);box-shadow:none;}
+  .card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .card p{font-size:14px;color:#525a62;}
+  ul.clean{list-style:none;} ul.clean li{position:relative;padding-left:19px;font-size:14px;color:#4a525a;margin:8px 0;}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--indigo);}
+  .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:20px;}
+  .tag.i{background:var(--indigo-bg);color:var(--indigo-d);} .tag.r{background:var(--red-bg);color:var(--red-d);} .tag.g{background:#e7f8f3;color:var(--green);}
+  .big{font-size:42px;font-weight:800;color:var(--indigo);letter-spacing:-1.5px;line-height:1;}
+  .big .u{font-size:16px;font-weight:700;color:var(--gray);letter-spacing:0;}
+  .num-l{font-size:13px;color:#525a62;margin-top:8px;font-weight:600;}
+  .src{font-size:10.5px;color:var(--faint);}
+  .note{font-size:11px;color:var(--faint);margin-top:10px;}
+  .shot{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(25,31,40,.07);}
+  .gloss{background:var(--indigo-bg);border-radius:12px;padding:10px 16px;font-size:13px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:8px;}
+  .gloss b{color:var(--indigo-d);font-weight:800;}
+
+  /* COVER (dark, no external image — CSS/SVG only) */
+  .cover{padding:0;position:relative;background:radial-gradient(120% 140% at 78% 12%,#1a2156 0%,#0b0f30 55%,#0b0f30 100%);overflow:hidden;}
+  .cover .left{position:relative;z-index:3;width:60%;padding:0 60px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+  .cover .right{position:absolute;right:0;top:0;width:46%;height:100%;display:flex;align-items:center;justify-content:center;z-index:1;opacity:.9;}
+  .wordmark{font-size:26px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,#7df9ff,#7aa6ff,#b18cff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:30px;}
+  .cover .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:2.5px;color:#8fa0ff;margin-bottom:18px;}
+  .cover h1{font-size:40px;font-weight:800;color:#fff;letter-spacing:-1.6px;line-height:1.34;}
+  .cover h1 .g{background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cover .spine{margin-top:24px;font-size:16px;font-weight:700;color:#c7cdf0;line-height:1.55;border-left:3px solid var(--indigo-l);padding-left:15px;}
+  .cover .spine b{color:#fff;}
+  .cover .meta{margin-top:40px;font-size:13px;color:#8a92c4;}
+  .cover .meta b{color:#dfe3ff;}
+  .holo{width:100%;height:100%;}
+
+  /* summary cards (readable) */
+  .sumgrid{display:flex;gap:15px;}
+  .sc{flex:1;background:var(--tint);border-radius:18px;padding:22px 22px;border-top:5px solid var(--indigo);}
+  .sc:nth-child(2){border-top-color:var(--red);}
+  .sc:nth-child(3){border-top-color:var(--indigo-l);}
+  .sc:nth-child(4){border-top-color:var(--green);}
+  .sc .sl{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:10px;}
+  .sc:nth-child(1) .sl{color:var(--indigo-d);} .sc:nth-child(2) .sl{color:var(--red-d);}
+  .sc:nth-child(3) .sl{color:var(--indigo);} .sc:nth-child(4) .sl{color:var(--green);}
+  .sc p{font-size:15px;color:#2f363d;line-height:1.62;font-weight:500;}
+
+  /* stats */
+  .stats{display:flex;gap:13px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:0;background:var(--tint);border-radius:16px;padding:16px 14px;text-align:center;}
+
+  /* bm / flow */
+  .flow{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:15px;}
+  .fbox{background:var(--indigo-bg);color:var(--indigo-d);font-weight:800;font-size:14px;border-radius:30px;padding:9px 20px;}
+  .farr{color:var(--faint);font-weight:800;font-size:18px;}
+  .bmcard{flex:1;border-radius:18px;border:1px solid var(--line);padding:18px 20px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .bmcard .nm{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+  .bmcard .ic{width:30px;height:30px;border-radius:9px;background:var(--indigo);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:0 0 auto;}
+  .bmcard h3{font-size:15.5px;font-weight:800;color:var(--ink);}
+
+  /* strategy header */
+  .strathead{display:flex;align-items:center;gap:14px;background:var(--indigo-bg);border-radius:14px;padding:13px 18px;margin-bottom:16px;}
+  .strathead .b{background:var(--red);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;flex:0 0 auto;}
+  .strathead .t{font-size:14.5px;font-weight:700;color:var(--charcoal);}
+  .strathead .t b{color:var(--indigo-d);}
+  .actcard{flex:1;border-radius:16px;border:1px solid var(--line);padding:17px 19px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .actcard h3{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .msg{background:var(--ink);border-radius:12px;padding:12px 15px;color:#fff;font-size:13px;line-height:1.5;margin-top:9px;}
+  .msg b{color:var(--indigo-l);}
+
+  /* benchmark concept diagram (CSS/SVG, no photo) */
+  .benchwrap{border:1px dashed #b9c3ff;border-radius:16px;padding:16px 18px;background:var(--tint);}
+  .benchflow{display:flex;align-items:center;gap:10px;}
+  .benchnode{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 12px;text-align:center;box-shadow:0 2px 8px rgba(25,31,40,.05);}
+  .benchnode .bicon{width:38px;height:38px;border-radius:11px;margin:0 auto 7px;display:grid;place-items:center;}
+  .benchnode .bt{font-size:12.5px;font-weight:800;color:var(--ink);}
+  .benchnode .bs{font-size:10.5px;color:var(--gray);margin-top:3px;font-weight:600;}
+  .bencharr{color:var(--faint);font-weight:800;font-size:16px;flex:0 0 auto;}
+  .verified{display:inline-flex;align-items:center;gap:6px;background:#e7f8f3;color:var(--green);font-size:12px;font-weight:800;padding:6px 13px;border-radius:20px;margin-top:12px;}
+
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .fstep{background:var(--indigo-bg);border-radius:12px;padding:11px 10px;text-align:center;transition:none;}
+  .fstep.hl{background:var(--indigo);}
+  .fstep .flabel{font-size:12px;font-weight:700;color:var(--indigo-d);}
+  .fstep.hl .flabel{color:#dfe3ff;}
+  .fstep .fval{font-size:19px;font-weight:800;color:var(--ink);margin-top:2px;}
+  .fstep.hl .fval{color:#fff;}
+  .farrow2{font-size:12px;color:var(--gray);font-weight:700;padding:1px 0;}
+  .farrow2 b{color:var(--red-d);}
+
+  /* bar chart (scenarios) */
+  .barchart{display:flex;align-items:flex-end;gap:56px;justify-content:center;height:230px;}
+  .bar-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;width:150px;}
+  .bar-col .bv{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .bar-col .bsub{font-size:10.5px;color:var(--gray);font-weight:600;margin-bottom:6px;text-align:center;line-height:1.4;}
+  .bar{width:88px;border-radius:10px 10px 0 0;}
+  .bar.a{background:var(--indigo-l);}
+  .bar.b{background:var(--indigo);box-shadow:0 0 0 3px var(--indigo-bg);}
+  .bar.c{background:var(--red);}
+  .bar-col .bl{margin-top:10px;font-size:13px;font-weight:800;color:var(--charcoal);text-align:center;}
+  .bar-col .bl small{display:block;font-size:11px;color:var(--gray);font-weight:600;margin-top:2px;}
+
+  /* calc / cac */
+  .calcbox{background:var(--tint);border-radius:18px;padding:20px 24px;text-align:center;}
+  .calcbox .eq{font-size:24px;font-weight:800;color:var(--ink);}
+  .calcbox .eq .op{color:var(--faint);margin:0 10px;font-weight:700;}
+  .calcbox .eq .res{color:var(--red-d);}
+  .compare2{display:flex;gap:16px;}
+  .cmpcard{flex:1;border-radius:16px;padding:18px;text-align:center;border:1px solid var(--line);}
+  .cmpcard.old{background:var(--red-bg);}
+  .cmpcard.new{background:#e7f8f3;}
+  .cmpcard .cv{font-size:26px;font-weight:800;}
+  .cmpcard.old .cv{color:var(--red-d);}
+  .cmpcard.new .cv{color:var(--green);}
+  .cmpcard .cl{font-size:12.5px;color:#5b636b;font-weight:700;margin-top:6px;}
+
+  /* roadmap */
+  .phase{display:flex;gap:13px;}
+  .pc{flex:1;border-radius:18px;padding:17px;border:1px solid var(--line);}
+  .pc.p1{background:var(--indigo-bg);border-color:#d4dbff;} .pc.p2{background:var(--tint);} .pc.p3{background:var(--tint);}
+  .pn{font-size:11.5px;font-weight:800;color:#fff;background:var(--indigo);padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+  .p2 .pn,.p3 .pn{background:var(--indigo-l);}
+  .pc h3{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .pc li{font-size:12.5px;color:#4a525a;margin:5px 0;padding-left:15px;position:relative;list-style:none;}
+  .pc li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--indigo);}
+  .arr2{display:flex;align-items:center;color:var(--faint);font-size:22px;font-weight:800;}
+
+  table.kpi{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.kpi th,table.kpi td{border-bottom:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:middle;}
+  table.kpi th{background:var(--indigo);color:#fff;font-weight:700;font-size:12.5px;border:none;}
+  table.kpi tr td:first-child{font-weight:800;color:var(--indigo-d);width:26%;}
+  table.kpi tbody tr:nth-child(even){background:var(--tint);}
+
+  /* impact (quantified) */
+  .impact{display:flex;gap:14px;}
+  .ic{flex:1;background:var(--tint);border-radius:18px;padding:18px 16px;text-align:center;}
+  .ic .iv{font-size:28px;font-weight:800;color:var(--indigo);letter-spacing:-1.2px;line-height:1.05;}
+  .ic .iv .ar{color:var(--green);}
+  .ic .il{font-size:12px;color:#5b636b;margin-top:9px;font-weight:600;line-height:1.4;}
+  .ic .ib{font-size:10.5px;color:var(--faint);margin-top:5px;}
+
+  @media print{
+    body{background:#fff;} .hint{display:none;}
+    .deck{gap:0;padding:0;}
+    .slide{box-shadow:none;page-break-after:always;break-after:page;}
+    @page{size:1280px 720px;margin:0;}
+  }
+</style>
+</head>
+<body>
+<div class="hint">키보드 <b>Ctrl/⌘+P</b> → "PDF로 저장", 용지 가로 → 10p PDF 완성</div>
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <div class="left">
+    <div class="wordmark">moyo</div>
+    <div class="eyebrow">B2B 임베디드 ROI 검증 · 내부 실행 제안</div>
+    <h1>모요 인사이드 ROI 검증<br><span class="g">빅테크 트래픽을<br>유통채널로</span></h1>
+    <div class="spine">이미 검증된 전략 ③(B2B 임베디드)에<br><b>ROI 모델 + 실행 로드맵</b>을 더해<br>파트너 확장 의사결정을 요청합니다</div>
+    <div class="meta"><b>이도형</b> ｜ 2026 ｜ 배경 → 전략 → ROI 검증 → 실행</div>
+  </div>
+  <div class="right">
+    <svg class="holo" viewBox="0 0 560 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8be9ff"/><stop offset="0.4" stop-color="#7aa6ff"/>
+          <stop offset="0.7" stop-color="#9b7bff"/><stop offset="1" stop-color="#c98bff"/>
+        </linearGradient>
+        <linearGradient id="holo2" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#6ad9ff"/><stop offset="0.5" stop-color="#8aa0ff"/><stop offset="1" stop-color="#b58bff"/>
+        </linearGradient>
+        <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#6a7bff" stop-opacity="0.55"/><stop offset="1" stop-color="#6a7bff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="300" cy="330" r="280" fill="url(#glow)"/>
+      <!-- lightning -->
+      <g transform="translate(330,70) rotate(8)">
+        <path d="M40 0 L0 120 L34 120 L8 230 L92 96 L54 96 L86 0 Z" fill="url(#holo)" stroke="#dff3ff" stroke-width="3" stroke-opacity="0.6"/>
+      </g>
+      <!-- 4-point star (hero) -->
+      <g transform="translate(300,300)">
+        <path d="M0 -150 C18 -55 55 -18 150 0 C55 18 18 55 0 150 C-18 55 -55 18 -150 0 C-55 -18 -18 -55 0 -150 Z" fill="url(#holo2)" stroke="#eaf6ff" stroke-width="3" stroke-opacity="0.6"/>
+        <ellipse cx="-34" cy="-34" rx="30" ry="16" fill="#ffffff" opacity="0.35" transform="rotate(-40 -34 -34)"/>
+      </g>
+      <!-- blob -->
+      <g transform="translate(150,520)">
+        <path d="M-70 -10 C-90 -70 -10 -100 50 -70 C110 -40 90 40 30 70 C-30 100 -50 50 -70 -10 Z" fill="url(#holo)" stroke="#e6f4ff" stroke-width="3" stroke-opacity="0.5"/>
+        <ellipse cx="-20" cy="-30" rx="26" ry="14" fill="#fff" opacity="0.35" transform="rotate(-30 -20 -30)"/>
+      </g>
+      <!-- swoosh -->
+      <g transform="translate(360,470) rotate(18)">
+        <path d="M0 0 C70 -10 120 40 90 110 C70 60 30 40 0 60 C-26 30 -20 10 0 0 Z" fill="url(#holo2)" stroke="#e6f4ff" stroke-width="3" stroke-opacity="0.5"/>
+      </g>
+      <!-- small circle -->
+      <circle cx="120" cy="610" r="42" fill="url(#holo2)" stroke="#eaf6ff" stroke-width="2.5" stroke-opacity="0.5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 2 문제/기회 리캡 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step active"><span class="n">1</span>배경</span><span class="sep"></span>
+      <span class="step"><span class="n">2</span>확장전략</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag"><b>moyo</b> ｜ 배경 리캡</span>
+  </div>
+  <div class="lede">배경 ｜ 문제 & 기회 리캡</div>
+  <h1 class="stitle">빅테크와 <span class="r">싸우지 않고</span>, 엔진을 <span class="i">탑재</span>시킨다</h1>
+  <div class="body">
+    <div class="row" style="align-items:stretch;">
+      <div class="col" style="flex:1.1;display:flex;flex-direction:column;gap:12px;">
+        <div class="actcard"><span class="tag r">경쟁 병목</span>
+          <h3 style="margin-top:8px;">토스·카카오뱅크가 앱 안에서 통신 비교·개통까지 내재화</h3>
+          <p style="font-size:13.5px;color:#525a62;">전국민이 매일 쓰는 금융 슈퍼앱이 직접 비교·개통 UX를 만들며 모요의 트래픽 경쟁 부담이 커지는 구간.</p>
+        </div>
+        <div class="actcard"><span class="tag i">역발상</span>
+          <h3 style="margin-top:8px;">"트래픽을 뺏길 곳"이 아니라 "엔진을 파는 곳"</h3>
+          <p style="font-size:13.5px;color:#525a62;">빅테크에 없는 <b class="k">통신 전문 비교 엔진</b>을 위젯·API로 임베드 — 그들의 트래픽이 모요의 유통망이 된다.</p>
+        </div>
+      </div>
+      <div class="col" style="flex:.95;">
+        <div class="benchwrap">
+          <p style="font-size:12px;font-weight:800;color:var(--indigo-d);margin-bottom:10px;">이미 검증된 사례</p>
+          <div class="benchflow">
+            <div class="benchnode">
+              <div class="bicon" style="background:#fee500;">🏦</div>
+              <div class="bt">카카오뱅크</div><div class="bs">'통신비 아끼기' (2024)</div>
+            </div>
+            <div class="bencharr">→</div>
+            <div class="benchnode">
+              <div class="bicon" style="background:var(--indigo-bg);">⚙️</div>
+              <div class="bt">모요 비교엔진</div><div class="bs">위젯 임베드·API</div>
+            </div>
+            <div class="bencharr">→</div>
+            <div class="benchnode">
+              <div class="bicon" style="background:#e7f8f3;">✅</div>
+              <div class="bt">개통 전환</div><div class="bs">CAC 없이 발생</div>
+            </div>
+          </div>
+          <div style="text-align:center;"><span class="verified">✓ 이미 탑재·작동 중인 벤치마크</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:18px;">이 덱은 <span class="hi">"신규 파트너로 확장하면 얼마를 버는가"</span>를 숫자로 검증하고, 실행 순서를 정한다.</p>
+  </div>
+  <div class="pageno">02 / 10</div>
+</section>
+
+<!-- 3 확장 전략 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>확장전략</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">확장 전략</span>
+  </div>
+  <div class="lede">확장 전략 ｜ 신규 파트너군 후보</div>
+  <h1 class="stitle">누구에게 엔진을 탑재할 것인가 — <span class="i">3대 파트너군</span></h1>
+  <div class="body">
+    <div class="row">
+      <div class="bmcard"><div class="nm"><span class="ic">1</span><h3>은행 앱</h3></div>
+        <ul class="clean">
+          <li>카카오뱅크 '통신비 아끼기'와 동일 유형 — <b class="k">가계부·소비관리</b> 맥락에서 통신비 위젯</li>
+          <li>이미 검증된 카테고리, 확장 리스크 최저</li>
+        </ul></div>
+      <div class="bmcard"><div class="nm"><span class="ic">2</span><h3>카드사 앱</h3></div>
+        <ul class="clean">
+          <li>통신비 <b class="k">자동 결제·명세서</b> 접점 — "이 요금제 비싸다" 알림과 결합 자연스러움</li>
+          <li>카드 실적·혜택 연계 크로스셀 여지</li>
+        </ul></div>
+      <div class="bmcard"><div class="nm"><span class="ic">3</span><h3>커머스 앱</h3></div>
+        <ul class="clean">
+          <li>휴대폰·가전 구매 여정에 <b class="k">통신 결합</b> 자연 노출(자급제 구매 후 요금제 선택)</li>
+          <li>신규 트래픽 풀이 가장 큼</li>
+        </ul></div>
+    </div>
+    <div class="calcbox" style="margin-top:20px;">
+      <p style="font-size:13px;font-weight:800;color:var(--gray);margin-bottom:8px;">확보 목표</p>
+      <div class="eq">향후 <span class="res">1년</span> 내 은행·카드·커머스 각 <span class="res">1개사</span> — 총 <span class="res">신규 3개사</span> 확보</div>
+    </div>
+    <p class="take" style="margin-top:16px;">카카오뱅크로 이미 증명된 <span class="hi">"엔진 탑재형 확장"</span>을 3개 카테고리로 반복한다.</p>
+  </div>
+  <div class="pageno">03 / 10</div>
+</section>
+
+<!-- 4 파트너당 전환 퍼널 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>확장전략</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">확장 전략</span>
+  </div>
+  <div class="lede">확장 전략 ｜ 파트너당 전환 퍼널 가정</div>
+  <h1 class="stitle">파트너 1개사당 — 연 <span class="i">1,500명</span> 개통으로 계산한다</h1>
+  <div class="body">
+    <div class="row" style="align-items:center;">
+      <div class="col" style="flex:1.15;">
+        <div class="funnel">
+          <div class="fstep" style="width:88%;"><div class="flabel">파트너 평균 MAU</div><div class="fval">500만 명</div></div>
+          <div class="farrow2">▼ 통신비 관련 위젯 노출 대상 <b>5%</b></div>
+          <div class="fstep" style="width:66%;"><div class="flabel">위젯 노출 대상</div><div class="fval">25만 명</div></div>
+          <div class="farrow2">▼ 위젯 클릭률 <b>20%</b></div>
+          <div class="fstep" style="width:44%;"><div class="flabel">위젯 클릭</div><div class="fval">5만 명</div></div>
+          <div class="farrow2">▼ 개통 전환율 <b>3%</b></div>
+          <div class="fstep hl" style="width:26%;"><div class="flabel">개통 완료</div><div class="fval">1,500명</div></div>
+        </div>
+      </div>
+      <div class="col" style="flex:.9;">
+        <div class="card tint">
+          <h3>가정 요약</h3>
+          <ul class="clean">
+            <li>파트너 평균 <b class="k">MAU 500만</b></li>
+            <li>통신비 관련 <b class="k">위젯 노출 5%</b>(25만명)</li>
+            <li><b class="k">위젯 클릭률 20%</b>(5만명)</li>
+            <li><b class="k">개통 전환율 3%</b>(1,500명)</li>
+          </ul>
+          <div class="msg" style="margin-top:14px;">→ 파트너 <b>1개사당 연 1,500명 개통</b>이 이후 모든 ROI 계산의 기본 단위</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pageno">04 / 10</div>
+</section>
+
+<!-- 5 ROI 모델 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>확장전략</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">ROI 검증</span>
+  </div>
+  <div class="lede">ROI 검증 ① ｜ 수익 구조</div>
+  <h1 class="stitle">파트너 1개사에서 <span class="i">두 갈래</span> 수익이 발생한다</h1>
+  <div class="body">
+    <div class="row" style="align-items:stretch;">
+      <div class="bmcard"><div class="nm"><span class="ic">1</span><h3>개통 수수료 수익</h3></div>
+        <p style="font-size:13.5px;color:#525a62;margin-bottom:10px;">파트너 경유로 개통된 인원당 정산 수수료 수취.</p>
+        <div class="calcbox">
+          <div class="eq" style="font-size:19px;">1,500명 <span class="op">×</span> 30,000원 <span class="op">=</span> <span class="res">4,500만원</span></div>
+        </div>
+        <p class="src" style="margin-top:8px;">인당 정산수수료 30,000원 — BM제안서·타 growth 가정치와 통일</p>
+      </div>
+      <div class="bmcard"><div class="nm"><span class="ic">2</span><h3>B2B SaaS 라이선스 수익</h3></div>
+        <p style="font-size:13.5px;color:#525a62;margin-bottom:10px;">비교 엔진 임베드에 대한 파트너사 연간 라이선스 계약.</p>
+        <div class="calcbox">
+          <div class="eq" style="font-size:19px;">파트너당 연 <span class="res">3,000만원</span></div>
+        </div>
+        <p class="src" style="margin-top:8px;">엔진 사용·유지보수·업데이트 포함 구독형 계약 가정</p>
+      </div>
+    </div>
+    <p class="take" style="margin-top:18px;">파트너 <span class="hi">1개사당 연 7,500만원</span>(개통수수료 4,500만 + 라이선스 3,000만) — 다음 장에서 파트너 수별로 확장한다.</p>
+  </div>
+  <div class="pageno">05 / 10</div>
+</section>
+
+<!-- 6 시나리오 A/B/C -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>확장전략</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">ROI 검증</span>
+  </div>
+  <div class="lede">ROI 검증 ② ｜ 시나리오 A / B / C</div>
+  <h1 class="stitle">1년 목표는 <span class="i">시나리오 B</span> — 3개사 확보, 연 <span class="i">2.25억원</span></h1>
+  <div class="body">
+    <div class="barchart">
+      <div class="bar-col">
+        <div class="bv">7,500만</div>
+        <div class="bsub">개통 4,500만 + 라이선스 3,000만</div>
+        <div class="bar a" style="height:44px;"></div>
+        <div class="bl">시나리오 A<small>1개사 · 개통 1,500명</small></div>
+      </div>
+      <div class="bar-col">
+        <div class="bv">2.25억</div>
+        <div class="bsub">개통 1.35억 + 라이선스 9,000만</div>
+        <div class="bar b" style="height:132px;"></div>
+        <div class="bl">시나리오 B<small>3개사 · 개통 4,500명</small></div>
+      </div>
+      <div class="bar-col">
+        <div class="bv">3.75억</div>
+        <div class="bsub">개통 2.25억 + 라이선스 1.5억</div>
+        <div class="bar c" style="height:220px;"></div>
+        <div class="bl">시나리오 C<small>5개사 · 개통 7,500명</small></div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:14px;text-align:center;">확장 전략(2p)의 <span class="hi">1년 내 3개사 확보 목표</span> = 시나리오 B, 연 <span class="hi">2.25억원</span> 수익.</p>
+  </div>
+  <div class="pageno">06 / 10</div>
+</section>
+
+<!-- 7 CAC 회피 효과 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>확장전략</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI검증</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">ROI 검증</span>
+  </div>
+  <div class="lede">ROI 검증 ③ ｜ CAC 회피 효과</div>
+  <h1 class="stitle">이 개통은 <span class="i">광고비 0원</span>으로 발생한다</h1>
+  <div class="body">
+    <div class="compare2">
+      <div class="cmpcard old"><div class="cv">20,000원</div><div class="cl">기존 유료채널 CAC (인당 가정)</div></div>
+      <div class="cmpcard new"><div class="cv">0원</div><div class="cl">모요 인사이드 경유 개통 (인당 광고비)</div></div>
+    </div>
+    <div class="calcbox" style="margin-top:18px;">
+      <p style="font-size:13px;font-weight:800;color:var(--gray);margin-bottom:8px;">시나리오 B(3개사, 개통 4,500명) 기준 CAC 회피효과</p>
+      <div class="eq">4,500명 <span class="op">×</span> 20,000원 <span class="op">=</span> <span class="res">9,000만원</span></div>
+    </div>
+    <p class="take" style="margin-top:18px;text-align:center;">이 <span class="hi">9,000만원</span>은 매출과 별도로 발생하는 <span class="hi">광고비 절감액</span> — 유료채널 대비 CAC <span class="hi">100% 절감</span>.</p>
+  </div>
+  <div class="pageno">07 / 10</div>
+</section>
+
+<!-- 8 실행 로드맵 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>확장전략</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI검증</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">실행</span>
+  </div>
+  <div class="lede">실행 ① ｜ 로드맵</div>
+  <h1 class="stitle">파일럿 1건에서 <span class="i">3개사 확보</span>까지 — 12개월</h1>
+  <div class="body">
+    <div class="phase">
+      <div class="pc p1"><span class="pn">0–3개월 · 파일럿</span><h3>파트너 1개사 계약 + 위젯 연동</h3>
+        <ul><li>은행/카드/커머스 중 1개사와 파일럿 계약</li><li>비교 엔진 위젯·API 연동, 트래킹 세팅</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p2"><span class="pn">3–9개월 · 검증 & 확장</span><h3>성과 검증 후 2개사 추가</h3>
+        <ul><li>파일럿 퍼널(노출→클릭→개통) 실측 검증</li><li>검증된 모델로 신규 2개사 추가 계약 → 누적 3개사</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p3"><span class="pn">9–12개월 · 상품화</span><h3>SaaS 라이선스 상품화</h3>
+        <ul><li>임베드 엔진을 표준 라이선스 상품으로 패키징</li><li>영업 스크립트·계약 템플릿 확보 → C 확장 대비</li></ul></div>
+    </div>
+    <p class="take" style="margin-top:22px;">원칙 — <span class="hi">가장 검증 리스크가 낮은 1개사 파일럿</span>부터, 실측 데이터로 다음 확장을 설득한다.</p>
+  </div>
+  <div class="pageno">08 / 10</div>
+</section>
+
+<!-- 9 KPI & Ask -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>확장전략</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI검증</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">실행</span>
+  </div>
+  <div class="lede">실행 ② ｜ KPI & Ask</div>
+  <h1 class="stitle">무엇을 보고, <span class="i">무엇을 승인받고자</span> 하는가</h1>
+  <div class="body">
+    <table class="kpi">
+      <tr><th>KPI</th><th>정의</th><th>목표(1년)</th></tr>
+      <tr><td>임베디드 파트너 수</td><td>위젯/API 연동 완료 파트너사 수</td><td>3개사 (시나리오 B)</td></tr>
+      <tr><td>파트너 경유 개통수</td><td>파트너 위젯·API 경유 개통 인원</td><td>연 4,500명</td></tr>
+      <tr><td>라이선스 매출</td><td>B2B SaaS 라이선스 계약 매출</td><td>연 9,000만원</td></tr>
+    </table>
+    <div class="strathead" style="margin-top:22px;"><span class="b">Ask</span><span class="t">파트너 <b>파일럿 1건 진행 승인</b> — 은행/카드/커머스 중 1개사 선정 및 위젯 연동 리소스 배정</span></div>
+    <p class="note">본 덱의 시나리오·수치는 카카오뱅크 사례 기반 가정치 — 파일럿 실측 이후 베이스라인으로 갱신.</p>
+  </div>
+  <div class="pageno">09 / 10</div>
+</section>
+
+<!-- 10 클로징 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>확장전략</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI검증</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>실행</span>
+    </div><span class="brandtag">맺음말</span>
+  </div>
+  <div class="lede">맺음말 ｜ 핵심 재확인</div>
+  <h1 class="stitle">마지막으로 — <span class="i">모요 인사이드</span>가 증명하는 것</h1>
+  <div class="body">
+    <div class="card" style="background:radial-gradient(120% 140% at 80% 0%,#1a2156,#0b0f30);border:none;text-align:center;padding:22px;">
+      <p style="color:#fff;font-size:24px;font-weight:800;line-height:1.45;">트래픽 경쟁이 아니라,<br><span style="background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;">엔진 공급으로 이긴다.</span></p>
+      <p style="color:#aab2e6;font-size:13.5px;margin-top:10px;">카카오뱅크에서 이미 검증된 모델을 <b style="color:#fff;">은행·카드·커머스</b> 3개 카테고리로 반복한다.</p>
+    </div>
+    <p style="font-size:12px;font-weight:800;color:var(--gray);margin:16px 0 9px;text-align:center;">핵심 수치 (1년 목표, 시나리오 B 기준)</p>
+    <div class="impact">
+      <div class="ic"><div class="iv">3개사</div><div class="il">신규 파트너 확보</div><div class="ib">은행·카드·커머스 각 1개</div></div>
+      <div class="ic"><div class="iv">4,500명</div><div class="il">파트너 경유 연간 개통</div><div class="ib">1개사당 1,500명 × 3</div></div>
+      <div class="ic"><div class="iv">2.25억</div><div class="il">연간 매출(수수료+라이선스)</div><div class="ib">개통 1.35억 + SaaS 9,000만</div></div>
+      <div class="ic"><div class="iv">9,000만</div><div class="il">CAC 회피효과 (매출과 별도)</div><div class="ib">4,500명 × 2만원, 광고비 0원</div></div>
+    </div>
+    <p class="take" style="text-align:center;margin-top:16px;font-size:15px;">싸우지 않고 탑재시킨다 — <span class="hi">"엔진을 공급하는 자가, 결국 채널을 지배한다."</span></p>
+  </div>
+  <div class="pageno">10 / 10</div>
+</section>
+
+</div>
+</body>
+</html>

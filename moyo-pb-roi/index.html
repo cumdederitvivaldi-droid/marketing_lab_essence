@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모요 PB 데이터 리워드 ROI 검증 ｜ 내부 실행 제안</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --ink:#191f28; --charcoal:#343a40; --gray:#7c848c; --faint:#aeb4bb; --line:#edeff2;
+    --indigo:#516aec; --indigo-d:#3a52cc; --indigo-l:#7086fb; --indigo-bg:#eef1ff;
+    --red:#fa5252; --red-d:#e03e3e; --red-bg:#fff0f0;
+    --tint:#f7f8fa; --green:#12a886; --navy:#0b0f30;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:'Pretendard','Pretendard Variable',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--charcoal);background:#dcdfe4;line-height:1.55;}
+  .hint{position:fixed;top:14px;right:14px;z-index:99;background:var(--indigo);color:#fff;font-size:13px;padding:9px 14px;border-radius:30px;box-shadow:0 4px 16px rgba(81,106,236,.3);}
+  .hint b{color:#fff;text-decoration:underline;}
+  .deck{display:flex;flex-direction:column;align-items:center;gap:26px;padding:40px 0 64px;}
+  .slide{width:1280px;height:720px;background:#fff;position:relative;overflow:hidden;padding:44px 58px 52px;box-shadow:0 12px 44px rgba(25,31,40,.14);display:flex;flex-direction:column;}
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex:0 0 auto;}
+  .stepper{display:flex;align-items:center;}
+  .step{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--faint);}
+  .step .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:#eef0f3;color:var(--faint);}
+  .step.done{color:var(--indigo-d);} .step.done .n{background:var(--indigo-bg);color:var(--indigo-d);}
+  .step.active{color:var(--ink);} .step.active .n{background:var(--indigo);color:#fff;box-shadow:0 0 0 4px var(--indigo-bg);}
+  .sep{width:30px;height:2px;background:#e6e8ec;margin:0 12px;border-radius:2px;}
+  .brandtag{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--faint);}
+  .brandtag b{color:var(--indigo);}
+
+  .lede{font-size:14px;color:var(--gray);font-weight:700;margin-bottom:5px;}
+  .stitle{font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-1.1px;line-height:1.24;}
+  .stitle .i{color:var(--indigo);} .stitle .r{color:var(--red-d);}
+  .body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;}
+  .take{font-size:18px;font-weight:700;color:var(--ink);line-height:1.5;}
+  .take .hi{background:linear-gradient(transparent 58%,var(--indigo-bg) 58%);padding:0 3px;}
+  .take .hir{background:linear-gradient(transparent 58%,var(--red-bg) 58%);padding:0 3px;}
+  .pageno{position:absolute;right:58px;bottom:24px;font-size:12px;color:var(--faint);font-weight:700;}
+  b.k{font-weight:800;color:var(--ink);}
+  .i{color:var(--indigo);} .r{color:var(--red-d);}
+
+  .row{display:flex;gap:18px;}
+  .col{flex:1;min-width:0;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .card.tint{background:var(--tint);box-shadow:none;}
+  .card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .card p{font-size:14px;color:#525a62;}
+  ul.clean{list-style:none;} ul.clean li{position:relative;padding-left:19px;font-size:14px;color:#4a525a;margin:8px 0;}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--indigo);}
+  .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:20px;}
+  .tag.i{background:var(--indigo-bg);color:var(--indigo-d);} .tag.r{background:var(--red-bg);color:var(--red-d);} .tag.g{background:#e7f8f3;color:var(--green);}
+  .big{font-size:42px;font-weight:800;color:var(--indigo);letter-spacing:-1.5px;line-height:1;}
+  .big .u{font-size:16px;font-weight:700;color:var(--gray);letter-spacing:0;}
+  .num-l{font-size:13px;color:#525a62;margin-top:8px;font-weight:600;}
+  .src{font-size:10.5px;color:var(--faint);}
+  .note{font-size:11px;color:var(--faint);margin-top:10px;}
+  .gloss{background:var(--indigo-bg);border-radius:12px;padding:10px 16px;font-size:13px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:8px;}
+  .gloss b{color:var(--indigo-d);font-weight:800;}
+
+  /* COVER (dark, CSS/SVG only) */
+  .cover{padding:0;position:relative;background:radial-gradient(120% 140% at 78% 12%,#232c66 0%,#0b0f30 55%,#070a22 100%);overflow:hidden;}
+  .cover .left{position:relative;z-index:3;width:60%;padding:0 60px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+  .cover .right{position:absolute;right:0;top:0;width:44%;height:100%;z-index:2;}
+  .wordmark{font-size:26px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,#7df9ff,#7aa6ff,#b18cff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:30px;}
+  .cover .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:2.5px;color:#8fa0ff;margin-bottom:18px;}
+  .cover h1{font-size:40px;font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1.34;}
+  .cover h1 .g{background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cover .spine{margin-top:24px;font-size:16.5px;font-weight:700;color:#c7cdf0;line-height:1.55;border-left:3px solid var(--indigo-l);padding-left:15px;}
+  .cover .spine b{color:#fff;}
+  .cover .meta{margin-top:40px;font-size:13px;color:#8a92c4;}
+  .cover .meta b{color:#dfe3ff;}
+  .holo{position:absolute;inset:0;}
+
+  /* sumgrid style cards */
+  .sumgrid{display:flex;gap:15px;}
+  .sc{flex:1;background:var(--tint);border-radius:18px;padding:22px 22px;border-top:5px solid var(--indigo);}
+  .sc:nth-child(2){border-top-color:var(--red);}
+  .sc:nth-child(3){border-top-color:var(--indigo-l);}
+  .sc:nth-child(4){border-top-color:var(--green);}
+  .sc .sl{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:10px;}
+  .sc:nth-child(1) .sl{color:var(--indigo-d);} .sc:nth-child(2) .sl{color:var(--red-d);}
+  .sc:nth-child(3) .sl{color:var(--indigo);} .sc:nth-child(4) .sl{color:var(--green);}
+  .sc p{font-size:14.5px;color:#2f363d;line-height:1.6;font-weight:500;}
+
+  /* stats */
+  .stats{display:flex;gap:13px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:0;background:var(--tint);border-radius:16px;padding:16px 14px;text-align:center;}
+
+  /* concern recap cards (bottleneck-like, but indigo/red mixed) */
+  .btl{display:flex;gap:13px;}
+  .btlc{flex:1;border-radius:18px;padding:17px 17px;border:1px solid var(--line);background:#fff;box-shadow:0 2px 10px rgba(25,31,40,.04);display:flex;flex-direction:column;}
+  .btlc .hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .btlc .bn{width:26px;height:26px;border-radius:8px;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;}
+  .btlc h3{font-size:15px;font-weight:800;color:var(--ink);}
+  .btlc .easy{background:var(--red-bg);border-radius:10px;padding:9px 11px;font-size:12px;color:#7a2e2e;font-weight:700;line-height:1.4;margin-bottom:9px;}
+  .btlc p{font-size:12px;color:#5b636b;line-height:1.5;}
+  .btlc .m{font-size:11px;font-weight:800;color:var(--green);margin-top:auto;padding-top:8px;}
+
+  /* strategy head */
+  .strathead{display:flex;align-items:center;gap:14px;background:var(--indigo-bg);border-radius:14px;padding:13px 18px;margin-bottom:16px;}
+  .strathead .b{background:var(--red);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;flex:0 0 auto;}
+  .strathead .t{font-size:14.5px;font-weight:700;color:var(--charcoal);}
+  .strathead .t b{color:var(--indigo-d);}
+  .actcard{flex:1;border-radius:16px;border:1px solid var(--line);padding:17px 19px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .actcard h3{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .msg{background:var(--ink);border-radius:12px;padding:12px 15px;color:#fff;font-size:13px;line-height:1.5;margin-top:9px;}
+  .msg b{color:var(--indigo-l);}
+
+  /* flow diagram (principle) */
+  .flow{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:15px;}
+  .fbox{background:var(--indigo-bg);color:var(--indigo-d);font-weight:800;font-size:14px;border-radius:30px;padding:9px 20px;}
+  .fbox.hero{background:var(--indigo);color:#fff;box-shadow:0 6px 16px rgba(81,106,236,.35);}
+  .farr{color:var(--faint);font-weight:800;font-size:18px;}
+  .flowban{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:8px;opacity:.75;}
+  .fbox.banned{background:var(--red-bg);color:var(--red-d);text-decoration:line-through;}
+  .banlabel{position:absolute;font-size:11px;font-weight:800;color:var(--red-d);background:#fff;border:1px solid var(--red-bg);border-radius:20px;padding:3px 10px;}
+
+  /* price mechanism boxes */
+  .pricebox{display:flex;align-items:center;justify-content:center;gap:18px;}
+  .pnode{text-align:center;}
+  .pnode .lab{font-size:12px;font-weight:700;color:var(--gray);margin-bottom:6px;}
+  .pnode .val{font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-1px;}
+  .pnode.strike .val{color:var(--faint);text-decoration:line-through;}
+  .pnode.cut .val{color:var(--red-d);}
+  .pnode.final .val{color:var(--indigo-d);}
+  .parr{font-size:22px;font-weight:800;color:var(--faint);}
+
+  /* waterfall */
+  .waterfall{display:flex;align-items:flex-end;gap:26px;height:230px;padding:0 30px;justify-content:center;}
+  .wcol{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:150px;}
+  .wbar{width:92px;border-radius:10px 10px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:800;font-size:15px;}
+  .wbar.pos{background:linear-gradient(180deg,var(--indigo-l),var(--indigo));}
+  .wbar.neg{background:linear-gradient(180deg,#ff9b9b,var(--red));}
+  .wbar.fin{background:linear-gradient(180deg,#5be0c2,var(--green));}
+  .wlab{margin-top:10px;font-size:12.5px;font-weight:700;color:var(--charcoal);text-align:center;line-height:1.4;}
+  .wsub{font-size:10.5px;color:var(--faint);margin-top:2px;}
+  .wconn{width:26px;height:2px;background:#e6e8ec;margin-bottom:60px;position:relative;}
+  .wconn::after{content:"=";position:absolute;left:50%;top:-13px;transform:translateX(-50%);color:var(--faint);font-weight:800;font-size:16px;}
+
+  /* timeline */
+  .timeline{position:relative;padding:30px 20px 10px;}
+  .tline{position:absolute;left:60px;right:60px;top:66px;height:3px;background:var(--line);border-radius:2px;}
+  .tnodes{display:flex;justify-content:space-between;position:relative;}
+  .tnode{width:31%;text-align:center;}
+  .tdot{width:16px;height:16px;border-radius:50%;background:var(--indigo);margin:0 auto 14px;position:relative;z-index:2;box-shadow:0 0 0 5px #fff;}
+  .tnode.mid .tdot{background:var(--faint);}
+  .tnode.end .tdot{background:var(--green);}
+  .tcard{background:var(--tint);border-radius:14px;padding:14px 16px;}
+  .tcard .td{font-size:12px;font-weight:800;color:var(--indigo-d);margin-bottom:6px;}
+  .tnode.end .tcard .td{color:var(--green);}
+  .tcard h4{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+  .tcard p{font-size:12px;color:#5b636b;line-height:1.5;}
+  .gapband{position:absolute;left:33%;right:33%;top:58px;height:20px;background:var(--red-bg);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;color:var(--red-d);z-index:1;}
+
+  /* infra reuse */
+  .infrarow{display:flex;gap:16px;}
+  .infrabox{flex:1;border-radius:16px;border:1px solid var(--line);padding:18px;text-align:center;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .infrabox .ic2{width:46px;height:46px;border-radius:12px;background:var(--indigo-bg);color:var(--indigo-d);display:grid;place-items:center;font-weight:800;font-size:19px;margin:0 auto 10px;}
+  .infrabox h3{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+  .infrabox p{font-size:12px;color:#5b636b;line-height:1.5;}
+
+  /* bar chart scenarios */
+  .barchart{display:flex;align-items:flex-end;gap:40px;height:230px;justify-content:center;padding:0 10px;}
+  .bcol{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:150px;}
+  .bbar{width:100px;border-radius:10px 10px 0 0;background:linear-gradient(180deg,var(--indigo-l),var(--indigo));display:flex;align-items:flex-start;justify-content:center;padding-top:9px;color:#fff;font-weight:800;font-size:16px;}
+  .bcol.best .bbar{background:linear-gradient(180deg,#5be0c2,var(--green));box-shadow:0 8px 20px rgba(18,168,134,.25);}
+  .blab{margin-top:10px;font-size:13px;font-weight:800;color:var(--ink);}
+  .bsub{font-size:11px;color:var(--gray);margin-top:2px;}
+  .bcol.best .blab{color:var(--green);}
+
+  /* risk quantify */
+  .impact{display:flex;gap:14px;}
+  .ic{flex:1;background:var(--tint);border-radius:18px;padding:18px 16px;text-align:center;}
+  .ic .iv{font-size:30px;font-weight:800;color:var(--indigo);letter-spacing:-1.2px;line-height:1.05;}
+  .ic .iv.rd{color:var(--red-d);}
+  .ic .iv.gr{color:var(--green);}
+  .ic .il{font-size:12px;color:#5b636b;margin-top:9px;font-weight:600;line-height:1.4;}
+  .ic .ib{font-size:10.5px;color:var(--faint);margin-top:5px;}
+
+  /* sensitivity compare */
+  .cmp{display:flex;gap:18px;}
+  .cmpcol{flex:1;border-radius:18px;padding:20px;border:2px solid var(--line);}
+  .cmpcol.base{border-color:var(--indigo-bg);}
+  .cmpcol.stress{border-color:#ffe3b0;background:#fffaf1;}
+  .cmpcol .ct{font-size:13px;font-weight:800;color:var(--gray);margin-bottom:12px;}
+  .cmpcol.base .ct{color:var(--indigo-d);}
+  .cmpcol.stress .ct{color:#c9860a;}
+  .cmprow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .cmprow:last-child{border-bottom:none;}
+  .cmprow .v{font-weight:800;color:var(--ink);}
+  .cmprow.final{margin-top:4px;}
+  .cmprow.final .v{color:var(--green);font-size:17px;}
+
+  /* roadmap phase */
+  .phase{display:flex;gap:13px;}
+  .pc{flex:1;border-radius:18px;padding:17px;border:1px solid var(--line);}
+  .pc.p1{background:var(--indigo-bg);border-color:#d4dbff;} .pc.p2{background:var(--tint);} .pc.p3{background:var(--tint);}
+  .pn{font-size:11.5px;font-weight:800;color:#fff;background:var(--indigo);padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+  .p2 .pn,.p3 .pn{background:var(--indigo-l);}
+  .pc h3{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .pc li{font-size:12.5px;color:#4a525a;margin:5px 0;padding-left:15px;position:relative;list-style:none;}
+  .pc li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--indigo);}
+  .arr2{display:flex;align-items:center;color:var(--faint);font-size:22px;font-weight:800;}
+  .askbox{margin-top:16px;background:var(--ink);border-radius:14px;padding:14px 20px;color:#fff;font-size:13.5px;display:flex;gap:10px;align-items:center;}
+  .askbox b{color:var(--indigo-l);}
+
+  @media print{
+    body{background:#fff;} .hint{display:none;}
+    .deck{gap:0;padding:0;}
+    .slide{box-shadow:none;page-break-after:always;break-after:page;}
+    @page{size:1280px 720px;margin:0;}
+  }
+</style>
+</head>
+<body>
+<div class="hint">키보드 <b>Ctrl/⌘+P</b> → "PDF로 저장", 용지 가로 → 14p PDF 완성</div>
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <div class="left">
+    <div class="wordmark">moyo</div>
+    <div class="eyebrow">내부 실행 제안 · PB 데이터 리워드</div>
+    <h1>체감가를 설계하다<br><span class="g">모요 PB 데이터 리워드</span><br>ROI 검증</h1>
+    <div class="spine">2025 검토 당시 4대 우려를<br><b>이번엔 전부 구조로 해소</b> — 재무모델링·메커니즘 설계 완료</div>
+    <div class="meta"><b>과거 4대 우려 완전 해소</b> ｜ 리캡 → 설계 → ROI → 실행</div>
+  </div>
+  <div class="right">
+    <svg class="holo" viewBox="0 0 560 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8be9ff"/><stop offset="0.4" stop-color="#7aa6ff"/>
+          <stop offset="0.7" stop-color="#9b7bff"/><stop offset="1" stop-color="#c98bff"/>
+        </linearGradient>
+        <linearGradient id="holo2" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#6ad9ff"/><stop offset="0.5" stop-color="#8aa0ff"/><stop offset="1" stop-color="#b58bff"/>
+        </linearGradient>
+        <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#6a7bff" stop-opacity="0.55"/><stop offset="1" stop-color="#6a7bff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="300" cy="330" r="280" fill="url(#glow)"/>
+      <!-- coin stack representing cashback point -->
+      <g transform="translate(300,240)">
+        <ellipse cx="0" cy="60" rx="140" ry="34" fill="url(#holo2)" opacity="0.9"/>
+        <ellipse cx="0" cy="20" rx="140" ry="34" fill="url(#holo)" opacity="0.9"/>
+        <ellipse cx="0" cy="-20" rx="140" ry="34" fill="url(#holo2)" opacity="0.9"/>
+        <ellipse cx="0" cy="-60" rx="140" ry="34" fill="url(#holo)" opacity="0.95"/>
+        <text x="0" y="-54" text-anchor="middle" font-size="26" font-weight="800" fill="#0b0f30">P</text>
+      </g>
+      <!-- arrow ring symbolizing cycle/return -->
+      <g transform="translate(300,520)">
+        <path d="M-120 0 A120 120 0 1 1 60 104" fill="none" stroke="url(#holo2)" stroke-width="14" stroke-linecap="round" opacity="0.85"/>
+        <path d="M40 84 L60 104 L82 78" fill="none" stroke="url(#holo2)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+      </g>
+      <circle cx="120" cy="120" r="34" fill="url(#holo)" opacity="0.6"/>
+      <circle cx="470" cy="150" r="20" fill="url(#holo2)" opacity="0.55"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 2 과거 우려 리캡 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step active"><span class="n">1</span>리캡</span><span class="sep"></span><span class="step"><span class="n">2</span>설계</span><span class="sep"></span><span class="step"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag"><b>moyo</b> PB 리워드</span></div>
+  <div class="lede">리캡 ｜ 과거 검토에서 막혔던 4가지</div>
+  <h1 class="stitle">"아이디어는 좋은데, <span class="r">구조가 없다</span>"— 그래서 멈췄던 4가지</h1>
+  <div class="body">
+    <div class="btl">
+      <div class="btlc"><div class="hd"><span class="bn">1</span><h3>체감가</h3></div>
+        <div class="easy">시장가 9천원을 어떻게 4천원처럼 보이게 하나?</div>
+        <p>원가(고정비)에서 얼마를 혜택으로 빼줘야 하는지 <b class="k">재원 구조가 없었음</b>.</p>
+        <span class="m">▶ 이번엔 정산수수료+낙전으로 답함</span></div>
+      <div class="btlc"><div class="hd"><span class="bn">2</span><h3>지급 시기</h3></div>
+        <div class="easy">정산금은 4개월 뒤인데, 유저는 "바로" 느껴야 함</div>
+        <p>실제 자금 유입과 마케팅 매력 사이의 <b class="k">타이밍 갭</b>을 메울 방법이 없었음.</p>
+        <span class="m">▶ 이번엔 선지급+clawback으로 답함</span></div>
+      <div class="btlc"><div class="hd"><span class="bn">3</span><h3>지급 수단</h3></div>
+        <div class="easy">제휴사가 외부 포인트로 직접 주면 현금이 샌다</div>
+        <p>"녹이지 말고 우리에게 달라"는 아이디어는 있었지만 <b class="k">구조화가 안 됨</b>.</p>
+        <span class="m">▶ 이번엔 원칙 선언으로 답함</span></div>
+      <div class="btlc"><div class="hd"><span class="bn">4</span><h3>낙전(breakage)</h3></div>
+        <div class="easy">안 쓰고 소멸되는 포인트 약 20%, 방치 중</div>
+        <p>이미 포인트몰·현금화 인프라가 있는데 <b class="k">재원으로 못 씀</b>.</p>
+        <span class="m">▶ 이번엔 안전마진으로 답함</span></div>
+    </div>
+    <p class="take" style="margin-top:18px;">네 가지 모두 <span class="hi">"아이디어 부재"</span>가 아니라 <span class="hi">"구조 부재"</span>였다 — 이번 제안은 그 구조를 채운다.</p>
+  </div>
+  <div class="pageno">02 / 14</div>
+</section>
+
+<!-- 3 설계원칙 선언 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step active"><span class="n">2</span>설계</span><span class="sep"></span><span class="step"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">설계 원칙</span></div>
+  <div class="lede">설계 ① ｜ 지급 수단 원칙</div>
+  <h1 class="stitle">"현금은 반드시 <span class="i">우리를 거쳐간다</span>"</h1>
+  <div class="body">
+    <div class="card tint" style="margin-bottom:22px;padding:26px 30px;">
+      <p style="font-size:13px;font-weight:800;color:var(--green);margin-bottom:14px;">✓ 이번 원칙 — 모요포인트로만 지급</p>
+      <div class="flow">
+        <span class="fbox">제휴사(카드사 등)</span><span class="farr">→</span><span class="fbox hero">모요가 현금 수취</span><span class="farr">→</span><span class="fbox">모요포인트 전환</span><span class="farr">→</span><span class="fbox">유저</span>
+      </div>
+      <p style="text-align:center;font-size:12.5px;color:#5b636b;">제휴사가 보내는 리워드 재원은 전부 모요를 경유 — 어떤 현금도 모요를 건너뛰지 않는다</p>
+    </div>
+    <div class="card" style="border:1px dashed #ffb4b4;background:#fffafa;padding:22px 30px;">
+      <p style="font-size:13px;font-weight:800;color:var(--red-d);margin-bottom:14px;">✗ 과거 우려 — 외부 포인트 직송 시 현금 유출</p>
+      <div class="flow">
+        <span class="fbox banned">제휴사(카드사 등)</span><span class="farr">→</span><span class="fbox banned">네이버페이 등 외부 포인트</span><span class="farr">→</span><span class="fbox banned">유저</span>
+      </div>
+      <p style="text-align:center;font-size:12.5px;color:#5b636b;">이 경로는 원천 금지 — 모요를 거치지 않는 지급 방식은 채택하지 않는다</p>
+    </div>
+    <p class="take" style="margin-top:20px;">모든 리워드 설계는 이 원칙 위에서만 작동한다 — <span class="hi">모요포인트 = 유일한 지급 통로</span>.</p>
+  </div>
+  <div class="pageno">03 / 14</div>
+</section>
+
+<!-- 4 체감가 메커니즘 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step active"><span class="n">2</span>설계</span><span class="sep"></span><span class="step"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">설계 2</span></div>
+  <div class="lede">설계 ② ｜ 체감가 메커니즘</div>
+  <h1 class="stitle">정가는 그대로, <span class="i">즉시 캐시백</span>으로 체감가를 만든다</h1>
+  <div class="body">
+    <div class="pricebox" style="margin-bottom:20px;">
+      <div class="pnode"><div class="lab">요금제 정가 (원가 그대로 유지)</div><div class="val">9,000원</div></div>
+      <div class="parr">−</div>
+      <div class="pnode cut"><div class="lab">가입 즉시 모요포인트 캐시백</div><div class="val">5,000원</div></div>
+      <div class="parr">=</div>
+      <div class="pnode final"><div class="lab">유저 체감가</div><div class="val">4,000원</div></div>
+    </div>
+    <div class="gloss" style="margin-bottom:14px;">💰 <b>재원</b> — 인당 정산수수료 30,000원의 일부로 캐시백 5,000원 충당 + 20% 낙전 환수분을 얹어 안전마진 확보</div>
+    <div class="row">
+      <div class="col"><div class="card tint"><h3>왜 가능한가</h3><p>정가를 낮추는 게 아니라, 모요가 받는 <b class="k">정산수수료 중 일부를 포인트로 되돌려주는</b> 구조라 원가·수익성이 흔들리지 않는다.</p></div></div>
+      <div class="col"><div class="card tint"><h3>왜 강력한가</h3><p>경쟁 MVNO·사은품 프로모션은 이 재원 구조를 흉내낼 수 없다 — <b class="k">모요 PB 요금제에만</b> 붙는 락인 혜택이 된다.</p></div></div>
+    </div>
+  </div>
+  <div class="pageno">04 / 14</div>
+</section>
+
+<!-- 5 재원 구조 waterfall -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step active"><span class="n">2</span>설계</span><span class="sep"></span><span class="step"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">설계 3</span></div>
+  <div class="lede">설계 ③ ｜ 재원 구조 (Waterfall)</div>
+  <h1 class="stitle">캐시백을 줘도 인당 <span class="i">순마진 26,000원</span>은 유지된다</h1>
+  <div class="body">
+    <div class="waterfall">
+      <div class="wcol"><div class="wbar pos" style="height:210px;">30,000</div><div class="wlab">인당 정산수수료</div><div class="wsub">모요 수취 (BM 제안서 통일 가정치)</div></div>
+      <div class="wconn"></div>
+      <div class="wcol"><div class="wbar neg" style="height:28px;">−4,000</div><div class="wlab">실질 캐시아웃</div><div class="wsub">캐시백 5,000원 × 낙전 20% 감안</div></div>
+      <div class="wconn"></div>
+      <div class="wcol"><div class="wbar fin" style="height:182px;">26,000</div><div class="wlab">인당 순마진</div><div class="wsub">30,000 − 4,000</div></div>
+    </div>
+    <p class="take" style="margin-top:8px;">캐시백 <span class="hi">5,000원 중 실제로 외부에 유출되는 건 20% 낙전을 뺀 4,000원뿐</span> — 재원 안전마진이 이미 설계에 내장돼 있다.</p>
+  </div>
+  <div class="pageno">05 / 14</div>
+</section>
+
+<!-- 6 지급 시기 설계 타임라인 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step active"><span class="n">2</span>설계</span><span class="sep"></span><span class="step"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">설계 4</span></div>
+  <div class="lede">설계 ④ ｜ 지급 시기 설계</div>
+  <h1 class="stitle">유저는 <span class="i">"바로"</span>, 모요는 <span class="r">4개월 뒤</span> — 갭은 조건부로 통제한다</h1>
+  <div class="body">
+    <div class="timeline">
+      <div class="tline"></div>
+      <div class="gapband">캐시플로우 갭 4개월 · clawback 조건으로 리스크 통제</div>
+      <div class="tnodes">
+        <div class="tnode"><div class="tdot"></div><div class="tcard"><div class="td">D0 · 가입 즉시</div><h4>포인트 선지급 (upfront grant)</h4><p>유저 경험상 <b class="k">가입 즉시 포인트 확정 지급</b> — 다음 달 청구서·포인트몰에서 바로 체감.</p></div></div>
+        <div class="tnode mid"><div class="tdot"></div><div class="tcard"><div class="td">D+1개월 · 유저 체감</div><h4>청구서·포인트몰에서 즉시 확인</h4><p>마케팅 매력의 핵심 — <b class="k">"다음 달 요금 낼 때 바로 받는다"</b>는 경험 그대로 구현.</p></div></div>
+        <div class="tnode end"><div class="tdot"></div><div class="tcard"><div class="td">D+4개월 · 모요 실제 정산</div><h4>MVNO 정산수수료 실수취</h4><p>모요가 <b class="k">실제 자금을 회수</b>하는 시점 — 그 전까지는 모요가 캐시플로우를 선당겨 부담.</p></div></div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:26px;">4개월의 선부담 리스크는 <span class="hi">최소유지기간 미충족 중도해지 시 clawback(회수) 조건</span>으로 통제한다 — 다음 장에서 상세.</p>
+  </div>
+  <div class="pageno">06 / 14</div>
+</section>
+
+<!-- 7 최소유지기간 리스크 해소 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step active"><span class="n">2</span>설계</span><span class="sep"></span><span class="step"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">설계 5</span></div>
+  <div class="lede">설계 ⑤ ｜ 최소유지기간 리스크 해소</div>
+  <h1 class="stitle">"못 지키면 손실"이 아니라 — <span class="i">"안 지키면 회수"</span>로 바꾼다</h1>
+  <div class="body">
+    <div class="row" style="align-items:stretch;">
+      <div class="col">
+        <div class="card" style="border:1px dashed var(--faint);background:#fafafa;height:100%;">
+          <p style="font-size:13px;font-weight:800;color:var(--gray);margin-bottom:10px;">✗ 과거 우려</p>
+          <h3>최소유지기간을 못 지키면 모요가 손실을 떠안는다</h3>
+          <p style="margin-top:8px;">선지급한 포인트를 유저가 조기 해지해버리면 <b class="k">회수 수단이 없어</b> 리스크가 전부 모요에 남는 구조였다.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card tint" style="border-top:5px solid var(--green);height:100%;">
+          <p style="font-size:13px;font-weight:800;color:var(--green);margin-bottom:10px;">✓ 이번 답</p>
+          <h3>약관에 clawback(회수) 조건 명시</h3>
+          <p style="margin-top:8px;"><b class="k">최소 유지기간(약정) 미충족 중도해지 시 지급된 포인트를 회수</b>한다는 조건을 약관에 명시 — 리스크를 유저에게 전가하지 않고, 모요가 조건부로 통제한다.</p>
+        </div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:20px;">핵심은 <span class="hi">"손실을 없앤다"</span>가 아니라 <span class="hi">"손실 조건을 계약으로 통제한다"</span>는 것 — 다음 장 ROI에서 이 리스크를 정량화한다.</p>
+  </div>
+  <div class="pageno">07 / 14</div>
+</section>
+
+<!-- 8 모요포인트 인프라 재사용 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step active"><span class="n">2</span>설계</span><span class="sep"></span><span class="step"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">설계 6</span></div>
+  <div class="lede">설계 ⑥ ｜ 모요포인트 인프라 재사용</div>
+  <h1 class="stitle">새로 만들 것이 거의 없다 — <span class="i">이미 있는 인프라</span>를 쓴다</h1>
+  <div class="body">
+    <div class="infrarow" style="margin-bottom:18px;">
+      <div class="infrabox"><div class="ic2">①</div><h3>포인트 지급 로직</h3><p>가입 즉시 캐시백 지급 = 기존 모요포인트 <b class="k">적립 로직 그대로 재사용</b></p></div>
+      <div class="infrabox"><div class="ic2">②</div><h3>포인트몰</h3><p>이미 운영 중인 <b class="k">모요 포인트몰</b>에서 체감가·소진 경험 그대로 제공</p></div>
+      <div class="infrabox"><div class="ic2">③</div><h3>포인트 현금화</h3><p>이미 운영 중인 <b class="k">현금화 기능</b>으로 유저 체감 자유도 확보</p></div>
+      <div class="infrabox"><div class="ic2">④</div><h3>낙전 집계</h3><p>기존 포인트 소멸 로직에서 <b class="k">20% 낙전 데이터</b>를 그대로 재원 근거로 활용</p></div>
+    </div>
+    <p class="take">신규 개발 항목은 <span class="hi">캐시백 지급 트리거 + clawback 회수 로직</span> 정도 — 인프라 대부분은 이미 존재해 실행비용이 낮다.</p>
+  </div>
+  <div class="pageno">08 / 14</div>
+</section>
+
+<!-- 9 ROI 모델 전제 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step done"><span class="n">✓</span>설계</span><span class="sep"></span><span class="step active"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">ROI 전제</span></div>
+  <div class="lede">ROI ① ｜ 모델 전제</div>
+  <h1 class="stitle">계산의 출발점 — <span class="i">연 8만명</span> 타겟, 인당 순마진 <span class="i">26,000원</span></h1>
+  <div class="body">
+    <div class="stats" style="margin-bottom:18px;">
+      <div class="stat"><div class="big">8<span class="u">만명</span></div><div class="num-l">연간 타겟 (80만 개통의 10%)</div></div>
+      <div class="stat"><div class="big">30,000<span class="u">원</span></div><div class="num-l">인당 정산수수료</div></div>
+      <div class="stat"><div class="big">4,000<span class="u">원</span></div><div class="num-l">실질 캐시아웃 (캐시백 5,000 − 낙전 20%)</div></div>
+      <div class="stat"><div class="big">26,000<span class="u">원</span></div><div class="num-l">인당 순마진</div></div>
+    </div>
+    <div class="row">
+      <div class="col"><div class="card tint"><h3>타겟 근거</h3><p>모요 연간 개통 규모 <b class="k">80만 건</b> 중 <b class="k">10%</b>가 PB 요금제로 전환한다는 보수적 가정.</p></div></div>
+      <div class="col"><div class="card tint"><h3>재원 근거</h3><p>정산수수료 30,000원 중 캐시백 5,000원을 지급하되, <b class="k">낙전 20%</b>가 환수되어 실질비용은 4,000원.</p></div></div>
+    </div>
+    <p class="take" style="margin-top:18px;">이 네 가지 전제가 이후 모든 시나리오·리스크 계산의 <span class="hi">공통 출발선</span>이다.</p>
+  </div>
+  <div class="pageno">09 / 14</div>
+</section>
+
+<!-- 10 시나리오 A/B/C -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step done"><span class="n">✓</span>설계</span><span class="sep"></span><span class="step active"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">ROI 2</span></div>
+  <div class="lede">ROI ② ｜ 시나리오 A / B / C 매출 비교</div>
+  <h1 class="stitle">가장 현실적인 목표는 <span class="i">시나리오 B — 20.8억</span></h1>
+  <div class="body">
+    <div class="barchart">
+      <div class="bcol"><div class="bbar" style="height:83px;">13억</div><div class="blab">시나리오 A</div><div class="bsub">5만명 가입</div></div>
+      <div class="bcol best"><div class="bbar" style="height:133px;">20.8억</div><div class="blab">시나리오 B</div><div class="bsub">8만명 가입 (기준)</div></div>
+      <div class="bcol"><div class="bbar" style="height:200px;">31.2억</div><div class="blab">시나리오 C</div><div class="bsub">12만명 가입</div></div>
+    </div>
+    <p class="take" style="margin-top:6px;">모두 <span class="hi">인당 순마진 26,000원 × 가입자수</span>로 산출 — <span class="hi">B(8만명, 20.8억)</span>가 타겟 전제와 일치하는 현실적 목표다.</p>
+  </div>
+  <div class="pageno">10 / 14</div>
+</section>
+
+<!-- 11 캐시플로우 리스크 정량화 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step done"><span class="n">✓</span>설계</span><span class="sep"></span><span class="step active"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">ROI 3</span></div>
+  <div class="lede">ROI ③ ｜ 캐시플로우 리스크 정량화 (시나리오 B 기준)</div>
+  <h1 class="stitle">4개월 선부담 리스크, 실제로는 <span class="i">약 3,200만원</span></h1>
+  <div class="body">
+    <div class="impact" style="margin-bottom:16px;">
+      <div class="ic"><div class="iv">4억<span style="font-size:16px;color:var(--gray)">원</span></div><div class="il">최대 선지급 노출액</div><div class="ib">8만명 × 5,000원, 4개월간 회전</div></div>
+      <div class="ic"><div class="iv rd">8<span class="u" style="font-size:18px;">%</span></div><div class="il">clawback 대상 비율 가정</div><div class="ib">최소유지기간 미충족 중도해지</div></div>
+      <div class="ic"><div class="iv gr">3,200<span class="u" style="font-size:16px;">만원</span></div><div class="il">실제 손실 리스크</div><div class="ib">4억원 × 8%</div></div>
+    </div>
+    <div class="gloss">📌 관리 가능한 수준 — 시나리오 B 매출 20.8억 대비 실제 손실 리스크는 <b>약 1.5%</b> 수준</div>
+    <p class="take" style="margin-top:16px;">노출액 4억원은 크게 보이지만, <span class="hi">clawback 조항이 실제 손실을 3,200만원 수준으로 통제</span>한다 — 이것이 설계 ⑤의 정량적 증거다.</p>
+  </div>
+  <div class="pageno">11 / 14</div>
+</section>
+
+<!-- 12 민감도 분석 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step done"><span class="n">✓</span>설계</span><span class="sep"></span><span class="step active"><span class="n">3</span>ROI</span><span class="sep"></span><span class="step"><span class="n">4</span>실행</span></div><span class="brandtag">ROI 4</span></div>
+  <div class="lede">ROI ④ ｜ 민감도 분석 — 낙전율 하락 스트레스 테스트</div>
+  <h1 class="stitle">낙전율이 <span class="r">절반</span>으로 떨어져도 구조는 <span class="i">견조</span>하다</h1>
+  <div class="body">
+    <div class="cmp" style="margin-bottom:18px;">
+      <div class="cmpcol base">
+        <div class="ct">기준 시나리오 · 낙전율 20%</div>
+        <div class="cmprow"><span>캐시백 지급액</span><span class="v">5,000원</span></div>
+        <div class="cmprow"><span>낙전 환수</span><span class="v">20%</span></div>
+        <div class="cmprow"><span>실질 캐시아웃</span><span class="v">4,000원</span></div>
+        <div class="cmprow final"><span>인당 순마진</span><span class="v">26,000원</span></div>
+      </div>
+      <div class="cmpcol stress">
+        <div class="ct">스트레스 시나리오 · 낙전율 10%</div>
+        <div class="cmprow"><span>캐시백 지급액</span><span class="v">5,000원</span></div>
+        <div class="cmprow"><span>낙전 환수</span><span class="v">10%</span></div>
+        <div class="cmprow"><span>실질 캐시아웃</span><span class="v">4,500원</span></div>
+        <div class="cmprow final"><span>인당 순마진</span><span class="v">25,500원</span></div>
+      </div>
+    </div>
+    <p class="take">낙전율이 <span class="hi">20% → 10%로 절반 하락</span>해도 인당 순마진은 <span class="hi">26,000원 → 25,500원</span>, 변화폭은 500원(약 1.9%)에 불과 — 재원 구조가 낙전율 변동에 견조하다.</p>
+  </div>
+  <div class="pageno">12 / 14</div>
+</section>
+
+<!-- 13 실행 로드맵 & Ask -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step done"><span class="n">✓</span>설계</span><span class="sep"></span><span class="step done"><span class="n">✓</span>ROI</span><span class="sep"></span><span class="step active"><span class="n">4</span>실행</span></div><span class="brandtag">실행</span></div>
+  <div class="lede">실행 ｜ 로드맵 & Ask</div>
+  <h1 class="stitle">검증은 끝났다 — <span class="i">이제 실행</span>으로</h1>
+  <div class="body">
+    <div class="phase">
+      <div class="pc p1"><span class="pn">0–1개월</span><h3>약관·로직 설계</h3>
+        <ul><li>캐시백·clawback 약관 설계</li><li>포인트 지급 로직 개발 (기존 포인트몰 인프라 재사용)</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p2"><span class="pn">1–2개월</span><h3>소규모 파일럿</h3>
+        <ul><li>제한된 규모로 PB 요금제 캐시백 파일럿</li><li>clawback·낙전 실측치 검증</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p3"><span class="pn">3개월~</span><h3>전체 확대</h3>
+        <ul><li>파일럿 결과 반영해 전체 PB 라인업 확대</li><li>시나리오 B(연 8만명) 목표로 스케일</li></ul></div>
+    </div>
+    <div class="askbox">🙋 <b>Ask</b> — ① 파일럿 승인 ② 약관팀 검토 요청 (clawback 조항 법무 확인)</div>
+  </div>
+  <div class="pageno">13 / 14</div>
+</section>
+
+<!-- 14 클로징 -->
+<section class="slide">
+  <div class="topbar"><div class="stepper"><span class="step done"><span class="n">✓</span>리캡</span><span class="sep"></span><span class="step done"><span class="n">✓</span>설계</span><span class="sep"></span><span class="step done"><span class="n">✓</span>ROI</span><span class="sep"></span><span class="step done"><span class="n">✓</span>실행</span></div><span class="brandtag">맺음말</span></div>
+  <div class="lede">맺음말</div>
+  <h1 class="stitle">마지막으로 — <span class="i">한 문장 요약</span></h1>
+  <div class="body">
+    <div class="card" style="background:radial-gradient(120% 140% at 80% 0%,#1a2156,#0b0f30);border:none;text-align:center;padding:26px;">
+      <p style="color:#fff;font-size:26px;font-weight:800;line-height:1.45;">체감가 4,000원은<br><span style="background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;">마법이 아니라 구조다.</span></p>
+      <p style="color:#aab2e6;font-size:13.5px;margin-top:10px;">정산수수료 30,000원 + 낙전 20% 안전마진 = 순마진 <b style="color:#fff;">26,000원</b> — clawback으로 4개월 캐시플로우 리스크까지 통제.</p>
+    </div>
+    <p style="font-size:12px;font-weight:800;color:var(--gray);margin:16px 0 9px;text-align:center;">핵심 수치 재확인</p>
+    <div class="impact">
+      <div class="ic"><div class="iv">9,000<span style="font-size:16px;color:var(--faint)">→</span>4,000<span class="u" style="font-size:16px;">원</span></div><div class="il">유저 체감가</div><div class="ib">정가 유지 + 즉시 캐시백</div></div>
+      <div class="ic"><div class="iv gr">26,000<span class="u" style="font-size:16px;">원</span></div><div class="il">인당 순마진</div><div class="ib">정산수수료 − 실질 캐시아웃</div></div>
+      <div class="ic"><div class="iv">20.8<span class="u" style="font-size:16px;">억</span></div><div class="il">시나리오 B 매출 (8만명)</div><div class="ib">가장 현실적 목표</div></div>
+      <div class="ic"><div class="iv rd">3,200<span class="u" style="font-size:16px;">만원</span></div><div class="il">실제 손실 리스크</div><div class="ib">clawback 통제 후 (관리 가능)</div></div>
+    </div>
+    <p class="take" style="text-align:center;margin-top:16px;font-size:15px;">과거 4대 우려 — <span class="hi">체감가·지급시기·지급수단·낙전</span> — 이번엔 전부 구조로 답했다.</p>
+  </div>
+  <div class="pageno">14 / 14</div>
+</section>
+
+</div>
+</body>
+</html>

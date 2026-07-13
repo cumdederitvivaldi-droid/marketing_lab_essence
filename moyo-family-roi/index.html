@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모요 시니어·가족 ROI 검증 ｜ 내부 실행 제안</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --ink:#191f28; --charcoal:#343a40; --gray:#7c848c; --faint:#aeb4bb; --line:#edeff2;
+    --indigo:#516aec; --indigo-d:#3a52cc; --indigo-l:#7086fb; --indigo-bg:#eef1ff;
+    --red:#fa5252; --red-d:#e03e3e; --red-bg:#fff0f0;
+    --tint:#f7f8fa; --green:#12a886; --navy:#0b0f30;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:'Pretendard','Pretendard Variable',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--charcoal);background:#dcdfe4;line-height:1.55;}
+  .hint{position:fixed;top:14px;right:14px;z-index:99;background:var(--indigo);color:#fff;font-size:13px;padding:9px 14px;border-radius:30px;box-shadow:0 4px 16px rgba(81,106,236,.3);}
+  .hint b{color:#fff;text-decoration:underline;}
+  .deck{display:flex;flex-direction:column;align-items:center;gap:26px;padding:40px 0 64px;}
+  .slide{width:1280px;height:720px;background:#fff;position:relative;overflow:hidden;padding:44px 58px 52px;box-shadow:0 12px 44px rgba(25,31,40,.14);display:flex;flex-direction:column;}
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex:0 0 auto;}
+  .stepper{display:flex;align-items:center;}
+  .step{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--faint);}
+  .step .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:#eef0f3;color:var(--faint);}
+  .step.done{color:var(--indigo-d);} .step.done .n{background:var(--indigo-bg);color:var(--indigo-d);}
+  .step.active{color:var(--ink);} .step.active .n{background:var(--indigo);color:#fff;box-shadow:0 0 0 4px var(--indigo-bg);}
+  .sep{width:30px;height:2px;background:#e6e8ec;margin:0 12px;border-radius:2px;}
+  .brandtag{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--faint);}
+  .brandtag b{color:var(--indigo);}
+
+  .lede{font-size:14px;color:var(--gray);font-weight:700;margin-bottom:5px;}
+  .stitle{font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-1.1px;line-height:1.24;}
+  .stitle .i{color:var(--indigo);} .stitle .r{color:var(--red-d);}
+  .body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;}
+  .take{font-size:18px;font-weight:700;color:var(--ink);line-height:1.5;}
+  .take .hi{background:linear-gradient(transparent 58%,var(--indigo-bg) 58%);padding:0 3px;}
+  .take .hir{background:linear-gradient(transparent 58%,var(--red-bg) 58%);padding:0 3px;}
+  .pageno{position:absolute;right:58px;bottom:24px;font-size:12px;color:var(--faint);font-weight:700;}
+  b.k{font-weight:800;color:var(--ink);}
+  .i{color:var(--indigo);} .r{color:var(--red-d);}
+
+  .row{display:flex;gap:18px;}
+  .col{flex:1;min-width:0;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .card.tint{background:var(--tint);box-shadow:none;}
+  .card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .card p{font-size:14px;color:#525a62;}
+  ul.clean{list-style:none;} ul.clean li{position:relative;padding-left:19px;font-size:14px;color:#4a525a;margin:8px 0;}
+  ul.clean li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--indigo);}
+  .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:20px;}
+  .tag.i{background:var(--indigo-bg);color:var(--indigo-d);} .tag.r{background:var(--red-bg);color:var(--red-d);} .tag.g{background:#e7f8f3;color:var(--green);}
+  .big{font-size:42px;font-weight:800;color:var(--indigo);letter-spacing:-1.5px;line-height:1;}
+  .big .u{font-size:16px;font-weight:700;color:var(--gray);letter-spacing:0;}
+  .num-l{font-size:13px;color:#525a62;margin-top:8px;font-weight:600;}
+  .src{font-size:10.5px;color:var(--faint);}
+  .note{font-size:11px;color:var(--faint);margin-top:10px;}
+  .gloss{background:var(--indigo-bg);border-radius:12px;padding:10px 16px;font-size:13px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:8px;}
+  .gloss b{color:var(--indigo-d);font-weight:800;}
+
+  /* COVER (dark, pure CSS/SVG — no external image) */
+  .cover{padding:0;position:relative;background:#0b0f30;overflow:hidden;}
+  .cover .left{position:relative;z-index:3;width:62%;padding:0 60px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+  .cover .right{position:absolute;right:0;top:0;width:44%;height:100%;z-index:1;}
+  .wordmark{font-size:26px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,#7df9ff,#7aa6ff,#b18cff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:30px;}
+  .cover .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:2.5px;color:#8fa0ff;margin-bottom:18px;}
+  .cover h1{font-size:42px;font-weight:800;color:#fff;letter-spacing:-1.6px;line-height:1.34;}
+  .cover h1 .g{background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cover .spine{margin-top:24px;font-size:17px;font-weight:700;color:#c7cdf0;line-height:1.55;border-left:3px solid var(--indigo-l);padding-left:15px;}
+  .cover .spine b{color:#fff;}
+  .cover .meta{margin-top:44px;font-size:13px;color:#8a92c4;}
+  .cover .meta b{color:#dfe3ff;}
+  .holo{position:absolute;inset:0;}
+
+  /* summary cards */
+  .sumgrid{display:flex;gap:15px;}
+  .sc{flex:1;background:var(--tint);border-radius:18px;padding:22px 22px;border-top:5px solid var(--indigo);}
+  .sc:nth-child(2){border-top-color:var(--red);}
+  .sc:nth-child(3){border-top-color:var(--indigo-l);}
+  .sc:nth-child(4){border-top-color:var(--green);}
+  .sc .sl{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:10px;}
+  .sc:nth-child(1) .sl{color:var(--indigo-d);} .sc:nth-child(2) .sl{color:var(--red-d);}
+  .sc:nth-child(3) .sl{color:var(--indigo);} .sc:nth-child(4) .sl{color:var(--green);}
+  .sc p{font-size:15px;color:#2f363d;line-height:1.62;font-weight:500;}
+
+  /* stats */
+  .stats{display:flex;gap:13px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:0;background:var(--tint);border-radius:16px;padding:16px 14px;text-align:center;}
+
+  /* bmcard / actcard shared */
+  .bmcard{flex:1;border-radius:18px;border:1px solid var(--line);padding:18px 20px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .bmcard .nm{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+  .bmcard .ic{width:30px;height:30px;border-radius:9px;background:var(--indigo);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:0 0 auto;}
+  .bmcard h3{font-size:15.5px;font-weight:800;color:var(--ink);}
+  .actcard{flex:1;border-radius:16px;border:1px solid var(--line);padding:17px 19px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .actcard h3{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .msg{background:var(--ink);border-radius:12px;padding:12px 15px;color:#fff;font-size:13px;line-height:1.5;margin-top:9px;}
+  .msg b{color:var(--indigo-l);}
+
+  .strathead{display:flex;align-items:center;gap:14px;background:var(--indigo-bg);border-radius:14px;padding:13px 18px;margin-bottom:16px;}
+  .strathead .b{background:var(--red);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;flex:0 0 auto;}
+  .strathead .t{font-size:14.5px;font-weight:700;color:var(--charcoal);}
+  .strathead .t b{color:var(--indigo-d);}
+
+  /* spread-flow diagram (slide 4) */
+  .spreadflow{display:flex;align-items:stretch;gap:0;justify-content:center;margin:6px 0 18px;}
+  .sbox{flex:1;max-width:280px;border-radius:18px;padding:20px 18px;text-align:center;border:1px solid var(--line);box-shadow:0 2px 10px rgba(25,31,40,.05);display:flex;flex-direction:column;justify-content:center;}
+  .sbox.n1{background:var(--tint);}
+  .sbox.n2{background:var(--indigo-bg);border-color:#d4dbff;}
+  .sbox.n3{background:var(--red-bg);border-color:#ffd7d7;}
+  .sbox .sbico{width:44px;height:44px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;font-size:19px;font-weight:800;color:#fff;}
+  .sbox.n1 .sbico{background:var(--gray);}
+  .sbox.n2 .sbico{background:var(--indigo);}
+  .sbox.n3 .sbico{background:var(--red);}
+  .sbox .sbt{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+  .sbox .sbd{font-size:12.5px;color:#525a62;line-height:1.5;}
+  .sbox .sbd b{color:var(--ink);font-weight:800;}
+  .sarrow{flex:0 0 auto;width:56px;display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:26px;font-weight:800;}
+  .sarrow .lab{position:absolute;}
+  .spreadsum{text-align:center;font-size:13.5px;font-weight:700;color:var(--indigo-d);background:var(--indigo-bg);border-radius:12px;padding:11px 16px;}
+
+  /* scenario table */
+  table.sc-t{width:100%;border-collapse:collapse;font-size:14px;}
+  table.sc-t th,table.sc-t td{border-bottom:1px solid var(--line);padding:13px 14px;text-align:center;vertical-align:middle;}
+  table.sc-t th{background:var(--indigo);color:#fff;font-weight:700;font-size:12.5px;border:none;}
+  table.sc-t tr td:first-child{font-weight:800;color:var(--ink);text-align:left;}
+  table.sc-t tbody tr.b{background:var(--indigo-bg);}
+  table.sc-t tbody tr.b td{font-weight:800;color:var(--indigo-d);}
+  table.sc-t tbody tr.b td:first-child{color:var(--indigo-d);}
+
+  /* roadmap phase */
+  .phase{display:flex;gap:13px;}
+  .pc{flex:1;border-radius:18px;padding:17px;border:1px solid var(--line);}
+  .pc.p1{background:var(--indigo-bg);border-color:#d4dbff;} .pc.p2{background:var(--tint);} .pc.p3{background:var(--tint);}
+  .pn{font-size:11.5px;font-weight:800;color:#fff;background:var(--indigo);padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+  .p2 .pn,.p3 .pn{background:var(--indigo-l);}
+  .pc h3{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .pc li{font-size:12.5px;color:#4a525a;margin:5px 0;padding-left:15px;position:relative;list-style:none;}
+  .pc li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--indigo);}
+  .arr2{display:flex;align-items:center;color:var(--faint);font-size:22px;font-weight:800;}
+
+  table.kpi{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.kpi th,table.kpi td{border-bottom:1px solid var(--line);padding:12px 14px;text-align:left;vertical-align:middle;}
+  table.kpi th{background:var(--indigo);color:#fff;font-weight:700;font-size:12.5px;border:none;}
+  table.kpi tr td:first-child{font-weight:800;color:var(--indigo-d);width:24%;}
+  table.kpi tbody tr:nth-child(even){background:var(--tint);}
+
+  /* impact */
+  .impact{display:flex;gap:14px;}
+  .ic{flex:1;background:var(--tint);border-radius:18px;padding:18px 16px;text-align:center;}
+  .ic .iv{font-size:30px;font-weight:800;color:var(--indigo);letter-spacing:-1.2px;line-height:1.05;}
+  .ic .iv .ar{color:var(--green);}
+  .ic .il{font-size:12px;color:#5b636b;margin-top:9px;font-weight:600;line-height:1.4;}
+  .ic .ib{font-size:10.5px;color:var(--faint);margin-top:5px;}
+
+  /* qualitative upside card (slide 7) */
+  .qual{border-radius:18px;padding:22px 26px;background:var(--tint);border-left:6px solid var(--green);}
+  .qual h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;}
+  .qual p{font-size:14.5px;color:#3d454d;line-height:1.7;}
+  .qual .warn{margin-top:12px;font-size:12.5px;color:var(--faint);font-weight:700;}
+
+  /* ask card */
+  .askcard{border-radius:16px;border:2px dashed var(--indigo-l);background:var(--indigo-bg);padding:18px 20px;}
+  .askcard h3{font-size:15px;font-weight:800;color:var(--indigo-d);margin-bottom:6px;}
+  .askcard p{font-size:13.5px;color:#3d455c;line-height:1.55;}
+
+  @media print{
+    body{background:#fff;} .hint{display:none;}
+    .deck{gap:0;padding:0;}
+    .slide{box-shadow:none;page-break-after:always;break-after:page;}
+    @page{size:1280px 720px;margin:0;}
+  }
+</style>
+</head>
+<body>
+<div class="hint">키보드 <b>Ctrl/⌘+P</b> → "PDF로 저장", 용지 가로 → 10p PDF 완성</div>
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <div class="left">
+    <div class="wordmark">moyo</div>
+    <div class="eyebrow">시니어·가족 ROI 검증 · 내부 실행 제안</div>
+    <h1>시니어·가족 ROI 검증<br><span class="g">— 알뜰폰 1,000만의</span><br>다음 시장</h1>
+    <div class="spine">Growth 전략④ '로컬 역번들링(시니어·가족)'에<br><b>재무 모델링 + 실행 로드맵</b>을 더한 검증판</div>
+    <div class="meta"><b>이도형</b> ｜ 2026 ｜ 문제 → 전략 → ROI 모델 → 실행</div>
+  </div>
+  <div class="right">
+    <svg class="holo" viewBox="0 0 560 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8be9ff"/><stop offset="0.4" stop-color="#7aa6ff"/>
+          <stop offset="0.7" stop-color="#9b7bff"/><stop offset="1" stop-color="#c98bff"/>
+        </linearGradient>
+        <linearGradient id="holo2" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#6ad9ff"/><stop offset="0.5" stop-color="#8aa0ff"/><stop offset="1" stop-color="#b58bff"/>
+        </linearGradient>
+        <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#6a7bff" stop-opacity="0.55"/><stop offset="1" stop-color="#6a7bff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="300" cy="330" r="280" fill="url(#glow)"/>
+      <!-- family figures (parent + child, abstract) -->
+      <g transform="translate(210,180)">
+        <circle cx="0" cy="0" r="46" fill="url(#holo)" opacity="0.9"/>
+        <rect x="-34" y="46" width="68" height="90" rx="30" fill="url(#holo)" opacity="0.75"/>
+      </g>
+      <g transform="translate(340,300)">
+        <circle cx="0" cy="0" r="34" fill="url(#holo2)" opacity="0.9"/>
+        <rect x="-24" y="34" width="48" height="66" rx="22" fill="url(#holo2)" opacity="0.75"/>
+      </g>
+      <g transform="translate(150,430)">
+        <circle cx="0" cy="0" r="30" fill="url(#holo2)" opacity="0.85"/>
+        <rect x="-21" y="30" width="42" height="58" rx="20" fill="url(#holo2)" opacity="0.7"/>
+      </g>
+      <!-- connecting arcs = spread / bundling -->
+      <path d="M230 200 C280 240 300 260 330 290" stroke="#dfe8ff" stroke-width="3" stroke-opacity="0.55" fill="none" stroke-dasharray="2 10" stroke-linecap="round"/>
+      <path d="M195 220 C175 300 165 360 160 415" stroke="#dfe8ff" stroke-width="3" stroke-opacity="0.55" fill="none" stroke-dasharray="2 10" stroke-linecap="round"/>
+      <!-- heart accent -->
+      <g transform="translate(430,560)">
+        <path d="M0 18 C-30 -16 -64 6 -40 40 C-26 60 0 74 0 74 C0 74 26 60 40 40 C64 6 30 -16 0 18 Z" fill="url(#holo)" stroke="#eaf6ff" stroke-width="2.5" stroke-opacity="0.6"/>
+      </g>
+      <circle cx="110" cy="600" r="36" fill="url(#holo2)" stroke="#eaf6ff" stroke-width="2.5" stroke-opacity="0.5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 2 문제/기회 리캡 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step active"><span class="n">1</span>배경</span><span class="sep"></span>
+      <span class="step"><span class="n">2</span>전략</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI 모델</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag"><b>moyo</b> ╳ 이도형</span>
+  </div>
+  <div class="lede">배경 ｜ 문제 &amp; 기회 리캡</div>
+  <h1 class="stitle">알뜰폰 <span class="i">1,000만</span> 시대, 시니어·가족은 여전히 <span class="r">앱 UX 밖</span>에 있다</h1>
+  <div class="body">
+    <div class="stats">
+      <div class="stat"><div class="big">1,011<span class="u">만</span></div><div class="num-l">알뜰폰(MVNO) 가입자 (2025.6, 첫 1천만)</div></div>
+      <div class="stat"><div class="big">17.6<span class="u">%</span></div><div class="num-l">휴대폰 회선 점유율</div></div>
+      <div class="stat"><div class="big">2030<span class="u">중심</span></div><div class="num-l">모요 현재 성장 세그먼트 중심</div></div>
+      <div class="stat"><div class="big">0<span class="u">%</span></div><div class="num-l">시니어 전용 UX·효도 대리추천 (부재)</div></div>
+    </div>
+    <div class="gloss" style="margin-top:16px;">📌 <b>병목</b> — 모요의 UX·마케팅은 2030 디지털 네이티브 중심으로 설계 → 통신비 부담이 가장 큰 시니어·가족 세그먼트는 아직 공략 밖. 알뜰폰 규모가 1,000만을 넘긴 지금이 확장의 타이밍.</div>
+    <p class="take" style="margin-top:20px;">이 제안은 기존 Growth 전략④ <span class="hi">'시니어·가족으로 시장 확장'</span> 아이디어에 <span class="hi">ROI 검증과 실행 로드맵</span>을 더해, 바로 착수 가능한 안으로 만든다.</p>
+  </div>
+  <div class="pageno">01 / 10</div>
+</section>
+
+<!-- 3 전략 두 축 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>전략</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI 모델</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">전략</span>
+  </div>
+  <div class="lede">전략 ｜ 시니어·가족 확장의 두 축</div>
+  <h1 class="stitle">'효도 대리추천'으로 문을 열고, <span class="i">가족 결합</span>으로 LTV를 키운다</h1>
+  <div class="body">
+    <div class="row">
+      <div class="actcard"><span class="tag i">축 ① 시니어</span>
+        <h3 style="margin-top:8px;">효도 대리 추천 + 시니어 전용 UX</h3>
+        <ul class="clean">
+          <li><b class="k">자녀가 부모 요금제를 대신 골라</b> 공유하는 넛지 기능</li>
+          <li>큰 글씨·전화 상담 등 <b class="k">시니어 전용 UX</b>로 가입 장벽 제거</li>
+          <li>진입점: 이미 모요를 쓰는 <b class="k">기존 2030 유저 기반</b></li>
+        </ul>
+        <div class="msg">"부모님 통신비, 제가 대신 봐드릴게요" — <b>자녀가 추천 링크를 공유</b>하면 부모는 확인만 하면 되는 구조.</div>
+      </div>
+      <div class="actcard"><span class="tag g">축 ② 가족</span>
+        <h3 style="margin-top:8px;">가족 회선 결합으로 LTV 확대</h3>
+        <ul class="clean">
+          <li>가족 회선 <b class="k">묶음 비교·관리</b> 대시보드</li>
+          <li>가족 간 <b class="k">데이터 선물·결합 혜택</b> 제공</li>
+          <li>시니어 1명 가입이 <b class="k">가족 전체 확산</b>으로 이어지는 구조</li>
+        </ul>
+        <div class="msg">한 명의 시니어 가입이 <b>배우자 등 가족 추가 가입</b>으로 자연 확산 — 이 확산 효과를 다음 장에서 정량화한다.</div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:16px;">두 축은 분리된 아이디어가 아니라 <span class="hi">직접 전환 → 가족 확산</span>으로 이어지는 하나의 퍼널이다.</p>
+  </div>
+  <div class="pageno">02 / 10</div>
+</section>
+
+<!-- 4 확산 메커니즘 다이어그램 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>전략</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>ROI 모델</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">전략 · 확산 구조</span>
+  </div>
+  <div class="lede">전략 ｜ 확산 메커니즘</div>
+  <h1 class="stitle">한 번의 넛지가 <span class="i">직접 전환</span>을 넘어 <span class="i">가족 확산</span>으로 이어진다</h1>
+  <div class="body">
+    <div class="spreadflow">
+      <div class="sbox n1">
+        <div class="sbico">👤</div>
+        <div class="sbt">자녀 유저</div>
+        <div class="sbd">기존 2030 유저 기반<br>연 <b>8만명</b>에게<br>효도 대리추천 넛지 노출</div>
+      </div>
+      <div class="sarrow">→</div>
+      <div class="sbox n2">
+        <div class="sbico">👵</div>
+        <div class="sbt">직접 전환</div>
+        <div class="sbd">넛지 확인 후<br>부모(시니어) 직접 가입<br>전환율 <b>5~15%</b></div>
+      </div>
+      <div class="sarrow">→</div>
+      <div class="sbox n3">
+        <div class="sbico">👨‍👩‍👧</div>
+        <div class="sbt">가족 확산</div>
+        <div class="sbd">시니어 가입 1명당<br>확산계수 <b>×0.6</b><br>배우자 등 추가 유입</div>
+      </div>
+    </div>
+    <div class="spreadsum">직접 가입 + 확산 가입(직접가입 × 0.6) = 총 신규가입 — 다음 장 ROI 모델의 기본 구조</div>
+    <p class="take" style="margin-top:18px;">핵심은 <span class="hi">CAC 없이(기존 유저 넛지만으로)</span> 발생하는 직접 전환에, <span class="hi">가족 확산이 자연 배수</span>로 붙는 구조다.</p>
+  </div>
+  <div class="pageno">03 / 10</div>
+</section>
+
+<!-- 5 ROI 모델 전제 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>전략</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI 모델</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">ROI 모델</span>
+  </div>
+  <div class="lede">ROI 모델 ① ｜ 전제 조건</div>
+  <h1 class="stitle">타겟 <span class="i">8만명</span>, 전환율 3개 시나리오로 검증한다</h1>
+  <div class="body">
+    <div class="row">
+      <div class="col">
+        <div class="card tint">
+          <h3>타겟 규모</h3>
+          <div class="big" style="margin-top:6px;">8<span class="u">만명 / 년</span></div>
+          <p style="margin-top:8px;">기존 <b class="k">20~30대 유저 기반</b>에게 "효도 대리 추천" 넛지(자녀가 부모 요금제를 대신 골라 공유하는 기능)를 노출하는 연간 규모.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card tint">
+          <h3>정산 단가</h3>
+          <div class="big" style="margin-top:6px;">30,000<span class="u">원 / 인</span></div>
+          <p style="margin-top:8px;">인당 정산수수료 — 타 growth 아이디어 덱들과 <b class="k">통일된 가정치</b>를 그대로 적용.</p>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;font-weight:800;color:var(--gray);margin:20px 0 8px;">전환율 시나리오 (넛지 노출 → 시니어 직접가입)</p>
+    <div class="stats">
+      <div class="stat"><div class="tag r" style="margin-bottom:8px;">A · 보수</div><div class="big" style="font-size:34px;">5<span class="u">%</span></div><div class="num-l">직접가입 4,000명</div></div>
+      <div class="stat"><div class="tag i" style="margin-bottom:8px;">B · 중립</div><div class="big" style="font-size:34px;">10<span class="u">%</span></div><div class="num-l">직접가입 8,000명</div></div>
+      <div class="stat"><div class="tag g" style="margin-bottom:8px;">C · 공격</div><div class="big" style="font-size:34px;">15<span class="u">%</span></div><div class="num-l">직접가입 12,000명</div></div>
+    </div>
+    <p class="note">여기에 가족 확산계수 ×0.6(시니어 1명 가입 시 평균 0.6명의 가족 추가 유입 가정)을 더해 다음 장에서 총 신규가입·매출을 계산한다.</p>
+  </div>
+  <div class="pageno">04 / 10</div>
+</section>
+
+<!-- 6 시나리오 A/B/C -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>전략</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI 모델</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">ROI 모델</span>
+  </div>
+  <div class="lede">ROI 모델 ② ｜ 시나리오별 매출 추정</div>
+  <h1 class="stitle">중립 시나리오 기준 연 <span class="i">3.84억원</span> — 1년 목표는 여기다</h1>
+  <div class="body">
+    <table class="sc-t">
+      <tr><th>시나리오</th><th>전환율</th><th>직접가입</th><th>확산가입 (×0.6)</th><th>총 신규가입</th><th>매출 (× 3만원)</th></tr>
+      <tr><td>A · 보수</td><td>5%</td><td>4,000명</td><td>2,400명</td><td>6,400명</td><td>1.92억원</td></tr>
+      <tr class="b"><td>B · 중립</td><td>10%</td><td>8,000명</td><td>4,800명</td><td>12,800명</td><td>3.84억원</td></tr>
+      <tr><td>C · 공격</td><td>15%</td><td>12,000명</td><td>7,200명</td><td>19,200명</td><td>5.76억원</td></tr>
+    </table>
+    <div class="row" style="margin-top:20px;">
+      <div class="col" style="flex:1.4;">
+        <p class="take">보수(A)~공격(C) 전 구간에서 매출이 <span class="hi">양(+)</span>이며, 확산가입이 총 신규가입의 <span class="hi">약 37.5%</span>를 차지 — 가족 확산 효과가 매출 기여의 핵심 변수다.</p>
+      </div>
+      <div class="col">
+        <div class="card" style="background:var(--indigo-bg);border:none;text-align:center;">
+          <div style="font-size:12.5px;font-weight:800;color:var(--indigo-d);">1년 목표 (시나리오 B)</div>
+          <div class="big" style="margin-top:6px;">3.84<span class="u">억원</span></div>
+          <div class="num-l">총 신규가입 12,800명</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pageno">05 / 10</div>
+</section>
+
+<!-- 7 정성적 상방 요인 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>전략</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>ROI 모델</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">ROI 모델</span>
+  </div>
+  <div class="lede">ROI 모델 ③ ｜ 정성적 상방 요인</div>
+  <h1 class="stitle">이 숫자는 <span class="i">보수적</span>일 가능성이 있다 — 리텐션은 계산에 넣지 않았다</h1>
+  <div class="body">
+    <div class="qual">
+      <h3>🌱 시니어 세그먼트의 리텐션 상방</h3>
+      <p>시니어 유저는 요금제·통신사 <b class="k">변경·이탈이 2030 대비 적은</b> 경향이 있다는 것이 정성적으로 관찰된다. 한 번 정착한 요금제를 오래 유지하는 습관, 자녀가 대신 관리해주는 구조 특성상 <b class="k">재이탈 가능성이 낮다</b>는 점이 이번 ROI 모델의 매출 추정에는 반영되어 있지 않다.</p>
+      <div class="warn">⚠ 단, 이는 정량화되지 않은 정성적 근거다. 위 시나리오 A/B/C 매출은 신규가입 기준이며, 리텐션에 따른 LTV 상승분은 별도 검증(파일럿 코호트 추적)이 필요하다.</div>
+    </div>
+    <p class="take" style="margin-top:22px;">즉, 시나리오 A/B/C는 <span class="hi">1년차 신규가입 매출만 반영한 보수적 하한선</span>이며, 실제 LTV는 리텐션 상방으로 더 높아질 여지가 있다.</p>
+  </div>
+  <div class="pageno">06 / 10</div>
+</section>
+
+<!-- 8 실행 로드맵 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>전략</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI 모델</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">실행</span>
+  </div>
+  <div class="lede">실행 ① ｜ 로드맵</div>
+  <h1 class="stitle">프로토타입 → 파일럿 실측 → 확대, <span class="i">단계적으로</span> 검증한다</h1>
+  <div class="body">
+    <div class="phase">
+      <div class="pc p1"><span class="pn">0–2개월</span><h3>효도추천 UX 프로토타입</h3>
+        <ul><li>공유링크형 효도 대리 추천 기능 개발</li><li>자녀가 요금제 골라 부모에게 링크 공유</li><li>추가 채널 없이 기존 앱 내 넛지로 시작</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p2"><span class="pn">2–4개월</span><h3>파일럿 코호트 실측</h3>
+        <ul><li>일부 유저군에 넛지 노출 → 전환율 실측</li><li>직접전환율·가족확산계수 실데이터 검증</li><li>A/B/C 가정치와 실측치 비교</li></ul></div>
+      <div class="arr2">→</div>
+      <div class="pc p3"><span class="pn">4개월~</span><h3>전체 확대 · 시니어 UX 투자</h3>
+        <ul><li>전체 유저 기반으로 넛지 확대</li><li>시니어 전용 UX(큰 글씨·전화상담) 투자</li><li>실측 기반으로 예산·목표 재조정</li></ul></div>
+    </div>
+    <p class="take" style="margin-top:22px;">원칙은 <span class="hi">추가 투자 최소화(프로토타입)</span> → <span class="hi">실측으로 가정 검증</span> → <span class="hi">검증된 만큼만 확대 투자</span>.</p>
+  </div>
+  <div class="pageno">07 / 10</div>
+</section>
+
+<!-- 9 KPI & Ask -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>전략</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI 모델</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">실행</span>
+  </div>
+  <div class="lede">실행 ② ｜ KPI &amp; Ask</div>
+  <h1 class="stitle">무엇을 측정하고, 무엇을 <span class="i">요청</span>하는가</h1>
+  <div class="body">
+    <table class="kpi">
+      <tr><th>KPI</th><th>정의</th><th>의미</th></tr>
+      <tr><td>넛지 노출수</td><td>효도 대리추천 넛지가 노출된 자녀 유저 수 (분모, 목표 8만명/년)</td><td>타겟 도달 규모</td></tr>
+      <tr><td>직접 전환율</td><td>넛지 노출 대비 시니어 직접 가입 비율 (가정 5~15%)</td><td>퍼널 핵심 변수</td></tr>
+      <tr><td>가족 확산계수</td><td>시니어 가입 1명당 추가 가족 가입 인원 (가정 0.6배)</td><td>확산 효과 검증</td></tr>
+      <tr><td>신규가입수</td><td>직접가입 + 확산가입 = 총 신규가입 (시나리오 B 목표 12,800명)</td><td>최종 매출 기여</td></tr>
+    </table>
+    <div class="askcard" style="margin-top:20px;">
+      <h3>💬 Ask</h3>
+      <p>0~2개월 <b class="k">효도추천 UX 프로토타입 개발</b>에 필요한 <b class="k">소액 리소스 배정</b>(디자인·개발 소요 최소화, 기존 앱 내 넛지 형태) — 이후 2~4개월 파일럿 실측 결과를 근거로 확대 투자 여부를 재검토.</p>
+    </div>
+  </div>
+  <div class="pageno">08 / 10</div>
+</section>
+
+<!-- 10 클로징 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>배경</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>전략</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>ROI 모델</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>실행</span>
+    </div><span class="brandtag">맺음말</span>
+  </div>
+  <div class="lede">맺음말 ｜ 핵심 재확인</div>
+  <h1 class="stitle">작은 넛지 하나로, <span class="i">다음 시장</span>의 문을 연다</h1>
+  <div class="body">
+    <div class="card" style="background:radial-gradient(120% 140% at 80% 0%,#1a2156,#0b0f30);border:none;text-align:center;padding:22px;">
+      <p style="color:#fff;font-size:24px;font-weight:800;line-height:1.45;">디지털 네이티브를 넘어,<br><span style="background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;">통신비 부담이 가장 큰 층으로.</span></p>
+      <p style="color:#aab2e6;font-size:13.5px;margin-top:10px;">기존 유저 기반을 활용한 <b style="color:#fff;">효도 대리추천</b>이 <b style="color:#fff;">가족 확산</b>으로 이어지는 구조 — 추가 CAC 없이 새 세그먼트를 연다.</p>
+    </div>
+    <p style="font-size:12px;font-weight:800;color:var(--gray);margin:16px 0 9px;text-align:center;">핵심 수치 재확인</p>
+    <div class="impact">
+      <div class="ic"><div class="iv">8<span class="u" style="font-size:16px;color:var(--gray)">만명</span></div><div class="il">연간 넛지 타겟</div><div class="ib">기존 2030 유저 기반</div></div>
+      <div class="ic"><div class="iv">×0.6</div><div class="il">가족 확산계수</div><div class="ib">시니어 1명당 추가 가족 유입</div></div>
+      <div class="ic"><div class="iv">12,800<span class="u" style="font-size:14px;color:var(--gray)">명</span></div><div class="il">1년 목표(B) 총 신규가입</div><div class="ib">직접 8,000 + 확산 4,800</div></div>
+      <div class="ic"><div class="iv">3.84<span class="u" style="font-size:16px;color:var(--gray)">억원</span></div><div class="il">1년 목표(B) 매출</div><div class="ib">인당 정산수수료 3만원 기준</div></div>
+    </div>
+    <p class="take" style="text-align:center;margin-top:16px;font-size:15px;">보수(A) 1.92억 ~ 공격(C) 5.76억 — <span class="hi">전 구간에서 검증 가능한 상방</span>, 지금 프로토타입부터 시작한다.</p>
+  </div>
+  <div class="pageno">10 / 10</div>
+</section>
+
+</div>
+</body>
+</html>
