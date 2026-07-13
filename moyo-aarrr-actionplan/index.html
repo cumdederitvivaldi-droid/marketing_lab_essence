@@ -169,6 +169,36 @@
   .bubble .btxt b{color:var(--indigo-l);}
   .bubble p.desc{font-size:11px;color:#525a62;margin-top:6px;line-height:1.4;}
 
+  /* phone mockup (홈스크린) */
+  .phonewrap{display:flex;justify-content:center;}
+  .pframe{width:250px;background:#0b0f30;border-radius:32px;padding:9px;box-shadow:0 14px 34px rgba(11,15,48,.28);}
+  .pscreen{background:#fff;border-radius:22px;padding:10px 10px 6px;display:flex;flex-direction:column;gap:6px;}
+  .ptop{display:flex;justify-content:space-between;align-items:center;padding:0 2px 1px;}
+  .ptop .pwm{font-size:13px;font-weight:800;color:var(--ink);}
+  .ptop .pbell{font-size:11px;color:var(--gray);}
+  .pbill{background:#0b0f30;border-radius:12px;padding:9px 11px;color:#fff;}
+  .pbill .p1{font-size:12px;font-weight:800;}
+  .pbill .p2{font-size:9.5px;color:#9aa1c9;margin-top:3px;}
+  .pdata{background:var(--tint);border-radius:12px;padding:9px 11px;}
+  .pdata .p1{font-size:11px;font-weight:800;color:var(--ink);}
+  .ptrack{background:#e7e9f0;border-radius:8px;height:8px;margin-top:6px;position:relative;overflow:hidden;}
+  .pfill{background:var(--indigo);height:100%;border-radius:8px;}
+  .pdata .p2{font-size:9px;color:var(--gray);margin-top:5px;display:flex;justify-content:space-between;font-weight:700;}
+  .preco{background:var(--indigo);border-radius:12px;padding:8px 10px;}
+  .preco .p1{font-size:10.5px;font-weight:700;line-height:1.4;color:#fff;}
+  .preco .p2{font-size:9.5px;font-weight:800;margin-top:5px;text-decoration:underline;color:#fff;}
+  .pnudge{background:#fff0f0;border:1px solid #ffd4d4;border-radius:12px;padding:8px 10px;}
+  .pnudge .p1{font-size:10px;font-weight:700;color:#7a2e2e;line-height:1.4;}
+  .ppb{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 10px;}
+  .ppb .ph{font-size:9.5px;font-weight:800;color:var(--gray);margin-bottom:4px;}
+  .pprow{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:var(--charcoal);font-weight:700;padding:3px 0;border-top:1px dashed var(--line);}
+  .pprow:first-of-type{border-top:none;}
+  .pprow .pv{color:var(--indigo-d);font-weight:800;}
+  .pnav{display:flex;justify-content:space-between;padding:4px 3px 1px;margin-top:1px;}
+  .pnav .ni{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:8px;color:var(--faint);font-weight:700;}
+  .pnav .ni.on{color:var(--indigo-d);}
+  .pnav .ic{font-size:13px;}
+
   /* cover */
   .cover{padding:0;position:relative;background:radial-gradient(120% 140% at 88% 8%,#1a2156,#0b0f30 62%);overflow:hidden;}
   .cover .left{position:relative;z-index:3;width:64%;padding:0 60px;display:flex;flex-direction:column;justify-content:center;height:100%;}
@@ -503,26 +533,47 @@
   <h1 class="stitle">'비교할 때만 여는 앱'에서 → <span class="i">매일 여는 통신비 관제탑</span>으로</h1>
   <div class="body">
     <div class="ba"><span class="bachip before">Before — 비교만 하고 떠나는 웹</span><span class="baarrow">→</span><span class="bachip after">After — 매일 여는 앱</span></div>
-    <div class="row" style="align-items:stretch;">
-      <div class="col">
-        <div class="actcard" style="height:100%;"><h3>홈화면 상시 노출</h3>
-          <ul class="clean">
-            <li><b class="k">실시간 사용량 게이지</b></li>
-            <li><b class="k">다른 요금제 추천 배너</b></li>
-            <li><b class="k">PB 안심보장 위젯</b></li>
-          </ul>
-          <p style="font-size:11.5px;color:var(--gray);margin-top:8px;">웹 대비 앱 전용 가능 액션 — 인앱메시지 오픈율 75%(푸시 3배) · 오프라인 푸시 · 위치기반 트리거 · 홈위젯 상시 존재</p>
+    <div class="row" style="align-items:flex-start;">
+      <div class="col" style="flex:.8;">
+        <div class="phonewrap">
+          <div class="pframe">
+            <div class="pscreen">
+              <div class="ptop"><span class="pwm">moyo</span><span class="pbell">🔔</span></div>
+              <div class="pbill"><div class="p1">이번달 요금 38,500원 · 납부완료</div><div class="p2">지난달과 동일해요</div></div>
+              <div class="pdata"><div class="p1">데이터 5.3GB 남음 / 11.6GB</div><div class="ptrack"><div class="pfill" style="width:54%;"></div></div><div class="p2"><span>54% 사용</span><span>남은 사용기간 12일</span></div></div>
+              <div class="preco"><div class="p1">💡 데이터를 항상 여유있게 남기시네요 — OO요금제로 바꾸면 월 8,200원 절약돼요</div><div class="p2">바로 비교하기 &gt;</div></div>
+              <div class="pnudge"><div class="p1">이번 달 데이터 3.2GB 더 쓰면 심야 무제한 혜택이 열려요</div></div>
+              <div class="ppb"><div class="ph">🛡️ 안심보장 현황</div>
+                <div class="pprow"><span>요금 상한 보장</span><span class="pv">이번달 62% 사용중</span></div>
+                <div class="pprow"><span>해외 자동전환</span><span class="pv">OFF</span></div>
+              </div>
+              <div class="pnav">
+                <div class="ni on"><span class="ic">👤</span>MY</div>
+                <div class="ni"><span class="ic">📶</span>상품</div>
+                <div class="ni"><span class="ic">🎁</span>혜택</div>
+                <div class="ni"><span class="ic">🛡️</span>안심보장</div>
+              </div>
+            </div>
+          </div>
         </div>
+        <p class="src" style="text-align:center;margin-top:6px;">▲ 모요 홈 화면 재설계(안)</p>
       </div>
       <div class="col">
-        <div class="benchcard" style="height:100%;"><div class="bt">웹+앱 레퍼런스</div>
+        <div class="actcard"><h3>홈화면 상시 노출 — 3개 블록</h3>
+          <ul class="clean">
+            <li><b class="k">실시간 사용량 게이지</b> — 이번 달 데이터/통화 사용량, 남은 기간</li>
+            <li><b class="k">다른 요금제 추천 배너</b> — 개인화 추천이 홈 최상단에 항상 노출</li>
+            <li><b class="k">PB 안심보장 위젯</b> — 상한 대비 사용률, 해외전환 스위치</li>
+          </ul>
+        </div>
+        <div class="benchcard" style="margin-top:10px;"><div class="bt">웹+앱 레퍼런스</div>
           <p><b>삼쩜삼</b> — 웹투앱 전환, 앱다운로드 778만 건</p>
           <p style="margin-top:6px;"><b>와그(WAUG)</b> — 웹투앱 전환율 20% · 회원가입 전환율 50%</p>
           <p style="margin-top:6px;">모바일 앱 구매전환율은 모바일 웹 대비 <b>약 3배</b></p>
         </div>
       </div>
     </div>
-    <p class="take" style="margin-top:14px;">웹은 입구이고, <span class="hi">앱은 관계가 쌓이는 종착지</span>다.</p>
+    <p class="take" style="margin-top:10px;">웹은 입구이고, <span class="hi">앱은 관계가 쌓이는 종착지</span>다.</p>
   </div>
   <div class="pageno">09 / 18</div>
 </section>
@@ -614,10 +665,10 @@
     <div class="row">
       <div class="bmcard"><div class="nm"><span class="ic">1</span><h3>요금 상한 보장</h3></div>
         <p style="font-size:11.5px;color:#525a62;">사용량이 늘어도 특정 상한을 넘으면 <b class="k">추가 과금 없이 무제한 전환</b>.</p>
-        <p class="src" style="margin-top:6px;">벤치마크: Google Fi Bill Protection</p></div>
+        <div class="benchcard" style="margin-top:8px;padding:8px 10px;"><div class="bt" style="font-size:10px;">벤치마크</div><p style="font-size:10.5px;">Google Fi의 <b>Bill Protection</b> — 사용량이 늘어도 데이터 요금이 상한을 넘지 않도록 캡, 이후 초과 사용은 무료.</p></div></div>
       <div class="bmcard"><div class="nm"><span class="ic">2</span><h3>해외 데이터 자동전환</h3></div>
         <p style="font-size:11.5px;color:#525a62;"><b class="k">출국 감지 시 자동</b>으로 해외 데이터 모드 전환.</p>
-        <p class="src" style="margin-top:6px;">벤치마크: Visible Global Pass</p></div>
+        <div class="benchcard" style="margin-top:8px;padding:8px 10px;"><div class="bt" style="font-size:10px;">벤치마크</div><p style="font-size:10.5px;">Visible의 <b>Global Pass</b> — 매달 1~2일씩 쌓여 연 최대 12일까지 스택 가능한 해외 데이터 이용권.</p></div></div>
       <div class="bmcard"><div class="nm"><span class="ic">3</span><h3>CS 해결</h3></div>
         <p style="font-size:11.5px;color:#525a62;">안심보장 가입자 전담 <b class="k">CS 라인</b> 운영.</p></div>
     </div>
