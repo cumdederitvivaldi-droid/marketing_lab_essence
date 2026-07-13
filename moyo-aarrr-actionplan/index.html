@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모요 AARRR 액션플랜 ｜ 내부 전략 발표</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --ink:#191f28; --charcoal:#343a40; --gray:#7c848c; --faint:#aeb4bb; --line:#edeff2;
+    --indigo:#516aec; --indigo-d:#3a52cc; --indigo-l:#7086fb; --indigo-bg:#eef1ff;
+    --red:#fa5252; --red-d:#e03e3e; --red-bg:#fff0f0;
+    --tint:#f7f8fa; --green:#12a886; --navy:#0b0f30;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:'Pretendard','Pretendard Variable',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--charcoal);background:#dcdfe4;line-height:1.55;}
+  .hint{position:fixed;top:14px;right:14px;z-index:99;background:var(--indigo);color:#fff;font-size:13px;padding:9px 14px;border-radius:30px;box-shadow:0 4px 16px rgba(81,106,236,.3);}
+  .hint b{color:#fff;text-decoration:underline;}
+  .deck{display:flex;flex-direction:column;align-items:center;gap:26px;padding:40px 0 64px;}
+  .slide{width:1280px;height:720px;background:#fff;position:relative;overflow:hidden;padding:40px 58px 48px;box-shadow:0 12px 44px rgba(25,31,40,.14);display:flex;flex-direction:column;}
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex:0 0 auto;}
+  .stepper{display:flex;align-items:center;}
+  .step{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--faint);}
+  .step .n{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;background:#eef0f3;color:var(--faint);}
+  .step.done{color:var(--indigo-d);} .step.done .n{background:var(--indigo-bg);color:var(--indigo-d);}
+  .step.active{color:var(--ink);} .step.active .n{background:var(--indigo);color:#fff;box-shadow:0 0 0 3px var(--indigo-bg);}
+  .sep{width:18px;height:2px;background:#e6e8ec;margin:0 7px;border-radius:2px;}
+  .brandtag{font-size:12px;font-weight:800;letter-spacing:.5px;color:var(--faint);}
+  .brandtag b{color:var(--indigo);}
+
+  .lede{font-size:13.5px;color:var(--gray);font-weight:700;margin-bottom:4px;}
+  .stitle{font-size:31px;font-weight:800;color:var(--ink);letter-spacing:-1.05px;line-height:1.24;}
+  .stitle .i{color:var(--indigo);} .stitle .r{color:var(--red-d);}
+  .body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;min-height:0;}
+  .take{font-size:17px;font-weight:700;color:var(--ink);line-height:1.5;}
+  .take .hi{background:linear-gradient(transparent 58%,var(--indigo-bg) 58%);padding:0 3px;}
+  .take .hir{background:linear-gradient(transparent 58%,var(--red-bg) 58%);padding:0 3px;}
+  .pageno{position:absolute;right:58px;bottom:20px;font-size:12px;color:var(--faint);font-weight:700;}
+  b.k{font-weight:800;color:var(--ink);}
+  .i{color:var(--indigo);} .r{color:var(--red-d);}
+
+  .row{display:flex;gap:16px;}
+  .col{flex:1;min-width:0;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 20px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .card.tint{background:var(--tint);box-shadow:none;}
+  .card h3{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:7px;}
+  .card p{font-size:13.5px;color:#525a62;}
+  ul.clean{list-style:none;} ul.clean li{position:relative;padding-left:17px;font-size:13.5px;color:#4a525a;margin:6px 0;}
+  ul.clean li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--indigo);}
+  .tag{display:inline-block;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;}
+  .tag.i{background:var(--indigo-bg);color:var(--indigo-d);} .tag.r{background:var(--red-bg);color:var(--red-d);} .tag.g{background:#e7f8f3;color:var(--green);}
+  .big{font-size:38px;font-weight:800;color:var(--indigo);letter-spacing:-1.4px;line-height:1;}
+  .big .u{font-size:15px;font-weight:700;color:var(--gray);letter-spacing:0;}
+  .num-l{font-size:12.5px;color:#525a62;margin-top:7px;font-weight:600;}
+  .src{font-size:10.5px;color:var(--faint);}
+  .note{font-size:11px;color:var(--faint);margin-top:8px;}
+  .gloss{background:var(--indigo-bg);border-radius:12px;padding:9px 15px;font-size:12.5px;color:var(--charcoal);font-weight:600;display:flex;align-items:center;gap:8px;}
+  .gloss b{color:var(--indigo-d);font-weight:800;}
+
+  .stats{display:flex;gap:12px;flex-wrap:wrap;}
+  .stat{flex:1;min-width:0;background:var(--tint);border-radius:14px;padding:14px 12px;text-align:center;}
+
+  .bmcard{flex:1;border-radius:16px;border:1px solid var(--line);padding:15px 17px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .bmcard .nm{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+  .bmcard .ic{width:27px;height:27px;border-radius:8px;background:var(--indigo);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:0 0 auto;}
+  .bmcard h3{font-size:14.5px;font-weight:800;color:var(--ink);}
+
+  .strathead{display:flex;align-items:center;gap:12px;background:var(--indigo-bg);border-radius:13px;padding:11px 16px;margin-bottom:13px;}
+  .strathead .b{background:var(--red);color:#fff;font-size:11.5px;font-weight:800;padding:5px 11px;border-radius:20px;flex:0 0 auto;}
+  .strathead .t{font-size:13.5px;font-weight:700;color:var(--charcoal);}
+  .strathead .t b{color:var(--indigo-d);}
+  .actcard{flex:1;border-radius:15px;border:1px solid var(--line);padding:15px 17px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .actcard h3{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+  .msg{background:var(--ink);border-radius:11px;padding:11px 14px;color:#fff;font-size:12.5px;line-height:1.5;margin-top:8px;}
+  .msg b{color:var(--indigo-l);}
+
+  .benchcard{background:#fff;border:1px dashed #ffb27a;border-radius:13px;padding:12px 14px;}
+  .benchcard .bt{font-size:11px;font-weight:800;color:#e8590c;margin-bottom:5px;}
+  .benchcard p{font-size:12px;color:#5b636b;line-height:1.5;}
+
+  .honest{background:#fff4e0;border:1px dashed #f0b429;border-radius:12px;padding:9px 14px;font-size:11.5px;color:#8a5a00;font-weight:600;line-height:1.5;}
+  .honest b{color:#a15c00;}
+
+  .phase{display:flex;gap:12px;}
+  .pc{flex:1;border-radius:16px;padding:15px;border:1px solid var(--line);}
+  .pc.p1{background:var(--indigo-bg);border-color:#d4dbff;} .pc.p2{background:var(--tint);} .pc.p3{background:var(--tint);}
+  .pn{font-size:11px;font-weight:800;color:#fff;background:var(--indigo);padding:4px 11px;border-radius:20px;display:inline-block;margin-bottom:9px;}
+  .p2 .pn,.p3 .pn{background:var(--indigo-l);}
+  .pc h3{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+  .pc li{font-size:12px;color:#4a525a;margin:4px 0;padding-left:14px;position:relative;list-style:none;}
+  .pc li::before{content:"";position:absolute;left:0;top:6px;width:5px;height:5px;border-radius:50%;background:var(--indigo);}
+  .arr2{display:flex;align-items:center;color:var(--faint);font-size:20px;font-weight:800;}
+
+  table.kpi{width:100%;border-collapse:collapse;font-size:13px;}
+  table.kpi th,table.kpi td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:middle;}
+  table.kpi th{background:var(--indigo);color:#fff;font-weight:700;font-size:12px;border:none;}
+  table.kpi tr td:first-child{font-weight:800;color:var(--indigo-d);}
+  table.kpi tbody tr:nth-child(even){background:var(--tint);}
+  table.kpi.compact{font-size:11.5px;}
+  table.kpi.compact th,table.kpi.compact td{padding:8px 9px;}
+
+  .impact{display:flex;gap:13px;}
+  .ic{flex:1;background:var(--tint);border-radius:16px;padding:16px 14px;text-align:center;}
+  .ic .iv{font-size:27px;font-weight:800;color:var(--indigo);letter-spacing:-1.1px;line-height:1.05;}
+  .ic .iv .ar{color:var(--green);margin:0 4px;}
+  .ic .il{font-size:11.5px;color:#5b636b;margin-top:8px;font-weight:600;line-height:1.4;}
+  .ic .ib{font-size:10.5px;color:var(--faint);margin-top:4px;}
+
+  /* stock->flow / funnel row */
+  .sfrow{display:flex;align-items:stretch;gap:7px;}
+  .sfbox{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .sfbox .t{font-size:10.5px;font-weight:800;color:var(--gray);margin-bottom:6px;}
+  .sfbox .v{font-size:16px;font-weight:800;color:var(--ink);}
+  .sfarr{display:flex;align-items:center;color:var(--faint);font-size:17px;font-weight:800;padding:0 1px;}
+  .sfbox.hi{background:var(--indigo-bg);border-color:#d4dbff;}
+  .sfbox.hi .v{color:var(--indigo-d);}
+  .sfbox.warn{background:#fff4e0;border-color:#ffe1a8;}
+  .sfbox.warn .v{color:#a15c00;}
+
+  /* vertical bar compare */
+  .vbars{display:flex;align-items:flex-end;gap:20px;height:150px;justify-content:center;}
+  .vbar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:108px;height:100%;}
+  .vbar .bv{width:100%;border-radius:9px 9px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:7px;color:#fff;font-weight:800;font-size:12.5px;text-align:center;}
+  .vbar .bl{margin-top:8px;font-size:11.5px;color:#525a62;font-weight:700;text-align:center;line-height:1.35;}
+  .vbar .bv.dashed{background:repeating-linear-gradient(135deg,#dfe3ea,#dfe3ea 6px,#eceef2 6px,#eceef2 12px);color:#7c848c;border:1px dashed var(--faint);}
+
+  /* horizontal stack bar */
+  .stackbar{display:flex;width:100%;height:44px;border-radius:11px;overflow:hidden;}
+  .stackbar .seg{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:11.5px;font-weight:800;line-height:1.25;}
+  .stackbar .seg small{display:block;font-size:9.5px;font-weight:700;opacity:.88;}
+
+  /* before/after chip */
+  .ba{display:flex;gap:9px;align-items:center;justify-content:center;margin-bottom:13px;}
+  .bachip{font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px;}
+  .bachip.before{background:#eef0f3;color:var(--gray);}
+  .bachip.after{background:var(--indigo);color:#fff;}
+  .baarrow{color:var(--faint);font-weight:800;}
+
+  /* cycle diagram */
+  .cyclewrap{display:flex;align-items:center;justify-content:center;gap:10px;}
+  .cnode{flex:1;max-width:230px;border-radius:15px;padding:12px 10px;text-align:center;color:#fff;font-weight:800;font-size:13.5px;box-shadow:0 4px 14px rgba(25,31,40,.08);}
+  .cnode small{display:block;font-size:10.5px;font-weight:600;opacity:.92;margin-top:4px;line-height:1.35;}
+  .cnode.c1{background:var(--indigo);} .cnode.c2{background:var(--indigo-l);} .cnode.c3{background:var(--red);} .cnode.c4{background:var(--green);}
+  .carrow{color:var(--faint);font-size:18px;font-weight:800;}
+  .loopback{margin:4px 0 8px;text-align:center;}
+  .looplabel{font-size:11.5px;color:var(--indigo-d);font-weight:700;margin-top:2px;}
+
+  /* calculator mockup */
+  .calcmock{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 26px rgba(25,31,40,.1);padding:18px 20px;}
+  .calcrow{border-radius:12px;padding:10px 13px;margin-bottom:7px;}
+  .calcrow.now{background:#fff4f4;border:1px solid #ffd8d8;}
+  .calcrow.new{background:var(--indigo-bg);border:1px solid #d4dbff;}
+  .calcrow .cl{font-size:10.5px;font-weight:800;color:var(--gray);margin-bottom:3px;}
+  .calcrow.now .cv{font-size:13.5px;font-weight:800;color:#c92a2a;}
+  .calcrow.new .cv{font-size:13.5px;font-weight:800;color:var(--indigo-d);}
+  .calcrow small{display:block;font-size:10.5px;font-weight:600;color:#5b636b;margin-top:2px;}
+  .calcarrow{text-align:center;color:var(--faint);font-size:16px;font-weight:800;margin:1px 0;}
+  .calcsave{background:var(--ink);color:#fff;border-radius:11px;padding:10px 13px;text-align:center;font-size:13px;font-weight:800;margin-top:5px;}
+  .calcsave b{color:#8be9ff;}
+  .calcbtn{background:var(--indigo);color:#fff;text-align:center;font-weight:800;font-size:12.5px;padding:10px;border-radius:11px;margin-top:7px;}
+
+  /* chat bubble row */
+  .bubblerow{display:flex;gap:11px;}
+  .bubble{flex:1;border-radius:15px;border:1px solid var(--line);padding:12px 13px;box-shadow:0 2px 10px rgba(25,31,40,.04);}
+  .bubble .bt{font-size:10.5px;font-weight:800;margin-bottom:6px;}
+  .bubble .btxt{background:var(--ink);color:#fff;border-radius:10px;padding:9px 10px;font-size:11px;line-height:1.45;}
+  .bubble .btxt b{color:var(--indigo-l);}
+  .bubble p.desc{font-size:11px;color:#525a62;margin-top:6px;line-height:1.4;}
+
+  /* cover */
+  .cover{padding:0;position:relative;background:radial-gradient(120% 140% at 88% 8%,#1a2156,#0b0f30 62%);overflow:hidden;}
+  .cover .left{position:relative;z-index:3;width:64%;padding:0 60px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+  .cover .right{position:absolute;right:-30px;top:0;width:46%;height:100%;}
+  .wordmark{font-size:26px;font-weight:800;letter-spacing:-1px;background:linear-gradient(90deg,#7df9ff,#7aa6ff,#b18cff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:28px;}
+  .cover .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:2.5px;color:#8fa0ff;margin-bottom:17px;}
+  .cover h1{font-size:39px;font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1.32;}
+  .cover h1 .g{background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cover .spine{margin-top:22px;font-size:15.5px;font-weight:700;color:#c7cdf0;line-height:1.6;border-left:3px solid var(--indigo-l);padding-left:15px;}
+  .cover .spine b{color:#fff;}
+  .cover .meta{margin-top:38px;font-size:13px;color:#8a92c4;}
+  .cover .meta b{color:#dfe3ff;}
+  .holo{position:absolute;inset:0;}
+
+  @media print{
+    body{background:#fff;} .hint{display:none;}
+    .deck{gap:0;padding:0;}
+    .slide{box-shadow:none;page-break-after:always;break-after:page;}
+    @page{size:1280px 720px;margin:0;}
+  }
+</style>
+</head>
+<body>
+<div class="hint">키보드 <b>Ctrl/⌘+P</b> → "PDF로 저장", 용지 가로 → 18p PDF 완성</div>
+<div class="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover">
+  <div class="left">
+    <div class="wordmark">moyo</div>
+    <div class="eyebrow">AARRR 액션플랜 · 내부 전략 발표</div>
+    <h1>AARRR로 다시 보는<br>모요 성장 —<br><span class="g">락인이 만드는 25.4억원</span></h1>
+    <div class="spine">Acquisition · Activation · Retention · Revenue · Referral — <b>네 단계 전부에 락인 관점의 액션</b>을 배치한다. 가장 보수적인 시나리오만 더해도 연 약 <b>25.4억원</b>의 증분이 발생하는 구조다.</div>
+    <div class="meta"><b>모요 성장전략팀</b> ｜ 2026 ｜ 프레임워크 → 4단계 액션 → 증분 → 종합</div>
+  </div>
+  <div class="right">
+    <svg class="holo" viewBox="0 0 560 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8fa0ff"/><stop offset="0.45" stop-color="#516aec"/>
+          <stop offset="0.75" stop-color="#e0577a"/><stop offset="1" stop-color="#fa5252"/>
+        </linearGradient>
+        <linearGradient id="holo2" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#7086fb"/><stop offset="0.5" stop-color="#516aec"/><stop offset="1" stop-color="#fa5252"/>
+        </linearGradient>
+        <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#6a7bff" stop-opacity="0.55"/><stop offset="1" stop-color="#6a7bff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="300" cy="330" r="280" fill="url(#glow)"/>
+      <g transform="translate(300,300)">
+        <circle cx="0" cy="-150" r="46" fill="url(#holo)" stroke="#eaf6ff" stroke-width="3" stroke-opacity="0.5"/>
+        <circle cx="150" cy="0" r="46" fill="url(#holo2)" stroke="#eaf6ff" stroke-width="3" stroke-opacity="0.5"/>
+        <circle cx="0" cy="150" r="46" fill="url(#holo)" stroke="#eaf6ff" stroke-width="3" stroke-opacity="0.5"/>
+        <circle cx="-150" cy="0" r="46" fill="url(#holo2)" stroke="#eaf6ff" stroke-width="3" stroke-opacity="0.5"/>
+        <path d="M0 -104 A150 150 0 0 1 104 0" stroke="#cfe0ff" stroke-width="3" fill="none" stroke-dasharray="7 8" opacity="0.6"/>
+        <path d="M104 0 A150 150 0 0 1 0 104" stroke="#cfe0ff" stroke-width="3" fill="none" stroke-dasharray="7 8" opacity="0.6"/>
+        <path d="M0 104 A150 150 0 0 1 -104 0" stroke="#cfe0ff" stroke-width="3" fill="none" stroke-dasharray="7 8" opacity="0.6"/>
+        <path d="M-104 0 A150 150 0 0 1 0 -104" stroke="#cfe0ff" stroke-width="3" fill="none" stroke-dasharray="7 8" opacity="0.6"/>
+      </g>
+      <ellipse cx="266" cy="146" rx="26" ry="14" fill="#fff" opacity="0.3" transform="rotate(-40 266 146)"/>
+      <circle cx="120" cy="610" r="42" fill="url(#holo2)" stroke="#eaf6ff" stroke-width="2.5" stroke-opacity="0.45"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 2 프레임워크 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step active"><span class="n">1</span>개요</span><span class="sep"></span>
+      <span class="step"><span class="n">2</span>획득</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag"><b>moyo</b> AARRR 액션플랜</span>
+  </div>
+  <div class="lede">프레임워크 ｜ AARRR 순환구조</div>
+  <h1 class="stitle">한 단계에서 만든 유저가 <span class="i">다음 단계의 재료</span>가 된다</h1>
+  <div class="body">
+    <div class="cyclewrap">
+      <div class="cnode c1">Acquisition<br>·Activation<small>낭비계산기·신뢰페이지<br>인플루언서 시딩</small></div>
+      <span class="carrow">→</span>
+      <div class="cnode c2">Retention<small>CRM 3트리거<br>웹→앱 전환</small></div>
+      <span class="carrow">→</span>
+      <div class="cnode c3">Revenue<small>PB 안심보장·입점수수료<br>리퍼브 결합</small></div>
+      <span class="carrow">→</span>
+      <div class="cnode c4">Referral<small>친구추천·선물하기<br>성지추천·계산기바이럴</small></div>
+    </div>
+    <div class="loopback">
+      <svg width="100%" height="30" viewBox="0 0 1160 30" preserveAspectRatio="none">
+        <path d="M1120 6 L1120 24 L40 24 L40 6" stroke="#7086fb" stroke-width="2.5" fill="none" stroke-dasharray="6 5"/>
+        <polygon points="40,6 33,16 47,16" fill="#7086fb"/>
+      </svg>
+      <div class="looplabel">Referral이 만든 신규 유입이 다시 Acquisition으로 순환한다</div>
+    </div>
+    <table class="kpi compact" style="margin-top:4px;">
+      <tr><th>단계</th><th>핵심 문제</th><th>액션</th><th>보수 시나리오 연증분</th></tr>
+      <tr><td>Acquisition·Activation</td><td>"싸다"는 이미 과포화 — 신뢰가 없다</td><td>낭비 계산기 · 신뢰 상세페이지 · 마이크로 인플루언서 시딩</td><td><b style="color:var(--ink);">약 3.24억원</b></td></tr>
+      <tr><td>Retention</td><td>싼 맛을 알아도 계속 찾아올 이유가 없다</td><td>CRM 3트리거 고도화 · 웹→앱 UI/UX 전환</td><td><b style="color:var(--ink);">약 16.1억원</b></td></tr>
+      <tr><td>Revenue</td><td>단순 할인은 복제당하고 마진을 깎는다</td><td>PB 안심보장 + 입점수수료 BM · 리퍼브 자급제 결합</td><td><b style="color:var(--ink);">약 5.4억원(신규분)</b></td></tr>
+      <tr><td>Referral</td><td>추천할 이유·보상 구조가 없다</td><td>친구추천 포인트 · 선물하기 · 성지추천 · 계산기 바이럴 시딩</td><td><b style="color:var(--ink);">약 0.65억원</b></td></tr>
+      <tr style="background:var(--indigo-bg);"><td style="color:var(--indigo-d);">합계(보수 시나리오)</td><td>—</td><td>—</td><td><b style="color:var(--indigo-d);font-size:14px;">약 25.4억원</b></td></tr>
+    </table>
+  </div>
+  <div class="pageno">02 / 18</div>
+</section>
+
+<!-- 3 Acquisition 문제정의 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>획득</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">획득 1/4</span>
+  </div>
+  <div class="lede">Acquisition·Activation ｜ 문제정의</div>
+  <h1 class="stitle">"싸다"는 <span class="r">이미 과포화</span>다 — 필요한 건 <span class="i">신뢰</span></h1>
+  <div class="body">
+    <div class="row" style="align-items:stretch;">
+      <div class="col"><div class="card tint" style="height:100%;"><span class="tag i">시장 현실</span><h3 style="margin-top:8px;">알뜰폰 1,000만 시대</h3><p>유입 단에서 "싸다"고 말하는 곳은 이미 너무 많다. 알뜰폰 1,000만 시대에 가격 경쟁만으로는 신규 고객을 설득하기 어렵다.</p></div></div>
+      <div class="col"><div class="card tint" style="height:100%;"><span class="tag r">불신 3가지</span><h3 style="margin-top:8px;">"믿고 써도 되나"라는 의심</h3><p>CS가 부실하지 않을지, 속도가 느려지지 않을지, 번호이동이 손해는 아닐지 — 이 세 가지 불신이 가입 직전 발목을 잡는다.</p></div></div>
+      <div class="col"><div class="card tint" style="height:100%;"><span class="tag g">필요한 전환</span><h3 style="margin-top:8px;">가격에서 신뢰로</h3><p>"싸다"를 넘어 "알뜰폰도 믿고 써도 된다"는 확신을 만드는 것이 Acquisition·Activation 단계의 핵심 과제다.</p></div></div>
+    </div>
+    <p class="take" style="margin-top:20px;">가격 경쟁은 이미 레드오션이다 — <span class="hi">신뢰를 만드는 쪽</span>이 다음 신규 고객을 가져간다.</p>
+  </div>
+  <div class="pageno">03 / 18</div>
+</section>
+
+<!-- 4 Acquisition 액션① 낭비계산기 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>획득</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">획득 2/4</span>
+  </div>
+  <div class="lede">액션① ｜ 낭비 계산기</div>
+  <h1 class="stitle">"지금 요금제, 얼마나 <span class="i">낭비</span>인지" 바로 계산한다</h1>
+  <div class="body">
+    <div class="row" style="align-items:stretch;">
+      <div class="col" style="flex:1.1;">
+        <div class="strathead"><span class="b">타겟</span><span class="t">통신 3사 요금제를 쓰는 유저 중 <b>위약금이 끝난</b> 고객 한정</span></div>
+        <ul class="clean">
+          <li>내 통신사·요금제·데이터 사용량만 입력하면 <b class="k">즉시 낭비 금액</b>을 계산</li>
+          <li>계산 결과 화면에서 <b class="k">"무료 견적 받기"</b> CTA로 회원가입 유도</li>
+          <li>위약금 만료 고객을 정조준 — 전환 장벽이 가장 낮은 세그먼트</li>
+        </ul>
+        <p class="take" style="margin-top:14px;font-size:15px;">숫자로 확인시켜주는 순간 <span class="hi">"싸다"는 말보다 강한 설득력</span>이 생긴다.</p>
+      </div>
+      <div class="col">
+        <div class="calcmock">
+          <div class="calcrow now"><div class="cl">지금 쓰는 요금제</div><div class="cv">SKT 5G 프리미어 슬림형</div><small>월 79,000원 · 데이터 10GB · 위약금 만료</small></div>
+          <div class="calcarrow">↓</div>
+          <div class="calcrow new"><div class="cl">모요 추천 알뜰폰</div><div class="cv">15GB 무약정</div><small>월 12,000원</small></div>
+          <div class="calcsave">월 <b>67,000원</b> 절약 · 연 <b>804,000원</b></div>
+          <div class="calcbtn">무료 견적 받기 ＞</div>
+        </div>
+        <p class="src" style="text-align:center;margin-top:6px;">▲ 낭비 계산기 목업(안)</p>
+      </div>
+    </div>
+  </div>
+  <div class="pageno">04 / 18</div>
+</section>
+
+<!-- 5 Acquisition 액션②③ -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>획득</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">획득 3/4</span>
+  </div>
+  <div class="lede">액션②③ ｜ 신뢰성 확보 상세페이지 · 마이크로 인플루언서 시딩</div>
+  <h1 class="stitle">숫자 다음은 <span class="i">불신 해소</span>와 <span class="i">실사용 증거</span></h1>
+  <div class="body">
+    <div class="row" style="align-items:stretch;">
+      <div class="col" style="flex:1.05;">
+        <div class="actcard" style="height:100%;"><span class="tag i">액션②</span><h3 style="margin-top:8px;">신뢰성 확보 상세페이지</h3>
+          <p style="font-size:12.5px;color:var(--gray);font-weight:700;margin-bottom:8px;">3가지 불신을 정면 해소하는 콘텐츠</p>
+          <ul class="clean">
+            <li><b class="k">"CS 부실 아니냐"</b> — 응대 채널·처리 사례를 투명하게 공개</li>
+            <li><b class="k">"속도 느려지는 거 아니냐"</b> — 실측 데이터로 체감 차이 해명</li>
+            <li><b class="k">"번호이동 손해 아니냐"</b> — 절차·소요기간·유의사항 명시</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col">
+        <div class="actcard" style="height:100%;"><span class="tag r">액션③</span><h3 style="margin-top:8px;">마이크로 인플루언서 시딩</h3>
+          <p style="font-size:13px;color:#525a62;">다수의 마이크로 인플루언서가 <b class="k">"3사 요금제 대비 모요 실사용 비교"</b> 포맷으로 사용 전후 콘텐츠를 제작.</p>
+          <div class="benchcard" style="margin-top:10px;"><div class="bt">벤치마크</div><p>뷰티 디바이스 <b>ReFa</b>가 다수 마이크로 인플루언서로 "사용 전후" 콘텐츠를 만들어 캠페인 <b>3개월 만에 일매출 2배</b>를 만든 사례.</p></div>
+        </div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:16px;">계산기가 <span class="hi">숫자로 설득</span>한다면, 이 둘은 <span class="hi">신뢰와 증거로 마지막 망설임</span>을 없앤다.</p>
+  </div>
+  <div class="pageno">05 / 18</div>
+</section>
+
+<!-- 6 Acquisition 프로젝션 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>획득</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">획득 4/4</span>
+  </div>
+  <div class="lede">Acquisition·Activation ｜ 프로젝션</div>
+  <h1 class="stitle">가장 현실적인 목표는 <span class="i">A(3.24억원)</span></h1>
+  <div class="body">
+    <div class="sfrow">
+      <div class="sfbox"><div class="t">월 계산기 방문</div><div class="v">50,000명</div></div>
+      <span class="sfarr">→</span>
+      <div class="sfbox hi"><div class="t">계산완료율 40%</div><div class="v">20,000명</div></div>
+      <span class="sfarr">→</span>
+      <div class="sfbox warn"><div class="t">견적요청(가입) 전환</div><div class="v" style="font-size:12.5px;">A15%·B25%·C35%</div></div>
+      <span class="sfarr">→</span>
+      <div class="sfbox"><div class="t">가입→개통 전환 30%</div><div class="v" style="font-size:12.5px;">A900·B1,500·C2,100명</div></div>
+    </div>
+    <table class="kpi compact" style="margin-top:14px;">
+      <tr><th>시나리오</th><th>가입전환율</th><th>월 신규가입</th><th>월 개통(×30%)</th><th>인당 정산수수료</th><th>연매출</th></tr>
+      <tr><td>A (보수)</td><td>15%</td><td>3,000명</td><td>900명</td><td>3만원</td><td><b style="color:var(--indigo-d);">약 3.24억원</b></td></tr>
+      <tr><td>B (중립)</td><td>25%</td><td>5,000명</td><td>1,500명</td><td>3만원</td><td>약 5.4억원</td></tr>
+      <tr><td>C (공격)</td><td>35%</td><td>7,000명</td><td>2,100명</td><td>3만원</td><td>약 7.56억원</td></tr>
+    </table>
+    <div class="row" style="margin-top:14px;align-items:center;">
+      <div class="col" style="flex:.85;">
+        <div class="vbars" style="height:110px;">
+          <div class="vbar"><div class="bv" style="height:90px;background:var(--indigo);">3.24억</div><div class="bl">A</div></div>
+          <div class="vbar"><div class="bv" style="height:150px;background:var(--indigo-l);">5.4억</div><div class="bl">B</div></div>
+          <div class="vbar"><div class="bv" style="height:210px;background:#c7d0fb;color:var(--indigo-d);">7.56억</div><div class="bl">C</div></div>
+        </div>
+      </div>
+      <div class="col"><div class="card" style="background:var(--indigo-bg);text-align:center;padding:14px;"><p style="font-size:15.5px;font-weight:800;color:var(--indigo-d);">가장 현실적인 목표는 A(보수) — 약 3.24억원</p></div></div>
+    </div>
+  </div>
+  <div class="pageno">06 / 18</div>
+</section>
+
+<!-- 7 Retention 문제정의 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">리텐션 1/4</span>
+  </div>
+  <div class="lede">Retention ｜ 문제정의</div>
+  <h1 class="stitle">싼 맛을 알아도, <span class="r">계속 찾아올 이유</span>가 없다</h1>
+  <div class="body">
+    <div class="card tint" style="padding:24px 26px;">
+      <p style="font-size:16px;color:var(--charcoal);font-weight:700;line-height:1.6;">알뜰폰의 싼 맛을 알게 되더라도, 신규 고객을 묶어둘 장치가 부족하다. <b class="k">한번 가입시키고 나면</b> 계속 찾아야 할 이유가 없다.</p>
+    </div>
+    <div class="row" style="margin-top:16px;">
+      <div class="col"><div class="card tint"><span class="tag i">관찰①</span><p style="margin-top:8px;font-size:13.5px;">가입 후에는 요금제 변경·사용량 확인을 위해 앱을 다시 열 유인이 없다.</p></div></div>
+      <div class="col"><div class="card tint"><span class="tag r">관찰②</span><p style="margin-top:8px;font-size:13.5px;">약정·프로모션 종료 시점을 유저가 스스로 챙기지 않으면 손해가 발생한다.</p></div></div>
+      <div class="col"><div class="card tint"><span class="tag g">관찰③</span><p style="margin-top:8px;font-size:13.5px;">비교할 때만 여는 앱이라, 매일 쓰는 습관으로 이어지지 않는다.</p></div></div>
+    </div>
+    <p class="take" style="margin-top:18px;">관계를 계속 이어갈 장치가 없으면, <span class="hi">획득한 고객은 다시 이탈</span>한다.</p>
+  </div>
+  <div class="pageno">07 / 18</div>
+</section>
+
+<!-- 8 Retention 액션① CRM 3트리거 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">리텐션 2/4</span>
+  </div>
+  <div class="lede">액션① ｜ CRM 고도화 — 3트리거</div>
+  <h1 class="stitle">세 트리거로 <span class="i">멈추지 않는 CRM</span>을 만든다</h1>
+  <div class="body">
+    <div class="bubblerow">
+      <div class="bubble"><div class="bt" style="color:var(--indigo-d);">① 추천</div>
+        <p class="desc" style="margin-top:0;margin-bottom:7px;">사용패턴이 안 맞는 유저 → 다른 요금제 추천</p>
+        <div class="btxt">"OO님, 최근 3개월 데이터를 절반도 안 쓰셨어요. <b>더 저렴한 요금제</b>로 바꿔드릴까요?"</div>
+      </div>
+      <div class="bubble"><div class="bt" style="color:var(--red-d);">② 넛지</div>
+        <p class="desc" style="margin-top:0;margin-bottom:7px;">사용패턴이 잘 맞는 유저 → 사용유도 넛지</p>
+        <div class="btxt">"이번 달 데이터 <b>OOGB 더 쓰면</b> 심야 무제한 혜택이 열려요."</div>
+      </div>
+      <div class="bubble"><div class="bt" style="color:var(--green);">③ 만기임박 알림</div>
+        <p class="desc" style="margin-top:0;margin-bottom:7px;">약정 만료·프로모션 종료 직전 → 사전 추천</p>
+        <div class="btxt">"다음 달 0원 프로모션이 끝나 <b>38,500원</b>이 청구돼요. 지금 갈아타면 <b>연 46만원 절약</b>!"</div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:16px;">추천·넛지·만기임박 알림 — <span class="hi">세 트리거가 하나의 CRM 엔진</span>으로 작동해 가입 이후의 관계를 계속 이어간다.</p>
+  </div>
+  <div class="pageno">08 / 18</div>
+</section>
+
+<!-- 9 Retention 액션② 웹→앱 전환 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">리텐션 3/4</span>
+  </div>
+  <div class="lede">액션② ｜ 웹→앱 UI/UX 전환</div>
+  <h1 class="stitle">'비교할 때만 여는 앱'에서 → <span class="i">매일 여는 통신비 관제탑</span>으로</h1>
+  <div class="body">
+    <div class="ba"><span class="bachip before">Before — 비교만 하고 떠나는 웹</span><span class="baarrow">→</span><span class="bachip after">After — 매일 여는 앱</span></div>
+    <div class="row" style="align-items:stretch;">
+      <div class="col">
+        <div class="actcard" style="height:100%;"><h3>홈화면 상시 노출</h3>
+          <ul class="clean">
+            <li><b class="k">실시간 사용량 게이지</b></li>
+            <li><b class="k">다른 요금제 추천 배너</b></li>
+            <li><b class="k">PB 안심보장 위젯</b></li>
+          </ul>
+          <p style="font-size:11.5px;color:var(--gray);margin-top:8px;">웹 대비 앱 전용 가능 액션 — 인앱메시지 오픈율 75%(푸시 3배) · 오프라인 푸시 · 위치기반 트리거 · 홈위젯 상시 존재</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="benchcard" style="height:100%;"><div class="bt">웹+앱 레퍼런스</div>
+          <p><b>삼쩜삼</b> — 웹투앱 전환, 앱다운로드 778만 건</p>
+          <p style="margin-top:6px;"><b>와그(WAUG)</b> — 웹투앱 전환율 20% · 회원가입 전환율 50%</p>
+          <p style="margin-top:6px;">모바일 앱 구매전환율은 모바일 웹 대비 <b>약 3배</b></p>
+        </div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:14px;">웹은 입구이고, <span class="hi">앱은 관계가 쌓이는 종착지</span>다.</p>
+  </div>
+  <div class="pageno">09 / 18</div>
+</section>
+
+<!-- 10 Retention 프로젝션 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>리텐션</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">리텐션 4/4</span>
+  </div>
+  <div class="lede">Retention ｜ 프로젝션 (LTV · CC 프레임워크)</div>
+  <h1 class="stitle">가장 현실적인 목표는 <span class="i">A(16.1억원)</span></h1>
+  <div class="body">
+    <div class="gloss">📐 <b>LTV</b> = 월 기여마진 × (1/월 이탈률) &nbsp;·&nbsp; <b>CC(Carrying Capacity)</b> = 월 신규유입 ÷ 월 이탈률</div>
+    <div class="row" style="margin-top:10px;">
+      <div class="col">
+        <div class="vbars" style="height:95px;">
+          <div class="vbar"><div class="bv" style="height:70px;background:var(--faint);">837,500명</div><div class="bl">CC (현재)</div></div>
+          <div class="vbar"><div class="bv" style="height:95px;background:var(--indigo);">1,116,667명</div><div class="bl">CC (개선 후)<br>+33%</div></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="vbars" style="height:95px;">
+          <div class="vbar"><div class="bv" style="height:70px;background:var(--faint);">35,000원</div><div class="bl">LTV (현재)</div></div>
+          <div class="vbar"><div class="bv" style="height:95px;background:var(--indigo);">46,667원</div><div class="bl">LTV (개선 후)<br>+33%</div></div>
+        </div>
+      </div>
+    </div>
+    <table class="kpi compact" style="margin-top:12px;">
+      <tr><th>시나리오</th><th>이탈률 개선폭</th><th>1년차 매출증분</th></tr>
+      <tr><td>A (보수)</td><td>−1%p</td><td><b style="color:var(--indigo-d);">약 16.1억원</b></td></tr>
+      <tr><td>B (중립)</td><td>−2%p</td><td>약 37.5억원</td></tr>
+      <tr><td>C (공격)</td><td>−3%p</td><td>약 67.5억원</td></tr>
+    </table>
+    <div class="card" style="background:var(--indigo-bg);text-align:center;margin-top:10px;padding:11px;"><p style="font-size:14.5px;font-weight:800;color:var(--indigo-d);">가장 현실적인 목표는 A(보수) — 약 16.1억원</p></div>
+  </div>
+  <div class="pageno">10 / 18</div>
+</section>
+
+<!-- 11 Revenue 문제정의 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">매출 1/4</span>
+  </div>
+  <div class="lede">Revenue ｜ 문제정의</div>
+  <h1 class="stitle">단순 할인은 <span class="r">복제당하고 마진만 깎는다</span></h1>
+  <div class="body">
+    <div class="card tint" style="padding:24px 26px;">
+      <p style="font-size:16px;color:var(--charcoal);font-weight:700;line-height:1.6;">단순 할인·캐시백은 한계가 있다 — <b class="k">경쟁사가 언제든 따라하고 마진만 깎인다.</b> 알뜰폰 이용자의 진짜 페인포인트를 해결하는 상품이 필요하다.</p>
+    </div>
+    <div class="row" style="margin-top:16px;">
+      <div class="col"><div class="card tint"><span class="tag r">한계</span><p style="margin-top:8px;font-size:13.5px;">사은품·캐시백은 즉시 복제되는 소모전이다.</p></div></div>
+      <div class="col"><div class="card tint"><span class="tag i">방향①</span><p style="margin-top:8px;font-size:13.5px;">복제 불가능한 <b class="k">서비스 설계 자체</b>를 해자(moat)로 만든다.</p></div></div>
+      <div class="col"><div class="card tint"><span class="tag g">방향②</span><p style="margin-top:8px;font-size:13.5px;">아직 공략하지 못한 <b class="k">새 고객층</b>에 맞는 상품을 만든다.</p></div></div>
+    </div>
+    <p class="take" style="margin-top:18px;">필요한 건 더 싼 가격이 아니라 <span class="hi">따라할 수 없는 상품 설계</span>다.</p>
+  </div>
+  <div class="pageno">11 / 18</div>
+</section>
+
+<!-- 12 Revenue 액션① PB 안심보장 + 입점수수료 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">매출 2/4</span>
+  </div>
+  <div class="lede">액션① ｜ PB '안심보장' + 통신사 입점수수료형 BM</div>
+  <h1 class="stitle">3종 안심보장 + <span class="i">입점수수료</span>라는 새 BM</h1>
+  <div class="body">
+    <div class="row">
+      <div class="bmcard"><div class="nm"><span class="ic">1</span><h3>요금 상한 보장</h3></div>
+        <p style="font-size:11.5px;color:#525a62;">사용량이 늘어도 특정 상한을 넘으면 <b class="k">추가 과금 없이 무제한 전환</b>.</p>
+        <p class="src" style="margin-top:6px;">벤치마크: Google Fi Bill Protection</p></div>
+      <div class="bmcard"><div class="nm"><span class="ic">2</span><h3>해외 데이터 자동전환</h3></div>
+        <p style="font-size:11.5px;color:#525a62;"><b class="k">출국 감지 시 자동</b>으로 해외 데이터 모드 전환.</p>
+        <p class="src" style="margin-top:6px;">벤치마크: Visible Global Pass</p></div>
+      <div class="bmcard"><div class="nm"><span class="ic">3</span><h3>CS 해결</h3></div>
+        <p style="font-size:11.5px;color:#525a62;">안심보장 가입자 전담 <b class="k">CS 라인</b> 운영.</p></div>
+    </div>
+    <div class="strathead" style="margin-top:12px;"><span class="b">신규 BM</span><span class="t">통신사(MVNO 파트너사)가 이 PB 라인업에 자사 요금제를 포함시키고 싶어하면 <b>모요에 입점수수료 지불</b></span></div>
+    <div class="honest">벤치마크: 국내 <b>우체국 알뜰폰 PB·제휴채널 사업모델</b>. 해외의 구체적 입점수수료 사례는 이번 리서치에서 명확히 찾지 못했음을 정직하게 표기한다.</div>
+  </div>
+  <div class="pageno">12 / 18</div>
+</section>
+
+<!-- 13 Revenue 액션② 리퍼브 결합 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">매출 3/4</span>
+  </div>
+  <div class="lede">액션② ｜ 자급제×알뜰폰 리퍼브 결합</div>
+  <h1 class="stitle">"컴퓨터는 다나와, <span class="i">휴대폰은 모요</span>."</h1>
+  <div class="body">
+    <p style="font-size:13px;color:var(--gray);font-weight:700;margin-bottom:10px;">타겟 — "갤럭시 A는 사양이 아쉽고, S는 비싸서 못 쓰는" 고객</p>
+    <div class="row" style="align-items:stretch;">
+      <div class="col"><div class="actcard" style="height:100%;"><span class="tag i">학생 (기존안)</span><h3 style="margin-top:7px;">리퍼브(중고인증) S시리즈 + 알뜰폰 요금제</h3>
+        <p style="font-size:12.5px;color:#525a62;">이미 자급제×알뜰폰 BM 제안서에 반영된 세그먼트.</p>
+        <p style="font-size:12px;color:var(--gray);margin-top:6px;">1만명 × ARPU 6만원 = <b class="k">6억원</b>(기존, 이번 합산에서 제외)</p></div></div>
+      <div class="col"><div class="actcard" style="height:100%;"><span class="tag g">시니어 (신규)</span><h3 style="margin-top:7px;">효도폰 — 리퍼브 S시리즈 + 알뜰폰 요금제</h3>
+        <p style="font-size:12.5px;color:#525a62;">이번에 새로 추가하는 시니어 세그먼트.</p>
+        <p style="font-size:12px;color:var(--gray);margin-top:6px;">8,000명 × ARPU 6만원 = <b class="k">4.8억원</b>(신규)</p></div></div>
+    </div>
+    <div class="card" style="background:var(--ink);text-align:center;margin-top:16px;padding:18px;"><p style="color:#fff;font-size:20px;font-weight:800;">"컴퓨터 살 땐 다나와, 휴대폰은 모요."</p></div>
+  </div>
+  <div class="pageno">13 / 18</div>
+</section>
+
+<!-- 14 Revenue 프로젝션 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step active"><span class="n">4</span>매출</span><span class="sep"></span>
+      <span class="step"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">매출 4/4</span>
+  </div>
+  <div class="lede">Revenue ｜ 프로젝션</div>
+  <h1 class="stitle">신규 증분 합계 — <span class="i">약 5.4억원</span></h1>
+  <div class="body">
+    <div class="vbars" style="height:130px;">
+      <div class="vbar"><div class="bv" style="height:22px;background:var(--indigo);">0.6억</div><div class="bl">입점수수료(신규)<br>3사×연2,000만원=연6,000만원</div></div>
+      <div class="vbar"><div class="bv" style="height:130px;background:var(--red);">4.8억</div><div class="bl">리퍼브 시니어(신규)<br>8,000명×6만원</div></div>
+      <div class="vbar"><div class="bv dashed" style="height:163px;">6억</div><div class="bl">리퍼브 학생(기존)<br>1만명×6만원 · 합산 제외</div></div>
+    </div>
+    <div class="card" style="background:var(--indigo-bg);text-align:center;margin-top:16px;padding:15px;">
+      <p style="font-size:17px;font-weight:800;color:var(--indigo-d);">입점수수료 0.6억원 + 리퍼브 시니어 신규분 4.8억원 = 약 5.4억원</p>
+      <p style="font-size:12px;color:#525a62;margin-top:5px;">리퍼브 학생 6억원은 기존 자급제×알뜰폰 BM 제안서에 이미 반영된 안으로, 이번 신규 증분에는 합산하지 않는다.</p>
+    </div>
+  </div>
+  <div class="pageno">14 / 18</div>
+</section>
+
+<!-- 15 Referral -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>매출</span><span class="sep"></span>
+      <span class="step active"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">추천 1/2</span>
+  </div>
+  <div class="lede">Referral ｜ 문제정의 & 액션</div>
+  <h1 class="stitle">추천할 <span class="r">이유·보상 구조</span>가 없다</h1>
+  <div class="body">
+    <p style="font-size:13.5px;color:#525a62;margin-bottom:10px;">지금 모요에는 추천할 이유와 보상구조가 부족하다. 추천이 일어나도 보상이 현금으로 빠지면 락인은 늘지 않는다.</p>
+    <div class="row">
+      <div class="bmcard"><div class="nm"><span class="ic">1</span><h3>친구추천 포인트</h3></div><p style="font-size:11.5px;color:#525a62;">현금화보다 <b class="k">모요서비스 재이용 혜택</b>(포인트몰·구독료 차감)으로 구성.</p></div>
+      <div class="bmcard"><div class="nm"><span class="ic">2</span><h3>선물하기</h3></div><p style="font-size:11.5px;color:#525a62;">요금제·휴대폰을 <b class="k">선물</b>하는 기능.</p></div>
+      <div class="bmcard"><div class="nm"><span class="ic">3</span><h3>성지추천</h3></div><p style="font-size:11.5px;color:#525a62;">휴대폰 특가매장 추천 콘텐츠로 <b class="k">커뮤니티성 확보</b>.</p></div>
+      <div class="bmcard"><div class="nm"><span class="ic">4</span><h3>계산기 바이럴 시딩</h3></div><p style="font-size:11.5px;color:#525a62;">낭비 계산기를 공격적으로 시딩, <b class="k">결과공유카드</b>로 확산.</p></div>
+    </div>
+    <div class="benchcard" style="margin-top:12px;"><div class="bt">벤치마크</div><p><b>스타벅스 리워드</b> — 별 포인트, 생일 무료음료 등 <b>자사 생태계 안에서만 순환</b>하는 보상 설계.</p></div>
+    <p class="take" style="margin-top:12px;">보상이 <span class="hi">모요 생태계 안에서 순환</span>해야 락인으로 이어진다.</p>
+  </div>
+  <div class="pageno">15 / 18</div>
+</section>
+
+<!-- 16 Referral 프로젝션 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>매출</span><span class="sep"></span>
+      <span class="step active"><span class="n">5</span>추천</span><span class="sep"></span>
+      <span class="step"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">추천 2/2</span>
+  </div>
+  <div class="lede">Referral ｜ 프로젝션 (K-factor)</div>
+  <h1 class="stitle">가장 현실적인 목표는 <span class="i">A(6,480만원)</span></h1>
+  <div class="body">
+    <div class="sfrow">
+      <div class="sfbox"><div class="t">월 신규가입(획득 A)</div><div class="v">3,000명</div></div>
+      <span class="sfarr">×</span>
+      <div class="sfbox hi"><div class="t">참여율 20%</div><div class="v">참여자 600명</div></div>
+      <span class="sfarr">×</span>
+      <div class="sfbox warn"><div class="t">K-factor</div><div class="v" style="font-size:12.5px;">A0.3·B0.5·C0.8</div></div>
+      <span class="sfarr">=</span>
+      <div class="sfbox"><div class="t">월 추가가입</div><div class="v" style="font-size:12.5px;">A180·B300·C480명</div></div>
+    </div>
+    <table class="kpi compact" style="margin-top:12px;">
+      <tr><th>시나리오</th><th>K-factor</th><th>월 추가가입</th><th>연간 추가가입</th><th>인당 정산수수료</th><th>연매출증분</th></tr>
+      <tr><td>A (보수)</td><td>0.3</td><td>180명</td><td>2,160명</td><td>3만원</td><td><b style="color:var(--indigo-d);">약 6,480만원</b></td></tr>
+      <tr><td>B (중립)</td><td>0.5</td><td>300명</td><td>3,600명</td><td>3만원</td><td>약 1.08억원</td></tr>
+      <tr><td>C (공격)</td><td>0.8</td><td>480명</td><td>5,760명</td><td>3만원</td><td>약 1.728억원</td></tr>
+    </table>
+    <div class="card" style="background:var(--indigo-bg);text-align:center;margin-top:12px;padding:12px;"><p style="font-size:14.5px;font-weight:800;color:var(--indigo-d);">가장 현실적인 목표는 A(보수) — 약 6,480만원</p><p style="font-size:11.5px;color:#525a62;margin-top:3px;">이 증분은 Acquisition 유입규모가 커질수록 함께 커지는 복리형 구조다.</p></div>
+  </div>
+  <div class="pageno">16 / 18</div>
+</section>
+
+<!-- 17 종합 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>매출</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>추천</span><span class="sep"></span>
+      <span class="step active"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">종합 1/2</span>
+  </div>
+  <div class="lede">종합 ｜ 4단계 보수 시나리오 합산</div>
+  <h1 class="stitle">가장 보수적인 시나리오만 더해도 — <span class="i">약 25.4억원</span></h1>
+  <div class="body">
+    <div class="stackbar">
+      <div class="seg" style="width:12.8%;background:var(--indigo);">3.24억<small>Acquisition</small></div>
+      <div class="seg" style="width:63.4%;background:var(--indigo-l);">16.1억<small>Retention</small></div>
+      <div class="seg" style="width:21.3%;background:var(--red);">5.4억<small>Revenue</small></div>
+      <div class="seg" style="width:2.5%;background:var(--green);"></div>
+    </div>
+    <p class="src" style="margin-top:4px;">Referral 0.648억(2.6%)은 세그먼트가 좁아 라벨을 막대 밖에 표기 — 4개 단계 합 약 25.4억원</p>
+    <table class="kpi compact" style="margin-top:12px;">
+      <tr><th>단계</th><th>보수 시나리오(A) 연증분</th></tr>
+      <tr><td>Acquisition·Activation</td><td>3.24억원</td></tr>
+      <tr><td>Retention</td><td>16.1억원</td></tr>
+      <tr><td>Revenue</td><td>5.4억원</td></tr>
+      <tr><td>Referral</td><td>0.648억원</td></tr>
+      <tr style="background:var(--indigo-bg);"><td style="color:var(--indigo-d);">합계</td><td><b style="color:var(--indigo-d);font-size:15px;">약 25.4억원</b></td></tr>
+    </table>
+    <p class="take" style="margin-top:12px;">네 단계는 따로가 아니다 — <span class="hi">Referral이 만든 신규 유입이 다시 Acquisition으로 순환</span>하며 이 구조는 매년 반복된다.</p>
+  </div>
+  <div class="pageno">17 / 18</div>
+</section>
+
+<!-- 18 클로징 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>개요</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>획득</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>매출</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>추천</span><span class="sep"></span>
+      <span class="step active"><span class="n">6</span>종합</span>
+    </div><span class="brandtag">맺음말</span>
+  </div>
+  <div class="lede">클로징</div>
+  <h1 class="stitle">유입이 아니라 <span class="i">이탈률</span>이, 우리가 감당하는 유저 풀을 결정한다</h1>
+  <div class="body">
+    <div class="card" style="background:radial-gradient(120% 140% at 80% 0%,#1a2156,#0b0f30);border:none;text-align:center;padding:24px;">
+      <p style="color:#fff;font-size:21px;font-weight:800;line-height:1.5;">AARRR 네 단계 전부에 <span style="background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;">락인 관점의 액션</span>을 배치한다.</p>
+      <p style="color:#aab2e6;font-size:12.5px;margin-top:9px;">Acquisition이 만든 신규 유저가 Retention으로 락인되고, Retention이 만든 관계 위에 Revenue 상품이 얹히고, Revenue에 만족한 유저가 Referral로 새 유입을 만든다.</p>
+    </div>
+    <div class="impact" style="margin-top:16px;">
+      <div class="ic"><div class="iv" style="font-size:20px;">3.24억</div><div class="il">Acquisition·Activation</div></div>
+      <div class="ic"><div class="iv" style="font-size:20px;">16.1억</div><div class="il">Retention</div></div>
+      <div class="ic"><div class="iv" style="font-size:20px;">5.4억</div><div class="il">Revenue</div></div>
+      <div class="ic"><div class="iv" style="font-size:20px;">0.648억</div><div class="il">Referral</div></div>
+      <div class="ic" style="background:var(--indigo-bg);"><div class="iv" style="font-size:22px;color:var(--indigo-d);">25.4억</div><div class="il" style="color:var(--indigo-d);font-weight:800;">합계(보수)</div></div>
+    </div>
+    <p class="take" style="text-align:center;margin-top:14px;">각 액션의 개선 폭은 <span class="hi">실측 전 가정치</span>다 — 소규모 파일럿으로 먼저 검증한 뒤 정식 확대한다.</p>
+  </div>
+  <div class="pageno">18 / 18</div>
+</section>
+
+</div>
+</body>
+</html>
