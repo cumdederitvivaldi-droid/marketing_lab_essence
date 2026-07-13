@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>모요 통합 큐레이션 ROI 검증 ｜ 내부 실행 제안</title>
+<title>모요 내 요금제 진단 위젯 리텐션 ROI ｜ 내부 실행 제안</title>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
   :root{
@@ -127,7 +127,7 @@
   table.kpi tbody tr:nth-child(even){background:var(--tint);}
   table.kpi td.target{background:var(--indigo-bg);font-weight:800;color:var(--indigo-d);}
 
-  /* CAC effect */
+  /* CAC effect / benchmark flow */
   .cacwrap{display:flex;gap:16px;align-items:stretch;}
   .cacflow{flex:1.15;display:flex;flex-direction:column;gap:10px;justify-content:center;}
   .cacstep{background:var(--tint);border-radius:14px;padding:13px 16px;font-size:13.5px;color:#3a4048;font-weight:600;display:flex;align-items:center;gap:10px;}
@@ -163,6 +163,26 @@
   .ic .ib{font-size:10.5px;color:var(--faint);margin-top:5px;}
   .ic.target{background:var(--indigo-bg);}
 
+  /* home-widget mockup (solution slide) */
+  .widgetmock{width:236px;background:#fff;border:1.5px solid var(--line);border-radius:26px;padding:18px 16px 20px;box-shadow:0 10px 28px rgba(25,31,40,.09);margin:0 auto;text-align:center;}
+  .widgetmock .wtitle{font-size:12px;font-weight:800;color:var(--gray);margin-bottom:6px;}
+  .widgetmock .gauge{position:relative;width:190px;margin:2px auto 0;}
+  .widgetmock .gscore{position:absolute;left:0;right:0;bottom:2px;font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-1px;}
+  .widgetmock .gscore span{font-size:12.5px;color:var(--gray);font-weight:700;margin-left:1px;}
+  .widgetmock .glabel{font-size:11.5px;color:var(--gray);font-weight:700;margin-top:2px;}
+  .widgetmock .glabel b{color:var(--red-d);}
+  .widgetmock .wcta{margin-top:14px;background:var(--indigo);color:#fff;font-size:13px;font-weight:800;padding:10px;border-radius:12px;}
+  .widgetmock .wrefresh{margin-top:9px;font-size:10.5px;color:var(--faint);font-weight:700;}
+
+  /* revenue bar chart (scenario slide) */
+  .barwrap{display:flex;align-items:flex-end;gap:30px;height:150px;justify-content:center;margin-top:20px;padding:0 10px;}
+  .barcol{display:flex;flex-direction:column;align-items:center;gap:8px;width:120px;}
+  .barcol .bv{font-size:14px;font-weight:800;color:var(--ink);}
+  .bar{width:58px;border-radius:10px 10px 0 0;background:var(--indigo-l);}
+  .barcol.target .bar{background:var(--indigo);}
+  .barcol.target .bv{color:var(--indigo-d);}
+  .barcol .blabel{font-size:11.5px;color:var(--gray);font-weight:700;text-align:center;}
+
   @media print{
     body{background:#fff;} .hint{display:none;}
     .deck{gap:0;padding:0;}
@@ -172,7 +192,7 @@
 </style>
 </head>
 <body>
-<div class="hint">키보드 <b>Ctrl/⌘+P</b> → "PDF로 저장", 용지 가로 → 10p PDF 완성</div>
+<div class="hint">키보드 <b>Ctrl/⌘+P</b> → "PDF로 저장", 용지 가로 → 11p PDF 완성</div>
 <div class="deck">
 
 <!-- 1 COVER -->
@@ -181,10 +201,10 @@
   <div class="coverscrim"></div>
   <div class="left">
     <div class="wordmark">moyo</div>
-    <div class="eyebrow">GROWTH 전략⑤ 딥다이브 · 내부 실행 제안</div>
-    <h1>통합 큐레이션 ROI 검증<br><span class="g">— 서비스가 늘수록<br>이기는 건 안내하는 쪽</span></h1>
-    <div class="spine">"전략⑤ 통합 큐레이션" 아이디어에<br><b>ROI 검증 · 실행 로드맵</b>을 더한 내부 실행안</div>
-    <div class="meta"><b>모요 Growth Team</b> ｜ 2026 ｜ 문제 → 해법 → ROI 검증 → 실행</div>
+    <div class="eyebrow">GROWTH 전략 재설계 · 내부 실행 제안</div>
+    <h1>내 요금제 진단,<br><span class="g">앱을 여는 이유가 되다</span></h1>
+    <div class="spine">"온보딩 한 번의 안내"에서<br><b>홈 화면 상시 진단 위젯</b>으로 — 경영진 피드백을 반영한 재설계</div>
+    <div class="meta"><b>모요 Growth Team</b> ｜ 2026 ｜ 문제 → 해법 → 리텐션 임팩트 → 실행</div>
   </div>
   <div class="right">
     <svg class="holo" viewBox="0 0 560 720" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -201,233 +221,270 @@
         </radialGradient>
       </defs>
       <circle cx="300" cy="330" r="280" fill="url(#glow)"/>
-      <!-- compass / guide icon (represents curation guidance) -->
-      <g transform="translate(300,300)">
-        <circle cx="0" cy="0" r="150" fill="none" stroke="url(#holo)" stroke-width="6" stroke-opacity="0.85"/>
-        <circle cx="0" cy="0" r="112" fill="none" stroke="url(#holo2)" stroke-width="2" stroke-opacity="0.5"/>
-        <path d="M0 -95 L28 -20 L0 0 L-28 -20 Z" fill="url(#holo)" opacity="0.95"/>
-        <path d="M0 95 L28 20 L0 0 L-28 20 Z" fill="url(#holo2)" opacity="0.7"/>
-        <circle cx="0" cy="0" r="10" fill="#fff" opacity="0.9"/>
+      <!-- diagnosis dial (represents the fit-score widget) -->
+      <g transform="translate(300,350)">
+        <path d="M -160 40 A 160 160 0 1 1 160 40" fill="none" stroke="#232a5c" stroke-width="20" stroke-linecap="round" pathLength="100"/>
+        <path d="M -160 40 A 160 160 0 1 1 160 40" fill="none" stroke="url(#holo)" stroke-width="20" stroke-linecap="round" pathLength="100" stroke-dasharray="62 100"/>
+        <line x1="0" y1="0" x2="34" y2="-148" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="0" cy="0" r="13" fill="#fff"/>
+        <text x="0" y="-40" text-anchor="middle" font-size="56" font-weight="800" fill="#fff">62</text>
+        <text x="0" y="-10" text-anchor="middle" font-size="15" fill="#c7cdf0" font-weight="700">내 요금제 진단 점수</text>
       </g>
-      <!-- scattered nodes representing many services, converging -->
-      <g stroke="url(#holo2)" stroke-width="2" stroke-opacity="0.55" fill="none">
-        <path d="M120 130 C 180 200 220 250 262 268"/>
-        <path d="M470 150 C 400 210 350 245 300 262"/>
-        <path d="M100 560 C 180 500 230 460 262 420"/>
-        <path d="M460 580 C 390 510 340 470 302 424"/>
+      <!-- monthly refresh cue -->
+      <g transform="translate(300,596)" fill="none" stroke="url(#holo2)" stroke-width="3" stroke-linecap="round" opacity="0.75">
+        <path d="M -54 -6 A 54 54 0 1 1 40 40"/>
+        <path d="M 40 40 L 30 22 M 40 40 L 20 44"/>
       </g>
-      <circle cx="120" cy="130" r="18" fill="url(#holo)" opacity="0.85"/>
-      <circle cx="470" cy="150" r="14" fill="url(#holo2)" opacity="0.75"/>
-      <circle cx="100" cy="560" r="16" fill="url(#holo2)" opacity="0.8"/>
-      <circle cx="460" cy="580" r="13" fill="url(#holo)" opacity="0.7"/>
+      <text x="300" y="660" text-anchor="middle" font-size="12.5" fill="#8a92c4" font-weight="700">매달 자동 갱신</text>
     </svg>
   </div>
 </section>
 
-<!-- 2 문제/기회 리캡 -->
+<!-- 2 문제 리캡 -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step active"><span class="n">1</span>문제</span><span class="sep"></span>
       <span class="step"><span class="n">2</span>해법</span><span class="sep"></span>
-      <span class="step"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step"><span class="n">4</span>실행</span>
     </div><span class="brandtag"><b>moyo</b> ｜ 문제 리캡</span>
   </div>
-  <div class="lede">문제 리캡 ｜ 서비스가 늘수록 커지는 온보딩 이탈</div>
-  <h1 class="stitle">서비스가 풍부해질수록, <span class="r">신규·시니어 유저는 길을 잃는다</span></h1>
+  <div class="lede">문제 리캡 ｜ 모요는 여전히 "요금제 바꿀 때만 여는" 앱이다</div>
+  <h1 class="stitle">비교가 끝나면, <span class="r">다시 열 이유가 없다</span></h1>
   <div class="body">
-    <div class="gloss" style="margin-bottom:16px;">🧭 <b>현재 서비스 구성</b> — 요금제 비교 · 휴대폰(자급제) · 인터넷 결합 · 랭킹 · 커뮤니티까지 폭넓게 운영 중 → 무엇을 먼저 봐야 할지 안내가 없음</div>
+    <div class="gloss" style="margin-bottom:16px;">📱 <b>현재 앱 사용 패턴</b> — 유저는 요금제를 바꾸겠다고 마음먹은 순간에만 모요를 켠다 → 비교·가입이 끝나면 앱을 다시 열 유인이 사라진다</div>
     <div class="row" style="align-items:stretch;">
       <div class="col" style="flex:1.15;">
         <div class="card" style="height:100%;">
           <h3>왜 문제인가</h3>
           <ul class="clean">
-            <li>신규 앱설치 유저는 <b class="k">"무엇을 찾아야 할지"</b> 판단할 사전 지식이 없음</li>
-            <li>시니어 유저는 다수 메뉴·비교 화면 자체가 진입장벽</li>
-            <li>결과적으로 <b class="k">핵심서비스(요금제 비교 등) 도달 전에 이탈</b></li>
+            <li>모요는 지금 <b class="k">"요금제 비교 · 전환" 순간에만 소환되는 1회성 CPA 도구</b></li>
+            <li>비교가 끝나 가입을 완료한 유저는 <b class="k">다음 요금제 변경 시점까지</b> 모요를 켤 이유가 없음</li>
+            <li>결과적으로 <b class="k">재방문은 우연이고, 습관이 아님</b></li>
           </ul>
         </div>
       </div>
       <div class="col" style="flex:.85;">
         <div class="card tint" style="height:100%;text-align:center;display:flex;flex-direction:column;justify-content:center;">
-          <div class="big" style="font-size:52px;">40<span class="u">%</span></div>
-          <div class="num-l">신규 앱설치 → 첫 핵심서비스 도달 전 <b class="k">이탈률(가정)</b></div>
-          <div class="src" style="margin-top:10px;">온보딩 복잡도로 인한 이탈로 가정</div>
+          <div class="big" style="font-size:52px;">15<span class="u">%</span></div>
+          <div class="num-l">현재 <b class="k">6개월 후 재방문율</b><br>(growth 전략덱 기준치)</div>
+          <div class="src" style="margin-top:10px;">1회성 비교 도구 구조의 결과</div>
         </div>
       </div>
     </div>
-    <p class="take" style="margin-top:18px;">10명 중 <span class="hir">4명이 요금제 비교조차 보지 못하고</span> 이탈 — 이미 광고비를 쓰고 데려온 유저인데도.</p>
+    <p class="take" style="margin-top:18px;">10명 중 <span class="hir">8~9명은 반년 안에 모요로 돌아오지 않는다</span> — 앱을 다시 켤 이유 자체가 설계되어 있지 않기 때문.</p>
   </div>
-  <div class="pageno">02 / 10</div>
+  <div class="pageno">02 / 11</div>
 </section>
 
-<!-- 3 해법 두 축 -->
+<!-- 3 해법: 홈 위젯 -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
       <span class="step active"><span class="n">2</span>해법</span><span class="sep"></span>
-      <span class="step"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step"><span class="n">4</span>실행</span>
-    </div><span class="brandtag">해법 두 축</span>
+    </div><span class="brandtag">홈 위젯 해법</span>
   </div>
-  <div class="lede">해법 ｜ 큐레이션 온보딩 + 개인화 홈 대시보드</div>
-  <h1 class="stitle">많이 가진 쪽이 아니라 <span class="i">쉽게 안내하는 쪽</span>이 이긴다</h1>
+  <div class="lede">해법 ｜ 홈 화면 상시 노출 "내 요금제 진단" 위젯</div>
+  <h1 class="stitle">요금제를 비교하는 앱에서, <span class="i">내 요금제를 진단하는 앱</span>으로</h1>
   <div class="body">
-    <div class="row">
-      <div class="actcard"><span class="tag i">① 단계별 큐레이션 온보딩</span>
-        <h3 style="margin-top:8px;">"무엇을 찾으세요?" 3~4개 질문으로 안내</h3>
-        <ul class="clean">
-          <li>신규 진입 시 짧은 질문으로 <b class="k">요금제·폰·결합까지</b> 서비스 전체를 안내</li>
-          <li>통신을 잘 몰라도, 시니어여도 <b class="k">길을 잃지 않는</b> 첫 화면</li>
-          <li>질문에 따라 첫 핵심서비스로 바로 연결 → 이탈 지점 자체를 줄임</li>
-        </ul>
+    <div class="row" style="align-items:stretch;">
+      <div class="col" style="flex:1.2;">
+        <div class="card" style="height:100%;">
+          <h3>위젯 구성 3요소</h3>
+          <ul class="clean">
+            <li><b class="k">적합도 스코어</b> — 현재 사용량 대비 지금 요금제가 얼마나 맞는지 게이지 점수로 표시</li>
+            <li><b class="k">"다른 요금제 보기"</b> 추천 CTA — 점수가 낮을수록 더 맞는 대안을 바로 제시</li>
+            <li><b class="k">매달 자동 갱신</b> — 온보딩 1회성이 아니라, 사용량 변화에 따라 점수가 매달 새로 계산됨</li>
+          </ul>
+        </div>
       </div>
-      <div class="actcard"><span class="tag g">② 개인화 홈 대시보드</span>
-        <h3 style="margin-top:8px;">진단·알림·추천을 한 화면에</h3>
-        <ul class="clean">
-          <li>내 통신 현황·진단·할 일·추천을 <b class="k">홈 한 화면</b>에 통합</li>
-          <li>재방문 시에도 <b class="k">"다음에 뭐 하지?"</b>를 모요가 먼저 제안</li>
-          <li>여러 서비스가 흩어져 있던 경험을 하나의 축으로 재구성</li>
-        </ul>
+      <div class="col" style="flex:.85;display:flex;align-items:center;justify-content:center;">
+        <div class="widgetmock">
+          <div class="wtitle">홈 화면 위젯 · 내 요금제 진단</div>
+          <div class="gauge">
+            <svg viewBox="0 0 200 110" width="190" height="104">
+              <path d="M14 96 A86 86 0 0 1 186 96" fill="none" stroke="#edeff2" stroke-width="14" stroke-linecap="round" pathLength="100"/>
+              <path d="M14 96 A86 86 0 0 1 186 96" fill="none" stroke-width="14" stroke-linecap="round" pathLength="100" stroke-dasharray="62 100" style="stroke:var(--indigo);"/>
+            </svg>
+            <div class="gscore">62<span>점</span></div>
+          </div>
+          <div class="glabel">지금 요금제 적합도 — <b>재검토 권장</b></div>
+          <div class="wcta">다른 요금제 보기 →</div>
+          <div class="wrefresh">매달 1일 자동 갱신</div>
+        </div>
       </div>
     </div>
-    <div class="gloss" style="margin-top:18px;">🏦 <b>벤치마킹</b> — 토스 홈: 수십 개 금융 서비스 중 <b>"내게 필요한 것만" 큐레이션</b>해 보여주는 구조. 모요도 같은 원리를 온보딩·홈에 적용.</div>
+    <div class="gloss" style="margin-top:16px;">🏠 <b>핵심 전환</b> — 온보딩 단계의 1회성 안내가 아니라, <b>홈 화면에 상시 노출되는 진단 위젯</b>으로 설계 축을 바꾼다.</div>
   </div>
-  <div class="pageno">03 / 10</div>
+  <div class="pageno">03 / 11</div>
 </section>
 
-<!-- 4 개선 메커니즘 (Before/After) -->
+<!-- 4 벤치마크: 토스 신용점수 -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
-      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
-      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>해법</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step"><span class="n">4</span>실행</span>
-    </div><span class="brandtag">개선 메커니즘</span>
+    </div><span class="brandtag">토스 벤치마크</span>
   </div>
-  <div class="lede">ROI 검증 ① ｜ 무엇이 바뀌는가</div>
-  <h1 class="stitle">복잡한 메뉴 구조를 <span class="i">안내형 구조</span>로 바꾸면 이탈이 줄어든다</h1>
+  <div class="lede">벤치마크 ｜ 토스 신용점수</div>
+  <h1 class="stitle">사람들은 <span class="i">점수를 확인하려고</span> 매달 앱을 연다</h1>
+  <div class="body">
+    <div class="cacwrap">
+      <div class="cacflow">
+        <div class="cacstep"><span class="num">1</span>토스는 매달 갱신되는 <b class="k">신용점수</b>를 홈 화면에 노출한다</div>
+        <div class="cacstep"><span class="num">2</span>유저는 특별한 금융 용무가 없어도 <b class="k">점수가 궁금해서</b> 앱을 켠다</div>
+        <div class="cacstep hi"><span class="num">3</span>점수 확인 자체가 <b class="k">습관적 재방문 트리거</b>가 된다</div>
+        <div class="cacstep hi"><span class="num">4</span>모요는 신용점수 대신 <b class="k">"요금제 진단 점수"</b>로 같은 구조를 만든다</div>
+      </div>
+      <div class="cacbox">
+        <div class="cl">벤치마크 적용</div>
+        <div class="cv">신용점수 →<br>요금제 진단 점수</div>
+        <div class="cd">토스가 금융 의사결정과 무관한 순간에도 앱을 열게 만든 것처럼, 모요도 요금제를 바꿀 계획이 없는 달에도 "내 점수가 어떻게 됐지"라는 이유로 앱을 열게 만든다.</div>
+      </div>
+    </div>
+    <p class="take" style="margin-top:18px;">핵심은 <span class="hi">"필요할 때만 여는 도구"</span>에서 <span class="hi">"궁금해서 여는 습관"</span>으로 — 재방문 트리거의 성격 자체를 바꾸는 것.</p>
+  </div>
+  <div class="pageno">04 / 11</div>
+</section>
+
+<!-- 5 포지션 전환: 왜 계속 써야 하는가 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step active"><span class="n">2</span>해법</span><span class="sep"></span>
+      <span class="step"><span class="n">3</span>리텐션임팩트</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">포지션 전환</span>
+  </div>
+  <div class="lede">왜 계속 써야 하는가 ｜ 1회성 비교 도구 → 상시 관리 습관 앱</div>
+  <h1 class="stitle">이것이 <span class="i">"모요를 계속 써야 하는 이유"</span>다</h1>
   <div class="body">
     <div class="mech">
       <div class="mc before">
         <span class="mlabel">BEFORE</span>
-        <div class="mbig">40%</div>
-        <div class="mdesc">신규 앱설치 후 첫 핵심서비스 도달 전 <b class="k">이탈</b> (가정)</div>
+        <div class="mbig">1회성</div>
+        <div class="mdesc">요금제를 바꿀 때만 여는 <b class="k">CPA 비교 도구</b></div>
         <div class="chiprow">
-          <span class="chip">요금제</span><span class="chip">휴대폰</span><span class="chip">인터넷</span><span class="chip">랭킹</span><span class="chip">커뮤니티</span>
+          <span class="chip">요금제 비교</span><span class="chip">가입 완료</span><span class="chip">그 다음엔 볼일 없음</span>
         </div>
-        <div class="mdesc" style="margin-top:10px;">→ 서비스는 많지만, 무엇을 먼저 봐야 할지 안내가 없는 <b class="k">복잡한 메뉴 구조</b></div>
+        <div class="mdesc" style="margin-top:10px;">→ 비교가 끝나면 <b class="k">앱을 켤 이유가 사라짐</b></div>
       </div>
       <div class="arr2">→</div>
       <div class="mc after">
         <span class="mlabel">AFTER</span>
-        <div class="mbig">35~25%</div>
-        <div class="mdesc">큐레이션 온보딩 도입 후 <b class="k">이탈률 개선</b> (시나리오별)</div>
-        <div class="abclist">
-          <div class="abcpill"><div class="lbl">A 보수</div><div class="val">-5%p</div></div>
-          <div class="abcpill"><div class="lbl">B 중립</div><div class="val">-10%p</div></div>
-          <div class="abcpill"><div class="lbl">C 공격</div><div class="val">-15%p</div></div>
+        <div class="mbig">습관형</div>
+        <div class="mdesc">매달 확인하는 <b class="k">통신비 상시 관리 도구</b></div>
+        <div class="chiprow">
+          <span class="chip">매달 갱신되는 점수</span><span class="chip">궁금해서 여는 습관</span><span class="chip">새 추천 기회</span>
         </div>
-        <div class="mdesc" style="margin-top:10px;">→ "무엇을 찾으세요?" 질문이 <b class="k">첫 핵심서비스까지 최단 경로</b>를 만들어줌</div>
+        <div class="mdesc" style="margin-top:10px;">→ 점수가 궁금해서 <b class="k">매달 자연스럽게 재방문</b></div>
       </div>
     </div>
-    <p class="take" style="margin-top:18px;">같은 유저, 같은 광고비 — <span class="hi">안내 구조만 바꿔도</span> 도달률이 달라진다는 것이 이 제안의 핵심 가설.</p>
+    <p class="take" style="margin-top:18px;"><span class="hi">비교가 끝나도 볼일이 있는 앱</span> — 이게 "모요를 계속 써야 하는 이유"에 대한 답이다.</p>
   </div>
-  <div class="pageno">04 / 10</div>
+  <div class="pageno">05 / 11</div>
 </section>
 
-<!-- 5 ROI 모델 전제 -->
+<!-- 6 리텐션 임팩트 모델 -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
       <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
-      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>리텐션임팩트</span><span class="sep"></span>
+      <span class="step"><span class="n">4</span>실행</span>
+    </div><span class="brandtag">리텐션 임팩트</span>
+  </div>
+  <div class="lede">리텐션 임팩트 ｜ 재방문율 목표를 구현하는 장치</div>
+  <h1 class="stitle">재방문율 <span class="r">15%</span> → <span class="i">35%</span>, 위젯이 만드는 숫자</h1>
+  <div class="body">
+    <div class="mech">
+      <div class="mc before">
+        <span class="mlabel">AS-IS</span>
+        <div class="mbig">15%</div>
+        <div class="mdesc">6개월 후 재방문율 — <b class="k">growth 전략덱 기존 기준치</b></div>
+      </div>
+      <div class="arr2">→</div>
+      <div class="mc after">
+        <span class="mlabel">TARGET</span>
+        <div class="mbig">35%</div>
+        <div class="mdesc">6개월 후 재방문율 — <b class="k">growth 전략덱 KPI 목표치와 통일</b></div>
+      </div>
+    </div>
+    <div class="gloss" style="margin-top:18px;">🎯 <b>이 위젯이 그 목표를 구현하는 실행 장치다</b> — 기존 growth 전략덱이 제시한 재방문율 목표(15%→35%)는 선언이었고, "내 요금제 진단" 위젯은 그 목표를 실제로 달성시키는 구체적 장치다.</div>
+    <p class="take" style="margin-top:16px;">목표는 이미 있었다 — <span class="hi">이 위젯은 그 목표를 실현하는 방법이다.</span></p>
+  </div>
+  <div class="pageno">06 / 11</div>
+</section>
+
+<!-- 7 ROI 모델 전제 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="stepper">
+      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step"><span class="n">4</span>실행</span>
     </div><span class="brandtag">ROI 모델 전제</span>
   </div>
-  <div class="lede">ROI 검증 ② ｜ 계산에 사용한 전제치</div>
-  <h1 class="stitle">ROI 계산은 <span class="i">4가지 전제</span> 위에서 출발한다</h1>
+  <div class="lede">ROI 모델 전제 ｜ 계산에 사용한 전제치</div>
+  <h1 class="stitle">ROI 계산은 <span class="i">3가지 전제</span> 위에서 출발한다</h1>
   <div class="body">
     <div class="premise">
-      <div class="pt"><div class="pv">5<span class="u" style="font-size:16px;">만명</span></div><div class="pl">월 신규 앱설치</div><div class="ptag">가정치</div></div>
-      <div class="pt"><div class="pv">40<span class="u" style="font-size:16px;">%</span></div><div class="pl">현재 온보딩 이탈률<br>(첫 핵심서비스 도달 전)</div><div class="ptag">가정치</div></div>
-      <div class="pt"><div class="pv">10<span class="u" style="font-size:16px;">%</span></div><div class="pl">회생 유저의<br>최종 개통전환율</div><div class="ptag">가정치</div></div>
-      <div class="pt"><div class="pv">3<span class="u" style="font-size:16px;">만원</span></div><div class="pl">인당 정산수수료</div><div class="ptag">타 growth안과 통일 가정치</div></div>
+      <div class="pt"><div class="pv">20<span class="u" style="font-size:16px;">만명</span></div><div class="pl">월간 활성 유저<br>(위젯 노출 대상 모집단)</div><div class="ptag">가정치</div></div>
+      <div class="pt"><div class="pv">15→35<span class="u" style="font-size:16px;">%</span></div><div class="pl">6개월 후 재방문율<br>(기존→목표)</div><div class="ptag">growth 전략덱 KPI 통일</div></div>
+      <div class="pt"><div class="pv">4<span class="u" style="font-size:16px;">만명</span></div><div class="pl">연간 추가 재방문<br>(순증)</div><div class="ptag">산출값</div></div>
     </div>
-    <p class="take" style="margin-top:22px;">계산 순서 — <span class="hi">월 신규 5만명 × 이탈률 개선폭 = 추가 도달</span> → <span class="hi">×연 12개월</span> → <span class="hi">×개통전환율 10%</span> → <span class="hi">×인당 3만원</span> = 연 매출.</p>
-    <p class="note">본 전제치는 재무모델링 단계에서 확정된 가정으로, 실측 데이터가 아닌 시나리오 산출용 가정임을 명시.</p>
+    <p class="take" style="margin-top:22px;">계산 순서 — <span class="hi">재방문율 개선폭 20%p × 월간 활성유저 20만명 = 연간 추가 재방문 4만명(순증)</span></p>
+    <p class="note">본 전제치는 재무모델링 단계에서 확정된 가정이며, 재방문율 목표(15%→35%)는 기존 growth 전략덱의 KPI 목표치와 통일한 값이다.</p>
   </div>
-  <div class="pageno">05 / 10</div>
+  <div class="pageno">07 / 11</div>
 </section>
 
-<!-- 6 시나리오 A/B/C -->
+<!-- 8 시나리오 A/B/C -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
       <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
-      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
+      <span class="step active"><span class="n">3</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step"><span class="n">4</span>실행</span>
     </div><span class="brandtag">시나리오 A/B/C</span>
   </div>
-  <div class="lede">ROI 검증 ③ ｜ 시나리오별 매출 임팩트</div>
-  <h1 class="stitle">보수·중립·공격 — <span class="i">3가지 시나리오</span>로 본 매출 규모</h1>
+  <div class="lede">시나리오 A/B/C ｜ 전환율별 매출 임팩트</div>
+  <h1 class="stitle">보수·중립·공격 — <span class="i">3가지 전환 시나리오</span></h1>
   <div class="body">
     <table class="kpi">
-      <tr><th>구분</th><th>A · 보수</th><th class="target">B · 중립 (1년 목표)</th><th>C · 공격</th></tr>
-      <tr><td>이탈률 개선폭</td><td>5%p (40%→35%)</td><td class="target">10%p (40%→30%)</td><td>15%p (40%→25%)</td></tr>
-      <tr><td>월 추가 도달</td><td>2,500명</td><td class="target">5,000명</td><td>7,500명</td></tr>
-      <tr><td>연 추가 도달</td><td>3만명</td><td class="target">6만명</td><td>9만명</td></tr>
-      <tr><td>연 신규 개통 (전환율 10%)</td><td>3,000명</td><td class="target">6,000명</td><td>9,000명</td></tr>
-      <tr><td>예상 매출 (인당 3만원)</td><td>9,000만원</td><td class="target">1.8억원</td><td>2.7억원</td></tr>
+      <tr><th>구분</th><th>A · 보수</th><th class="target">B · 중립 (현실적 목표)</th><th>C · 공격</th></tr>
+      <tr><td>추천 클릭 → 전환율</td><td>5%</td><td class="target">10%</td><td>15%</td></tr>
+      <tr><td>연간 전환 인원<br>(추가 재방문 4만명 기준)</td><td>2,000명</td><td class="target">4,000명</td><td>6,000명</td></tr>
+      <tr><td>예상 매출<br>(인당 정산수수료 3만원)</td><td>6,000만원</td><td class="target">1.2억원</td><td>1.8억원</td></tr>
     </table>
-    <p class="take" style="margin-top:20px;"><span class="hi">1년 목표는 시나리오 B — 매출 1.8억원.</span> A는 최소 하방, C는 온보딩 완주율이 크게 뛸 경우의 상방.</p>
-  </div>
-  <div class="pageno">06 / 10</div>
-</section>
-
-<!-- 7 CAC 관점 부가효과 -->
-<section class="slide">
-  <div class="topbar">
-    <div class="stepper">
-      <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
-      <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
-      <span class="step active"><span class="n">3</span>ROI 검증</span><span class="sep"></span>
-      <span class="step"><span class="n">4</span>실행</span>
-    </div><span class="brandtag">CAC 관점 부가효과</span>
-  </div>
-  <div class="lede">ROI 검증 ④ ｜ 이 매출의 성격</div>
-  <h1 class="stitle">이 매출은 <span class="i">"추가 광고비 없이"</span> 발생하는 순증분이다</h1>
-  <div class="body">
-    <div class="cacwrap">
-      <div class="cacflow">
-        <div class="cacstep"><span class="num">1</span>유저는 이미 광고비(CAC)를 지불하고 <b class="k">앱을 설치</b>한 상태</div>
-        <div class="cacstep"><span class="num">2</span>기존에는 온보딩 복잡도 때문에 <b class="k">핵심서비스 도달 전 이탈</b></div>
-        <div class="cacstep hi"><span class="num">3</span>큐레이션 온보딩으로 <b class="k">이미 유입된 유저를 회생</b>시키는 구조</div>
-        <div class="cacstep hi"><span class="num">4</span>새 유저를 사는 것이 아니므로 <b class="k">CAC 재투입이 필요 없음</b></div>
-      </div>
-      <div class="cacbox">
-        <div class="cl">시나리오 B 기준</div>
-        <div class="cv">1.8억원 매출<br>= 추가 광고비 0원</div>
-        <div class="cd">신규 획득(CAC 지불) 없이, 이미 유입된 유저의 온보딩 이탈만 줄여서 만드는 매출 — 광고비 낭비 감소와 매출 증가가 동시에 일어나는 구조.</div>
-      </div>
+    <div class="barwrap">
+      <div class="barcol"><div class="bv">6,000만</div><div class="bar" style="height:44px;"></div><div class="blabel">A · 보수</div></div>
+      <div class="barcol target"><div class="bv">1.2억</div><div class="bar" style="height:87px;"></div><div class="blabel">B · 중립</div></div>
+      <div class="barcol"><div class="bv">1.8억</div><div class="bar" style="height:130px;"></div><div class="blabel">C · 공격</div></div>
     </div>
-    <p class="take" style="margin-top:18px;">즉 이 ROI는 <span class="hi">기존 마케팅 예산과 경쟁하지 않는</span> 순증분 — 예산 재배분 없이도 실행 가능하다.</p>
+    <p class="take" style="margin-top:16px;"><span class="hi">가장 현실적인 목표는 B — 매출 1.2억원.</span> 다만 <b class="k">핵심 성공지표는 매출이 아니라 재방문율 자체</b>이며, 매출은 그 결과로 따라오는 부가 효과다.</p>
   </div>
-  <div class="pageno">07 / 10</div>
+  <div class="pageno">08 / 11</div>
 </section>
 
-<!-- 8 실행 로드맵 -->
+<!-- 9 실행 로드맵 -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
       <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
-      <span class="step done"><span class="n">✓</span>ROI 검증</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step active"><span class="n">4</span>실행</span>
     </div><span class="brandtag">실행 로드맵</span>
   </div>
@@ -435,27 +492,27 @@
   <h1 class="stitle">프로토타입 → 실측 → 롤아웃, <span class="i">3단계</span>로 검증한다</h1>
   <div class="body">
     <div class="phase">
-      <div class="pc p1"><span class="pn">0–1개월 · 설계</span><h3>프로토타입 설계</h3>
-        <ul><li>온보딩 질문 플로우 설계(3~4문항)</li><li>개인화 홈 대시보드 프로토타입 제작</li></ul></div>
+      <div class="pc p1"><span class="pn">0–1개월 · 설계</span><h3>위젯 프로토타입 설계</h3>
+        <ul><li>적합도 스코어링 로직 설계 (사용량 대비 요금제 매칭)</li><li>홈 화면 위젯 UI/UX 설계</li></ul></div>
       <div class="arr2">→</div>
-      <div class="pc p2"><span class="pn">1–3개월 · 실측</span><h3>A/B 테스트</h3>
-        <ul><li>기존 온보딩 vs 큐레이션 온보딩 A/B 테스트</li><li>실제 이탈률 개선폭을 측정해 A/B/C 시나리오 검증</li></ul></div>
+      <div class="pc p2"><span class="pn">1–3개월 · 실측</span><h3>파일럿 A/B 테스트</h3>
+        <ul><li>위젯 노출군 vs 미노출군 재방문율 실측</li><li>위젯 클릭률·추천 전환율 데이터 수집</li></ul></div>
       <div class="arr2">→</div>
       <div class="pc p3"><span class="pn">3개월~ · 확장</span><h3>전체 롤아웃</h3>
-        <ul><li>실측 개선폭 기준으로 전체 유저 대상 롤아웃</li><li>개인화 홈을 서비스 전체 진입점으로 확장</li></ul></div>
+        <ul><li>실측 데이터 기준으로 전체 유저 대상 확대</li><li>스코어링 로직 고도화(개인화 심화)</li></ul></div>
     </div>
-    <p class="take" style="margin-top:22px;">핵심은 <span class="hi">가정치(40%→A/B/C)를 실측으로 검증</span>한 뒤 확장하는 것 — 소규모 A/B 테스트가 선행 관문.</p>
+    <p class="take" style="margin-top:22px;">핵심은 <span class="hi">가정치(15%→35%)를 파일럿 실측으로 검증</span>한 뒤 확장하는 것 — 소규모 A/B 테스트가 선행 관문.</p>
   </div>
-  <div class="pageno">08 / 10</div>
+  <div class="pageno">09 / 11</div>
 </section>
 
-<!-- 9 KPI & Ask -->
+<!-- 10 KPI & Ask -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
       <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
-      <span class="step done"><span class="n">✓</span>ROI 검증</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step active"><span class="n">4</span>실행</span>
     </div><span class="brandtag">KPI & Ask</span>
   </div>
@@ -464,42 +521,42 @@
   <div class="body">
     <table class="kpi">
       <tr><th>KPI</th><th>정의</th><th>의미</th></tr>
-      <tr><td>온보딩 완료율</td><td>큐레이션 질문 플로우를 끝까지 완료한 비율</td><td>안내 설계의 완주력</td></tr>
-      <tr><td>첫 핵심서비스 도달률</td><td>신규 설치 후 요금제 비교 등 핵심서비스 도달 비율</td><td>이탈률 개선 실측 (40%→A/B/C 검증)</td></tr>
-      <tr><td>온보딩 경유 개통전환율</td><td>온보딩 경유 유저 중 최종 개통까지 이어진 비율</td><td>매출 임팩트의 직접 근거 (10% 가정 검증)</td></tr>
+      <tr><td>재방문율</td><td>6개월 내 앱 재방문 비율</td><td>이 제안의 <b class="k">최우선 성공지표</b> (15%→35%)</td></tr>
+      <tr><td>위젯 클릭률</td><td>위젯 노출 대비 "다른 요금제 보기" 클릭 비율</td><td>위젯의 주목도·관심 유발력</td></tr>
+      <tr><td>추천 전환율</td><td>클릭 유저 중 실제 요금제 전환(가입) 비율</td><td>매출 임팩트의 직접 근거 (시나리오 A/B/C 검증)</td></tr>
     </table>
-    <div class="askbox"><span class="askicon">ASK</span><div>A/B 테스트를 위한 <b>개발 리소스 소액 배정</b> 요청 — 온보딩 질문 플로우 + 개인화 홈 대시보드 프로토타입 구현 범위로 한정.</div></div>
+    <div class="askbox"><span class="askicon">ASK</span><div>A/B 테스트를 위한 <b>개발 리소스 소액 배정</b> 요청 — 적합도 스코어링 로직 + 홈 화면 위젯 UI 구현 범위로 한정.</div></div>
   </div>
-  <div class="pageno">09 / 10</div>
+  <div class="pageno">10 / 11</div>
 </section>
 
-<!-- 10 클로징 -->
+<!-- 11 클로징 -->
 <section class="slide">
   <div class="topbar">
     <div class="stepper">
       <span class="step done"><span class="n">✓</span>문제</span><span class="sep"></span>
       <span class="step done"><span class="n">✓</span>해법</span><span class="sep"></span>
-      <span class="step done"><span class="n">✓</span>ROI 검증</span><span class="sep"></span>
+      <span class="step done"><span class="n">✓</span>리텐션임팩트</span><span class="sep"></span>
       <span class="step done"><span class="n">✓</span>실행</span>
     </div><span class="brandtag">맺음말</span>
   </div>
   <div class="lede">맺음말 ｜ 핵심 수치 재강조</div>
-  <h1 class="stitle">서비스가 늘수록 이기는 건 <span class="i">쉽게 안내하는 쪽</span></h1>
+  <h1 class="stitle">이기는 건 <span class="i">매일 열어보고 싶은 쪽</span></h1>
   <div class="body">
     <div class="card" style="background:radial-gradient(120% 140% at 80% 0%,#1a2156,#0b0f30);border:none;text-align:center;padding:22px;">
-      <p style="color:#fff;font-size:24px;font-weight:800;line-height:1.45;">많이 가진 쪽이 아니라,<br><span style="background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;">쉽게 안내하는 쪽이 이긴다.</span></p>
-      <p style="color:#aab2e6;font-size:13.5px;margin-top:10px;">큐레이션 온보딩 + 개인화 홈 — 이미 유입된 유저를 <b style="color:#fff;">추가 광고비 없이</b> 회생시키는 구조.</p>
+      <p style="color:#fff;font-size:24px;font-weight:800;line-height:1.45;">많이 가진 쪽이 아니라,<br><span style="background:linear-gradient(90deg,#8be9ff,#8aa6ff,#b69bff);-webkit-background-clip:text;background-clip:text;color:transparent;">매일 열어보고 싶은 쪽이 이긴다.</span></p>
+      <p style="color:#aab2e6;font-size:13.5px;margin-top:10px;">내 요금제 진단 위젯 — 비교가 끝나도 <b style="color:#fff;">매달 다시 열게 만드는</b> 습관형 재방문 장치.</p>
     </div>
     <p style="font-size:12px;font-weight:800;color:var(--gray);margin:16px 0 9px;text-align:center;">핵심 수치 재강조</p>
     <div class="impact">
-      <div class="ic"><div class="iv">40%</div><div class="il">현재 온보딩 이탈률</div><div class="ib">가정치</div></div>
-      <div class="ic target"><div class="iv">-10%p<span class="ar">↓</span></div><div class="il">1년 목표 개선폭 (시나리오 B)</div><div class="ib">40%→30%</div></div>
-      <div class="ic target"><div class="iv">1.8억</div><div class="il">시나리오 B 연 매출</div><div class="ib">연 신규개통 6,000명 기준</div></div>
-      <div class="ic"><div class="iv">0원</div><div class="il">추가 광고비(CAC)</div><div class="ib">기존 유입 유저 회생분</div></div>
+      <div class="ic"><div class="iv">15%</div><div class="il">현재 6개월 후 재방문율</div><div class="ib">growth 전략덱 기존 기준치</div></div>
+      <div class="ic target"><div class="iv">35%<span class="ar">↑</span></div><div class="il">목표 6개월 후 재방문율</div><div class="ib">이 위젯이 구현하는 목표</div></div>
+      <div class="ic"><div class="iv">4만명</div><div class="il">연간 추가 재방문(순증)</div><div class="ib">MAU 20만명 × 20%p</div></div>
+      <div class="ic target"><div class="iv">1.2억</div><div class="il">시나리오 B 연 매출</div><div class="ib">재방문율 개선의 부가 효과</div></div>
     </div>
-    <p class="take" style="text-align:center;margin-top:16px;font-size:15px;">Ask — <span class="hi">A/B 테스트 개발 리소스 소액 배정</span>으로, 가정을 실측으로 증명하겠습니다.</p>
+    <p class="take" style="text-align:center;margin-top:16px;font-size:15px;">Ask — <span class="hi">위젯 프로토타입 개발 리소스 소액 배정</span>으로, 재방문율 목표를 실제로 검증하겠습니다.</p>
   </div>
-  <div class="pageno">10 / 10</div>
+  <div class="pageno">11 / 11</div>
 </section>
 
 </div>
