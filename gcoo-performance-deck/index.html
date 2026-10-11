@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>지쿠 퍼포먼스 전략 제안 · 이도형</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root{
+  /* 구조 토큰 — 유지 */
+  --ink:#15171C; --navy:#1A1F2E; --black:#0E1118;
+  --gray:#8A8F99; --gray2:#5B6170;
+  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  /* 액센트 토큰 — 회사 브랜드로 교체 */
+  --blue:#1B66FF; --blue-d:#0F4FD6; --blue-soft:#E7EFFF;
+  --violet:#6E4BFF; --violet-d:#5436E0; --violet-soft:#ECE6FF;
+  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
+  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
+  --rose:#E0533D; --rose-soft:#FCE7E2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:46px 64px;overflow:hidden}
+.slide.active{display:flex;animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);text-transform:uppercase;margin-bottom:11px}
+.kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#c0402c} .kicker.gray{color:var(--gray)}
+h1{font-size:50px;font-weight:800;line-height:1.16;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:33px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+p,li{font-size:16.5px;line-height:1.6;color:#2C313C}
+.lead{font-size:20px;line-height:1.62;color:var(--gray2);font-weight:500}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
+.hl.vio{background:linear-gradient(transparent 58%, var(--violet-soft) 58%)}
+.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+b,strong{font-weight:800;color:var(--ink)}
+.mono{font-variant-numeric:tabular-nums}
+
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--ink)}
+.logo .ic{width:25px;height:25px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+
+.grid{display:grid;gap:15px}
+.card{background:var(--soft);border-radius:var(--radius);padding:19px 21px;border:1px solid transparent}
+.card.blue{background:var(--blue-soft)} .card.vio{background:var(--violet-soft)} .card.teal{background:var(--teal-soft)} .card.amber{background:var(--amber-soft)} .card.rose{background:var(--rose-soft)}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.card.dark{background:var(--ink)} .card.dark h3{color:#fff} .card.dark p,.card.dark li{color:#D5D9E2}
+.card h3{margin-bottom:5px}
+.card .num{font-size:13.5px;font-weight:800;color:var(--gray);margin-bottom:5px}
+.card p{font-size:15px;line-height:1.55}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--gray2)}
+.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
+.pill.k{background:var(--ink);color:#fff}
+.pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)} .pill.teal{background:var(--teal-soft);color:var(--teal-d)}
+
+.goal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:800;margin-bottom:13px}
+.goal b{color:#8FB6FF}
+
+.metric .big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
+.metric .big.blue{color:var(--blue-d)} .metric .big.vio{color:var(--violet-d)} .metric .big.teal{color:var(--teal-d)} .metric .big.rose{color:var(--rose)} .metric .big.amber{color:var(--amber-d)}
+.metric .lab{font-size:13.5px;color:var(--gray2);margin-top:7px;font-weight:600;line-height:1.4}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12.5px;color:var(--gray);font-weight:700;letter-spacing:.02em}
+td b{font-weight:800}
+tr.hi td{background:var(--blue-soft)}
+.chk{color:var(--teal-d);font-weight:800} .x{color:var(--rose);font-weight:800}
+
+.shot{border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block}
+.cap{font-size:12px;color:var(--gray);margin-top:7px;text-align:center;line-height:1.4}
+.shotwrap{position:relative}
+.shotwrap .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px}
+
+.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:17px 23px}
+.callout h3{color:#fff} .callout p{color:#D5D9E2}
+.quote{background:linear-gradient(120deg,#1A1F2E,#241C4A);color:#fff;border-radius:var(--radius);padding:24px 28px}
+.quote .q{font-size:25px;font-weight:800;line-height:1.36;color:#fff}
+.quote .q .g{background:linear-gradient(90deg,#8FB6FF,#B9A6FF,#7FE6DA);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.flag{font-size:12.5px;color:var(--gray);font-style:italic}
+.src{font-size:11.5px;color:var(--gray);line-height:1.5}
+.src b{color:var(--gray2);font-weight:700}
+.foot{position:absolute;left:64px;right:64px;bottom:18px;display:flex;justify-content:space-between;font-size:11.5px;color:var(--gray);border-top:1px solid var(--line);padding-top:9px;gap:20px}
+.foot .src{flex:1}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:23px;margin-bottom:8px;font-size:15.5px}
+ul.clean li:before{content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
+ul.clean.vio li:before{background:var(--violet)} ul.clean.teal li:before{background:var(--teal)} ul.clean.rose li:before{background:var(--rose)}
+
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{flex:1;background:var(--soft);border-radius:13px;padding:12px;text-align:center}
+.flow .arr{display:flex;align-items:center;padding:0 7px;font-size:19px;color:var(--gray);font-weight:800}
+
+.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow)}
+.adcard .ad{font-size:9px;font-weight:800;color:var(--teal-d);border:1px solid var(--teal);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:5px}
+.adcard .u{font-size:10px;color:var(--gray)}
+.adcard .ti{font-size:13px;font-weight:800;color:#1a0dab;line-height:1.3;margin:2px 0}
+.adcard .ds{font-size:10.5px;color:#4a4f5e;line-height:1.4}
+.stepbox{background:var(--soft);border-radius:12px;padding:12px 13px;flex:1}
+.stepbox .n{font-size:11px;font-weight:800;color:var(--blue-d)}
+.stepbox h4{font-size:13.5px;font-weight:800;color:var(--ink);margin:3px 0 4px}
+.stepbox p{font-size:12px;color:#4a4f5e;line-height:1.45}
+
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar,.hint{display:none}}
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+.hint{position:fixed;bottom:20px;right:22px;color:#8b8d94;font-size:12px;z-index:50}
+
+/* 지쿠 톤 오버라이드 — GCOO 그린 + 잉크 */
+:root{
+  --blue:#16A34A; --blue-d:#0E7C37; --blue-soft:#E3F6E9;
+  --violet:#0F3D2A; --violet-d:#0F3D2A; --violet-soft:#E8EEEA;
+}
+.logo .ic{background:var(--blue);font-weight:900;font-size:12px}
+.slide{padding:42px 60px 56px}
+.small{font-size:13.5px;line-height:1.5;color:var(--gray2)}
+.xs{font-size:12px;line-height:1.45;color:var(--gray2)}
+.row{display:flex;gap:16px}
+.col{display:flex;flex-direction:column;gap:12px}
+.qline{font-size:13.5px;line-height:1.45;color:#2C313C;background:#fff;border-left:3px solid var(--blue);padding:6px 10px;border-radius:6px;margin-top:8px}
+.bars{display:flex;align-items:flex-end;gap:7px;height:190px;padding:0 4px;border-bottom:1px solid var(--line)}
+.bars .b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bars .b .v{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.bars .b .bar{width:100%;border-radius:6px 6px 0 0;background:var(--rose)}
+.bars .b.ev .bar{background:repeating-linear-gradient(45deg,#C9CED8,#C9CED8 5px,#E3E6EC 5px,#E3E6EC 10px)}
+.bars .b.ev .v{color:var(--gray)}
+.blab{display:flex;gap:7px;padding:5px 4px 0}
+.blab span{flex:1;text-align:center;font-size:11px;color:var(--gray);line-height:1.25}
+.hbar{display:flex;align-items:center;gap:10px;margin:6px 0}
+.hbar .k{width:74px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.hbar .t{flex:1;height:16px;background:var(--soft);border-radius:4px;overflow:hidden}
+.hbar .t i{display:block;height:100%;background:var(--blue);border-radius:4px}
+.hbar .t i.gray{background:#C9CED8}
+.hbar .n{width:30px;font-size:13px;font-weight:800;text-align:right}
+.map{display:grid;grid-template-columns:1fr 40px 1fr;gap:10px 0;align-items:stretch}
+.map .p,.map .s{border-radius:14px;padding:12px 15px}
+.map .p{background:var(--rose-soft)} .map .s{background:var(--blue-soft)}
+.map .a{display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--gray);font-size:20px}
+.map h4{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.map p{font-size:13px;line-height:1.45}
+.cut{background:var(--ink);border-radius:14px;padding:14px;color:#fff;flex:1;display:flex;flex-direction:column;gap:6px}
+.cut .t{font-size:11px;font-weight:800;color:#86EFAC;letter-spacing:.04em}
+.cut .h{font-size:16px;font-weight:800;line-height:1.35;color:#fff}
+.cut .d{font-size:12.5px;line-height:1.45;color:#C9D1CC}
+.rule td,.rule th{padding:8px 11px;font-size:13.5px}
+.bm{border:1px dashed var(--blue);background:#fff;border-radius:14px;padding:12px 15px}
+.bm .l{font-size:11.5px;font-weight:800;color:var(--blue-d);letter-spacing:.03em;margin-bottom:3px}
+.bm p{font-size:13px;line-height:1.45}
+.kpi{display:grid;gap:12px}
+.mini th{font-size:12px} .mini td{font-size:13px;padding:7px 10px}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.timeline .ph{border-top:4px solid var(--blue);background:var(--soft);border-radius:0 0 14px 14px;padding:13px 15px}
+.timeline .ph .w{font-size:12px;font-weight:800;color:var(--blue-d)}
+.timeline .ph h3{font-size:17px;margin:3px 0 6px}
+.timeline .ph li{font-size:13.5px;margin-bottom:5px}
+.hint{display:none}
+#nav{left:auto;right:18px;transform:none;opacity:0;transition:opacity .3s}
+body.nav-on #nav{opacity:1}
+.slide .body{display:block;transform-origin:top left}
+.slide .body > *{margin-bottom:14px}
+.slide .body > *:last-child{margin-bottom:0}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide active" style="justify-content:center;background:
+  radial-gradient(900px 520px at 86% -10%, var(--blue-soft) 0%, transparent 58%),
+  radial-gradient(700px 480px at -6% 112%, #EEF2EF 0%, transparent 55%), #fff">
+  <div class="logo" style="margin-bottom:28px"><span class="ic">G</span>지쿠 GCOO · 지바이크</div>
+  <div class="kicker">퍼포먼스 마케터 · 전략 제안</div>
+  <h1>버스보다 빠르고, 택시보다 가벼운 이동.<br>이 약속을 <span class="hl">숫자로 증명하는 퍼포먼스</span></h1>
+  <p class="lead" style="margin-top:22px;max-width:980px">고객 리뷰 665건과 메타 광고 라이브러리를 직접 분석했습니다. 지쿠가 '처음 해 보는 퍼포먼스'에서 '성장 엔진'으로 넘어가는 구간에 브랜드와 퍼포먼스를 한 문장으로 묶는 방법을 제안합니다.</p>
+  <div style="margin-top:32px;display:flex;gap:10px">
+    <span class="pill k">지바이크 마케팅팀</span>
+    <span class="pill blue">퍼포먼스 마케터 지원</span>
+    <span class="pill vio" style="background:#E8EEEA;color:#0F3D2A">이도형 · 5년 4개월</span>
+  </div>
+  <div class="foot"><span class="src"><b>조사 기준일</b> 2026-10-11 · 모든 외부 수치에 출처와 신뢰도 표시</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 2 JD -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">01 · 내가 읽은 과제</div><h2>지금 지쿠는 0→1을 끝내고 <span class="hl">1→10</span>으로 가는 구간입니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="flow" style="margin-top:4px">
+    <div class="step"><div class="xs" style="font-weight:800">작년</div><h3 style="font-size:17px;margin-top:3px">매체 테스트 · MMP 도입</h3><p class="xs">데이터 기반 마케팅의 기초</p></div>
+    <div class="arr">→</div>
+    <div class="step" style="background:var(--blue-soft)"><div class="xs" style="font-weight:800;color:var(--blue-d)">올해</div><h3 style="font-size:17px;margin-top:3px">퍼포먼스 첫 도입</h3><p class="xs">신규 가입 · 매출로 이어지는 성공 방정식 확인</p></div>
+    <div class="arr">→</div>
+    <div class="step" style="background:var(--ink)"><div class="xs" style="font-weight:800;color:#86EFAC">내년</div><h3 style="font-size:17px;margin-top:3px;color:#fff">정교화 · 영역 확대</h3><p class="xs" style="color:#C9D1CC">성과 고도화 · 스케일업</p></div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:18px">
+    <div class="card"><div class="num">JD 01</div><h3>캠페인 기획→최적화 리드</h3><p>검색 · 배너/SNS · 앱 유입 매체 전략, 예산 배분, 유효 유저 극대화</p></div>
+    <div class="card"><div class="num">JD 02</div><h3>성과 데이터 → 인사이트</h3><p>MMP와 내부 DB로 캠페인 · 채널별 리포팅, 채널 전략 제안</p></div>
+    <div class="card"><div class="num">JD 03</div><h3>가설 → 숫자로 증명</h3><p>A/B 테스트로 검증하고 효율을 계속 올림</p></div>
+  </div>
+  <div class="callout" style="margin-top:16px"><h3>제가 이해한 이 자리의 핵심</h3><p style="margin-top:4px">마케팅팀은 브랜드 · 콘텐츠 · CRM · 퍼포먼스를 함께 설계합니다. 그리고 JD는 <b style="color:#86EFAC">'날씨 · 계절 같은 외부 변수에 따라 집행을 조율'</b>하라고 합니다. 그래서 이 발표는 ① 브랜드 메시지를 전환으로 잇는 법 ② 실물 인프라와 날씨에 맞춰 돈을 쓰는 법 두 가지를 중심에 둡니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 지바이크 퍼포먼스 마케터 채용공고(gbikecareer.ninehire.site) [자사발표]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 3 차별점 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">02 · 고객이 느끼는 차별점</div><h2>고객은 지쿠를 '킥보드 앱'이 아니라 <span class="hl">'내 동네 이동수단'</span>으로 씁니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="row" style="flex:1">
+    <div class="grid" style="grid-template-columns:1fr 1fr;flex:1.55;align-content:start;gap:12px">
+      <div class="card blue"><h3>① 어디에나 있다</h3><p>역 · 버스정류장 근처, 지방까지 넓게 깔려 있다는 언급이 반복됩니다.</p><div class="qline">"역사나 버스정류장 근처에도 곳곳에 분포"</div></div>
+      <div class="card blue"><h3>② 버스보다 빠르다</h3><p>출퇴근 · 통학 · 지각 방지 맥락이 압도적입니다.</p><div class="qline">"왕복 20분 출근길이 버스로는 30~40분"</div></div>
+      <div class="card"><h3>③ 새 전기자전거</h3><p>NEW 지쿠의 승차감 · 깊은 바구니 · 거치대 칭찬이 집중됩니다.</p><div class="qline">"방지턱 넘을 때도 스무스"</div></div>
+      <div class="card"><h3>④ 넓은 반납 가능 지역</h3><p>다른 전기자전거와 비교해 주차 가능 지역이 넓다는 평가입니다.</p><div class="qline">"역 주변도 대부분 주차 가능"</div></div>
+    </div>
+    <div class="card out" style="flex:1">
+      <h3>고객이 비교하는 대상</h3>
+      <p class="xs" style="margin-bottom:8px">지쿠 리뷰 안에서 언급된 횟수 (최근 12개월)</p>
+      <div class="hbar"><span class="k">택시</span><span class="t"><i style="width:100%"></i></span><span class="n">26</span></div>
+      <div class="hbar"><span class="k">버스</span><span class="t"><i style="width:69%"></i></span><span class="n">18</span></div>
+      <div class="hbar"><span class="k">카카오</span><span class="t"><i class="gray" style="width:50%"></i></span><span class="n">13</span></div>
+      <div class="hbar"><span class="k">스윙</span><span class="t"><i class="gray" style="width:23%"></i></span><span class="n">6</span></div>
+      <div class="hbar"><span class="k">따릉이</span><span class="t"><i class="gray" style="width:15%"></i></span><span class="n">4</span></div>
+      <div class="hbar"><span class="k">쏘카·일레클</span><span class="t"><i class="gray" style="width:12%"></i></span><span class="n">3</span></div>
+      <p style="margin-top:12px;font-size:14.5px;line-height:1.5"><b>비교 기준은 다른 킥보드가 아니라 대중교통과 택시입니다.</b> 광고 메시지도 '킥보드 중 최고'가 아니라 '버스 · 택시 대신'으로 짜야 합니다.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 구글플레이 지쿠 리뷰 665건(2025-10~2026-10) 직접 수집 · 키워드 분류 [직접수집] · 인용은 요약 발췌</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 4 깎이는 지점 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">03 · 차별점이 깎이는 지점</div><h2>장점은 '주행'에만 남고, <span class="hl rose">가격 · 반납</span>에서 무너집니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="row" style="flex:1">
+    <div class="card out" style="flex:1.25">
+      <h3>지쿠 리뷰 월별 평균 별점</h3>
+      <p class="xs" style="margin-bottom:10px">빗금 = 리뷰 이벤트로 보이는 달("선물 받고 싶어서 신청합니다" 등) · 빨강 = 평소 달</p>
+      <div class="bars">
+        <div class="b ev"><span class="v">4.0</span><div class="bar" style="height:136px"></div></div>
+        <div class="b ev"><span class="v">4.0</span><div class="bar" style="height:136px"></div></div>
+        <div class="b"><span class="v">2.0</span><div class="bar" style="height:68px"></div></div>
+        <div class="b"><span class="v">1.8</span><div class="bar" style="height:61px"></div></div>
+        <div class="b"><span class="v">1.8</span><div class="bar" style="height:61px"></div></div>
+        <div class="b"><span class="v">2.0</span><div class="bar" style="height:68px"></div></div>
+        <div class="b"><span class="v">1.9</span><div class="bar" style="height:65px"></div></div>
+        <div class="b"><span class="v">1.8</span><div class="bar" style="height:61px"></div></div>
+        <div class="b"><span class="v">1.4</span><div class="bar" style="height:48px"></div></div>
+        <div class="b"><span class="v">1.6</span><div class="bar" style="height:54px"></div></div>
+        <div class="b"><span class="v">1.3</span><div class="bar" style="height:44px"></div></div>
+        <div class="b"><span class="v">1.4</span><div class="bar" style="height:48px"></div></div>
+        <div class="b ev"><span class="v">3.8</span><div class="bar" style="height:129px"></div></div>
+      </div>
+      <div class="blab"><span>25.10</span><span>11</span><span>12</span><span>26.01</span><span>02</span><span>03</span><span><b style="color:var(--rose)">04</b></span><span>05</span><span>06</span><span>07</span><span>08</span><span>09</span><span>10</span></div>
+      <p class="small" style="margin-top:10px"><b>2026-04</b> 환승 혜택(지쿠케어) 종료 · 요금 인상 이후 리뷰가 월 50~60건으로 늘고 평균은 1.3~1.9로 내려갔습니다.</p>
+    </div>
+    <div class="col" style="flex:1">
+      <table class="mini">
+        <tr><th>리뷰 주제</th><th>언급 비중</th><th>평균 별점</th></tr>
+        <tr><td><b>가격 · 요금</b></td><td>25%</td><td class="x">1.82</td></tr>
+        <tr><td><b>주차 · 반납 · 견인</b></td><td>22%</td><td class="x">1.53</td></tr>
+        <tr class="hi"><td><b>속도 · 주행감</b></td><td>16%</td><td class="chk">4.04</td></tr>
+        <tr><td><b>전기자전거</b></td><td>13%</td><td>3.09</td></tr>
+        <tr><td><b>앱 오류 · 결제</b></td><td>11%</td><td class="x">1.73</td></tr>
+      </table>
+      <div class="card rose" style="padding:13px 16px"><h3 style="font-size:16px">고객 목소리</h3>
+        <p class="small">"환승이 없어지니 탈 이유가 없다" · "반납 구역 찾느라 돈이 더 나간다" · "10분과 30분 사이 <b>20분 패스</b>가 있으면 좋겠다"</p></div>
+      <p class="flag">평점 자체를 차별점으로 쓰지 않습니다. 이벤트 달을 빼면 평소 평점은 경쟁사와 비슷합니다.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 구글플레이 지쿠 리뷰 665건(2025-10-01~2026-10-11) 직접 수집 · 키워드 분류는 중복 포함 [직접수집] · 이벤트 판정은 [추정]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 5 현재 광고 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">04 · 지금의 광고 플레이</div><h2>메타에서 보이는 지쿠는 <span class="hl">브랜드 영상 1종</span>뿐입니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="row" style="flex:1">
+    <div style="flex:1.05">
+      <div class="shotwrap"><img class="shot" src="images/adlib-gcoo.jpg" alt="메타 광고 라이브러리 지쿠 게재 광고"><span class="badge">게재 중 2건 · 2026-08-06~</span></div>
+      <div class="cap">메타 광고 라이브러리 · 광고주 '지쿠 - GCOO' · 플랫폼 인스타그램</div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card blue" style="padding:14px 17px"><h3 style="font-size:17px">잘하고 있는 것</h3>
+        <ul class="clean" style="margin-top:6px"><li>배우 엄태구의 '내향형 지쿠' — 구석에 얌전히 서 있는 지쿠. <b>매너 주차</b>를 브랜드 캐릭터로 만듦</li><li>링크가 abr.ge(에어브릿지) — 브랜드 영상도 MMP로 측정</li></ul></div>
+      <div class="card rose" style="padding:14px 17px"><h3 style="font-size:17px">보이지 않는 것</h3>
+        <ul class="clean rose" style="margin-top:6px"><li>요금 · 패스 · 첫 탑승 혜택 소재</li><li>출근 · 지역 · 날씨 상황 소재</li><li>그라인드 광고</li></ul></div>
+      <div class="card amber" style="padding:14px 17px"><h3 style="font-size:17px">새는 지점: 이름 충돌</h3>
+        <p class="small">'지쿠'로 검색하면 면세쇼핑 <b>지쿠 ZIKOO</b> 광고가 대부분입니다. 구글플레이 '지쿠' 검색 2위도 ZIKOO 앱입니다. 브랜드 광고로 만든 검색 수요가 다른 회사로 샐 수 있습니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 메타 광고 라이브러리(KR, 게재 중, 2026-10-11 조회) [직접수집] · 비로그인 조회라 집행액·과거 소재·구글/네이버 광고는 확인 불가</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 6 경쟁 판도 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">05 · 경쟁 판도</div><h2>진짜 경쟁자는 킥보드 앱이 아니라 <span class="hl">'0원'과 '하루 1,500원'</span>입니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="row" style="flex:1">
+    <div class="col" style="flex:1.45">
+      <table>
+        <tr><th>광고주</th><th>메타 게재 중 소재</th><th>메시지</th></tr>
+        <tr><td><b>티머니GO</b><div class="xs">애그리게이터</div></td><td>'킥보드' 검색 9건</td><td class="small">전기자전거 · 킥보드 무제한 0원, 첫 이용 100% 캐시백, 교통비 환급</td></tr>
+        <tr><td><b>Swap</b><div class="xs">전기자전거 소유</div></td><td>'전기자전거' 검색 80건+</td><td class="small">하루 1,500원으로 전기자전거 인수, 교통비 절약, 인플루언서</td></tr>
+        <tr><td><b>더블유렌탈</b></td><td>'전기자전거' 검색 36건</td><td class="small">전기자전거 렌탈</td></tr>
+        <tr><td><b>스윙 · 킥고잉 · 빔 · 일레클</b></td><td>발견 못 함</td><td class="small">—</td></tr>
+        <tr class="hi"><td colspan="3"><b>빈칸:</b> '버스 · 택시 대신 매일 타는 이유'를 실제 기기 위치와 함께 말하는 소재는 아무도 없습니다. → 지쿠의 자리</td></tr>
+      </table>
+      <div class="shotwrap"><img class="shot" src="images/adlib-swap.jpg" alt="Swap 광고"><span class="badge">Swap · 하루 1,500원 (같은 메시지 소재 다수)</span></div>
+    </div>
+    <div class="col" style="flex:.62">
+      <div class="shotwrap"><img class="shot" src="images/adlib-tmoney.jpg" alt="티머니GO 광고"><span class="badge">티머니GO · 0원 라이딩</span></div>
+      <p class="small">둘 다 지쿠의 핵심 고객(출퇴근 · 통학)을 노립니다. 애그리게이터는 <b>'0원'</b>으로 첫 탑승을 가져가고, 소유형은 <b>'교통비 절약'</b>으로 매일 이동을 가져갑니다.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 메타 광고 라이브러리(KR, 게재 중, 키워드 '킥보드' · '전기자전거' · '지쿠' · 'GCOO', 2026-10-11) [직접수집] · 키워드 검색 기준이라 전체 집행량과 다를 수 있음</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 7 전략 개요 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">06 · 전략 개요</div><h2>문제 4개에 전략 4개, 그리고 <span class="hl">그라인드는 별도 퍼널</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="map" style="margin-top:4px">
+    <div class="p"><h4>① 브랜드 영상만 있고 전환 소재가 없다</h4><p>'내향형 지쿠'의 관심이 첫 탑승으로 이어질 다리가 없음</p></div><div class="a">→</div>
+    <div class="s"><h4>전략 ① 브랜드 IP를 전환 소재로 잘라 쓰기</h4><p>같은 캐릭터로 출근 · 막차 · 매너 반납 상황 컷</p></div>
+    <div class="p"><h4>② '어디에나 있다'는 기기가 많은 곳에서만 참</h4><p>기기가 없는 곳의 설치는 1점 리뷰가 됨</p></div><div class="a">→</div>
+    <div class="s"><h4>전략 ② 공급 · 날씨 · 시간에 맞춘 집행</h4><p>기기 밀도 · 맑은 날 · 출근 시간에 예산 집중</p></div>
+    <div class="p"><h4>③ 환승 종료 후 '매일 탈 이유'가 약해짐</h4><p>가격 불만 25% · 20분 패스 요청 반복</p></div><div class="a">→</div>
+    <div class="s"><h4>전략 ③ 설치가 아니라 습관을 사기</h4><p>목표 = 첫 탑승 후 7일 안에 2회 · 패스 전환</p></div>
+    <div class="p"><h4>④ 고객이 애그리게이터 · 이름 충돌로 샌다</h4><p>티머니GO · 카카오T 경유, ZIKOO 검색 혼동</p></div><div class="a">→</div>
+    <div class="s"><h4>전략 ④ 자사앱 고객 소유하기</h4><p>브랜드 검색 방어 · 자사앱 전용 혜택 · 채널별 LTV</p></div>
+  </div>
+  <div class="callout" style="margin-top:14px;padding:13px 20px"><p style="color:#fff;font-size:15.5px"><b style="color:#86EFAC">한 문장:</b> 브랜드는 <b style="color:#fff">"버스보다 빠르게, 택시보다 가볍게, 길을 막지 않게"</b>를 말하고, 퍼포먼스는 이 약속이 참인 곳 · 때 · 사람에게만 돈을 씁니다.</p></div>
+  <div class="foot"><span class="src"><b>근거</b> 02~05장의 리뷰 · 광고 분석</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 8 전략1 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">07 · 전략 ①</div><h2>'내향형 지쿠'를 <span class="hl">6~15초 전환 소재</span>로 잘라 씁니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="row">
+    <div class="cut"><span class="t">CUT A · 출근</span><span class="h">"사람 많은 버스 대신,<br>조용히 20분 단축"</span><span class="d">내향형 캐릭터 × 출근 혼잡. 리뷰 근거: 버스 대비 시간 단축</span></div>
+    <div class="cut"><span class="t">CUT B · 막차</span><span class="h">"막차 놓친 밤,<br>택시비 대신 지쿠"</span><span class="d">택시 비교 언급 1위(26회). 심야 시간대 타깃</span></div>
+    <div class="cut"><span class="t">CUT C · 매너 반납</span><span class="h">"구석에 얌전히 반납하면<br>다음 탑승 혜택"</span><span class="d">캐릭터 메시지 = 반납 행동. 반납 불만(22%)을 혜택으로 전환</span></div>
+  </div>
+  <div class="flow" style="margin-top:16px">
+    <div class="step"><b>브랜드 영상 시청</b><p class="xs">30초 · 1분 45초</p></div><div class="arr">→</div>
+    <div class="step"><b>시청자 리타겟팅</b><p class="xs">같은 캐릭터 컷</p></div><div class="arr">→</div>
+    <div class="step" style="background:var(--blue-soft)"><b>첫 탑승 혜택</b><p class="xs">딥링크로 근처 기기 화면</p></div><div class="arr">→</div>
+    <div class="step" style="background:var(--ink);color:#fff"><b style="color:#fff">7일 안에 2회</b><p class="xs" style="color:#C9D1CC">최적화 이벤트</p></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <div class="bm" style="flex:1"><div class="l">내 사례 · 전 직장(커버링)</div><p><b>최적화 이벤트를 '설치'에서 '구매'로 올리고 브릿지 랜딩을 거치게 했습니다.</b> 같은 계정 · 같은 기간 비교에서 CPA −51.8%, 구매 전환율 2.0배, ROAS 2.1배. 지쿠에서는 '설치'가 아니라 '첫 탑승'과 '7일 2회'를 학습시키겠습니다.</p></div>
+    <div class="card" style="flex:.8;padding:13px 16px"><h3 style="font-size:16px">테스트 설계</h3><p class="small">A = 브랜드 영상만 / B = 브랜드 + 컷 리타겟. 지표 = 첫 탑승 CPA, 7일 2회 비율. 2주 단위로 이긴 컷만 증액.</p></div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 리뷰 수치 [직접수집] · 내 사례: 이도형 퍼포먼스 포트폴리오, 커버링 2026-02~05 Meta 동일 계정 비교 [본인 실적]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 9 전략2 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">08 · 전략 ②</div><h2>기기가 있는 곳 · 타기 좋은 날 · 출근 시간에 <span class="hl">예산을 모읍니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="row" style="flex:1">
+    <div class="col" style="flex:1.35">
+      <table class="rule">
+        <tr><th>조건</th><th>집행 규칙</th><th>이유</th></tr>
+        <tr class="hi"><td><b>기기 밀도 상위 지역</b></td><td>지역 타깃 예산 집중</td><td class="small">'어디에나 있다'가 참인 곳</td></tr>
+        <tr><td><b>기기 밀도 하위 지역</b></td><td>신규 획득 축소</td><td class="small">기기 없는 설치 = 1점 리뷰</td></tr>
+        <tr><td><b>비 · 한파 · 폭염 예보</b></td><td>자동 감액</td><td class="small">탈 수 없는 날의 클릭은 낭비</td></tr>
+        <tr><td><b>맑은 평일 07~09시</b></td><td>증액</td><td class="small">출근 맥락 = 리뷰 핵심 장면</td></tr>
+        <tr><td><b>봄 · 가을 성수기</b></td><td>신규 획득 비중 ↑</td><td class="small">이동 수요 피크</td></tr>
+        <tr><td><b>겨울</b></td><td>기존 고객 패스 유지로 이동</td><td class="small">획득보다 이탈 방어</td></tr>
+      </table>
+      <p class="xs">운영 방법: 기상 예보 + 지역별 기기 수를 매일 받아 캠페인 예산 규칙으로 반영(자동 규칙 또는 스크립트).</p>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card blue"><h3>지쿠만 가진 신호</h3><p>배터리 16만 개, 매일 5~7만 개 교환. <b>어디에 기기가 있는지 실시간으로 아는 회사</b>는 광고를 기기 위치에 맞출 수 있습니다. 경쟁 광고주(애그리게이터 · 소유형)는 이 신호가 없습니다.</p></div>
+      <div class="bm"><div class="l">내 사례 · 전 직장(커버링, 지역 기반 O2O)</div><p>서비스 지역마다 랜딩을 따로 만들었습니다(범용 · 천안 · 아산 · 대세종 등 브릿지 10종). 같은 학습 풀 안에서 지역 · 소구별로 나눠 학습시켰습니다.</p></div>
+      <div class="card" style="padding:13px 16px"><h3 style="font-size:16px">검증 방법</h3><p class="small">규칙 적용 지역 vs 미적용 지역의 첫 탑승 CPA · 기기 회전율 비교</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 배터리 16만 개 · 일 5~7만 교환: 채용공고 [자사발표] · 내 사례: 이도형 퍼포먼스 포트폴리오 [본인 실적] · 날씨 규칙 수치는 입사 후 데이터로 결정 [제안]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 10 전략3 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">09 · 전략 ③</div><h2>설치가 아니라 <span class="hl">습관</span>에 돈을 씁니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="goal">핵심 지표(North Star) <b>첫 탑승 후 7일 안에 2회 이상 탑승한 신규 고객 수</b></div>
+  <div class="flow">
+    <div class="step"><b>설치</b><p class="xs">CPI</p></div><div class="arr">→</div>
+    <div class="step"><b>가입 · 결제수단</b><p class="xs">결제 등록 이탈 체크</p></div><div class="arr">→</div>
+    <div class="step"><b>첫 탑승</b><p class="xs">첫 탑승 CPA</p></div><div class="arr">→</div>
+    <div class="step" style="background:var(--blue-soft)"><b>7일 2회</b><p class="xs">습관 형성 비용</p></div><div class="arr">→</div>
+    <div class="step" style="background:var(--ink)"><b style="color:#fff">패스 전환</b><p class="xs" style="color:#C9D1CC">LTV</p></div>
+  </div>
+  <div class="row" style="margin-top:16px;flex:1">
+    <div class="card out" style="flex:1.2"><h3>리뷰가 준 A/B 가설</h3>
+      <table class="mini" style="margin-top:6px">
+        <tr><th>가설</th><th>근거</th><th>측정</th></tr>
+        <tr><td><b>20분 패스</b></td><td class="small">10분 · 30분 사이 공백, 경쟁사로 이동 언급</td><td class="small">패스 전환율 · 이탈률</td></tr>
+        <tr><td><b>통학 학생 패스</b></td><td class="small">학생 · 학원 통학 리뷰 다수</td><td class="small">학생 코호트 4주 잔존</td></tr>
+        <tr><td><b>환승 대체 혜택</b></td><td class="small">04월 종료 후 평점 하락</td><td class="small">이탈 고객 복귀율</td></tr>
+      </table>
+      <p class="xs" style="margin-top:6px">요금 정책은 제품 결정입니다. 저는 테스트 결과를 근거로 제품팀에 제안합니다.</p></div>
+    <div class="col" style="flex:1">
+      <div class="bm"><div class="l">내 사례 · 전 직장(커버링)</div><p><b>등급제 · 페이백 리텐션 설계</b>로 M1 리텐션 +41%p, 180일 LTV 18.1배. 휴면 고객 D22 · D29 · D61 시퀀스로 7,997명 회수.</p></div>
+      <div class="bm"><div class="l">현재 직장</div><p>CRM 여정 · BigQuery 코호트 · UTM 체계를 운영하며 발송부터 전환까지 같은 기준으로 측정하고 있습니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 리뷰 근거 [직접수집] · 내 사례: 이도형 퍼포먼스 포트폴리오 [본인 실적, 절대 매출 비공개]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 11 전략4 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">10 · 전략 ④</div><h2>지쿠 기기를 쓰는 고객을 <span class="hl">지쿠 앱 고객</span>으로 만듭니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:start">
+    <div class="card"><div class="num">문제 A</div><h3>애그리게이터 경유</h3><p>"카카오T에서 뜨는 지쿠", "티머니 통합권으로 지쿠 사용". 기기는 지쿠, 데이터와 관계는 다른 회사입니다. 티머니GO는 '0원'으로 첫 탑승을 가져갑니다.</p></div>
+    <div class="card"><div class="num">문제 B</div><h3>이름 충돌 ZIKOO</h3><p>메타 '지쿠' 검색 결과 대부분과 구글플레이 '지쿠' 검색 2위가 면세쇼핑 ZIKOO입니다. 브랜드 캠페인이 만든 검색이 샐 수 있습니다.</p></div>
+    <div class="card"><div class="num">문제 C</div><h3>스토어 평점 2.76</h3><p>평점은 설치 전환율에 영향을 줍니다. 이벤트로 올린 평점은 몇 달 뒤 다시 떨어졌습니다.</p></div>
+    <div class="card blue"><div class="num">액션 A</div><h3>자사앱 전용 혜택</h3><p>등급 · 포인트 · 패스 혜택을 자사앱 전용으로 명확히. 경유 이용자 대상 '앱으로 타면' 소재. 채널별 LTV를 비교해 경유 고객 전환 가치를 계산.</p></div>
+    <div class="card blue"><div class="num">액션 B</div><h3>브랜드 검색 방어</h3><p>'지쿠' 브랜드 키워드 검색광고 확보, 앱스토어 키워드 '지쿠 킥보드 · 지쿠 전기자전거', 애플 검색광고로 상단 방어.</p></div>
+    <div class="card blue"><div class="num">액션 C</div><h3>마찰을 성과 과제로</h3><p>반납 실패 · GPS 오차 리뷰를 주간으로 집계해 제품팀과 공유. 평점 개선을 설치 전환율 개선 과제로 다룹니다.</p></div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 구글플레이 리뷰 · 검색 결과 · 평점 2.76(평가 8,773건) [직접수집, 2026-10-11] · 메타 광고 라이브러리 [직접수집]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 12 그라인드 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">11 · 그라인드</div><h2>그라인드는 앱 설치가 아니라 <span class="hl">상담 · 계약 퍼널</span>로 설계합니다</h2></div><div class="logo"><span class="ic">G</span>그라인드</div></div>
+  <div class="row" style="flex:1">
+    <div class="col" style="flex:1">
+      <div class="card blue"><h3>무엇이 다른가</h3><ul class="clean" style="margin-top:6px"><li>국내 첫 <b>배터리 구독형</b> 전기자전거 — 집에서 충전하지 않고 거점(BSS 48곳)에서 교환</li><li>삼성SDI 셀 · 출시 후 배터리 화재 0건</li><li>핵심 수요: 오래 달리는 <b>배달 라이더</b></li><li>2026 상반기 이용자 +391%, 판매 매출 +407%</li></ul></div>
+      <div class="card amber"><h3>비교되는 프레임</h3><p>Swap은 "하루 1,500원으로 전기자전거 인수"를 메타에서 80건 넘게 돌립니다. 그라인드는 가격만이 아니라 <b>"충전 시간 0분"</b>으로 이겨야 합니다.</p></div>
+    </div>
+    <div class="col" style="flex:1.1">
+      <div class="stepbox" style="flex:0"><div class="n">메시지</div><h4>"배터리 다 되면 충전 말고 교환. 쉬는 시간이 아니라 일하는 시간."</h4><p>하루 비용 + 충전 대기 시간 비교를 한 화면에</p></div>
+      <div class="flow">
+        <div class="step"><b>노출</b><p class="xs">라이더 관심사 · 배달 지역</p></div><div class="arr">→</div>
+        <div class="step"><b>리드폼</b><p class="xs">메타 · 랜딩</p></div><div class="arr">→</div>
+        <div class="step"><b>상담</b><p class="xs">거점 방문</p></div><div class="arr">→</div>
+        <div class="step" style="background:var(--blue-soft)"><b>계약</b><p class="xs">단계별 CPA</p></div>
+      </div>
+      <div class="card" style="padding:13px 16px"><h3 style="font-size:16px">측정</h3><p class="small">리드 → 상담 → 계약 전환을 CRM에 연결해 '리드 단가'가 아니라 '계약 단가'로 매체를 평가합니다. 거점 반경 밖 리드는 제외 규칙.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 바이라인네트워크(2026-07) 그라인드 이용자 391% · 매출 407% 증가 [자사발표, 독립 검증 없음] · Swap 소재 수: 메타 광고 라이브러리 [직접수집]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 13 측정 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">12 · 측정 체계</div><h2>MMP 숫자를 믿되, <span class="hl">순수 광고 효과(증분)</span>로 검증합니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><div class="num">LAYER 1</div><h3>MMP · 에어브릿지</h3><p>매체별 설치 · 첫 탑승 · 결제를 같은 기준으로. 탑승 · 매출 이벤트가 실제 값으로 넘어가는지 먼저 점검.</p></div>
+    <div class="card"><div class="num">LAYER 2</div><h3>내부 DB 코호트</h3><p>획득 채널 × 주차별 탑승 잔존 · 패스 전환 · LTV. 매체 평가를 CPI가 아니라 코호트 가치로.</p></div>
+    <div class="card blue"><div class="num">LAYER 3</div><h3>지역 홀드아웃</h3><p>도시 단위로 운영하는 구조를 활용해 광고 ON 지역 vs OFF 지역 비교. 광고가 없었어도 탔을 고객을 걸러냅니다.</p></div>
+  </div>
+  <div class="row" style="margin-top:16px;flex:1">
+    <div class="bm" style="flex:1"><div class="l">내 사례 · 측정 인프라를 직접 뚫은 경험</div><p>구글애즈 iOS가 학습 신호 부족으로 막혀 있었습니다. 손실 비용을 데이터로 제시해 개발팀을 설득하고 ODM 연동을 진행했습니다. 연동 전후 3개월 비교: <b>iOS 구매 유저 +227%, CPA −47%</b>.</p></div>
+    <div class="bm" style="flex:1"><div class="l">내 사례 · 실패에서 배운 것</div><p>매출 이벤트가 MMP로 넘어가지 않은 상태에서 가치 기반 입찰(T-ROAS)을 12개월 운영했고 결국 껐습니다. <b>배운 점: 가치 입찰은 실제 매출 값이 이벤트로 연동된 뒤에야 성립합니다.</b> 지쿠에서는 이것부터 점검합니다.</p></div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 내 사례: 이도형 퍼포먼스 포트폴리오, 커버링 2025-04~2026-04 [본인 실적] · 지쿠 MMP 설정 상태는 입사 후 확인 필요 [미검증]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 14 90일 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">13 · 첫 90일</div><h2>정비 → 테스트 → 확장, <span class="hl">이긴 것만 키웁니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="timeline">
+    <div class="ph"><div class="w">0 ~ 30일 · 정비</div><h3>숫자를 믿을 수 있게</h3><ul class="clean"><li>매체 · MMP 이벤트 설정 점검</li><li>채널 × 코호트 보드 구축</li><li>지역별 기기 밀도 × 설치 데이터 결합</li><li>올해 '성공 방정식' 재현 조건 정리</li></ul></div>
+    <div class="ph"><div class="w">31 ~ 60일 · 테스트</div><h3>가설을 2주 단위로</h3><ul class="clean"><li>내향형 지쿠 컷 A/B/C</li><li>날씨 · 시간 예산 규칙 파일럿</li><li>브랜드 키워드 · 애플 검색광고 방어</li><li>패스 가설 테스트 설계 → 제품팀 공유</li></ul></div>
+    <div class="ph" style="border-top-color:var(--ink)"><div class="w" style="color:var(--ink)">61 ~ 90일 · 확장</div><h3>이긴 조합만 확대</h3><ul class="clean"><li>이긴 컷 · 규칙을 지역 확장</li><li>지역 홀드아웃으로 증분 측정</li><li>그라인드 리드젠 파일럿</li><li>증분 근거로 내년 예산안 제안</li></ul></div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:18px">
+    <div class="card metric"><div class="big blue" style="font-size:24px">첫 탑승 CPA</div><div class="lab">매체 평가 1차 기준</div></div>
+    <div class="card metric"><div class="big blue" style="font-size:24px">7일 2회 비율</div><div class="lab">핵심 지표(North Star)</div></div>
+    <div class="card metric"><div class="big blue" style="font-size:24px">패스 전환율</div><div class="lab">LTV 선행 지표</div></div>
+    <div class="card metric"><div class="big" style="font-size:24px">증분 탑승</div><div class="lab">홀드아웃 대비 순수 효과</div></div>
+  </div>
+  <div class="foot"><span class="src"><b>참고</b> 목표 수치는 현재 기준선(입사 후 확인)을 보고 정합니다 [제안]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 15 왜 나 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">14 · 왜 이도형인가</div><h2>JD가 원하는 것을 <span class="hl">이미 숫자로 해 봤습니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <table>
+    <tr><th style="width:27%">JD 자격 · 우대</th><th>나의 근거</th><th style="width:20%">숫자</th></tr>
+    <tr><td><b>퍼포먼스 경력 5~8년</b></td><td class="small">5년 4개월, 4개 회사. Meta · Google · TikTok · 애플 검색광고 · 네이버SA 직접 운용</td><td><b>5채널</b> 셀프 운용</td></tr>
+    <tr><td><b>데이터로 가설 검증 · 수치 개선</b></td><td class="small">최적화 이벤트 격상 + 브릿지 랜딩, 같은 계정 · 같은 기간 비교</td><td><b>CPA −51.8%</b> · ROAS 2.1배</td></tr>
+    <tr><td><b>에어브릿지 등 MMP</b></td><td class="small">에어브릿지 · 앱스플라이어 운영, ODM 연동을 개발팀과 추진</td><td><b>iOS 구매 +227%</b></td></tr>
+    <tr><td><b>성과를 정량으로 증명</b></td><td class="small">전 직장(커버링) 1인 마케터로 시작해 5인 팀까지</td><td><b>월 매출 약 40배</b> (지수)</td></tr>
+    <tr><td><b>소셜 · CRM · 퍼포먼스 연계</b> <span class="tag">우대</span></td><td class="small">등급제 · 페이백 리텐션, 휴면 회수 시퀀스. 현재 직장에서 CRM 여정 · BigQuery 운영</td><td><b>M1 리텐션 +41%p</b></td></tr>
+    <tr class="hi"><td><b>O2O · 하드웨어 경험</b> <span class="tag">우대</span></td><td class="small">커버링 = 지역 기반 O2O(생활 폐기물 수거). 지역별 랜딩 · 지역 타깃 운영</td><td><b>지역 브릿지 10종</b></td></tr>
+  </table>
+  <div class="foot"><span class="src"><b>출처</b> 이도형 퍼포먼스 마케터 포트폴리오 v27 [본인 실적] · 매출은 절대액 비공개, 배수만 표기</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 16 CLOSING -->
+<section class="slide" style="justify-content:center;background:var(--ink)">
+  <div class="kicker" style="color:#86EFAC">마무리</div>
+  <h1 style="color:#fff;font-size:44px">지쿠의 약속이 참인 곳 · 때 · 사람에게<br><span style="color:#86EFAC">돈을 쓰는 퍼포먼스 마케터</span>가 되겠습니다</h1>
+  <p class="lead" style="color:#C9D1CC;margin-top:22px;max-width:1000px">0에서 1은 지쿠가 이미 해냈습니다. 저는 그 성공 방정식을 지역 · 날씨 · 습관 단위로 쪼개 증명하고, 이긴 조합만 키워 스케일업을 만들겠습니다. 브랜드가 말한 약속을, 퍼포먼스가 숫자로 지키겠습니다.</p>
+  <div style="margin-top:30px;display:flex;gap:10px"><span class="pill" style="background:#16A34A;color:#fff">버스보다 빠르게</span><span class="pill" style="background:#16A34A;color:#fff">택시보다 가볍게</span><span class="pill" style="background:#16A34A;color:#fff">길을 막지 않게</span></div>
+  <div class="foot" style="border-top-color:#2B3540;color:#8A938E"><span class="src" style="color:#8A938E">감사합니다 · 이도형</span><span>지쿠 · 이도형</span></div>
+</section>
+
+</div></div>
+<div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
+<div class="hint">← → 또는 Space · F 전체화면</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';window._s=s;}
+addEventListener('resize',fit);fit();show(0);
+/* 본문 자동 채움: 남는 세로 공간만큼 본문 확대(최대 1.32배) */
+slides.forEach(s=>{
+  const head=s.querySelector('.head'), foot=s.querySelector('.foot');
+  if(!head||!foot) return;
+  const body=document.createElement('div'); body.className='body';
+  [...s.children].filter(c=>c!==head&&c!==foot).forEach(c=>body.appendChild(c));
+  s.insertBefore(body,foot);
+});
+function fill(){
+  slides.forEach(s=>{
+    const body=s.querySelector(':scope > .body'); if(!body) return;
+    const was=s.classList.contains('active'); if(!was) s.style.display='flex';
+    const foot=s.querySelector('.foot'); const sc=window._s||1;
+    body.style.zoom=1; body.style.width='';
+    const W=body.offsetWidth; const avail=(foot.offsetTop-12)-body.offsetTop;
+    let z=1.45;
+    for(;z>0.8;z-=0.02){
+      body.style.width=(W/z)+'px'; body.style.zoom=z;
+      if(body.getBoundingClientRect().height/sc<=avail) break;
+    }
+    if(!was) s.style.display='';
+  });
+}
+fill();
+let navT;addEventListener('mousemove',()=>{document.body.classList.add('nav-on');clearTimeout(navT);navT=setTimeout(()=>document.body.classList.remove('nav-on'),1800)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fill);
+</script>
+</body>
+</html>
