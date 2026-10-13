@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>지쿠 퍼포먼스 제안 · 이도형</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+
+:root{
+  /* 구조 토큰 — 유지 */
+  --ink:#15171C; --navy:#1A1F2E; --black:#0E1118;
+  --gray:#8A8F99; --gray2:#5B6170;
+  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  /* 액센트 토큰 — 회사 브랜드로 교체 */
+  --blue:#1B66FF; --blue-d:#0F4FD6; --blue-soft:#E7EFFF;
+  --violet:#6E4BFF; --violet-d:#5436E0; --violet-soft:#ECE6FF;
+  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
+  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
+  --rose:#E0533D; --rose-soft:#FCE7E2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:46px 64px;overflow:hidden}
+.slide.active{display:flex;animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);text-transform:uppercase;margin-bottom:11px}
+.kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#c0402c} .kicker.gray{color:var(--gray)}
+h1{font-size:50px;font-weight:800;line-height:1.16;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:33px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+p,li{font-size:16.5px;line-height:1.6;color:#2C313C}
+.lead{font-size:20px;line-height:1.62;color:var(--gray2);font-weight:500}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
+.hl.vio{background:linear-gradient(transparent 58%, var(--violet-soft) 58%)}
+.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+b,strong{font-weight:800;color:var(--ink)}
+.mono{font-variant-numeric:tabular-nums}
+
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--ink)}
+.logo .ic{width:25px;height:25px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+
+.grid{display:grid;gap:15px}
+.card{background:var(--soft);border-radius:var(--radius);padding:19px 21px;border:1px solid transparent}
+.card.blue{background:var(--blue-soft)} .card.vio{background:var(--violet-soft)} .card.teal{background:var(--teal-soft)} .card.amber{background:var(--amber-soft)} .card.rose{background:var(--rose-soft)}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.card.dark{background:var(--ink)} .card.dark h3{color:#fff} .card.dark p,.card.dark li{color:#D5D9E2}
+.card h3{margin-bottom:5px}
+.card .num{font-size:13.5px;font-weight:800;color:var(--gray);margin-bottom:5px}
+.card p{font-size:15px;line-height:1.55}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--gray2)}
+.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
+.pill.k{background:var(--ink);color:#fff}
+.pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)} .pill.teal{background:var(--teal-soft);color:var(--teal-d)}
+
+.goal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:800;margin-bottom:13px}
+.goal b{color:#8FB6FF}
+
+.metric .big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
+.metric .big.blue{color:var(--blue-d)} .metric .big.vio{color:var(--violet-d)} .metric .big.teal{color:var(--teal-d)} .metric .big.rose{color:var(--rose)} .metric .big.amber{color:var(--amber-d)}
+.metric .lab{font-size:13.5px;color:var(--gray2);margin-top:7px;font-weight:600;line-height:1.4}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12.5px;color:var(--gray);font-weight:700;letter-spacing:.02em}
+td b{font-weight:800}
+tr.hi td{background:var(--blue-soft)}
+.chk{color:var(--teal-d);font-weight:800} .x{color:var(--rose);font-weight:800}
+
+.shot{border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block}
+.cap{font-size:12px;color:var(--gray);margin-top:7px;text-align:center;line-height:1.4}
+.shotwrap{position:relative}
+.shotwrap .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px}
+
+.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:17px 23px}
+.callout h3{color:#fff} .callout p{color:#D5D9E2}
+.quote{background:linear-gradient(120deg,#1A1F2E,#241C4A);color:#fff;border-radius:var(--radius);padding:24px 28px}
+.quote .q{font-size:25px;font-weight:800;line-height:1.36;color:#fff}
+.quote .q .g{background:linear-gradient(90deg,#8FB6FF,#B9A6FF,#7FE6DA);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.flag{font-size:12.5px;color:var(--gray);font-style:italic}
+.src{font-size:11.5px;color:var(--gray);line-height:1.5}
+.src b{color:var(--gray2);font-weight:700}
+.foot{position:absolute;left:64px;right:64px;bottom:18px;display:flex;justify-content:space-between;font-size:11.5px;color:var(--gray);border-top:1px solid var(--line);padding-top:9px;gap:20px}
+.foot .src{flex:1}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:23px;margin-bottom:8px;font-size:15.5px}
+ul.clean li:before{content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
+ul.clean.vio li:before{background:var(--violet)} ul.clean.teal li:before{background:var(--teal)} ul.clean.rose li:before{background:var(--rose)}
+
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{flex:1;background:var(--soft);border-radius:13px;padding:12px;text-align:center}
+.flow .arr{display:flex;align-items:center;padding:0 7px;font-size:19px;color:var(--gray);font-weight:800}
+
+.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow)}
+.adcard .ad{font-size:9px;font-weight:800;color:var(--teal-d);border:1px solid var(--teal);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:5px}
+.adcard .u{font-size:10px;color:var(--gray)}
+.adcard .ti{font-size:13px;font-weight:800;color:#1a0dab;line-height:1.3;margin:2px 0}
+.adcard .ds{font-size:10.5px;color:#4a4f5e;line-height:1.4}
+.stepbox{background:var(--soft);border-radius:12px;padding:12px 13px;flex:1}
+.stepbox .n{font-size:11px;font-weight:800;color:var(--blue-d)}
+.stepbox h4{font-size:13.5px;font-weight:800;color:var(--ink);margin:3px 0 4px}
+.stepbox p{font-size:12px;color:#4a4f5e;line-height:1.45}
+
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar,.hint{display:none}}
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+.hint{position:fixed;bottom:20px;right:22px;color:#8b8d94;font-size:12px;z-index:50}
+
+/* 지쿠 톤 오버라이드 — GCOO 그린 + 잉크 */
+:root{
+  --blue:#16A34A; --blue-d:#0E7C37; --blue-soft:#E3F6E9;
+  --violet:#0F3D2A; --violet-d:#0F3D2A; --violet-soft:#E8EEEA;
+}
+.logo .ic{background:var(--blue);font-weight:900;font-size:12px}
+.slide{padding:42px 60px 56px}
+.small{font-size:13.5px;line-height:1.5;color:var(--gray2)}
+.xs{font-size:12px;line-height:1.45;color:var(--gray2)}
+.row{display:flex;gap:16px}
+.col{display:flex;flex-direction:column;gap:12px}
+.qline{font-size:13.5px;line-height:1.45;color:#2C313C;background:#fff;border-left:3px solid var(--blue);padding:6px 10px;border-radius:6px;margin-top:8px}
+.bars{display:flex;align-items:flex-end;gap:7px;height:190px;padding:0 4px;border-bottom:1px solid var(--line)}
+.bars .b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bars .b .v{font-size:12px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.bars .b .bar{width:100%;border-radius:6px 6px 0 0;background:var(--rose)}
+.bars .b.ev .bar{background:repeating-linear-gradient(45deg,#C9CED8,#C9CED8 5px,#E3E6EC 5px,#E3E6EC 10px)}
+.bars .b.ev .v{color:var(--gray)}
+.blab{display:flex;gap:7px;padding:5px 4px 0}
+.blab span{flex:1;text-align:center;font-size:11px;color:var(--gray);line-height:1.25}
+.hbar{display:flex;align-items:center;gap:10px;margin:6px 0}
+.hbar .k{width:74px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.hbar .t{flex:1;height:16px;background:var(--soft);border-radius:4px;overflow:hidden}
+.hbar .t i{display:block;height:100%;background:var(--blue);border-radius:4px}
+.hbar .t i.gray{background:#C9CED8}
+.hbar .n{width:30px;font-size:13px;font-weight:800;text-align:right}
+.map{display:grid;grid-template-columns:1fr 40px 1fr;gap:10px 0;align-items:stretch}
+.map .p,.map .s{border-radius:14px;padding:12px 15px}
+.map .p{background:var(--rose-soft)} .map .s{background:var(--blue-soft)}
+.map .a{display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--gray);font-size:20px}
+.map h4{font-size:15.5px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.map p{font-size:13px;line-height:1.45}
+.cut{background:var(--ink);border-radius:14px;padding:14px;color:#fff;flex:1;display:flex;flex-direction:column;gap:6px}
+.cut .t{font-size:11px;font-weight:800;color:#86EFAC;letter-spacing:.04em}
+.cut .h{font-size:16px;font-weight:800;line-height:1.35;color:#fff}
+.cut .d{font-size:12.5px;line-height:1.45;color:#C9D1CC}
+.rule td,.rule th{padding:8px 11px;font-size:13.5px}
+.bm{border:1px dashed var(--blue);background:#fff;border-radius:14px;padding:12px 15px}
+.bm .l{font-size:11.5px;font-weight:800;color:var(--blue-d);letter-spacing:.03em;margin-bottom:3px}
+.bm p{font-size:13px;line-height:1.45}
+.kpi{display:grid;gap:12px}
+.mini th{font-size:12px} .mini td{font-size:13px;padding:7px 10px}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.timeline .ph{border-top:4px solid var(--blue);background:var(--soft);border-radius:0 0 14px 14px;padding:13px 15px}
+.timeline .ph .w{font-size:12px;font-weight:800;color:var(--blue-d)}
+.timeline .ph h3{font-size:17px;margin:3px 0 6px}
+.timeline .ph li{font-size:13.5px;margin-bottom:5px}
+.hint{display:none}
+#nav{left:auto;right:18px;transform:none;opacity:0;transition:opacity .3s}
+body.nav-on #nav{opacity:1}
+.slide .body{display:block;transform-origin:top left}
+.slide .body > *{margin-bottom:14px}
+.slide .body > *:last-child{margin-bottom:0}
+/* v2 — 시각화 중심 */
+.msg{font-size:40px;font-weight:800;line-height:1.22;letter-spacing:-.02em;color:var(--ink)}
+.sub{font-size:19px;color:var(--gray2);font-weight:600;margin-top:10px;line-height:1.5}
+.big-n{font-size:64px;font-weight:900;letter-spacing:-.03em;line-height:1;color:var(--blue-d)}
+.big-n.rose{color:var(--rose)} .big-n.w{color:#fff} .big-n.g{color:#86EFAC}
+.vbar{display:flex;align-items:center;gap:14px;margin:9px 0}
+.vbar .k{width:118px;font-size:19px;font-weight:800;color:var(--ink);text-align:right}
+.vbar .t{flex:1;height:38px;background:var(--soft);border-radius:8px;overflow:hidden}
+.vbar .t i{display:flex;align-items:center;justify-content:flex-end;padding-right:12px;height:100%;background:var(--blue);border-radius:8px;color:#fff;font-weight:900;font-size:18px;font-style:normal}
+.vbar .t i.g2{background:#C9CED8;color:var(--ink)}
+.split{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;flex:1}
+.proof{background:var(--ink);border-radius:22px;padding:26px 28px;color:#fff;display:flex;flex-direction:column;gap:12px}
+.proof .l{font-size:14px;font-weight:800;color:#86EFAC;letter-spacing:.06em}
+.proof h3{color:#fff;font-size:23px;line-height:1.35}
+.proof .r{font-size:15px;color:#C9D1CC;line-height:1.5}
+.proof .nums{display:flex;gap:22px;margin-top:4px}
+.proof .nums .lab{font-size:13px;color:#C9D1CC;margin-top:6px;font-weight:600}
+.what{display:flex;flex-direction:column;gap:14px}
+.what .tag2{display:inline-block;background:var(--blue-soft);color:var(--blue-d);font-weight:800;font-size:14px;padding:6px 12px;border-radius:999px;align-self:flex-start}
+.phones{display:flex;gap:14px;flex:1}
+.phone{flex:1;background:linear-gradient(170deg,#173B2A,#0E1118);border-radius:22px;border:5px solid #1f2430;padding:16px 14px;display:flex;flex-direction:column;justify-content:space-between;min-height:270px}
+.phone .sc{font-size:11px;font-weight:800;color:#86EFAC;letter-spacing:.05em}
+.phone .cp{font-size:21px;font-weight:800;color:#fff;line-height:1.32}
+.phone .ct{background:#16A34A;color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:7px 10px;text-align:center}
+.heat{display:grid;grid-template-columns:120px repeat(3,1fr);gap:7px}
+.heat div{border-radius:10px;padding:13px 8px;text-align:center;font-weight:800;font-size:16px}
+.heat .h{background:none;color:var(--gray2);font-size:14px;padding:6px}
+.heat .rh{background:none;color:var(--ink);text-align:right;font-size:15px;display:flex;align-items:center;justify-content:flex-end}
+.heat .c3{background:#16A34A;color:#fff} .heat .c2{background:#86D9A3;color:#0E3B20} .heat .c1{background:#E3F6E9;color:#0E7C37} .heat .c0{background:#F1F3F6;color:#9AA0AA}
+.fun{display:flex;flex-direction:column;gap:9px}
+.fun .st{display:flex;align-items:center;gap:12px}
+.fun .bx{height:46px;border-radius:10px;display:flex;align-items:center;padding:0 16px;font-weight:800;font-size:18px;color:#fff;background:var(--blue)}
+.fun .bx.d{background:var(--ink)}
+.fun .ac{font-size:14px;font-weight:700;color:var(--blue-d);background:var(--blue-soft);padding:6px 11px;border-radius:999px;white-space:nowrap}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1}
+.trio .cell{border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;background:var(--soft)}
+.trio .cell img{width:100%;border-radius:10px;border:1px solid var(--line)}
+.trio .cell .who{font-size:15px;font-weight:800;color:var(--gray2)}
+.trio .cell .say{font-size:24px;font-weight:900;color:var(--ink);line-height:1.25}
+.mx{display:grid;grid-template-columns:1fr 46px 1fr;gap:12px 0;align-items:stretch}
+.mx .a,.mx .b{border-radius:16px;padding:16px 20px;display:flex;flex-direction:column;justify-content:center}
+.mx .a{background:var(--blue-soft)} .mx .b{background:var(--ink)}
+.mx .a .n{font-size:13px;font-weight:800;color:var(--blue-d)} .mx .a h3{font-size:21px;margin-top:3px}
+.mx .b .n{font-size:13px;font-weight:800;color:#86EFAC} .mx .b h3{font-size:19px;color:#fff;margin-top:3px} .mx .b .v{font-size:28px;font-weight:900;color:#86EFAC;margin-top:2px}
+.mx .ar{display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:var(--gray)}
+.mxh{display:grid;grid-template-columns:1fr 46px 1fr;margin-bottom:8px}
+.mxh span{font-size:15px;font-weight:800;color:var(--gray2)}
+.st4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;flex:1}
+.st4 .t{background:var(--soft);border-radius:18px;padding:20px 18px;display:flex;flex-direction:column;gap:8px}
+.st4 .t .k{font-size:13px;font-weight:800;color:var(--blue-d)}
+.st4 .t h3{font-size:19px;line-height:1.35}
+.st4 .t .n{font-size:38px;font-weight:900;color:var(--ink);letter-spacing:-.02em}
+.st4 .t .lab{font-size:13.5px;color:var(--gray2);line-height:1.45}
+.cyc{display:flex;gap:0;align-items:stretch}
+.cyc .s{flex:1;background:var(--ink);color:#fff;border-radius:12px;padding:12px;text-align:center;font-weight:800;font-size:17px}
+.cyc .ar{display:flex;align-items:center;padding:0 8px;color:var(--gray);font-weight:900;font-size:20px}
+.geo{display:flex;gap:18px;align-items:center;justify-content:center;flex:1}
+.geo .c{width:230px;height:230px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:800}
+.geo .on{background:var(--blue);color:#fff} .geo .off{background:var(--soft);color:var(--gray2);border:2px dashed #C9CED8}
+.geo .c b{font-size:24px;color:inherit} .geo .c span{font-size:15px;margin-top:6px}
+.geo .vs{font-size:22px;font-weight:900;color:var(--gray)}
+.slide .body{display:flex;flex-direction:column;flex:1;min-height:0;gap:16px;margin-bottom:34px}
+.slide .body > *{margin-bottom:0}
+.proof{justify-content:center;gap:16px}
+.proof h3{font-size:26px}
+.proof .r{font-size:16.5px}
+.mx{flex:1;grid-auto-rows:1fr}
+.mx .a h3{font-size:25px} .mx .b .v{font-size:32px}
+.bars{height:300px!important}
+.timeline .ph{display:flex;flex-direction:column;justify-content:center;padding:22px 24px}
+.timeline .ph h3{font-size:32px!important;margin:6px 0 14px}
+.timeline .ph li{font-size:19px;margin-bottom:12px}
+.timeline .ph .w{font-size:15px}
+.st4 .t{justify-content:center;gap:12px;padding:24px 20px}
+.st4 .t h3{font-size:21px} .st4 .t .n{font-size:50px} .st4 .t .lab{font-size:15px}
+.phone .cp{font-size:23px}
+.trio .cell .say{font-size:27px}
+.trio .cell img{flex:1;min-height:0;object-fit:contain;background:#fff}
+
+
+/* ===== v2 — 지쿠 톤: GCOO 그린 + 라임, 굵고 위트 있게 ===== */
+:root{
+  --blue:#22B85B; --blue-d:#0E8A3E; --blue-soft:#E3F7EA;
+  --violet:#0F2A1C; --violet-d:#0F2A1C; --violet-soft:#EEF3EF;
+  --lime:#C6F36B; --lime-d:#7FB51C; --forest:#0F2A1C;
+}
+#bar{background:var(--blue)}
+.logo .ic{background:var(--blue);color:#fff;font-weight:900;font-size:12px;border-radius:50%}
+.slide.dark{background:var(--forest)}
+.slide.dark h1,.slide.dark h2,.slide.dark h3{color:#fff}
+.slide.dark .kicker{color:var(--lime)}
+.slide.dark .foot{border-top-color:#24402F;color:#8FA698}
+.slide.dark .foot .src,.slide.dark .foot .src b{color:#8FA698}
+.slide.dark .logo{color:#fff}
+.hl.lime{background:linear-gradient(transparent 55%, rgba(198,243,107,.45) 55%)}
+.limetx{color:var(--lime)}
+.gtx{color:var(--blue-d)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blue-soft);color:var(--blue-d);font-weight:800;font-size:14px;padding:7px 13px;border-radius:999px}
+.chip.dk{background:var(--forest);color:var(--lime)}
+.chip.gr{background:var(--soft);color:var(--gray2)}
+/* 앱 스크린샷 프레임 */
+.ph-shot{border-radius:22px;border:5px solid #1f2430;overflow:hidden;background:#fff;box-shadow:var(--shadow);height:100%;min-height:0;display:flex}
+.ph-shot img{width:100%;height:100%;object-fit:cover;object-position:top}
+.shots{display:flex;gap:14px;min-height:0}
+.shots .s{display:flex;flex-direction:column;gap:8px;min-height:0;flex:1}
+.shots .s .lb{font-size:13.5px;font-weight:800;color:var(--ink);text-align:center}
+.shots .s .lb.r{color:var(--rose)}
+/* 순간 카드 */
+.moment{background:var(--soft);border-radius:20px;padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.moment .when{font-size:13px;font-weight:800;color:var(--blue-d);letter-spacing:.03em}
+.moment .sit{font-size:22px;font-weight:800;line-height:1.35;color:var(--ink)}
+.moment .vs{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.moment .vs div{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:10px;padding:8px 12px;font-size:14.5px;font-weight:700}
+.moment .vs div.win{background:var(--forest);color:#fff}
+.moment .vs div.win b{color:var(--lime)}
+.moment .vs div span:last-child{font-variant-numeric:tabular-nums}
+/* 브랜드 메시지 */
+.pillar{border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:8px;background:var(--soft)}
+.pillar .ic2{width:46px;height:46px;border-radius:14px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900}
+.pillar h3{font-size:23px}
+.pillar p{font-size:15.5px}
+.pillar .proof2{font-size:13px;color:var(--gray2);border-top:1px dashed #cfd6dc;padding-top:8px;margin-top:auto}
+.bubble{background:#fff;border:2px solid var(--forest);border-radius:18px;padding:12px 16px;font-weight:800;font-size:17px;position:relative;color:var(--ink)}
+.bubble:after{content:"";position:absolute;left:26px;bottom:-10px;width:16px;height:16px;background:#fff;border-right:2px solid var(--forest);border-bottom:2px solid var(--forest);transform:rotate(45deg)}
+/* 비교표 */
+.cmp th{font-size:13px}
+.cmp td{font-size:15px;padding:10px 12px}
+.cmp tr.hi td{background:var(--forest);color:#fff;font-weight:700}
+.cmp tr.hi td b{color:var(--lime)}
+/* 광고 컷 목업 */
+.adm{flex:1;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:var(--forest);min-height:0}
+.adm .vis{flex:1;padding:18px 18px 12px;display:flex;flex-direction:column;justify-content:space-between;background:
+  radial-gradient(260px 180px at 85% 10%, rgba(198,243,107,.25), transparent 60%), linear-gradient(170deg,#163B27,#0F2A1C)}
+.adm .tg{font-size:11.5px;font-weight:800;color:var(--lime);letter-spacing:.05em}
+.adm .hk{font-size:26px;font-weight:900;color:#fff;line-height:1.25;letter-spacing:-.02em}
+.adm .hk em{font-style:normal;color:var(--lime)}
+.adm .sb{font-size:13.5px;color:#C9D6CE;line-height:1.45}
+.adm .cta{background:var(--blue);color:#fff;text-align:center;font-weight:800;font-size:14px;padding:11px}
+/* 결정 순간 시트 목업 */
+.sheet{background:#fff;border-radius:22px;border:5px solid #1f2430;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;height:100%}
+.sheet .top{background:#2a2f36;color:#fff;font-size:12.5px;padding:10px;text-align:center;flex:0 0 auto;height:28%;display:flex;align-items:center;justify-content:center;background:linear-gradient(#3a3f47,#23272d)}
+.sheet .bd{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}
+.sheet .t1{font-size:16px;font-weight:900;color:var(--ink);line-height:1.3}
+.sheet .opt{border:1.5px solid var(--line);border-radius:12px;padding:9px 11px;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700}
+.sheet .opt.on{border-color:var(--blue);background:var(--blue-soft)}
+.sheet .opt .p{font-weight:900}
+.sheet .opt .sv{font-size:11px;color:#fff;background:var(--rose);padding:2px 7px;border-radius:999px;margin-left:5px}
+.sheet .go{margin-top:auto;background:var(--blue);color:#fff;text-align:center;font-weight:900;border-radius:12px;padding:11px;font-size:14px}
+.sheet .bar2{height:7px;background:var(--soft);border-radius:999px;overflow:hidden}
+.sheet .bar2 i{display:block;height:100%;width:70%;background:var(--blue)}
+.sheet .note{font-size:11.5px;color:var(--gray2)}
+/* CRM 카드 */
+.crm{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;flex:1;min-height:0}
+.crm .c{background:var(--soft);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.crm .c .k{font-size:12px;font-weight:800;color:var(--blue-d)}
+.crm .c .tr{font-size:13px;color:var(--gray2);line-height:1.4;min-height:36px}
+.crm .c .ms{background:var(--forest);color:#fff;border-radius:12px;padding:10px;font-size:13.5px;font-weight:700;line-height:1.4}
+.crm .c .ms b{color:var(--lime)}
+.crm .c .im{flex:1;min-height:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.crm .c .im img{width:100%;height:100%;object-fit:cover;object-position:top}
+.crm .c .kp{font-size:12px;font-weight:800;color:var(--ink)}
+/* 매출 차트 */
+.wf{display:flex;align-items:flex-end;gap:16px;height:300px;border-bottom:1px solid var(--line);padding:0 6px}
+.wf .col2{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.wf .col2 .v{font-size:16px;font-weight:900;color:var(--ink);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.wf .col2 .bk{width:100%;border-radius:4px 4px 0 0}
+.wf .gap{background:transparent}
+.wfl{display:flex;gap:16px;padding:8px 6px 0}
+.wfl span{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--gray2);line-height:1.35}
+.pair{display:flex;flex-direction:column;gap:12px}
+.pair .r{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:10px}
+.pair .r .k{font-size:15px;font-weight:800;color:var(--ink)}
+.pair .r .bars2{display:flex;flex-direction:column;gap:4px}
+.pair .r .bars2 div{height:22px;border-radius:0 4px 4px 0;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+.pair .r .bars2 .a{background:#C9CED8;color:var(--ink)}
+.pair .r .bars2 .b{background:var(--blue);color:#fff}
+.lgd{display:flex;gap:14px;font-size:13px;font-weight:700;color:var(--gray2)}
+.lgd i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.asm td{font-size:13.5px;padding:7px 10px}
+.asm th{font-size:12px;padding:7px 10px}
+.asm td.up{color:var(--blue-d);font-weight:900}
+/* 왜 나 */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1}
+.why .w{border-radius:18px;padding:18px;background:var(--soft);display:flex;flex-direction:column;gap:8px}
+.why .w .n2{font-size:34px;font-weight:900;color:var(--blue-d);letter-spacing:-.02em;line-height:1}
+.why .w h3{font-size:18px;line-height:1.35}
+.why .w p{font-size:14px;line-height:1.5;color:var(--gray2)}
+.why .w .lk{margin-top:auto;font-size:12.5px;font-weight:800;color:var(--forest);background:#fff;border-radius:8px;padding:6px 9px}
+.why .w.dk{background:var(--forest)} .why .w.dk h3{color:#fff} .why .w.dk p{color:#C9D6CE} .why .w.dk .n2{color:var(--lime)} .why .w.dk .lk{background:#173B27;color:var(--lime)}
+.onef{display:flex;align-items:stretch;gap:0}
+.onef .s{flex:1;border-radius:14px;padding:14px 12px;text-align:center;background:var(--soft)}
+.onef .s .t{font-size:12px;font-weight:800;color:var(--blue-d)}
+.onef .s h4{font-size:17px;font-weight:900;margin:4px 0 3px;color:var(--ink)}
+.onef .s p{font-size:12.5px;line-height:1.4;color:var(--gray2)}
+.onef .s.dk{background:var(--forest)} .onef .s.dk h4{color:#fff} .onef .s.dk .t{color:var(--lime)} .onef .s.dk p{color:#C9D6CE}
+.onef .ar{display:flex;align-items:center;padding:0 6px;font-weight:900;color:var(--gray);font-size:18px}
+.close-l{display:flex;flex-direction:column;gap:14px;margin-top:30px}
+.close-l div{display:flex;align-items:center;gap:14px;font-size:24px;font-weight:800;color:#fff}
+.close-l div b{color:var(--lime);font-size:15px;font-weight:900;border:1.5px solid var(--lime);border-radius:999px;padding:4px 11px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide active" style="justify-content:center;background:
+  radial-gradient(860px 520px at 88% -8%, var(--blue-soft) 0%, transparent 58%),
+  radial-gradient(520px 380px at -6% 112%, rgba(198,243,107,.35) 0%, transparent 60%), #fff">
+  <div class="logo" style="margin-bottom:26px"><span class="ic">G</span>지쿠 GCOO · 지바이크</div>
+  <div class="kicker">퍼포먼스 마케터 · 전략 제안</div>
+  <h1 style="font-size:54px">급할 때, 민폐 없이,<br>내 시간을 아껴 주는 친구 <span class="hl">지쿠</span></h1>
+  <p class="lead" style="margin-top:20px">이 한 문장을 광고 · 앱 · CRM에 같은 목소리로 심어서 <b>LTV는 올리고 CAC는 낮추겠습니다.</b></p>
+  <div style="margin-top:30px;display:flex;gap:10px"><span class="pill k">지바이크 마케팅팀</span><span class="pill blue">퍼포먼스 마케터 지원 · 이도형</span></div>
+  <div class="foot"><span class="src"><b>근거</b> 구글플레이 리뷰 665건 · 메타 광고 라이브러리 · 지쿠 앱 직접 이용 (2026-10)</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 2 ONE FUNNEL -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">오늘 드릴 이야기</div><h2>브랜드부터 매출까지, <span class="hl">한 퍼널</span>로 잇습니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="onef">
+    <div class="s"><div class="t">01 · 브랜드</div><h4>메시지를 한 문장으로</h4><p>'내향형' → '민폐 없는 지쿠'</p></div><div class="ar">→</div>
+    <div class="s"><div class="t">02 · Paid</div><h4>써야 하는 이유를 광고로</h4><p>버스 · 택시 대신인 순간</p></div><div class="ar">→</div>
+    <div class="s"><div class="t">03 · 제품</div><h4>혜택을 결정 순간에</h4><p>QR 스캔 직전 노출</p></div><div class="ar">→</div>
+    <div class="s"><div class="t">04 · CRM</div><h4>일상 타이밍에 다시</h4><p>여행 · 2회 탑승 · 주차</p></div><div class="ar">→</div>
+    <div class="s dk"><div class="t">05 · 매출</div><h4>LTV/CAC 1.0 → 2.1</h4><p>6개월 매출 ×2.1 [가정]</p></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1">
+    <div class="card blue" style="display:flex;flex-direction:column;justify-content:center;gap:8px"><span class="chip">지금</span><h3 style="font-size:30px;line-height:1.3">브랜드는 브랜드대로, 광고는 가격대로, 앱은 배너대로</h3><p style="font-size:18px">세 곳이 각자 다른 말을 합니다. 고객은 "그래서 왜 지쿠?"에 답을 못 받습니다.</p></div>
+    <div class="card dark" style="display:flex;flex-direction:column;justify-content:center;gap:8px;background:var(--forest)"><span class="chip dk">제안</span><h3 style="font-size:30px;line-height:1.3">한 문장을 광고 → 탑승 → 재탑승까지 끌고 갑니다</h3><p style="font-size:18px">같은 약속이 반복될수록 첫 탑승 비용은 내려가고, 다시 타는 이유는 쌓입니다.</p></div>
+  </div>
+  <div class="foot"><span class="src"><b>참고</b> 매출 수치는 가정 기반 시나리오 [가정] · 13번 슬라이드에 가정 전체 공개</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 3 BRAND DIAGNOSIS -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">01 · 브랜드 진단</div><h2>캠페인은 재밌는데, <span class="hl rose">안 보면 무슨 뜻인지 모릅니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:24px;flex:1;min-height:0">
+    <div class="shotwrap" style="min-height:0;display:flex;flex-direction:column"><span class="badge">지쿠 인스타그램 · 엄태구 '내향형 지쿠'</span><img class="shot" src="images/owned-content.png" alt="지쿠 인스타그램 피드" style="flex:1;min-height:0;object-fit:cover;object-position:top"></div>
+    <div class="col" style="gap:12px;justify-content:center">
+      <div class="card"><div class="num">고객 머릿속 연결</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px"><span class="chip gr">"I가 99%"</span><b style="color:var(--gray)">→</b><span class="chip gr" style="color:var(--rose)">???</span><b style="color:var(--gray)">→</b><span class="chip gr">올바른 주차</span></div>
+        <p class="small" style="margin-top:10px">'내향형'과 '구석에 반납'을 잇는 고리가 캠페인 안에만 있습니다.</p></div>
+      <div class="card"><div class="num">메타 광고 라이브러리</div><p class="small">게재 중 소재 2건, 둘 다 같은 브랜드 영상. <b>타야 할 이유를 말하는 소재는 0건.</b></p></div>
+      <div class="card blue"><div class="num" style="color:var(--blue-d)">그래서</div><h3>'내향형' 대신, 누구나 바로 아는 말로</h3><p class="small" style="margin-top:4px"><b>"피해 주지 않아요."</b> — 매너 있는 지쿠</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 지쿠 인스타그램 @gcoo.korea · 메타 광고 라이브러리(KR, 게재 중, 2026-10-11) [직접수집]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 3b PAID DIAGNOSIS (Google) -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">01 · 지금 집행 중인 광고</div><h2>광고는 많은데, <span class="hl rose">'왜 지금 지쿠?'</span>에 답하는 소재가 없습니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:24px;flex:1;min-height:0">
+    <div class="shotwrap" style="min-height:0;display:flex;flex-direction:column"><span class="badge">구글 광고 투명성 센터 · 주식회사 지바이크 (KR)</span><img class="shot" src="images/gads-grid.png" alt="구글 광고 투명성 센터 지바이크 광고 목록" style="flex:1;min-height:0;object-fit:cover;object-position:top"></div>
+    <div class="col" style="gap:10px;justify-content:center">
+      <div class="card rose" style="padding:13px 17px"><div class="num" style="color:#c0402c">문제 1 · 브랜드</div><h3 style="font-size:17.5px">"지쿠는 내향인" · "혹시… 너도…?"가 대부분</h3><p class="xs" style="margin-top:3px">캠페인을 모르면 내향인과 킥보드의 관계를 알 수 없습니다. 탈 이유 · 행동 유도가 없습니다.</p></div>
+      <div class="card rose" style="padding:13px 17px"><div class="num" style="color:#c0402c">문제 2 · 가격</div><h3 style="font-size:17.5px">'이동지원금 10,000원'이 주인공</h3><p class="xs" style="margin-top:3px">좋은 문장 <b>"교통체증 심할 땐 지쿠 타고 막힘없이"</b>는 작은 설명 줄에 묻혔습니다. 할인만 보고 온 고객은 할인이 끝나면 떠납니다.</p></div>
+      <div class="card rose" style="padding:13px 17px"><div class="num" style="color:#c0402c">문제 3 · 이벤트</div><h3 style="font-size:17.5px">국토종주 공모전 · 해외 진출 영상</h3><p class="xs" style="margin-top:3px">회사 소식은 있지만 '내일 출근길'의 장면은 없습니다.</p></div>
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:10px;align-items:center" class="card blue">
+        <img src="images/gads-grind.png" alt="그라인드 광고" style="width:100%;border-radius:10px;border:1px solid var(--line)">
+        <p class="xs"><b>반면 그라인드는 한 줄로 끝납니다.</b> "충전 없이, 쭉 타세요." 지쿠에도 이런 한 줄이 필요합니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> Google 광고 투명성 센터, 광고주 '주식회사 지바이크', 대한민국 · 전체 기간 (2026-10-13 캡처) [직접수집] · 집행액 · 성과는 공개되지 않음</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 4 BRAND MESSAGE -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">01 · 브랜드 메시지</div><h2>지쿠는 <span class="hl">내 시간을 아껴 주는, 민폐 없는 친구</span>입니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1">
+    <div class="pillar"><div class="ic2">⏱</div><h3>내 시간을 아껴요</h3><p>버스로 30분, 지쿠로 10분. 땀은 전기가 대신 흘립니다.</p><div class="bubble" style="margin-top:6px">"마을버스 7분 기다릴 바엔"</div><div class="proof2">리뷰 속 긍정 주제 1위 '속도 · 주행감' ★4.0</div></div>
+    <div class="pillar" style="background:var(--forest)"><div class="ic2" style="background:var(--lime);color:var(--forest)">🙇</div><h3 style="color:#fff">피해 주지 않아요</h3><p style="color:#C9D6CE">길을 막지 않는 자리에 서 있습니다. 타는 사람도, 안 타는 사람도 불편하지 않게.</p><div class="bubble" style="margin-top:6px">"저는 구석이 좋아요"</div><div class="proof2" style="color:#8FA698;border-top-color:#24402F">기존 엄태구 캠페인 · 올바른 주차 서약 10만 명</div></div>
+    <div class="pillar"><div class="ic2">📍</div><h3>필요할 때 거기 있어요</h3><p>역 · 정류장 근처, 지방까지. 막상 찾을 때 없는 일이 적습니다.</p><div class="bubble" style="margin-top:6px">"찾으면 바로 있어요"</div><div class="proof2">리뷰 반복 언급 '어디에나 있다' · 배터리 16만 개</div></div>
+  </div>
+  <div class="callout" style="display:flex;justify-content:space-between;align-items:center;background:var(--forest)"><h3 style="font-size:21px">원 메시지 · <span class="limetx">"급할 때, 민폐 없이, 지쿠"</span></h3><span class="chip dk">광고 · 앱 · CRM 모두 이 문장으로</span></div>
+  <div class="foot"><span class="src"><b>출처</b> 구글플레이 지쿠 리뷰 665건 주제 분류 [직접수집] · 서약 인원: 지쿠 앱 캠페인 화면 [자사발표] · 배터리: 채용공고 [자사발표]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 5 MOMENTS -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">02 · 고객의 생활</div><h2>경쟁자는 킥보드가 아니라 <span class="hl">'기다림 · 땀 · 택시비'</span>입니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1">
+    <div class="moment"><span class="when">퇴근길 · 마을버스 대신</span><span class="sit">역에서 집까지 1.5km,<br>마을버스는 7분 뒤</span>
+      <div class="vs"><div><span>마을버스</span><span>대기 7분 + 8분</span></div><div><span>걷기</span><span>20분</span></div><div class="win"><span>지쿠</span><span><b>6분</b></span></div></div></div>
+    <div class="moment"><span class="when">근무 중 · 택시 대신</span><span class="sit">강남 한복판 2km 미팅,<br>땀은 흘리기 싫을 때</span>
+      <div class="vs"><div><span>버스</span><span>30분</span></div><div><span>택시</span><span>정체 + 6,000원↑</span></div><div class="win"><span>지쿠 전기자전거</span><span><b>10분</b></span></div></div></div>
+    <div class="moment"><span class="when">여행지 · 렌터카 대신</span><span class="sit">버스는 1시간에 1대,<br>렌터카는 부담될 때</span>
+      <div class="vs"><div><span>시외 · 농어촌 버스</span><span>배차 60분</span></div><div><span>렌터카</span><span>하루 단위 비용</span></div><div class="win"><span>지쿠</span><span><b>바로 출발</b></span></div></div></div>
+  </div>
+  <div class="card" style="display:flex;align-items:center;gap:16px;padding:14px 20px"><span class="chip">리뷰가 말하는 비교 대상</span><p class="small" style="flex:1"><b>택시 26회 · 버스 18회</b> 언급 vs 스윙 6회 · 따릉이 4회 → 광고도 '킥보드 중 최고'가 아니라 '버스 · 택시 대신'으로 말해야 합니다.</p></div>
+  <div class="foot"><span class="src"><b>참고</b> 시간 · 금액은 상황 예시 [추정] · 언급 횟수: 구글플레이 지쿠 리뷰 665건 [직접수집]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 6 WHY GCOO -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">02 · 왜 지쿠여야 하나</div><h2>싸서가 아니라, <span class="hl">급할 때 걸리는 게 없어서</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <table class="cmp">
+    <tr><th>대안</th><th>급할 때 걸리는 것</th><th>고객이 느끼는 감정</th></tr>
+    <tr><td><b>따릉이</b></td><td>땀이 남 · 정해진 대여소에만 반납</td><td>"출근 전에 타긴 좀…"</td></tr>
+    <tr><td><b>스윙</b></td><td>방치된 기기 인상 · 자전거 안정감</td><td>"타면서도 찜찜함"</td></tr>
+    <tr><td><b>카카오T 바이크 · 일레클</b></td><td>막상 필요할 때 주변에 없음</td><td>"앱 켜고 헛걸음"</td></tr>
+    <tr><td><b>택시</b></td><td>단거리에도 기본요금 · 정체</td><td>"2km에 이 돈?"</td></tr>
+    <tr><td><b>버스 · 마을버스</b></td><td>배차 대기 · 돌아가는 노선</td><td>"또 지각"</td></tr>
+    <tr class="hi"><td><b>지쿠</b></td><td>땀 X · 넓은 반납 구역 · 역 근처에 있음 · 매너 주차</td><td><b>"급할 때 이게 제일 빠르고 떳떳하다"</b></td></tr>
+  </table>
+  <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:auto">
+    <div class="card blue"><p class="small"><b>메시지 원칙 1.</b> 가격은 '경쟁사보다 싸다'가 아니라 <b>'택시비 · 지각 · 땀을 생각하면 이득'</b>으로 말합니다.</p></div>
+    <div class="card blue"><p class="small"><b>메시지 원칙 2.</b> '민폐 없음'은 경쟁사가 못 가진 자리입니다. 이용에 대한 <b>죄책감을 없애는 브랜드</b>가 됩니다.</p></div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 경쟁 앱 구글플레이 리뷰 각 최근 1,500건 · 지쿠 리뷰 "쏘카 전기자전거는 주차금지구역이 넓은데 지쿠가 최고" [직접수집] · 감정 문구는 요약 [추정]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 7 PAID EXP 1 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">03 · Paid 실험 1</div><h2>'써야만 하는 순간'을 <span class="hl">소재로 쪼갭니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;flex:1;min-height:0">
+    <div style="display:flex;gap:14px;min-height:0">
+      <div class="adm"><div class="vis"><span class="tg">CUT A · 출근 08시 · 역세권</span><span class="hk">마을버스 7분 기다릴 바엔<br><em>지쿠로 6분</em></span><span class="sb">역 앞 지쿠, 지금 3대 있어요</span></div><div class="cta">가까운 지쿠 보기</div></div>
+      <div class="adm"><div class="vis"><span class="tg">CUT B · 낮 12~17시 · 업무지구</span><span class="hk">2km에 택시비 6천 원?<br><em>땀 없이 10분</em></span><span class="sb">전기자전거라 정장도 괜찮아요</span></div><div class="cta">첫 탑승 혜택 받기</div></div>
+      <div class="adm"><div class="vis"><span class="tg">CUT C · 주말 · 관광지 반경</span><span class="hk">버스 1시간 기다리지 말고<br><em>바다까지 지쿠</em></span><span class="sb">여행지에서도 지쿠 앱 그대로</span></div><div class="cta">이 동네 지쿠 찾기</div></div>
+    </div>
+    <div class="col" style="gap:12px;justify-content:center">
+      <div class="card"><div class="num">가설</div><p class="small">'순간'을 말하는 소재가 브랜드 영상보다 <b>첫 탑승 전환율이 높다.</b></p></div>
+      <div class="card"><div class="num">설계</div><p class="small">시간대 × 지역 × 소재를 맞춰 집행. 엄태구 영상 시청자는 같은 톤 컷으로 리타겟팅.</p></div>
+      <div class="card dark" style="background:var(--forest)"><div class="num" style="color:var(--lime)">판정 지표</div><p class="small" style="color:#fff"><b style="color:var(--lime)">설치당 비용(CPI)이 아니라 첫 탑승당 비용</b> · 7일 내 2회 탑승률</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>참고</b> 카피 · 대수 · 금액은 예시 [제안] · 매체 학습 목표를 '첫 탑승' 이벤트로 바꾸는 것이 전제 (에어브릿지 연동 확인 필요) [미검증]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 8 PAID EXP 2 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">03 · Paid 실험 2</div><h2>대중교통이 붐비는 곳에 <span class="hl">기기와 광고를 같이 모읍니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="split">
+    <div class="what" style="justify-content:center">
+      <div class="heat">
+        <div class="h"></div><div class="h">출퇴근 피크</div><div class="h">낮 · 저녁</div><div class="h">비 · 한파</div>
+        <div class="rh">역 · 환승 거점</div><div class="c3">기기 ↑ 광고 ↑</div><div class="c2">유지</div><div class="c0">감액</div>
+        <div class="rh">업무 · 상권</div><div class="c2">유지</div><div class="c3">기기 ↑ 광고 ↑</div><div class="c0">감액</div>
+        <div class="rh">주거 외곽</div><div class="c1">테스트</div><div class="c0">최소</div><div class="c0">정지</div>
+      </div>
+      <span class="tag2">기기 없는 곳의 광고비는 첫 탑승으로 이어지지 않습니다</span>
+    </div>
+    <div class="proof">
+      <span class="l">가설과 측정</span>
+      <h3>환승 거점에 기기를 집중하면<br>가입 · 탑승이 함께 오른다</h3>
+      <p class="r">운영팀과 거점 2~3곳을 고르고, <b style="color:var(--lime)">기기 집중 + 광고 ON 지역 vs 그대로 둔 지역</b>을 4주 비교합니다.</p>
+      <div class="nums"><div><div class="big-n g" style="font-size:44px">신규 가입</div><div class="lab">지역별 증분</div></div><div><div class="big-n g" style="font-size:44px">기기당 탑승</div><div class="lab">운영 효율까지</div></div></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>참고</b> 셀 규칙은 예시 [제안] · 재배치 비용 대비 탑승 증분으로 공헌이익 판정 · 기기 재배치 권한은 운영팀 협의 [미검증]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 9 PRODUCT DIAGNOSIS -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">04 · 제품 진단</div><h2>혜택은 많은데, <span class="hl rose">급한 고객은 보지 못하고 지나갑니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:26px;flex:1;min-height:0">
+    <div class="shots">
+      <div class="s"><div class="ph-shot"><img src="images/app-home.jpg" alt="지쿠 홈"></div><span class="lb">① 홈 · 배너와 보상이 아래로 밀림</span></div>
+      <div class="s"><div class="ph-shot"><img src="images/app-qr.jpg" alt="지쿠 QR"></div><span class="lb r">② QR 스캔 · 혜택 노출 0</span></div>
+    </div>
+    <div class="col" style="gap:12px;justify-content:center">
+      <div class="card"><div class="num">이용 맥락</div><h3>앱을 여는 순간 = 급한 순간</h3><p class="small" style="margin-top:4px">홈 → 'QR 스캔' 버튼 → 바로 탑승. 홈 배너 · 퀘스트 · 구독권을 볼 틈이 없습니다.</p></div>
+      <div class="card"><div class="num">결과</div><h3>있는 혜택이 '없는 혜택'이 됩니다</h3><p class="small" style="margin-top:4px">받을 수 있는 보상 5개, 구독패스 최대 79% 할인 — 고객은 모른 채 정가로 탑니다.</p></div>
+      <div class="card rose"><div class="num" style="color:#c0402c">기회</div><h3>고객이 '타기로 결정하는 그 화면'에 혜택을 둡니다</h3></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 지쿠 안드로이드 앱 직접 이용 캡처 (2026-10-13) [직접수집] · 할인율: 앱 내 스토어 표기 [자사발표]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 10 PRODUCT EXP 3 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">04 · 제품 실험 3</div><h2>배민처럼, <span class="hl">결정하는 순간</span>에 구독과 혜택을 말합니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1.05fr 1fr;gap:16px;flex:1;min-height:0">
+    <div class="shots"><div class="s"><div class="ph-shot"><img src="images/ref-baemin-1.jpg" alt="배민 주문 화면"></div><span class="lb">배민 · 주문 버튼 옆 '클럽 가입 시 −5,900원'</span></div></div>
+    <div class="shots"><div class="s"><div class="ph-shot"><img src="images/ref-baemin-2.jpg" alt="배민 추가 담기"></div><span class="lb">배민 · '하나만 더 담으면' 크로스셀</span></div></div>
+    <div class="shots"><div class="s">
+      <div class="sheet">
+        <div class="top">QR 스캔 완료 · 지쿠 #A1027</div>
+        <div class="bd">
+          <span class="t1">이번 달 벌써 9번 탔어요 🛴<br>패스였다면 <span class="gtx">4,100원</span> 아꼈어요</span>
+          <div class="opt"><span>그냥 타기</span><span class="p">분당 요금</span></div>
+          <div class="opt on"><span>매일 10분 패스<span class="sv">79%</span></span><span class="p">26,900원</span></div>
+          <div class="note">🎁 오늘 2번 타면 번개 +1 · 퀘스트 1/2</div>
+          <div class="bar2"><i></i></div>
+          <div class="go">패스로 탑승 시작</div>
+        </div>
+      </div><span class="lb" style="color:var(--blue-d)">제안 · QR 스캔 직후 탑승 시트</span></div></div>
+    <div class="col" style="gap:10px;justify-content:center">
+      <div class="card"><div class="num">무엇을</div><p class="small">QR 스캔 후 '탑승 시작' 직전에 <b>패스 절약액 · 진행 중 퀘스트 · 첫 탑승 쿠폰</b>을 한 장에.</p></div>
+      <div class="card"><div class="num">왜</div><p class="small">급한 고객도 이 화면은 반드시 지나갑니다. 클릭 1번 추가 없이 노출 100%.</p></div>
+      <div class="card dark" style="background:var(--forest)"><div class="num" style="color:var(--lime)">판정 지표</div><p class="small" style="color:#fff">패스 전환율 · 첫 주 탑승 횟수 · 탑승 시작 이탈률(가드레일)</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 배달의민족 앱 캡처 (2026-10-13) [직접수집] · 탑승 시트는 제안 목업 · 절약액은 예시 [제안] · 패스 가격: 지쿠 스토어 [자사발표]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 11 CRM EXP 4 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">04 · CRM 실험 4</div><h2>'지금 지쿠 탈 타이밍'을 <span class="hl">먼저 알려 줍니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="crm">
+    <div class="c"><span class="k">① 여행지 감지</span><span class="tr">평소와 다른 지역에서 앱 접속</span><div class="ms">"부산 왔어요? <b>해운대까지 지쿠 15분</b>, 첫 탑승 쿠폰 드려요"</div><div class="im" style="display:flex;align-items:center;justify-content:center;background:var(--blue-soft)"><span style="font-size:44px">🧳</span></div><span class="kp">KPI · 여행지 첫 탑승률</span></div>
+    <div class="c"><span class="k">② 패스 팝업</span><span class="tr">이번 달 탑승 횟수가 패스 손익분기 근접</span><div class="ms">"<b>이번 달 9번째</b> 탑승, 패스면 더 싸요"</div><div class="im"><img src="images/app-pass.jpg" alt="지쿠 스토어 패스"></div><span class="kp">KPI · 패스 전환율</span></div>
+    <div class="c"><span class="k">③ 퀘스트 라운지</span><span class="tr">오늘 2회 탑승한 고객 (오늘 많이 탈 사람)</span><div class="ms">"<b>한 번만 더</b> 타면 번개 +1, 뽑기 도전!"</div><div class="im"><img src="images/app-quest.jpg" alt="지쿠 퀘스트 라운지"></div><span class="kp">KPI · 3회차 탑승률</span></div>
+    <div class="c"><span class="k">④ 올바른 주차</span><span class="tr">금지 구역 근처에서 반납 시도</span><div class="ms">"한 칸 옆이면 <b>매너 주차 +1,000원</b>, 10만 명이 함께해요"</div><div class="im"><img src="images/app-parking.jpg" alt="올바른 주차 캠페인"></div><span class="kp">KPI · 견인 · 민원 건수</span></div>
+    <div class="c"><span class="k">⑤ 나의 지쿠 기록</span><span class="tr">월말 · 누적 탑승 기준</span><div class="ms">"이번 달 <b>탄소 3.2kg</b> 줄이고 <b>택시비 4만 원</b> 아꼈어요"</div><div class="im"><img src="images/app-carbon.jpg" alt="지쿠 이용 내역"></div><span class="kp">KPI · 다음 달 재탑승률</span></div>
+  </div>
+  <div class="card" style="padding:12px 18px"><p class="small"><b>지금:</b> 리워드는 있지만 "그래서 나한테 뭐가 좋은데?"의 다음 단계가 없습니다. → <b>모든 메시지는 '시간 · 돈 · 떳떳함' 중 하나의 이득으로 끝맺습니다.</b></p></div>
+  <div class="foot"><span class="src"><b>출처</b> 지쿠 앱 캡처 (스토어 · 퀘스트 라운지 · 올바른 주차 캠페인 · 이용 내역, 2026-10-13) [직접수집] · 메시지 · 수치는 예시 [제안]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 12 LTV / CAC -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">05 · 매출 변화 ① 고객 1명의 가치</div><h2>CAC는 25% 낮추고, <span class="hl">LTV는 57% 올립니다</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div style="display:grid;grid-template-columns:1.05fr 1fr;gap:26px;flex:1;min-height:0">
+    <div class="col" style="gap:14px;justify-content:center">
+      <div class="lgd"><span><i style="background:#C9CED8"></i>지금 (가정)</span><span><i style="background:var(--blue)"></i>제안 후 (가정)</span></div>
+      <div class="pair">
+        <div class="r"><span class="k">첫 탑승당 CAC</span><div class="bars2"><div class="a" style="width:100%">8,000원</div><div class="b" style="width:75%">6,000원</div></div></div>
+        <div class="r"><span class="k">6개월 LTV</span><div class="bars2"><div class="a" style="width:63.6%">7,990원</div><div class="b" style="width:100%">12,570원</div></div></div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px">
+        <div class="card blue metric"><div class="big blue">2.1</div><div class="lab">LTV/CAC<br>지금 1.0</div></div>
+        <div class="card blue metric"><div class="big blue">1개월</div><div class="lab">CAC 회수 기간<br>지금 6개월</div></div>
+        <div class="card blue metric"><div class="big blue">+8%p</div><div class="lab">M1 리텐션<br>20% → 28%</div></div>
+      </div>
+    </div>
+    <table class="asm">
+      <tr><th>가정</th><th>지금</th><th>제안 후</th><th>움직이는 액션</th></tr>
+      <tr><td>첫 탑승당 CAC</td><td>8,000원</td><td class="up">6,000원</td><td>순간 소재 · 거점 집중</td></tr>
+      <tr><td>첫 달 탑승</td><td>2.0회</td><td class="up">2.4회</td><td>탑승 시트 · 퀘스트</td></tr>
+      <tr><td>M1 리텐션</td><td>20%</td><td class="up">28%</td><td>패스 · 타이밍 CRM</td></tr>
+      <tr><td>이후 월 유지율</td><td>70%</td><td class="up">75%</td><td>기록 · 매너 주차 리포트</td></tr>
+      <tr><td>활성 고객 월 탑승</td><td>6회</td><td class="up">7회</td><td>패스 전환</td></tr>
+      <tr><td>1회 평균 결제</td><td colspan="2">1,500원 (고정)</td><td>본인 이용 내역 7건 평균</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span class="src"><b>가정</b> 모든 입력값은 공개 정보 부재로 세운 시나리오 [가정] · LTV = 첫 달 매출 + Σ(활성 확률 × 월 탑승 × 1,500원), 6개월 · 매출 기준이며 배터리 교환 · 재배치 비용을 뺀 공헌이익은 입사 후 실데이터로 재산정</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 13 REVENUE -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">05 · 매출 변화 ② 같은 광고비, 두 배 매출</div><h2>월 광고비 5,000만 원의 6개월 매출, <span class="hl">약 5,000만 → 1억 500만</span></h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:26px;flex:1;min-height:0">
+    <div class="card out" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="wf">
+        <div class="col2"><span class="v">4,995만</span><div class="bk" style="height:126px;background:#C9CED8"></div></div>
+        <div class="col2"><span class="v">+1,665만</span><div class="bk" style="height:42px;background:var(--blue);margin-bottom:126px"></div></div>
+        <div class="col2"><span class="v">+500만</span><div class="bk" style="height:13px;background:var(--blue);margin-bottom:168px"></div></div>
+        <div class="col2"><span class="v">+3,314만</span><div class="bk" style="height:84px;background:var(--blue);margin-bottom:181px"></div></div>
+        <div class="col2"><span class="v" style="color:var(--blue-d)">1억 474만</span><div class="bk" style="height:265px;background:var(--forest)"></div></div>
+      </div>
+      <div class="wfl"><span>지금<br>6,250명 첫 탑승</span><span>CAC 절감<br>+2,083명 획득</span><span>첫 주 활성<br>탑승 시트</span><span>리텐션 · 패스<br>CRM</span><span><b style="color:var(--ink)">제안 후</b><br>×2.1</span></div>
+    </div>
+    <div class="col" style="gap:12px;justify-content:center">
+      <div class="card"><div class="num">가장 큰 몫</div><h3>리텐션이 63%를 만듭니다</h3><p class="small" style="margin-top:4px">증분 5,479만 중 3,314만이 '다시 타는 고객'에서 나옵니다. 그래서 퍼포먼스가 CRM까지 봐야 합니다.</p></div>
+      <div class="card"><div class="num">어떻게 증명하나</div><h3>지역 홀드아웃</h3><p class="small" style="margin-top:4px">액션 ON 지역 vs OFF 지역의 첫 탑승 · 30일 재탑승 차이만 '진짜 증분'으로 셉니다.</p></div>
+      <div class="card dark" style="background:var(--forest)"><div class="num" style="color:var(--lime)">90일 순서</div><p class="small" style="color:#fff">0~30일 지표 · MMP 정비 → 31~60일 실험 1~4 → 61~90일 이긴 것만 확장</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>가정</b> 월 광고비 5,000만 원은 계산용 예시 [가정] · 한 달 코호트의 6개월 누적 매출 · 13번 슬라이드 가정 적용 · 구간별 증분은 순서대로 쌓은 값 [가정]</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 14 WHY ME -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">왜 이도형인가</div><h2>퍼포먼스 · 콘텐츠 · CRM을 <span class="hl">한 사람이 끝까지</span> 잇습니다</h2></div><div class="logo"><span class="ic">G</span>지쿠</div></div>
+  <div class="why">
+    <div class="w"><span class="n2">−51.8%</span><h3>Paid · 광고가 배울 신호 설계</h3><p>학습 목표를 설치 → 구매로 바꾸고 브릿지 랜딩 설계. iOS 구매 유저 +227%.</p><span class="lk">→ 실험 1 · '첫 탑승' 학습</span></div>
+    <div class="w"><span class="n2">−66%</span><h3>Paid 콘텐츠 · 광고 같지 않은 광고</h3><p>마이크로 인플루언서 콘텐츠를 광고로 확장, 소재 직접 기획 · 제작. 콘텐츠 단가 1/30.</p><span class="lk">→ 브랜드 IP를 전환 소재로</span></div>
+    <div class="w"><span class="n2">+41%p</span><h3>CRM · 자동화까지 직접 구축</h3><p>등급제 · 페이백 · 이탈 구간 알림톡을 프로덕트 단에서 자동화. M1 리텐션 +41%p / +52%p.</p><span class="lk">→ 실험 3 · 4 탑승 시트 · CRM</span></div>
+    <div class="w"><span class="n2">지역</span><h3>지역 제약을 공헌이익으로 푼 경험</h3><p>지역 단위 O2O(커버링)에서 지역 · 소구별 랜딩 10종, 지역별 수익성 기준으로 예산 배분.</p><span class="lk">→ 실험 2 · 거점 집중</span></div>
+    <div class="w"><span class="n2">6년</span><h3>"퍼포먼스와 브랜딩, 같이 못 가나?"</h3><p>6년 가까이 붙잡은 질문. 브랜드 메시지를 전환 지표로 증명한 인사이트가 쌓여 있습니다.</p><span class="lk">→ 01 · 원 메시지</span></div>
+    <div class="w dk"><span class="n2">약 40배</span><h3>0에서 스케일업까지</h3><p>1인 마케터로 시작해 5인 팀까지, 전 직장 월 매출 약 40배. 성장 동력을 직접 설계해 왔습니다.</p><span class="lk">→ 지쿠의 '1 → 10' 구간</span></div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 이도형 포트폴리오, 전 직장(커버링) 실측 [본인 실적] · 매출은 절대액 비공개, 배수만 표기</span><span>지쿠 · 이도형</span></div>
+</section>
+
+<!-- 15 CLOSING -->
+<section class="slide dark" style="justify-content:center;background:
+  radial-gradient(700px 460px at 92% 0%, rgba(198,243,107,.16) 0%, transparent 60%), var(--forest)">
+  <div class="kicker">마지막으로</div>
+  <h1 style="color:#fff;font-size:50px">브랜딩도, 매출도.<br><span class="limetx">둘 다 잡는 증분</span>을 지쿠에서 만들겠습니다</h1>
+  <div class="close-l">
+    <div><b>BRAND × SALES</b>민폐 없는 친구라는 약속을, 매출로 증명합니다</div>
+    <div><b>0 → 1</b>없던 퍼널을 처음부터 설계하고 굴려 본 사람입니다</div>
+    <div><b>TRUE LIFT</b>광고가 없어도 일어날 일 말고, 진짜 늘어난 것만 셉니다</div>
+  </div>
+  <div class="foot"><span class="src">감사합니다 · 이도형</span><span>지쿠 · 이도형</span></div>
+</section>
+
+</div></div>
+<div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
+<div class="hint">← → 또는 Space · F 전체화면</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';
+  try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';window._s=s;}
+addEventListener('resize',fit);fit();
+show(Math.max(0,(parseInt(location.hash.slice(1))||1)-1));
+slides.forEach(s=>{
+  const head=s.querySelector('.head'), foot=s.querySelector('.foot');
+  if(!head||!foot) return;
+  const body=document.createElement('div'); body.className='body';
+  [...s.children].filter(c=>c!==head&&c!==foot).forEach(c=>body.appendChild(c));
+  s.insertBefore(body,foot);
+});
+let navT;addEventListener('mousemove',()=>{document.body.classList.add('nav-on');clearTimeout(navT);navT=setTimeout(()=>document.body.classList.remove('nav-on'),1800)});
+</script>
+</body>
+</html>
