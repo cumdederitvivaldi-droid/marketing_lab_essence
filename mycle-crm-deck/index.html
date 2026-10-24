@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<!-- 마이클 CRM·그로스 전략 제안 덱 (interview-deck 템플릿 기반). 공개 자료만 사용. -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>마이클 CRM 전략 제안 · 이도형</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root{
+  --ink:#1A2128; --navy:#1A2128; --black:#0E1118;
+  --gray:#8B95A1; --gray2:#505C66;
+  --bg:#FFFFFF; --soft:#F4F7FA; --line:#E5EAF0;
+  --radius:20px; --shadow:0 12px 40px rgba(26,33,40,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  /* 마이클 브랜드: 스카이블루 #00AFFF + 잉크 #1A2128 */
+  --blue:#00AFFF; --blue-d:#0089CC; --blue-soft:#E0F5FF;
+  --violet:#5B6CFF; --violet-d:#4252E0; --violet-soft:#E9EBFF;
+  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
+  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
+  --rose:#F04452; --rose-soft:#FDE7E9;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:42px 64px 56px;overflow:hidden}
+.slide.active{display:flex;animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);text-transform:uppercase;margin-bottom:10px}
+.kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#c8303d} .kicker.gray{color:var(--gray)}
+h1{font-size:50px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:31px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+p,li{font-size:16px;line-height:1.6;color:#2C313C}
+.lead{font-size:20px;line-height:1.62;color:var(--gray2);font-weight:500}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+b,strong{font-weight:800;color:var(--ink)}
+
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--ink)}
+.logo .ic{width:25px;height:25px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:900}
+
+.grid{display:grid;gap:14px}
+.card{background:var(--soft);border-radius:var(--radius);padding:17px 19px;border:1px solid transparent}
+.card.blue{background:var(--blue-soft)} .card.vio{background:var(--violet-soft)} .card.teal{background:var(--teal-soft)} .card.amber{background:var(--amber-soft)} .card.rose{background:var(--rose-soft)}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.card.dark{background:var(--ink)} .card.dark h3{color:#fff} .card.dark p,.card.dark li{color:#D5D9E2}
+.card h3{margin-bottom:5px}
+.card .num{font-size:13px;font-weight:800;color:var(--gray);margin-bottom:4px}
+.card p{font-size:14.5px;line-height:1.55}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--gray2)}
+.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
+.pill.k{background:var(--ink);color:#fff}
+.pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)}
+
+.metric .big{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
+.metric .big.blue{color:var(--blue-d)} .metric .big.rose{color:var(--rose)} .metric .big.teal{color:var(--teal-d)}
+.metric .lab{font-size:13px;color:var(--gray2);margin-top:6px;font-weight:600;line-height:1.4}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;color:var(--gray);font-weight:700;letter-spacing:.02em}
+tr.hi td{background:var(--blue-soft)}
+
+.shot{border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block}
+.cap{font-size:12px;color:var(--gray);margin-top:7px;text-align:center;line-height:1.4}
+.shotwrap{position:relative}
+.shotwrap .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px}
+
+.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:16px 22px}
+.callout h3{color:#fff} .callout p{color:#D5D9E2}
+.quote{background:linear-gradient(120deg,#1A2128,#0B3A57);color:#fff;border-radius:var(--radius);padding:24px 28px}
+.quote .q{font-size:26px;font-weight:800;line-height:1.38;color:#fff}
+.quote .q .g{background:linear-gradient(90deg,#7FD8FF,#B9C4FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.flag{font-size:12px;color:var(--gray);font-style:italic}
+.src{font-size:11px;color:var(--gray);line-height:1.5}
+.src b{color:var(--gray2);font-weight:700}
+.foot{position:absolute;left:64px;right:64px;bottom:16px;display:flex;justify-content:space-between;font-size:11px;color:var(--gray);border-top:1px solid var(--line);padding-top:8px;gap:20px}
+.foot .src{flex:1}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:20px;margin-bottom:6px;font-size:14.5px;line-height:1.5}
+ul.clean li:before{content:"";position:absolute;left:3px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
+ul.clean.rose li:before{background:var(--rose)} ul.clean.teal li:before{background:var(--teal)}
+
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{flex:1;background:var(--soft);border-radius:13px;padding:12px;text-align:center}
+.flow .arr{display:flex;align-items:center;padding:0 6px;font-size:18px;color:var(--gray);font-weight:800}
+.stepbox{background:var(--soft);border-radius:12px;padding:12px 13px;flex:1}
+.stepbox .n{font-size:11.5px;font-weight:800;color:var(--blue-d)}
+.stepbox h4{font-size:14px;font-weight:800;color:var(--ink);margin:3px 0 4px;line-height:1.35}
+.stepbox p{font-size:12.5px;color:#4a4f5e;line-height:1.45}
+
+/* 진단→해결 파트 레이아웃 */
+.diag{display:flex;gap:14px;align-items:flex-start;background:var(--rose-soft);border-radius:16px;padding:13px 18px;margin-bottom:12px}
+.diag .lab,.sol-lab{flex:none;font-size:12px;font-weight:800;color:#fff;background:var(--rose);border-radius:999px;padding:4px 11px;margin-top:2px}
+.sol-lab{background:var(--blue-d);display:inline-block;margin:0 0 8px;align-self:flex-start}
+.diag p{font-size:15px;line-height:1.55}
+.gain{display:flex;gap:12px;align-items:center;background:var(--ink);border-radius:14px;padding:11px 18px;margin-top:auto}
+.gain .lab{flex:none;font-size:12px;font-weight:800;color:var(--ink);background:#7FD8FF;border-radius:999px;padding:4px 11px}
+.gain p{color:#E6EAF0;font-size:14.5px;line-height:1.5}
+.gain b{color:#fff}
+.pno{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--rose);color:#fff;font-size:12px;font-weight:800;margin:0 2px}
+
+/* 판정 배지 */
+.v{display:inline-block;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.v.ok{background:var(--rose-soft);color:#c8303d}
+.v.part{background:var(--amber-soft);color:var(--amber-d)}
+.v.na{background:var(--soft);color:var(--gray2);border:1px solid var(--line)}
+
+/* 목업 */
+.phone{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:14px}
+.kmsg{background:#B2C7DA;border-radius:16px;padding:14px}
+.kbub{background:#fff;border-radius:12px;padding:12px 13px;font-size:12.5px;line-height:1.5;color:#222}
+.kbub .t{font-size:11px;font-weight:800;color:#3C1E1E;background:#FEE500;border-radius:6px;padding:2px 7px;display:inline-block;margin-bottom:6px}
+.kbub .btn{margin-top:9px;text-align:center;background:#F2F3F5;border-radius:8px;padding:7px;font-weight:700;font-size:12px}
+.shop{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.shop .nm{font-weight:800;font-size:15px;color:var(--ink)}
+.shop .meta{font-size:12px;color:var(--gray2);margin-top:2px}
+.shop .price{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+.shop .price b{font-size:18px}
+.shop .save{font-size:12px;font-weight:800;color:var(--rose)}
+.chip{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;background:var(--blue-soft);color:var(--blue-d);margin:6px 4px 0 0}
+.chip.g{background:var(--teal-soft);color:var(--teal-d)}
+.homecard{background:linear-gradient(120deg,var(--blue),#4FC6FF);color:#fff;border-radius:14px;padding:13px 15px}
+.homecard .s{font-size:11.5px;opacity:.9;font-weight:700}
+.homecard .t{font-size:15.5px;font-weight:800;margin:3px 0 8px;line-height:1.35}
+.homecard .b{display:inline-block;background:#fff;color:var(--blue-d);font-weight:800;font-size:12px;padding:5px 11px;border-radius:999px}
+
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar,.hint{display:none}}
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(26,33,40,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+.hint{position:fixed;bottom:20px;right:22px;color:#8b8d94;font-size:12px;z-index:50}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+
+<!-- 1 표지 -->
+<section class="slide active" style="justify-content:center;background:
+  radial-gradient(900px 520px at 84% -10%, var(--blue-soft) 0%, transparent 55%),
+  radial-gradient(720px 520px at -5% 110%, var(--violet-soft) 0%, transparent 55%), #fff">
+  <div class="logo" style="margin-bottom:28px"><span class="ic">M</span>마이클</div>
+  <div class="kicker">CRM · 그로스 전략 제안</div>
+  <h1>마이클은 내 차를 이미 잘 압니다.<br>이제 <span class="hl">먼저 말을 걸 차례</span>입니다.</h1>
+  <p class="lead" style="margin-top:22px;max-width:960px">직접 써 보며 찾은 문제 8개를 공개 자료로 검증했습니다. 이 문제를 5개 파트로 묶어 해결 방법과 기대 효과를 정리했고, 마지막에 제가 이 일을 해야 하는 이유를 담았습니다.</p>
+  <div style="margin-top:32px;display:flex;gap:10px">
+    <span class="pill k">마카롱팩토리 · 마이클</span>
+    <span class="pill blue">CRM · 그로스</span>
+    <span class="pill vio">그로스 마케터 이도형</span>
+  </div>
+</section>
+
+<!-- 2 한 장 요약 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">한 장 요약</div><h2>데이터는 쌓이는데, 고객이 받는 메시지와 화면은 모두에게 같습니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1.45fr 1fr;flex:1;align-content:start">
+    <div class="card rose">
+      <div class="num">진단 · 문제 8개</div>
+      <h3 style="margin-bottom:8px">공개 자료로 검증</h3>
+      <ul class="clean rose">
+        <li>맞음 2개 · 부분 맞음 3개</li>
+        <li>외부 검증 불가 3개 (실사용 관찰 기준)</li>
+        <li>가장 강한 근거: 알림톡은 <b>결제 요청</b>에만 쓰는 것으로 명시</li>
+      </ul>
+    </div>
+    <div class="card out">
+      <div class="num">해결 · 5개 파트</div>
+      <table style="font-size:13.5px">
+        <tr><td><b>P1 첫 가치 7일</b></td><td>가입 → 첫 활성화 시퀀스</td><td><span class="pno">1</span><span class="pno">2</span><span class="pno">6</span></td></tr>
+        <tr><td><b>P2 선택 확신</b></td><td>정비소 카드에 확정가·추천 이유</td><td><span class="pno">3</span></td></tr>
+        <tr class="hi"><td><b>P3 교체 시점 CRM</b></td><td>교체 예정일 × 카카오 채널</td><td><span class="pno">4</span></td></tr>
+        <tr><td><b>P4 맞춤 홈·세그먼트</b></td><td>"지금 할 일" 카드</td><td><span class="pno">5</span><span class="pno">7</span></td></tr>
+        <tr><td><b>P5 레퍼럴</b></td><td>만족 고객의 양쪽 보상 추천</td><td><span class="pno">8</span></td></tr>
+      </table>
+    </div>
+    <div class="card blue">
+      <div class="num">기대 · 핵심 지표 1개</div>
+      <h3 style="margin-bottom:6px">교체 시점이 온 차량의<br>30일 내 예약률</h3>
+      <div class="metric" style="margin-top:10px"><div class="big blue">약 3.7배</div><div class="lab">월 예약 건수 시뮬레이션<br>(도달 × 클릭 × 전환, 모두 가정값)</div></div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:14px"><p><b style="color:#fff">한 줄:</b> 마이클은 교체 주기·주행거리·정비 이력을 이미 갖고 있습니다. 이 데이터를 <b style="color:#7FD8FF">고객별 메시지·화면·추천</b>으로 바꾸는 것이 이번 제안의 전부입니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 마이클 개인정보처리방침(2026.10.23 시행) [자사발표] · 기대 수치는 11p의 [가정] 시뮬레이션</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 3 현황 + 여정 지도 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">현황 · 고객 여정 지도</div><h2>문제 8개는 고객 여정의 모든 단계에 걸쳐 있습니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 2.3fr;gap:22px;flex:1">
+    <div class="grid" style="grid-template-columns:1fr 1fr;align-content:start;gap:10px">
+      <div class="card"><div class="metric"><div class="big blue">4.8</div><div class="lab">App Store 평점<br>(평가 39,836건)</div></div></div>
+      <div class="card"><div class="metric"><div class="big">2,400+</div><div class="lab">제휴 정비소</div></div></div>
+      <div class="card"><div class="metric"><div class="big">220만</div><div class="lab">누적 예약</div></div></div>
+      <div class="card"><div class="metric"><div class="big">630억</div><div class="lab">연 매출</div></div></div>
+      <p class="flag" style="grid-column:1/3">정비소 수는 2024년 기사(약 450곳)와 차이가 큽니다. 차량 등록 수는 공고마다 770만·850만으로 다릅니다.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="flow">
+        <div class="step"><b>설치·가입</b><div style="margin-top:6px"><span class="pno">1</span><span class="pno">2</span></div><p style="font-size:12.5px;margin-top:6px">왜 마이클인지, 어떻게 쓰는지 잊힘</p></div>
+        <div class="arr">›</div>
+        <div class="step"><b>차량 등록·첫 활성화</b><div style="margin-top:6px"><span class="pno">6</span></div><p style="font-size:12.5px;margin-top:6px">첫 가치까지 걸리는 일수를 모름</p></div>
+        <div class="arr">›</div>
+        <div class="step"><b>첫 예약</b><div style="margin-top:6px"><span class="pno">3</span></div><p style="font-size:12.5px;margin-top:6px">고를 이유(가격·추천)가 안 보임</p></div>
+        <div class="arr">›</div>
+        <div class="step" style="background:var(--blue-soft)"><b>재예약</b><div style="margin-top:6px"><span class="pno">4</span><span class="pno">5</span><span class="pno">7</span></div><p style="font-size:12.5px;margin-top:6px">교체 데이터가 메시지·홈으로 안 이어짐</p></div>
+        <div class="arr">›</div>
+        <div class="step"><b>추천</b><div style="margin-top:6px"><span class="pno">8</span></div><p style="font-size:12.5px;margin-top:6px">추천할 장치가 없음</p></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div class="card blue"><h3>이미 가진 데이터</h3><p>소모품 교체 주기, 주행거리(현대·기아 커넥티드), 주유·정비 기록, 차량번호 기반 리콜·보험 이력</p></div>
+        <div class="card blue"><h3>이미 가진 채널</h3><p>앱푸시, 카카오 로그인·<b>채널 추가 상태 수집</b>, 결제 요청 알림톡</p></div>
+        <div class="card rose"><h3>빠진 연결</h3><p>데이터 → 고객별 메시지·홈 화면·추천 동기. 지금은 <b>모두에게 같은</b> 경험입니다.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 평점: iTunes Lookup API [제3자] · 정비소·예약·매출: 마카롱팩토리 채용공고(원티드) [자사발표] · 데이터·채널: App Store 설명, 개인정보처리방침 [자사발표]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 4 검증 결과표 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">진단 · 검증 결과</div><h2>문제 8개 중 5개는 공개 자료로 뒷받침됩니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <table style="font-size:13.5px">
+    <tr><th style="width:36px">#</th><th style="width:300px">제기한 문제</th><th style="width:110px">판정</th><th>근거</th></tr>
+    <tr><td><span class="pno">1</span></td><td>온보딩에 "왜 마이클인가"가 없고, 가입 후 CRM이 안 보임</td><td><span class="v part">부분 맞음</span></td><td>웰컴 혜택(첫 엔진오일 1만원)은 있음. 가입 후 시퀀스 흔적은 없음</td></tr>
+    <tr><td><span class="pno">2</span></td><td>가입 후 서비스와 사용법이 기억에 안 남음</td><td><span class="v na">검증 불가</span></td><td>업데이트 노트가 한 줄뿐이고, 기능 안내 콘텐츠를 찾지 못함</td></tr>
+    <tr><td><span class="pno">3</span></td><td>정비소·상품 선택 때 리뷰·가격 우위가 안 보임</td><td><span class="v part">부분 맞음</span></td><td>광고는 "센터 대비 35%↓"를 말하지만, 선택 카드에는 거리·리뷰 수만 있음</td></tr>
+    <tr class="hi"><td><span class="pno">4</span></td><td>교체 예정 데이터를 CRM에 못 씀. 카카오 채널 미활용</td><td><span class="v ok">맞음</span></td><td>알림톡은 <b>현장 추가정비 결제 요청</b>에만 명시. 채널 추가 상태는 수집 중. 교체 안내는 푸시만</td></tr>
+    <tr><td><span class="pno">5</span></td><td>홈 화면이 고객별로 같음</td><td><span class="v na">검증 불가</span></td><td>실사용 관찰 기준. 외부에는 홈 개인화 자료가 없음</td></tr>
+    <tr><td><span class="pno">6</span></td><td>첫 활성화까지 일수를 줄이는 장치가 없음</td><td><span class="v part">부분 맞음</span></td><td>첫 예약 할인과 차량번호 자동 조회는 있음. 단계별 리마인드는 흔적 없음</td></tr>
+    <tr><td><span class="pno">7</span></td><td>페르소나·코호트·유입 경로별 액션이 안 보임</td><td><span class="v na">검증 불가</span></td><td>채용공고가 "정비 주기·이용 행동 맞춤 메시지"와 "첫 정비 예약 여정 개선"을 과제로 명시 → <b>회사도 인지한 과제</b></td></tr>
+    <tr class="hi"><td><span class="pno">8</span></td><td>레퍼럴이 UX에 안 보임</td><td><span class="v ok">맞음</span></td><td>스토어·웹·개인정보처리방침 어디에도 추천인·친구 초대 항목이 없음</td></tr>
+  </table>
+  <p class="flag" style="margin-top:10px">판정 기준: App Store, 개인정보처리방침, 채용공고, 리뷰 같은 공개 자료입니다. 앱 내부 화면은 실사용 관찰입니다. "검증 불가"는 틀렸다는 뜻이 아니라, 외부에서 확인할 수 없다는 뜻입니다.</p>
+  <div class="foot"><span class="src"><b>출처</b> App Store id1004325731 스크린샷·설명 [자사발표] · 개인정보처리방침 2026.10.23 시행 [자사발표] · 원티드 채용공고 [자사발표]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 5 Part1 첫 가치 7일 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">PART 1 · 진단 → 해결 · 문제 <span class="pno">1</span><span class="pno">2</span><span class="pno">6</span></div><h2>첫 7일 안에 "내 차를 아는 앱"임을 체감하게 합니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div class="diag"><span class="lab">진단</span><p>웰컴 쿠폰(첫 엔진오일 1만원)은 있지만, 가입 뒤 <b>"왜 마이클인가"</b>와 <b>"어떻게 쓰나"</b>를 다시 알려주는 흐름이 보이지 않습니다. 첫 활성화까지 걸리는 일수도 관리 지표로 보이지 않습니다.</p></div>
+  <span class="sol-lab">해결</span>
+  <div style="display:flex;gap:10px">
+    <div class="stepbox"><div class="n">D0 · 가입 직후</div><h4>차량번호 1개 → "내 차 리포트"</h4><p>리콜·보험 이력과 <b>다음 교체 예상일</b>을 바로 보여줍니다. 첫 가치를 첫 세션 안에 줍니다.</p></div>
+    <div class="stepbox"><div class="n">D1 · 푸시</div><h4>"엔진오일 교체까지 약 1,200km"</h4><p>내 차 숫자로 가치를 다시 증명합니다.</p></div>
+    <div class="stepbox"><div class="n">D3 · 미등록자</div><h4>"차량번호만 넣으면 교체일을 알려드려요"</h4><p>등록을 미룬 사람만 대상으로 합니다.</p></div>
+    <div class="stepbox"><div class="n">D7 · 인앱 체크리스트</div><h4>기능 3개 써 보기</h4><p>주유 자동 기록, AI 정비상담, 월간 리포트. 완료하면 배지를 줍니다.</p></div>
+    <div class="stepbox"><div class="n">D14 · 혜택 리마인드</div><h4>"웰컴 1만원 D-3"</h4><p>첫 예약 쿠폰 만료 전에 알립니다. 교체 예정일이 가까운 사람부터 보냅니다.</p></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:12px;gap:12px">
+    <div class="card"><h3>측정부터 만듭니다</h3><p>활성화를 2단계로 정의합니다. 1차는 차량 등록과 교체 예정일 확인, 2차는 첫 예약입니다. 그다음 <b>가입 → 활성화 일수의 중앙값</b>을 유입 경로별 코호트로 매주 봅니다.</p></div>
+    <div class="card"><h3>실험 방식</h3><p>시퀀스는 받는 그룹과 받지 않는 그룹(10%)으로 나눠 비교합니다. 판정 지표는 7일 등록률과 30일 첫 예약률입니다. 푸시 수신거부율을 함께 봐서 메시지 피로를 막습니다.</p></div>
+  </div>
+  <div class="gain" style="margin-top:12px"><span class="lab">기대 포인트</span><p><b>첫 활성화까지의 일수를 단축</b>하고, "할인 앱"이 아닌 "내 차 관리 앱"이라는 첫인상을 심습니다. 이후 모든 CRM이 이 인식 위에서 작동합니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 웰컴 혜택: App Store 스크린샷 1 [자사발표] · 차량번호 조회·월간 리포트: App Store 설명 [자사발표] · 시퀀스·일정은 제안 [가정]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 6 Part2 선택 확신 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">PART 2 · 진단 → 해결 · 문제 <span class="pno">3</span></div><h2>광고에서 말하는 강점을, 고르는 화면에서도 보여줍니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div style="display:grid;grid-template-columns:200px 200px 1fr;gap:20px;flex:1">
+    <div class="shotwrap"><img class="shot" src="images/store-03.png" alt="엔진오일 특가 센터 대비 35% 저렴 스토어 이미지" /><span class="badge">광고: 35%↓</span><p class="cap">스토어 광고는 가격 우위를 강조</p></div>
+    <div class="shotwrap"><img class="shot" src="images/store-02.png" alt="정비소 선택 화면 거리와 리뷰 수" /><span class="badge" style="background:var(--rose)">선택 화면</span><p class="cap">고르는 화면에는 거리·리뷰 수만</p></div>
+    <div style="display:flex;flex-direction:column">
+      <div class="diag" style="margin-bottom:10px"><span class="lab">진단</span><p>정작 결정하는 순간에는 <b>가격 우위와 "왜 이 정비소인가"</b>가 사라집니다. 리뷰에서도 "추가 비용 때문에 다음엔 센터로 가겠다"는 이탈 신호가 나옵니다.</p></div>
+      <span class="sol-lab">해결 · 정비소 카드 개편안</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="shop">
+          <div class="nm">우리동네 정비소</div>
+          <div class="meta">2km · 방문자리뷰 234 · ★4.9</div>
+          <div class="price"><b>내 차 확정가 52,000원</b></div>
+          <div class="save">센터 평균 대비 28,000원 절약</div>
+          <span class="chip">내 차종 정비 120건</span><span class="chip g">추가비용 사전 안내 정확</span>
+          <p style="font-size:11.5px;color:var(--gray2);margin-top:8px">"설명이 친절하고 추가 정비를 강요하지 않아요" — 리뷰 요약</p>
+        </div>
+        <ul class="clean" style="margin-top:2px">
+          <li><b>내 차 기준 확정가</b>와 센터 대비 절약액을 보여줍니다.</li>
+          <li><b>추천 이유 배지</b>를 답니다. 예: 내 차종 정비 건수, 재방문율, 추가비용 안내 정확도.</li>
+          <li><b>리뷰 한 줄 요약</b>을 넣습니다. AI 텍스트 처리 인프라는 이미 있습니다.</li>
+          <li>추가 정비 가능 항목과 가격을 <b>예약 전에</b> 알립니다.</li>
+        </ul>
+      </div>
+      <div class="gain"><span class="lab">기대 포인트</span><p><b>목록 → 예약 전환율이 오르고</b>, "추가 비용" 불만이 줄어듭니다. 실험은 기존 카드와 개편 카드를 A/B로 비교합니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> App Store 스크린샷 2·3 [자사발표] · 추가 비용 이탈 후기: 다모앙 2026.01 [제3자] · AI 텍스트 처리(OpenAI) 위탁: 개인정보처리방침 [자사발표] · 카드 수치는 예시 [가정]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 7 Part3 교체 시점 CRM -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">PART 3 · 진단 → 해결 · 문제 <span class="pno">4</span></div><h2>"부동액 교체 예정일"을 카카오 메시지 한 통으로 바꿉니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div class="diag"><span class="lab">진단</span><p>개인정보처리방침에서 <b>알림톡은 "현장 추가정비 결제 요청"에만</b> 명시되어 있습니다. <b>카카오톡 채널 추가 상태</b>는 이미 수집합니다. 그런데 교체 안내는 앱푸시로만 합니다. <b>데이터와 채널이 모두 있는데 연결되지 않은 상태</b>입니다.</p></div>
+  <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:18px;flex:1">
+    <div>
+      <span class="sol-lab">해결 · 교체 시점 트리거 × 채널</span>
+      <table style="font-size:13px">
+        <tr><th>시점</th><th>채널</th><th>메시지 성격</th><th>예시</th></tr>
+        <tr><td><b>D-30</b></td><td>앱푸시 + 홈 카드</td><td>정보 안내</td><td>"부동액 교체 예정일까지 30일"</td></tr>
+        <tr class="hi"><td><b>D-7</b></td><td>카카오 브랜드 메시지<br><span class="flag">채널 친구·수신 동의자</span></td><td>혜택 포함</td><td>확정가와 가까운 정비소 3곳, 이번 주 예약 혜택</td></tr>
+        <tr><td><b>교체일 경과</b></td><td>알림톡</td><td>정보 안내만<br><span class="flag">광고 문구 금지</span></td><td>"교체 예정일이 지났어요. 점검 이력 확인하기"</td></tr>
+        <tr><td><b>계절</b></td><td>푸시 + 브랜드 메시지</td><td>시즌 점검</td><td>11~12월 배터리·부동액, 설 전 장거리 점검</td></tr>
+      </table>
+      <ul class="clean" style="margin-top:10px">
+        <li>온보딩에서 <b>"카카오로 교체 알림 받기"</b>를 받아 채널 친구를 늘립니다. 채널 추가 상태는 이미 수집하고 있습니다.</li>
+        <li>부품별로 엔진오일, 부동액, 배터리, 타이어, 브레이크패드 순서로 확장합니다.</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="kmsg">
+        <div class="kbub">
+          <span class="t">마이클</span><br>
+          <b>12가3456 차량의 부동액 교체 예정일이 11월 18일이에요.</b><br>
+          겨울 전에 교체하면 엔진 동파를 막을 수 있어요.<br><br>
+          · 내 차 확정가 39,000원<br>
+          · 2km 안 정비소 3곳, 이번 주 예약 가능
+          <div class="btn">확정가로 예약하기</div>
+        </div>
+      </div>
+      <p class="cap" style="margin-top:0">D-7 브랜드 메시지 목업 (금액·날짜는 예시)</p>
+    </div>
+  </div>
+  <div class="gain"><span class="lab">기대 포인트</span><p>푸시를 끈 고객에게도 닿아 <b>도달률이 오르고</b>, 차량번호·예정일이 들어간 문구로 <b>클릭률이 오릅니다</b>. 핵심 지표(교체 도래 차량의 30일 예약률)를 직접 움직이는 파트입니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 알림톡 이용 목적·카카오톡 채널 추가 상태 수집: 마이클 개인정보처리방침(2026.10.23 시행) [자사발표] · 교체 알림 푸시: App Store 설명 [자사발표] · 메시지 문안은 제안 [가정]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 8 Part4 맞춤 홈 + 세그먼트 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">PART 4 · 진단 → 해결 · 문제 <span class="pno">5</span><span class="pno">7</span></div><h2>홈 첫 화면에 "지금 내가 할 일" 1개를 보여줍니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div class="diag"><span class="lab">진단</span><p>홈 화면이 고객 상태와 관계없이 같습니다(실사용 관찰). 페르소나·유입 경로별 액션도 보이지 않습니다. 채용공고에 "정비 주기·이용 행동 맞춤 메시지"가 과제로 올라 있어, <b>회사도 알고 있는 빈칸</b>입니다.</p></div>
+  <div style="display:grid;grid-template-columns:330px 1fr;gap:20px;flex:1">
+    <div>
+      <span class="sol-lab">해결 ① 지금 할 일 카드</span>
+      <div class="phone" style="display:flex;flex-direction:column;gap:8px">
+        <div class="homecard"><div class="s">교체 D-12 · 엔진오일</div><div class="t">주행 9,400km, 이번 달에 교체하면 딱 맞아요</div><span class="b">확정가 보기</span></div>
+        <table style="font-size:12px">
+          <tr><td><b>상태</b></td><td><b>카드</b></td></tr>
+          <tr><td>차량 미등록</td><td>차량번호 등록</td></tr>
+          <tr><td>교체 D-30 이내</td><td>예약하기</td></tr>
+          <tr><td>정비 완료 D+1</td><td>결과 리포트·리뷰</td></tr>
+          <tr><td>60일 비활성</td><td>월간 리포트 요약</td></tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <span class="sol-lab">해결 ② 세그먼트별 액션 지도</span>
+      <table style="font-size:13px">
+        <tr><th>세그먼트</th><th>판별 데이터</th><th>홈·CRM 액션</th></tr>
+        <tr><td><b>출퇴근 다주행</b></td><td>커넥티드 연동, 월 주행 1,500km 이상</td><td>주행거리 기반 교체 알림을 빠른 주기로</td></tr>
+        <tr><td><b>가족차 저주행</b></td><td>연 정비 1~2회</td><td>계절 점검 위주. 알림은 적게</td></tr>
+        <tr><td><b>가격 탐색형</b></td><td>쿠폰 사용 비율이 높음</td><td>쿠폰 대신 확정가·절약액 메시지 테스트</td></tr>
+        <tr><td><b>관리 초보</b></td><td>AI 정비상담 이용, 기록 적음</td><td>기능 학습 체크리스트, 상담 → 예약 연결</td></tr>
+        <tr class="hi"><td><b>유입 경로별</b></td><td>AppsFlyer 미디어 소스</td><td>특가 광고 유입은 즉시 예약형, 커넥티드 유입은 기록형, 블로그 유입은 학습형 온보딩</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="gain"><span class="lab">기대 포인트</span><p><b>홈 → 다음 행동 전환율</b>과 세그먼트별 재예약률이 오릅니다. 같은 예산으로 "누구에게 무엇을"이 정해져, CRM 발송량이 아니라 <b>발송 효율</b>이 커집니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 채용공고 직무 설명: 원티드·인디스워크 [자사발표, 요약 확인] · AppsFlyer 이용: 개인정보처리방침 국외이전 항목 [자사발표] · 세그먼트 기준값은 제안 [가정]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 9 Part5 레퍼럴 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">PART 5 · 진단 → 해결 · 문제 <span class="pno">8</span></div><h2>정비는 "어디 맡겨?"를 지인에게 묻는 카테고리입니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div class="diag"><span class="lab">진단</span><p>스토어, 웹, 개인정보처리방침 어디에도 <b>추천인·친구 초대 항목이 없습니다</b>. 믿을 만한 정비소를 찾는 일은 입소문이 강한데, 그 입소문을 앱 안에서 받을 장치가 없습니다.</p></div>
+  <span class="sol-lab">해결 · 추천 루프 2개</span>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card out">
+      <div class="num">루프 A · 만족 고객 추천</div>
+      <div class="flow" style="margin:8px 0">
+        <div class="step" style="padding:9px"><p style="font-size:12.5px"><b>정비 완료</b></p></div><div class="arr">›</div>
+        <div class="step" style="padding:9px"><p style="font-size:12.5px"><b>만족 4점 이상</b></p></div><div class="arr">›</div>
+        <div class="step" style="padding:9px"><p style="font-size:12.5px"><b>"이 정비소 추천" 링크 공유</b></p></div><div class="arr">›</div>
+        <div class="step" style="padding:9px;background:var(--blue-soft)"><p style="font-size:12.5px"><b>친구 첫 예약 시 둘 다 5천원</b></p></div>
+      </div>
+      <p>결과 리포트를 공유하면 친구에게는 "검증된 정비소"가 되고, 정비소에는 새 고객이 됩니다.</p>
+    </div>
+    <div class="card out">
+      <div class="num">루프 B · 가족 차 챙기기</div>
+      <h3 style="margin:6px 0">"부모님 차 교체일도 챙겨드릴까요?"</h3>
+      <p>가족 차를 등록해 초대하면 교체 알림을 보호자에게도 보냅니다. 차가 여러 대인 사용자의 기록 오류도 함께 정리합니다.</p>
+      <span class="chip">다차량 등록</span><span class="chip g">보호자 알림</span>
+    </div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px;margin-top:12px">
+    <div class="card amber"><h3>안전장치</h3><p>만족 4점 이상인 고객에게만 노출합니다. 품질 문제가 남은 채로 유입만 늘면 불만도 함께 커지기 때문입니다.</p></div>
+    <div class="card"><h3>벤치마크</h3><p>Dropbox는 초대한 사람과 받은 사람 모두에게 보상하는 레퍼럴로 15개월 동안 가입자가 약 10만에서 400만으로 늘었습니다. 다만 인과는 단정할 수 없습니다.</p></div>
+  </div>
+  <div class="gain"><span class="lab">기대 포인트</span><p>초대 경유 가입의 <b>CAC가 유료 광고보다 낮아지고</b>, 추천받은 고객은 처음부터 신뢰를 갖고 들어옵니다. 지표는 K-factor와 초대 경유 첫 예약률입니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 개인정보처리방침 2026.10.23 시행 [자사발표] · Dropbox: referralrock.com, theflyy.com [추정·2차] · 보상 금액은 제안 [가정]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 10 90일 로드맵 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">실행 · 90일 로드맵</div><h2>측정 → 교체 시점 CRM → 화면 → 추천 순서로 갑니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:12px">
+    <div class="card blue"><div class="num">0~2주</div><h3>측정 기반</h3><ul class="clean" style="margin-top:6px"><li>활성화 2단계 정의</li><li>유입 경로별 코호트 대시보드</li><li>채널 친구 수·수신 동의율 확인</li><li>PART 1 시퀀스 1차 발송</li></ul></div>
+    <div class="card blue"><div class="num">3~6주 · 겨울 시즌</div><h3>교체 시점 CRM</h3><ul class="clean" style="margin-top:6px"><li>엔진오일·부동액·배터리 트리거</li><li>D-7 브랜드 메시지 테스트</li><li>온보딩 "카카오로 알림 받기"</li></ul></div>
+    <div class="card"><div class="num">7~10주</div><h3>화면 개선</h3><ul class="clean" style="margin-top:6px"><li>정비소 카드 확정가·추천 이유 A/B</li><li>홈 "지금 할 일" 카드</li><li>세그먼트별 메시지 분리</li></ul></div>
+    <div class="card"><div class="num">11~13주</div><h3>추천과 확장</h3><ul class="clean" style="margin-top:6px"><li>만족 고객 레퍼럴 파일럿</li><li>가족 차 등록 초대</li><li>90일 회고와 다음 분기 계획</li></ul></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
+    <div class="card out"><h3>왜 이 순서인가</h3><p>측정 없이 실험하면 무엇이 효과였는지 남지 않습니다. 교체 시점 CRM은 개발 의존이 적고 핵심 지표를 바로 움직입니다.</p></div>
+    <div class="card out"><h3>왜 지금인가</h3><p>11~12월은 배터리·부동액 수요가 몰리는 시기입니다. 겨울에는 배터리 성능이 20~30% 떨어집니다.</p></div>
+    <div class="card out"><h3>공통 규칙</h3><p>모든 실험에 대조군 10%를 둡니다. 가드레일은 푸시 수신거부율입니다. 광고성 메시지는 야간(21시~08시)에 보내지 않습니다.</p></div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 겨울 배터리 성능 저하: 뉴시스 2022.12 [제3자] · 야간 광고성 정보 전송 제한: 정보통신망법 제50조 · 일정은 제안 [가정]</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 11 기대효과 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">기대효과 · 핵심 지표</div><h2>지표 하나: 교체 시점이 온 차량의 30일 내 예약률</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <div class="flow" style="margin-bottom:14px">
+    <div class="step"><b>교체 도래 차량</b><p style="font-size:12.5px">월 10만 대 [가정]</p></div><div class="arr">×</div>
+    <div class="step" style="background:var(--blue-soft)"><b>도달률</b><p style="font-size:12.5px">PART 3 · 카카오 채널 추가</p></div><div class="arr">×</div>
+    <div class="step" style="background:var(--blue-soft)"><b>클릭률</b><p style="font-size:12.5px">PART 3·4 · 내 차 문구, 맞춤 홈</p></div><div class="arr">×</div>
+    <div class="step" style="background:var(--blue-soft)"><b>예약 전환율</b><p style="font-size:12.5px">PART 2 · 확정가, 추천 이유</p></div><div class="arr">=</div>
+    <div class="step" style="background:var(--ink)"><b style="color:#fff">월 예약</b></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:18px">
+    <table>
+      <tr><th>항목 [가정]</th><th>현재 (푸시 중심)</th><th>제안 후</th></tr>
+      <tr><td>도달률</td><td>40%</td><td><b>75%</b></td></tr>
+      <tr><td>클릭률</td><td>5%</td><td><b>7%</b></td></tr>
+      <tr><td>예약 전환율</td><td>10%</td><td><b>14%</b></td></tr>
+      <tr class="hi"><td><b>월 예약 (10만 대 기준)</b></td><td>200건</td><td><b>735건</b></td></tr>
+    </table>
+    <div class="card blue" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="metric"><div class="big blue">약 3.7배</div><div class="lab">세 단계가 조금씩만 올라도 곱셈으로 커집니다. 모든 값은 가정이며, 0~2주 차에 실측값으로 바꿉니다.</div></div>
+    </div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px">
+    <div class="card"><h3>보조 지표 ①</h3><p>가입 → 첫 활성화 일수 중앙값 (PART 1)</p></div>
+    <div class="card"><h3>보조 지표 ②</h3><p>90일 재예약률, 세그먼트별 (PART 4)</p></div>
+    <div class="card"><h3>보조 지표 ③</h3><p>K-factor, 초대 경유 CAC (PART 5)</p></div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 모든 수치는 설명용 [가정]입니다. 실제 도달률·클릭률·전환율은 마이클 내부 데이터로 교체해야 합니다.</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 12 왜 이도형 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker vio">왜 이도형인가</div><h2>마이클이 풀 문제를, 저는 이미 다른 회사에서 풀어 봤습니다</h2></div>
+    <div class="logo"><span class="ic">M</span>마이클</div>
+  </div>
+  <table style="font-size:13.5px">
+    <tr><th style="width:210px">마이클의 과제</th><th>제가 해 본 일</th><th style="width:250px">결과</th></tr>
+    <tr class="hi"><td><b>교체 시점 CRM</b> <span class="pno">4</span></td><td>모요: 고객이 요금제를 바꿀 시점(할인 만료 30일 전 등)에 맞춰 보내는 자동화를 새로 만듦</td><td>단발성 발송 대비 <b>CPA 약 4.5배 낮춤</b></td></tr>
+    <tr><td><b>CRM 운영 확장</b></td><td>모요: 인수인계 없이 CRM을 혼자 맡아 4개 사업부로 확장. 자동화 여정 25개 신규</td><td>월 발송 일정 <b>2.4배</b>(8 → 19건)<br>3분기 CRM 경유 접수 <b>+41%</b></td></tr>
+    <tr><td><b>재예약·휴면</b> <span class="pno">5</span><span class="pno">7</span></td><td>커버링: 등급제와 휴면 고객 7,997명 재활성화 CRM</td><td>CRM 추가 매출 <b>12.3억</b><br>등급제 LTV <b>18.1배</b></td></tr>
+    <tr><td><b>첫 가치·소구점</b> <span class="pno">1</span><span class="pno">3</span></td><td>커버링: 소구점을 다시 찾아 앱 월 매출을 4,520만에서 17.6억으로 키움</td><td>CPI <b>−72.8%</b>, 월 매출 <b>40배</b></td></tr>
+    <tr><td><b>측정·코호트</b> <span class="pno">6</span><span class="pno">7</span></td><td>모요: 측정되지 않던 CRM 성과를 보이게 하는 체계. BigQuery로 회차별 사후분석(구성 효과와 성능 효과 분해)</td><td>사업부가 CRM 성과를 직접 확인</td></tr>
+    <tr><td><b>카카오 채널</b> <span class="pno">4</span></td><td>알림톡·브랜드 메시지·앱푸시·이메일 4개 채널 운영. 알림톡 심사 기준과 광고성 구분에 익숙함</td><td>누구나 CRM을 세팅할 수 있는 셀프 세팅 키트를 팀에 배포</td></tr>
+  </table>
+  <div class="callout" style="margin-top:12px"><p><b style="color:#fff">요약:</b> 저는 <b style="color:#7FD8FF">"데이터는 있는데 쓰이지 않던 CRM"</b>을 시점 기반 자동화로 바꿔 본 사람입니다. 모요의 "요금제 바꿀 시점"과 마이클의 "부품 바꿀 시점"은 같은 문제입니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 이도형 포트폴리오. 모요 수치는 증감률·배수만 공개합니다(절대 수치는 전 직장 내부 지표라 비공개).</span><span>마이클 · 이도형</span></div>
+</section>
+
+<!-- 13 마무리 -->
+<section class="slide" style="justify-content:center">
+  <div class="quote">
+    <div class="q">마이클은 고객보다 먼저 <span class="g">"내 차의 다음 정비"</span>를 압니다.<br>저는 그 앎을 고객이 체감하는 메시지와 화면으로 바꾸겠습니다.</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px">
+    <div class="card out"><div class="num">첫 2주 약속 ①</div><h3>활성화 정의와 코호트 대시보드</h3></div>
+    <div class="card out"><div class="num">첫 2주 약속 ②</div><h3>가정값 3개를 실측값으로 교체</h3></div>
+    <div class="card out"><div class="num">첫 2주 약속 ③</div><h3>겨울 시즌 교체 CRM 1차 발송안</h3></div>
+  </div>
+  <div style="margin-top:26px;display:flex;gap:10px;align-items:center">
+    <span class="pill k">그로스 마케터 이도형</span>
+    <span class="pill blue">hound600al@naver.com</span>
+  </div>
+</section>
+
+</div></div>
+
+<div id="nav"><button id="prev" aria-label="이전">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next" aria-label="다음">›</button></div>
+<div class="hint">← → 또는 Space · F 전체화면</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';}
+addEventListener('resize',fit);fit();show(0);
+const h=location.hash.match(/^#(\d+)$/);if(h)show(+h[1]-1);
+</script>
+</body>
+</html>
