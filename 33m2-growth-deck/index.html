@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!-- 면접 발표덱 스캐폴드. 검증됨(채널톡·리웨이크 등 15+건). 복제 후 채워라.
-     톤 오버라이드: :root 액센트 토큰만 회사 브랜드 컬러로 교체. 구조 토큰·폰트는 유지.
-     슬라이드 추가: <section class="slide">...</section> 반복. 첫 슬라이드만 .active.
-     컴포넌트 사용법은 slide-architecture.md 카탈로그 참고. -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
@@ -12,621 +8,550 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
 :root{
-  /* 구조 토큰 — 유지 */
-  --ink:#15171C; --navy:#1A1F2E; --black:#0E1118;
-  --gray:#8A8F99; --gray2:#5B6170;
-  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --ink:#15171C; --gray:#8A8F99; --gray2:#5B6170; --bg:#fff; --soft:#F4F6FA; --line:#E7EBF1;
   --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
   --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
-  /* 액센트 토큰 — 회사 브랜드로 교체 */
-  --blue:#4C7DF7; --blue-d:#2F5FD9; --blue-soft:#E6EEFF;
-  --violet:#7A4DF5; --violet-d:#5B33D6; --violet-soft:#EEE7FF;
-  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
-  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
-  --rose:#E0533D; --rose-soft:#FCE7E2;
+  --vio:#7A4DF5; --vio-d:#5B33D6; --vio-s:#EEE7FF;
+  --blue:#4C7DF7; --blue-s:#E6EEFF;
+  --green:#12A36B; --green-s:#DDF5EA;
+  --red:#FF3B30; --red-s:#FFE6E4;
+  --amber:#E89A0C; --amber-s:#FDF0D5;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
 #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .deck{position:relative;width:1280px;height:720px;transform-origin:center center}
-.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:46px 64px;overflow:hidden}
-.slide.active{display:flex;animation:fade .5s ease}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-
-.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);text-transform:uppercase;margin-bottom:11px}
-.kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#c0402c} .kicker.gray{color:var(--gray)}
-h1{font-size:50px;font-weight:800;line-height:1.16;color:var(--ink);letter-spacing:-.02em}
-h2{font-size:33px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
-h3{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
-p,li{font-size:16.5px;line-height:1.6;color:#2C313C}
-.lead{font-size:20px;line-height:1.62;color:var(--gray2);font-weight:500}
-.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
-.hl.vio{background:linear-gradient(transparent 58%, var(--violet-soft) 58%)}
-.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
-.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
-b,strong{font-weight:800;color:var(--ink)}
-.mono{font-variant-numeric:tabular-nums}
-
-.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
-.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--ink)}
-.logo .ic{width:25px;height:25px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
-
-.grid{display:grid;gap:15px}
-.card{background:var(--soft);border-radius:var(--radius);padding:19px 21px;border:1px solid transparent}
-.card.blue{background:var(--blue-soft)} .card.vio{background:var(--violet-soft)} .card.teal{background:var(--teal-soft)} .card.amber{background:var(--amber-soft)} .card.rose{background:var(--rose-soft)}
-.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
-.card.dark{background:var(--ink)} .card.dark h3{color:#fff} .card.dark p,.card.dark li{color:#D5D9E2}
-.card h3{margin-bottom:5px}
-.card .num{font-size:13.5px;font-weight:800;color:var(--gray);margin-bottom:5px}
-.card p{font-size:15px;line-height:1.55}
-.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--gray2)}
-.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
-.pill.k{background:var(--ink);color:#fff}
-.pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)} .pill.teal{background:var(--teal-soft);color:var(--teal-d)}
-
-.goal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:800;margin-bottom:13px}
-.goal b{color:#8FB6FF}
-
-.metric .big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
-.metric .big.blue{color:var(--blue-d)} .metric .big.vio{color:var(--violet-d)} .metric .big.teal{color:var(--teal-d)} .metric .big.rose{color:var(--rose)} .metric .big.amber{color:var(--amber-d)}
-.metric .lab{font-size:13.5px;color:var(--gray2);margin-top:7px;font-weight:600;line-height:1.4}
-
-table{width:100%;border-collapse:collapse;font-size:14.5px}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
-th{font-size:12.5px;color:var(--gray);font-weight:700;letter-spacing:.02em}
-td b{font-weight:800}
-tr.hi td{background:var(--blue-soft)}
-.chk{color:var(--teal-d);font-weight:800} .x{color:var(--rose);font-weight:800}
-
-.shot{border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block}
-.cap{font-size:12px;color:var(--gray);margin-top:7px;text-align:center;line-height:1.4}
-.shotwrap{position:relative}
-.shotwrap .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px}
-
-.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:17px 23px}
-.callout h3{color:#fff} .callout p{color:#D5D9E2}
-.quote{background:linear-gradient(120deg,#1A1F2E,#241C4A);color:#fff;border-radius:var(--radius);padding:24px 28px}
-.quote .q{font-size:25px;font-weight:800;line-height:1.36;color:#fff}
-.quote .q .g{background:linear-gradient(90deg,#8FB6FF,#B9A6FF,#7FE6DA);-webkit-background-clip:text;background-clip:text;color:transparent}
-
-.flag{font-size:12.5px;color:var(--gray);font-style:italic}
-.src{font-size:11.5px;color:var(--gray);line-height:1.5}
-.src b{color:var(--gray2);font-weight:700}
-.foot{position:absolute;left:64px;right:64px;bottom:18px;display:flex;justify-content:space-between;font-size:11.5px;color:var(--gray);border-top:1px solid var(--line);padding-top:9px;gap:20px}
-.foot .src{flex:1}
-
-ul.clean{list-style:none}
-ul.clean li{position:relative;padding-left:23px;margin-bottom:8px;font-size:15.5px}
-ul.clean li:before{content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
-ul.clean.vio li:before{background:var(--violet)} ul.clean.teal li:before{background:var(--teal)} ul.clean.rose li:before{background:var(--rose)}
-
-.flow{display:flex;align-items:stretch;gap:0}
-.flow .step{flex:1;background:var(--soft);border-radius:13px;padding:12px;text-align:center}
-.flow .arr{display:flex;align-items:center;padding:0 7px;font-size:19px;color:var(--gray);font-weight:800}
-
-.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow)}
-.adcard .ad{font-size:9px;font-weight:800;color:var(--teal-d);border:1px solid var(--teal);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:5px}
-.adcard .u{font-size:10px;color:var(--gray)}
-.adcard .ti{font-size:13px;font-weight:800;color:#1a0dab;line-height:1.3;margin:2px 0}
-.adcard .ds{font-size:10.5px;color:#4a4f5e;line-height:1.4}
-.stepbox{background:var(--soft);border-radius:12px;padding:12px 13px;flex:1}
-.stepbox .n{font-size:11px;font-weight:800;color:var(--blue-d)}
-.stepbox h4{font-size:13.5px;font-weight:800;color:var(--ink);margin:3px 0 4px}
-.stepbox p{font-size:12px;color:#4a4f5e;line-height:1.45}
-
-@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar,.hint{display:none}}
-#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50}
-#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
-#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
-#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
-.hint{position:fixed;bottom:20px;right:22px;color:#8b8d94;font-size:12px;z-index:50}
-
-.phone{width:200px;border-radius:24px;border:6px solid #15171C;overflow:hidden;box-shadow:var(--shadow);background:#fff}
-.phone img{width:100%;display:block}
-.phone.sm{width:168px}
-.logo .ic{font-size:11px;background:linear-gradient(135deg,var(--violet),var(--blue))}
-.mock{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow)}
-.mock .t{font-size:13px;font-weight:700;color:var(--ink)}
-.mock .p{font-size:22px;font-weight:800;color:var(--ink);margin-top:4px}
-.mock .p span{font-size:14px;color:var(--violet-d)}
-.mock .s{font-size:12px;color:var(--gray2);margin-top:2px}
-.mock .d{font-size:11.5px;background:var(--soft);border-radius:8px;padding:6px 8px;margin-top:8px;color:var(--gray2)}
-.mock.on{border:2px solid var(--violet)} .mock.on .p{color:var(--violet-d)}
-.map{position:relative;height:200px;border-radius:12px;margin-top:10px;background:
- linear-gradient(90deg,transparent 48%,#fff 48%,#fff 52%,transparent 52%),
- linear-gradient(0deg,transparent 46%,#fff 46%,#fff 50%,transparent 50%),
- linear-gradient(135deg,#E9EEF5,#DDE6F0)}
-.map .pin{position:absolute;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.12)}
-.map .pin.hot{background:var(--ink);color:#fff}
-.map .cl{position:absolute;background:var(--violet);color:#fff;border-radius:999px;padding:6px 10px;font-size:11.5px;font-weight:800}
-.hint{display:none} #nav{opacity:.3;transition:opacity .2s} #nav:hover{opacity:1}
+.slide{position:absolute;inset:0;background:#fff;display:none;flex-direction:column;padding:40px 60px;overflow:hidden}
+.slide.active{display:flex;animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:52px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:34px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:20px;font-weight:800;color:var(--ink)}
+p{font-size:17px;line-height:1.55;color:#2C313C}
+b{font-weight:800;color:var(--ink)}
+.kick{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:800;margin-bottom:10px;padding:6px 12px;border-radius:999px;align-self:flex-start}
+.k-ten{background:var(--blue-s);color:#2F5FD9} .k-own{background:var(--amber-s);color:#A86C00} .k-ad{background:var(--vio-s);color:var(--vio-d)} .k-gray{background:var(--soft);color:var(--gray2)}
+.hl{background:linear-gradient(transparent 58%, var(--vio-s) 58%)}
+.hl.b{background:linear-gradient(transparent 58%, var(--blue-s) 58%)}
+.hl.a{background:linear-gradient(transparent 58%, var(--amber-s) 58%)}
+.sub{font-size:18px;color:var(--gray2);margin-top:8px;font-weight:500}
+.foot{position:absolute;left:60px;right:60px;bottom:14px;font-size:11px;color:var(--gray);border-top:1px solid var(--line);padding-top:7px}
+.foot b{color:var(--gray2);font-weight:700}
+.ba{display:flex;align-items:center;gap:22px;margin-top:12px;flex:1;padding-bottom:26px}
+.col{display:flex;flex-direction:column;align-items:center}
+.lab{font-size:15px;font-weight:800;padding:6px 16px;border-radius:999px;margin-bottom:10px}
+.lab.now{background:var(--red-s);color:#C42A20} .lab.new{background:var(--green-s);color:#0B7A50}
+.arrow{font-size:46px;font-weight:800;color:var(--vio)}
+.why{flex:1;display:flex;flex-direction:column;gap:12px;align-self:center}
+.why .w{background:var(--soft);border-radius:16px;padding:14px 18px}
+.why .w h4{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:3px}
+.why .w p{font-size:15px;line-height:1.5}
+.why .w.g{background:var(--green-s)}
+.ph{width:236px;border:7px solid #15171C;border-radius:30px;overflow:hidden;background:#fff;box-shadow:var(--shadow);position:relative}
+.ph.mk-h{height:486px}
+.iw{position:relative;line-height:0}
+.iw img{width:100%;display:block}
+.mk{position:absolute;border:3px solid var(--red);border-radius:10px;background:rgba(255,59,48,.06)}
+.mk span{position:absolute;left:-3px;top:-24px;background:var(--red);color:#fff;font-size:11.5px;font-weight:800;line-height:1.3;padding:3px 8px;border-radius:8px;white-space:nowrap}
+.mk span.btm{top:auto;bottom:-24px}
+.ui{font-size:11px;color:var(--ink);line-height:1.35}
+.ui .top{display:flex;justify-content:space-between;align-items:center;padding:12px 12px 8px}
+.ui .logo33{font-weight:900;font-size:16px;letter-spacing:-.04em}
+.ui .chips{display:flex;gap:5px;padding:8px 10px;flex-wrap:wrap}
+.ui .chip{border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:10px;color:var(--gray2);background:#fff}
+.ui .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ui .card{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--line)}
+.ui .card img{width:70px;height:70px;border-radius:8px;object-fit:cover}
+.ui .tt{font-size:11px;font-weight:700}
+.ui .big{font-size:14px;font-weight:900;color:var(--vio-d);margin-top:2px}
+.ui .sm{font-size:9.5px;color:var(--gray2)}
+.ui .save{display:inline-block;background:var(--green-s);color:#0B7A50;font-weight:800;font-size:9.5px;border-radius:6px;padding:2px 6px;margin-top:3px}
+.ui .safe{display:flex;align-items:center;gap:6px;background:var(--blue-s);border-radius:10px;padding:7px 9px;margin:5px 10px;font-size:10.5px;font-weight:700;color:#23439A}
+.ui .safe i{font-style:normal;font-size:14px}
+.ui .btn{margin:10px;background:linear-gradient(90deg,#7A4DF5,#4C7DF7);color:#fff;font-weight:800;text-align:center;border-radius:10px;padding:10px;font-size:12px}
+.ui .nudge{margin:6px 10px;background:var(--amber-s);border-radius:10px;padding:8px 10px;font-size:10.5px;font-weight:700;color:#7A4E00}
+.ui .field{margin:4px 10px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;justify-content:space-between;font-size:11px}
+.ui .field b{color:var(--vio-d)}
+.ui .q{font-size:17px;font-weight:900;padding:4px 12px 8px;line-height:1.3}
+.mapui{position:relative;height:300px;background:
+  linear-gradient(90deg,transparent 30%,#fff 30%,#fff 33%,transparent 33%),
+  linear-gradient(90deg,transparent 70%,#fff 70%,#fff 72%,transparent 72%),
+  linear-gradient(0deg,transparent 40%,#fff 40%,#fff 43%,transparent 43%),
+  linear-gradient(0deg,transparent 75%,#fff 75%,#fff 77%,transparent 77%),
+  linear-gradient(160deg,#E8F1E4 0%,#EEF1F6 40%,#E6ECF5 100%)}
+.mapui .river{position:absolute;left:-10%;top:58%;width:120%;height:16px;background:#CFE2F7;transform:rotate(-12deg)}
+.pin{position:absolute;background:#fff;border:1.5px solid var(--ink);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;box-shadow:0 3px 8px rgba(0,0,0,.18)}
+.pin.on{background:var(--ink);color:#fff}
+.pin.lo{border-color:#0B7A50;color:#0B7A50}
+.lock{background:linear-gradient(170deg,#2B2F5C,#5B3FA8 60%,#7A4DF5);height:458px;padding:16px 10px;color:#fff}
+.lock .tm{text-align:center;font-size:40px;font-weight:300;margin:8px 0 2px}
+.lock .dt{text-align:center;font-size:11px;opacity:.8;margin-bottom:14px}
+.noti{background:rgba(255,255,255,.92);color:var(--ink);border-radius:14px;padding:9px 10px;margin-bottom:8px;font-size:10.5px;line-height:1.4}
+.noti .h{display:flex;justify-content:space-between;font-size:9.5px;color:var(--gray2);margin-bottom:2px}
+.noti b{font-size:11px}
+.bar{height:22px;border-radius:6px;display:flex;align-items:center;padding-left:8px;color:#fff;font-weight:800;font-size:10.5px}
+.refgrid{display:grid;gap:14px;margin-top:12px}
+.ref{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.ref img{width:100%;display:block;border-bottom:1px solid var(--line)}
+.ref .who{font-size:11px;font-weight:800;color:var(--gray);padding:8px 12px 0}
+.ref .do{font-size:14.5px;font-weight:800;color:var(--ink);padding:3px 12px 0;line-height:1.35}
+.ref .our{font-size:12.5px;color:var(--vio-d);font-weight:700;padding:5px 12px 10px;line-height:1.4}
+.ref.warn .do{color:#C42A20}
+.tagx{display:inline-block;font-size:10px;font-weight:800;border-radius:6px;padding:2px 6px;margin-left:4px}
+.t-copy{background:var(--green-s);color:#0B7A50} .t-keep{background:var(--blue-s);color:#2F5FD9} .t-warn{background:var(--red-s);color:#C42A20}
+.flowrow{display:flex;align-items:center;gap:10px}
+.mini{width:150px;border:5px solid #15171C;border-radius:20px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.mini img{width:100%;display:block}
+.step{font-size:13px;font-weight:800;text-align:center;margin-top:6px}
+.bad{color:#C42A20} .good{color:#0B7A50}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.tcard{border-radius:20px;padding:22px 22px}
+.tcard .ic{font-size:34px}
+.tcard h3{margin:8px 0 10px;font-size:22px}
+.tcard li{font-size:15.5px;line-height:1.55;margin-left:18px;color:#2C313C}
+.tc-ten{background:var(--blue-s)} .tc-own{background:var(--amber-s)} .tc-ad{background:var(--vio-s)}
+#nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);padding:8px 16px;border-radius:999px;z-index:50;opacity:.3;transition:opacity .2s}
+#nav:hover{opacity:1}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--vio);z-index:60;transition:width .3s}
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar{display:none}}
 </style>
 </head>
 <body>
 <div id="bar"></div>
 <div id="stage"><div class="deck" id="deck">
 
-<!-- 1 TITLE -->
-<section class="slide active" style="justify-content:center;background:
-  radial-gradient(900px 520px at 84% -10%, var(--violet-soft) 0%, transparent 55%),
-  radial-gradient(720px 520px at -5% 110%, var(--blue-soft) 0%, transparent 55%), #fff">
+<!-- 1 표지 -->
+<section class="slide active" style="justify-content:center;background:radial-gradient(900px 520px at 85% -10%, var(--vio-s) 0%, transparent 55%),radial-gradient(700px 500px at -5% 110%, var(--blue-s) 0%, transparent 55%),#fff">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <div>
-      <div class="logo" style="margin-bottom:30px"><span class="ic">33</span>삼삼엠투 33m²</div>
-      <div class="kicker vio">퍼포먼스·그로스 마케터 전략 제안</div>
-      <h1>우위는 이미 앱 안에 있습니다.<br><span class="hl vio">보이지 않을 뿐</span>입니다.</h1>
-      <p class="lead" style="margin-top:22px;max-width:700px">기간 할인·보증금 보관·생활형 집이라는 강점을 <b>숫자로 보여주고</b>, 그 숫자를 <b>광고 클릭 직후(웹2앱)</b>에 보여줘서 하반기 2.3배를 만드는 방법</p>
-      <div style="margin-top:34px;display:flex;gap:10px">
-        <span class="pill k">스페이스브이 · 삼삼엠투</span>
-        <span class="pill vio">퍼포먼스·그로스 마케터 지원</span>
-        <span class="pill blue">이도형</span>
+      <div class="kick k-gray">삼삼엠투 퍼포먼스·그로스 마케터 지원 · 이도형</div>
+      <h1>삼삼엠투의 좋은 점,<br><span class="hl">앱에서 '눈에 보이게'</span> 바꾸면<br>계약이 늘어납니다</h1>
+      <p class="sub" style="margin-top:20px">직접 앱을 써 보고, 지금 나가는 광고를 보고 찾은 개선안입니다.<br>바꾸기 전 화면과 바꾼 화면을 나란히 보여 드립니다.</p>
+      <div style="display:flex;gap:10px;margin-top:26px">
+        <span class="kick k-ten" style="margin:0">🙋 방 구하는 사람(임차인)</span>
+        <span class="kick k-own" style="margin:0">🏠 방 내놓는 사람(임대인)</span>
+        <span class="kick k-ad" style="margin:0">📣 광고</span>
       </div>
     </div>
-    <div class="phone" style="width:230px;transform:rotate(3deg)"><img src="img/home.jpg" alt="삼삼엠투 앱 홈"></div>
+    <div class="ph" style="transform:rotate(3deg)"><div class="iw"><img src="img/home.jpg"></div></div>
   </div>
 </section>
 
-<!-- 2 CONTEXT -->
+<!-- 2 한 장 요약 -->
 <section class="slide">
-  <div class="head">
-    <div><div class="kicker">01 · 맥락</div><h2>목표까지의 거리: 하반기에 <span class="hl">상반기의 2.3배</span>가 필요합니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  <div class="kick k-gray">한 장 요약</div>
+  <h2>세 사람에게 각각 <span class="hl">"얼마인지, 안전한지"</span>를 바로 보여 줍니다</h2>
+  <div class="trio">
+    <div class="tcard tc-ten"><div class="ic">🙋</div><h3>방 구하는 사람</h3>
+      <ul><li>"1주 가격" 대신 <b>"6주 총 얼마, 얼마 아낌"</b></li><li>지도에 <b>가격</b>을 바로 표시</li><li>보증금이 <b>안전하다</b>는 걸 크게</li><li>첫 화면에서 <b>"언제부터, 몇 주?"</b>부터 묻기</li><li>퇴실 전 <b>연장·혜택 알림</b></li></ul></div>
+    <div class="tcard tc-own"><div class="ic">🏠</div><h3>방 내놓는 사람</h3>
+      <ul><li><b>"내 방, 얼마 벌까?"</b> 계산기</li><li>빈 날짜 알림 + <b>주변 가격 팁</b></li><li>첫 정산 때 <b>"월세보다 얼마 더"</b> 리포트</li><li>성공 사례에 <b>숫자</b>를 붙여 밖으로 알리기</li></ul></div>
+    <div class="tcard tc-ad"><div class="ic">📣</div><h3>광고</h3>
+      <ul><li>광고 → 앱 설치 대신 <b>광고 → 집·가격 웹페이지 → 앱</b></li><li>에어비앤비처럼 <b>"아끼는 돈"</b>, <b>"벌 수 있는 돈"</b>을 제목에</li><li>리브애니웨어처럼 <b>진짜 매물</b>을 광고로</li></ul></div>
   </div>
-  <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:8px">
-    <div class="card out metric"><div class="big">1,880억</div><div class="lab">2025 연 거래액<br>전년 대비 약 2.2배</div></div>
-    <div class="card out metric"><div class="big vio">5,000억</div><div class="lab">2026 목표<br>2025 대비 2.66배</div></div>
-    <div class="card out metric"><div class="big">1,500억+</div><div class="lab">2026 상반기 거래액</div></div>
-    <div class="card out metric"><div class="big rose">3,500억</div><div class="lab">하반기 필요 거래액<br>= 상반기의 2.3배</div></div>
+  <div class="foot"><b>근거</b> 삼삼엠투 앱 화면 녹화(2026.10.27, 3분) · Meta 광고 라이브러리(2026.10.27 게재 중 광고)</div>
+</section>
+
+<!-- 3 출발점 -->
+<section class="slide">
+  <div class="kick k-gray">출발점</div>
+  <h2>삼삼엠투는 이미 <span class="hl">이길 무기 3개</span>를 갖고 있습니다</h2>
+  <div class="trio">
+    <div class="tcard" style="background:var(--soft)"><div class="ic">📅</div><h3>1주부터, 원하는 만큼</h3><p>2년 계약 필요 없이 1주 단위로 계약합니다.<br><b>직방·다방(장기 계약)</b>과 다른 점</p></div>
+    <div class="tcard" style="background:var(--soft)"><div class="ic">💸</div><h3>오래 살수록 싸짐</h3><p>2주 이상 5%, 4주 이상 10% 할인(녹화 속 매물 기준).<br><b>호텔·모텔</b>보다 길게 살수록 유리</p></div>
+    <div class="tcard" style="background:var(--soft)"><div class="ic">🔒</div><h3>보증금은 회사가 보관</h3><p>보증금 33만 원을 삼삼엠투가 갖고 있다가 퇴실 후 돌려줍니다.<br><b>카페 직거래</b>와 다른 점</p></div>
   </div>
-  <div class="grid" style="grid-template-columns:1.1fr 1fr;margin-top:18px;flex:1;align-content:start">
-    <div class="card">
-      <h3>수요의 62%가 '생활 문제 해결'입니다</h3>
-      <div style="display:flex;gap:6px;margin-top:12px;height:34px;border-radius:10px;overflow:hidden;font-size:12.5px;font-weight:800;color:#fff">
-        <div style="flex:38;background:var(--violet);display:flex;align-items:center;padding-left:10px">업무·출장 38%</div>
-        <div style="flex:24;background:var(--blue);display:flex;align-items:center;padding-left:10px">이사·인테리어 24%</div>
-        <div style="flex:23;background:#A7B0C2;display:flex;align-items:center;padding-left:10px">여행 23%</div>
-        <div style="flex:15;background:#C9CFDA;display:flex;align-items:center;padding-left:8px;color:#2C313C">기타 15%</div>
-      </div>
-      <p style="margin-top:12px">여행지 한달살기보다 계절성이 낮고 검색 의도가 명확합니다. <b>"언제부터 살아야 하나"</b>라는 날짜가 정해진 문제입니다.</p>
-    </div>
-    <div class="callout">
-      <h3>그래서 이 발표의 질문</h3>
-      <p style="margin-top:8px;font-size:16px">같은 광고비로 계약을 더 만들려면, 사용자가 <b style="color:#fff">"왜 삼삼엠투여야 하는지"</b>를 언제·어디서 확인하게 해야 하는가?</p>
-      <p style="margin-top:10px;font-size:14px;color:#AEB4C2">→ 직접 앱을 써보고(녹화 3분), 집행 중인 광고 약 350개(Meta)를 보고 찾은 답</p>
-    </div>
+  <div style="margin-top:22px;background:var(--ink);color:#fff;border-radius:18px;padding:18px 24px;font-size:19px;font-weight:700">
+    문제는 이 3개가 <span style="color:#B9A6FF">앱 화면에서 잘 안 보인다</span>는 것입니다. → 다음 장부터 화면으로 보여 드립니다.
   </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 바이라인네트워크 26.2(2025 거래액·이용 목적) [자사발표] · 원티드 채용 공고(2026 목표) · 머니투데이 26.7(상반기) [자사발표]</span>
-    <span>삼삼엠투 · 이도형</span>
+  <div class="foot"><b>근거</b> 앱 녹화(계약 정보 탭: 2주+ 5%·4주+ 10% 할인, 보증금 330,000원 회사 보관) · 할인율은 매물마다 다를 수 있음</div>
+</section>
+
+<!-- 4 PART 1 -->
+<section class="slide" style="justify-content:center;background:var(--blue-s)">
+  <div class="kick k-ten" style="background:#fff">PART 1</div>
+  <h1>🙋 방 구하는 사람(임차인)</h1>
+  <p class="sub" style="font-size:22px">"얼마 내고, 얼마 아끼고, 안전한가"를 한눈에</p>
+  <div style="display:flex;gap:12px;margin-top:26px;font-size:17px;font-weight:700;color:#23439A">
+    <span>① 가격</span><span>·</span><span>② 지도</span><span>·</span><span>③ 안전</span><span>·</span><span>④ 첫 화면</span><span>·</span><span>⑤ 다시 오게</span>
   </div>
 </section>
 
-<!-- 3 COMPETITION -->
+<!-- 5 임차인 ① 가격 -->
 <section class="slide">
-  <div class="head">
-    <div><div class="kicker vio">02 · 경쟁 지형</div><h2>경쟁사마다 <span class="hl vio">이길 한 줄</span>이 다릅니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <table>
-    <tr><th style="width:130px">상대</th><th style="width:260px">상대의 강점</th><th>삼삼엠투가 이기는 한 줄</th><th style="width:270px">앱에서 보여줄 장치</th></tr>
-    <tr><td><b>에어비앤비</b></td><td>지도 가격·총액·리뷰 UX</td><td><b>"숙소가 아니라 집"</b> 길게 살수록 주당 단가가 내려가고 취사·세탁·택배까지 생활이 됩니다</td><td>기간별 주당 단가, 생활 옵션 필터</td></tr>
-    <tr><td><b>리브애니웨어</b></td><td>제주·강원 여행지 감성 숙소</td><td><b>"내 생활권에서, 입주일에 맞춰"</b> 회사·병원·현장 근처 매물 수 1위</td><td>목적지 입력 → 통근 시간순</td></tr>
-    <tr><td><b>직방·다방</b></td><td>장기 매물 수, 시세 정보</td><td><b>"2년 계약·중개수수료 없이 1주부터"</b> 보증금 33만 원, 비대면 계약</td><td>장기 계약 보증금 vs 33만 원 비교</td></tr>
-    <tr><td><b>호텔·모텔</b></td><td>즉시 예약</td><td><b>"같은 기간 절반 값 + 생활 가능"</b></td><td>같은 기간 총액·절약액 카드</td></tr>
-    <tr class="hi"><td><b>공통 공백</b></td><td colspan="3"><b>'같은 기간에 얼마를 내고 얼마를 아끼는지'</b>를 한눈에 보여주는 곳이 없습니다 → 삼삼엠투의 기간 할인 구조가 가장 잘 보여줄 수 있는 숫자</td></tr>
-  </table>
-  <div class="card rose" style="margin-top:16px;padding:14px 20px">
-    <p style="font-size:14.5px"><b>주의: '영업신고 없이 합법'은 소구하지 않습니다.</b> 숙박업 여부는 계약 이름이 아니라 운영 실질로 판단합니다(보건복지부 2024 기준: 이용 기간 1개월 미만이면 숙박업에 가깝다고 판단). 그래서 위닝 포인트는 법이 아니라 <b>생활 실질</b>(독립 점유·전자계약·보증금 보관)에서 찾습니다. 4주 이상 계약을 늘리는 할인 설계는 매출과 리스크 관리 양쪽에 맞습니다.</p>
-  </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 벤처스퀘어(리브애니웨어 여행지 강점) [제3자] · 숙박매거진 24.6(보건복지부 숙박업 판단 기준) [제3자] · 서울중앙지법 2016노1390 (로톡 요약) · 현장직 광고 "모텔 한 달 180만 원" [크리에이터 광고 문구]</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 4 DIAG 1 : advantage invisible -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker rose">03 · 앱 진단 ① 우위가 안 보인다</div><h2>6주를 골라도 카드에는 <span class="hl rose">'1주 가격'</span>만 보입니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div style="display:flex;gap:26px;align-items:flex-start">
-    <div style="text-align:center"><div class="phone sm"><img src="img/period.jpg"></div><div class="cap">① 1~12주 칩 선택: 직관적 ✓</div></div>
-    <div style="text-align:center"><div class="phone sm"><img src="img/cards.jpg"></div><div class="cap">② 6주 선택 후에도 "210,000원 / 1주"<br>할인은 "최대 10%"로만</div></div>
-    <div style="text-align:center"><div class="phone sm"><img src="img/escrow.jpg"></div><div class="cap">③ 할인 계산·보증금 보관은<br>'계약 정보' 탭 안쪽에</div></div>
-    <div style="flex:1">
-      <div class="card out" style="padding:16px 18px">
-        <div class="num">녹화 속 실제 매물 · 경기 광주 원룸 · 6주</div>
-        <table style="font-size:13.5px">
-          <tr><td>카드 표시</td><td style="text-align:right">210,000원 / 1주</td></tr>
-          <tr><td>4주+ 할인 적용 임대료</td><td style="text-align:right">180,000 → 162,000</td></tr>
-          <tr class="hi"><td><b>6주 실제 총액</b></td><td style="text-align:right"><b>1,152,000원</b></td></tr>
-          <tr class="hi"><td><b>할인으로 아낀 돈</b></td><td style="text-align:right"><b>108,000원</b></td></tr>
-          <tr><td>모텔 6주 (한 달 180만 기준)</td><td style="text-align:right">약 2,700,000원</td></tr>
-        </table>
-        <p class="flag" style="margin-top:8px">총액·절약액은 앱 어디에도 표시되지 않습니다. 사용자가 직접 계산해야 합니다.</p>
-      </div>
-      <div class="callout" style="margin-top:12px;padding:14px 18px"><p style="font-size:15px;color:#fff"><b style="color:#fff">진단:</b> 삼삼엠투의 가장 강한 무기(길수록 싸지는 구조)가 <b style="color:#B9A6FF">결정 순간에 안 보입니다.</b></p></div>
+  <div class="kick k-ten">임차인 ① 가격</div>
+  <h2>6주를 골랐는데 <span class="hl b">"1주 가격"만</span> 보여요</h2>
+  <div class="ba">
+    <div class="col"><div class="lab now">지금</div>
+      <div class="ph"><div class="iw"><img src="img/cards.jpg">
+        <div class="mk" style="left:3%;top:32%;width:94%;height:7%"><span>6주인데 1주 가격만</span></div>
+        <div class="mk" style="left:3%;top:41%;width:94%;height:5%"><span class="btm">"최대 10%" → 실제로 얼마?</span></div>
+      </div></div></div>
+    <div class="arrow">→</div>
+    <div class="col"><div class="lab new">바꾸면</div>
+      <div class="ph mk-h"><div class="ui">
+        <div class="top"><b>←</b><span class="sm">판교역 · 11.01~12.12 <b style="color:var(--vio-d)">(6주)</b></span><span>♡</span></div>
+        <div class="chips"><span class="chip on">총액 낮은 순</span><span class="chip">방 개수</span><span class="chip">세탁기</span></div>
+        <div class="card"><img src="img/thumb1.jpg"><div>
+          <div class="tt">광주시 신현동 원룸</div>
+          <div class="big">6주 총 1,152,000원</div>
+          <div class="sm">주당 192,000원 (관리비 포함)</div>
+          <div class="save">오래 살아서 108,000원 할인</div>
+        </div></div>
+        <div class="safe"><i>🏨</i>같은 6주, 모텔보다 약 155만 원 아껴요</div>
+        <div class="safe"><i>🔒</i>보증금 33만 원은 삼삼엠투가 보관</div>
+        <div class="card"><img src="img/thumb2.jpg"><div>
+          <div class="tt">성남시 분당동 아파트</div>
+          <div class="big" style="color:#9AA0AA">6주 총액 표시</div>
+          <div class="sm">할인 적용 금액까지 계산해서</div>
+        </div></div>
+        <div class="card"><img src="img/thumb3.jpg"><div>
+          <div class="tt">성남시 삼평동 오피스텔</div>
+          <div class="big" style="color:#9AA0AA">6주 총액 표시</div>
+        </div></div>
+      </div></div></div>
+    <div class="why">
+      <div class="w"><h4>왜 바꾸나요?</h4><p>사람들은 "그래서 다 해서 얼마야?"가 궁금합니다. 지금은 <b>직접 계산</b>해야 합니다.</p></div>
+      <div class="w"><h4>계산해 보니</h4><p>임대료 18만 → 16.2만(4주 이상 10%) + 관리비 3만<br>= 주당 19.2만 × 6주 = <b>115.2만 원</b></p></div>
+      <div class="w g"><h4>좋아지는 것</h4><p>"오래 살수록 싸다"는 삼삼엠투의 장점이 <b>결정하는 순간</b>에 보입니다.</p></div>
     </div>
   </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27) · 계산: (162,000 임대료 + 30,000 관리비) × 6주, 서비스 수수료는 화면 미노출로 제외 · 모텔가는 크리에이터 광고 문구 기준 [미검증]</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
+  <div class="foot"><b>근거</b> 앱 녹화 속 실제 매물(경기 광주 원룸, 6주 선택) · 서비스 수수료는 화면에 없어 빼고 계산 · 모텔 비교는 삼삼엠투 크리에이터 광고 "모텔 한 달 180만 원" 기준(확인 필요)</div>
 </section>
 
-<!-- 5 DIAG 2 : weaknesses -->
+<!-- 6 임차인 ② 지도 -->
 <section class="slide">
-  <div class="head">
-    <div><div class="kicker rose">04 · 앱 진단 ② 경쟁사 대비 열위</div><h2>찾는 단계에서 <span class="hl rose">마찰</span>이 큽니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div style="display:flex;gap:18px">
-    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/map.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>지도에 매물 수만</b><br>가격은 하나씩 눌러야 확인</p></div>
-    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/nores.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>'판교' 2글자 → 결과 없음</b><br>'판교역'까지 쳐야 나옴</p></div>
-    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/gangnam.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>'강남' 검색에 화성시 매물</b><br>제목 '강남45분' 매칭 + 날짜 초기화</p></div>
-    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/nation.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>홈 카테고리 → 전국 결과</b><br>진주·은평·중구가 섞여 나옴</p></div>
-  </div>
-  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:14px">
-    <div class="card"><p style="font-size:14px"><b>에어비앤비·직방</b>은 지도에서 가격을 바로 봅니다 → <b>가격 핀</b></p></div>
-    <div class="card"><p style="font-size:14px"><b>자동완성</b>(지역·역·병원·대학·산업단지) + <b>거리순</b> 정렬</p></div>
-    <div class="card"><p style="font-size:14px">날짜·필터를 <b>화면 간 유지</b>, 홈은 "언제부터, 몇 주?"로 시작</p></div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27, 임차인 모드)</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 6 DIAG 3 : trust hidden -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker rose">05 · 앱 진단 ③ 신뢰 장치</div><h2>가장 강한 신뢰 장치는 <span class="hl rose">임대인에게만</span> 설명되고 있습니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div style="display:flex;gap:24px;align-items:flex-start">
-    <div style="flex:1.25">
-      <table style="font-size:14px">
-        <tr><th>신뢰 장치</th><th>임차인에게 보이는 곳</th><th style="width:70px">노출</th></tr>
-        <tr><td>보증금 회사 보관 (에스크로)</td><td>상세 '계약 정보' 탭 하단 회색 1줄</td><td class="x">약함</td></tr>
-        <tr><td>입주 확인 후 정산</td><td>녹화 범위 내 미확인</td><td class="x">없음</td></tr>
-        <tr><td>삼삼케어 (파손 보호)</td><td>녹화 범위 내 미확인</td><td class="x">없음</td></tr>
-        <tr><td>분쟁률 약 0.3%</td><td>미노출</td><td class="x">없음</td></tr>
-        <tr><td>우수 임대인·본인 인증·응답률 90%+</td><td>상세 '임대인 정보'</td><td>중간</td></tr>
-        <tr class="hi"><td><b>장점 4가지</b> (빠른 해결·편리한 관리·안전 거래·높은 수익)</td><td><b>임대인 모드 가이드에만</b></td><td class="x">0</td></tr>
-      </table>
-      <p style="margin-top:12px;font-size:14.5px">후기 0개 신규 매물("첫 후기를 기다리고 있어요")은 신뢰 근거가 비어 있습니다. 후기 대신 <b>보호 장치를 먼저</b> 보여줘야 합니다.</p>
-    </div>
-    <div style="text-align:center"><div class="phone sm"><img src="img/superhost.jpg"></div><div class="cap">우수 임대인 배지: 있음 ✓</div></div>
-    <div style="text-align:center"><div class="phone sm"><img src="img/guide.jpg"></div><div class="cap">'장점 4가지'는 임대인 가이드 안</div></div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27) · 분쟁률 0.3%: 벤처스퀘어 [자사발표]</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 7 PAIN -> STRATEGY -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker vio">06 · 전략 개요</div><h2>문제 3개 → 전략 3개</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 60px 1fr;row-gap:14px;align-items:center">
-    <div class="card rose"><div class="num">문제 1</div><h3>우위가 숫자로 안 보인다</h3><p>1주 가격만, 총액·절약액 없음 / 지도에 가격 없음</p></div>
-    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--gray)">→</div>
-    <div class="card vio"><div class="num">전략 1</div><h3>"얼마 내고 얼마 아끼는지"를 첫 화면에</h3><p>선택 기간 총액·절약액, 1주 연장 넛지, 지도 가격 핀</p></div>
-    <div class="card rose"><div class="num">문제 2</div><h3>신뢰 장치가 묻혀 있다</h3><p>보증금 보관은 탭 안 1줄, 장점은 임대인에게만</p></div>
-    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--gray)">→</div>
-    <div class="card vio"><div class="num">전략 2</div><h3>'왜 33m²인가'가 행동으로 드러나게</h3><p>안심 계약 배지, 입주 사진 기록, 보증금 반환 트래커</p></div>
-    <div class="card rose"><div class="num">문제 3</div><h3>설치 전에는 가치를 볼 수 없다</h3><p>광고 → 앱 설치 직행, 설치 후 홈에서 맥락 끊김</p></div>
-    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--gray)">→</div>
-    <div class="card vio"><div class="num">전략 3</div><h3>웹2앱: 웹에서 숫자를 보고, 앱에서 계약</h3><p>페르소나 웹 랜딩 → 지연 딥링크로 같은 매물·날짜 복원</p></div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>원칙</b> 매체를 늘리기보다, 같은 유입에서 계약 전환·평균 계약 주수·재이용을 함께 올립니다</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 8 STRATEGY 1 -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker vio">07 · 전략 1</div><h2>카드 가격을 <span class="hl vio">"6주 총 115만 원, 10.8만 원 할인"</span>으로</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:18px">
-    <div>
-      <div class="num" style="font-size:13px;font-weight:800;color:var(--gray);margin-bottom:6px">AS-IS</div>
-      <div class="mock">
-        <div class="t">광주시 신현동의 단독주택</div>
-        <div class="p">210,000원 <span>/ 1주</span></div>
-        <div class="s">임대료 180,000원 관리비 30,000원</div>
-        <div class="d">장기계약 최대 10% 할인 · 즉시입주 최대 2만 원 할인</div>
-      </div>
-      <div class="num" style="font-size:13px;font-weight:800;color:var(--violet-d);margin:14px 0 6px">TO-BE</div>
-      <div class="mock on">
-        <div class="t">광주시 신현동의 단독주택 · 11.01~12.12</div>
-        <div class="p">6주 총 1,152,000원</div>
-        <div class="s">주당 192,000원 · <b style="color:var(--violet-d)">4주 이상 할인 −108,000원</b></div>
-        <div class="d">같은 기간 모텔보다 약 155만 원 절약 · 보증금 33만 원 회사 보관</div>
-      </div>
-    </div>
-    <div>
-      <div class="card blue" style="height:100%">
-        <h3>연박을 늘리는 넛지</h3>
-        <ul class="clean vio" style="margin-top:10px">
-          <li>3주 선택 시 <b>"4주로 늘리면 주당 9천 원 더 할인"</b></li>
-          <li>퇴실 D-7 <b>"1주 연장 시 주당 OO원"</b> 원탭 연장</li>
-          <li>상세 상단에 <b>기간별 주당 단가 그래프</b> (1·2·4주)</li>
-        </ul>
-        <p style="margin-top:8px;font-size:14px">지표: 상세 → 계약 시작, <b>평균 계약 주수</b></p>
-        <p class="flag" style="margin-top:6px">레퍼런스: Airbnb 총액 표시(2025 기본값)·장기 숙박 할인 표시, 항공권 앱 "날짜 바꾸면 OO원 절약"</p>
-      </div>
-    </div>
-    <div>
-      <div class="card out" style="height:100%">
-        <h3>지도 가격 핀</h3>
-        <div class="map">
-          <span class="pin" style="left:18%;top:22%">19만</span>
-          <span class="pin" style="left:55%;top:16%">28만</span>
-          <span class="pin hot" style="left:36%;top:48%">21만</span>
-          <span class="pin" style="left:68%;top:56%">45만</span>
-          <span class="pin" style="left:14%;top:72%">24만</span>
-          <span class="cl" style="left:72%;top:28%">18~45만</span>
+  <div class="kick k-ten">임차인 ② 지도</div>
+  <h2>지도에 <span class="hl b">방 개수만</span> 있고 가격이 없어요</h2>
+  <div class="ba">
+    <div class="col"><div class="lab now">지금</div>
+      <div class="ph"><div class="iw"><img src="img/map.jpg">
+        <div class="mk" style="left:58%;top:30%;width:22%;height:11%"><span>숫자 7 = 방 7개</span></div>
+        <div class="mk" style="left:9%;top:11%;width:20%;height:10%"><span class="btm">가격은 하나씩 눌러야</span></div>
+      </div></div></div>
+    <div class="arrow">→</div>
+    <div class="col"><div class="lab new">바꾸면</div>
+      <div class="ph mk-h"><div class="ui">
+        <div class="top"><span class="sm">🔍 판교역</span><span class="sm"><b style="color:var(--vio-d)">11.01~12.12 · 6주</b></span></div>
+        <div class="mapui"><div class="river"></div>
+          <span class="pin" style="left:8%;top:10%">주 21만</span>
+          <span class="pin lo" style="left:52%;top:8%">주 17만</span>
+          <span class="pin on" style="left:30%;top:33%">주 19만</span>
+          <span class="pin" style="left:62%;top:38%">주 28만</span>
+          <span class="pin" style="left:10%;top:72%">주 24만</span>
+          <span class="pin" style="left:55%;top:80%">주 45만</span>
         </div>
-        <p style="font-size:14px;margin-top:10px">확대 시 <b>선택 기간 주당 가격 핀</b>, 축소 시 클러스터에 <b>가격 범위</b></p>
-        <p class="flag" style="margin-top:6px">레퍼런스: 에어비앤비 지도 가격 핀, 직방 지도 시세</p>
-      </div>
+        <div class="card"><img src="img/thumb1.jpg"><div>
+          <div class="tt">광주시 신현동 원룸</div>
+          <div class="big">주 19.2만 · 6주 115만</div>
+          <div class="save">이 동네 평균보다 싸요</div>
+        </div></div>
+      </div></div></div>
+    <div class="why">
+      <div class="w"><h4>경쟁사는?</h4><p><b>에어비앤비</b>와 <b>직방</b>은 지도에서 가격을 바로 보여 줍니다. 삼삼엠투는 숫자(방 개수)만 보입니다.</p></div>
+      <div class="w"><h4>어떻게?</h4><p>가까이 보면 <b>방마다 주당 가격</b>, 멀리 보면 <b>"18~45만"처럼 가격 범위</b>를 보여 줍니다.</p></div>
+      <div class="w g"><h4>좋아지는 것</h4><p>"이 동네는 얼마쯤이구나"를 1초 만에 알고, <b>싼 방을 바로 눌러</b> 봅니다.</p></div>
     </div>
   </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 앱 녹화 속 실제 매물로 계산(서비스 수수료 제외) · 모텔 비교는 크리에이터 광고 "한 달 180만 원" 기준 [미검증] → 실제 운영 시 내부 데이터·외부 평균가로 산출하고 근거 표기</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
+  <div class="foot"><b>근거</b> 앱 녹화(지도 화면) · 오른쪽 지도의 가격은 이해를 돕는 예시 숫자</div>
 </section>
 
-<!-- 9 STRATEGY 2 -->
+<!-- 7 임차인 ③ 안전 -->
 <section class="slide">
-  <div class="head">
-    <div><div class="kicker vio">08 · 전략 2</div><h2>신뢰를 문구가 아니라 <span class="hl vio">행동</span>으로 증명합니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:12px">
-    <div class="card vio"><div class="num">S1</div><h3 style="font-size:17px">안심 계약 3종 배지</h3><p style="font-size:13.5px">가격 바로 아래: 보증금 회사 보관 · 입주 확인 후 정산 · 삼삼케어</p></div>
-    <div class="card vio"><div class="num">S2</div><h3 style="font-size:17px">입주 사진 기록</h3><p style="font-size:13.5px">입주 당일 방 사진 6장 안내 → 퇴실 때 같은 각도로 비교</p></div>
-    <div class="card vio"><div class="num">S3</div><h3 style="font-size:17px">보증금 반환 트래커</h3><p style="font-size:13.5px">퇴실 후 "반환 처리 중 → OO일 입금 예정"</p></div>
-    <div class="card vio"><div class="num">S4</div><h3 style="font-size:17px">기간 변경 원탭</h3><p style="font-size:13.5px">"1주 연장" → 임대인 승인 → 자동 결제</p></div>
-    <div class="card vio"><div class="num">S5</div><h3 style="font-size:17px">응답 보장 배지</h3><p style="font-size:13.5px">1시간 내 응답 임대인 표시 + "평균 OO분 내 답장"</p></div>
-  </div>
-  <table style="margin-top:18px;font-size:14px">
-    <tr><th>장치</th><th>해소하는 걱정</th><th>왜 33m²만 가능한가</th></tr>
-    <tr><td>S1·S3</td><td>"보증금 돌려받을 수 있을까?"</td><td>회사가 보증금을 보관하는 구조 (직거래·카페에는 없음)</td></tr>
-    <tr><td>S2</td><td>"퇴실 때 파손 덤터기 쓰면?"</td><td>앱이 입·퇴실 상태를 증빙 + 삼삼케어</td></tr>
-    <tr><td>S4</td><td>"일정이 바뀌면?"</td><td>주 단위 계약 구조 (현재 13주+는 계약 후 연장 신청)</td></tr>
-    <tr><td>S5</td><td>"연락이 안 되면?"</td><td>1:1 전담 매니저가 임대인 운영을 관리</td></tr>
-  </table>
-  <div class="foot">
-    <span class="src"><b>측정</b> 배지 노출 vs 미노출 그룹의 상세 → 계약 시작 전환율, 문의 중 '보증금·환불' 질문 비중 · <b>출처</b> 앱 녹화(안내사항: 최대 12주, 13주+ 연장 신청), 뉴스핌 26.7(전담 컨설턴트·삼삼케어) [자사발표]</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 10 STRATEGY 3 WEB2APP -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker vio">09 · 전략 3</div><h2>웹2앱: <span class="hl vio">웹에서 숫자를 보고, 앱에서 계약</span>합니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <p style="font-size:15px;color:var(--gray2)">AS-IS: 대부분의 광고가 "Install Now"로 앱 설치에 직행합니다. 설치 전에는 가격·매물을 볼 수 없고, 설치 후 홈에서 광고 맥락이 끊깁니다. <b>병원 광고만 웹 매물 페이지</b>로 갑니다 — 이 패턴을 전체로 확장합니다.</p>
-  <div class="flow" style="margin-top:16px">
-    <div class="stepbox"><div class="n">1 · 광고</div><h4>페르소나 소재</h4><p>"간호대생 실습 집", "현장 근처 6주"</p></div>
-    <div class="arr">→</div>
-    <div class="stepbox" style="background:var(--violet-soft)"><div class="n">2 · 웹 랜딩</div><h4>가입 없이 가치 확인</h4><p>병원·현장 입력 + 기간 → 매물 3~5개 <b>총액·절약액</b></p></div>
-    <div class="arr">→</div>
-    <div class="stepbox"><div class="n">3 · 관심 표현</div><h4>찜·가격 알림</h4><p>"앱에서 알림 받기" 트리거</p></div>
-    <div class="arr">→</div>
-    <div class="stepbox" style="background:var(--violet-soft)"><div class="n">4 · 앱</div><h4>같은 매물·날짜 복원</h4><p>지연 딥링크 → 계약 화면 직행</p></div>
-    <div class="arr">→</div>
-    <div class="stepbox"><div class="n">5 · 이탈 복귀</div><h4>개인화 알림톡</h4><p>"11/1 입주 가능 판교 원룸 2개 남음"</p></div>
-  </div>
-  <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:18px">
-    <div class="card"><h3 style="font-size:17px">학습 신호가 깊어짐</h3><p style="font-size:13.5px">웹 픽셀로 날짜 입력·총액 확인·찜을 매체에 전달. 설치보다 계약에 가까운 신호로 최적화</p></div>
-    <div class="card"><h3 style="font-size:17px">설치 품질 상승</h3><p style="font-size:13.5px">매물과 가격을 본 사람만 설치 → 설치 → 계약 전환율 ↑</p></div>
-    <div class="card"><h3 style="font-size:17px">실험이 빨라짐</h3><p style="font-size:13.5px">앱 배포 없이 카피·프리셋·총액 표시를 웹에서 A/B</p></div>
-    <div class="card"><h3 style="font-size:17px">자연 유입 자산</h3><p style="font-size:13.5px">"서울성모병원 근처 단기임대" 같은 지역×목적 페이지</p></div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>측정</b> 웹 랜딩 → 가치 확인율 → 앱 전환율 → 계약 · '바로 설치' 그룹과 계약당 CAC 비교(홀드아웃) · <b>출처</b> Meta 광고 라이브러리 2026.10.27 확인(에어브릿지 링크·병원 웹 랜딩)</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 11 PERSONA -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker teal">10 · 소구점</div><h2>"단기임대 1위"가 아니라 <span class="hl teal">지금 쓰는 대안의 고통</span>을 숫자로</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <table style="font-size:13.5px">
-    <tr><th>페르소나</th><th>지금 쓰는 대안</th><th>대안의 페인 포인트</th><th>소구 (예시 카피)</th><th>웹2앱 랜딩 액션</th></tr>
-    <tr><td><b>현장직·장기 출장</b></td><td>모텔·여관</td><td>한 달 180만 원, 빨래·취사 불가</td><td>"모텔 한 달 값으로 세탁기 있는 원룸 6주"</td><td>현장 지역 + 세탁기·주차 + 4주</td></tr>
-    <tr><td><b>간호대생 실습·인턴</b></td><td>왕복 4시간 통학, 고시원</td><td>첫차 없음, 2년 계약 불가</td><td>"실습 기간만큼만, 병원 도보 10분"</td><td>병원 선택 → 거리순 + 실습 기간</td></tr>
-    <tr><td><b>이사 공백·인테리어</b></td><td>본가·호텔</td><td>짐 보관, 호텔 비용</td><td>"공백 3주, 호텔의 1/3 값으로 우리 동네에서"</td><td>현재 주소 → 같은 동네</td></tr>
-    <tr><td><b>병원 보호자</b></td><td>병원 앞 모텔</td><td>장기 간병 피로, 식사</td><td>"치료 기간 동안 병원 옆 우리 집처럼"</td><td>병원 페이지 (집행 중 → 확대)</td></tr>
-    <tr><td><b>발령 가족</b></td><td>레지던스·호텔</td><td>아이 동반 취사 불가</td><td>"아이와 지낼 투룸, 레지던스보다 OO% 싸게"</td><td>근무지 → 통근 시간순</td></tr>
-    <tr><td><b>이사 전 동네 탐색</b></td><td>주말 방문</td><td>2년 계약 후 후회</td><td>"2년 살기 전에 2주 살아보기"</td><td>관심 동네 + 2주</td></tr>
-  </table>
-  <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">
-    <div class="card teal"><p style="font-size:14px"><b>vs 리브애니웨어:</b> 제주 한달살기 소구는 줄이고, <b>생활권 거리(통근·병원)</b>를 숫자로 말합니다.</p></div>
-    <div class="card teal"><p style="font-size:14px"><b>vs 에어비앤비:</b> '숙소'가 아니라 '집'. <b>길수록 내려가는 주당 단가</b>와 생활 옵션을 보여줍니다.</p></div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> Meta 광고 라이브러리 게재 중 크리에이터 소재(현장직·간호대생·인턴·병원 보호자 등, 2026.10.27) · 수치는 크리에이터 문구 [미검증]</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 12 LEADING INDICATORS -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker">11 · 선행 지표</div><h2>지표마다 <span class="hl">"무엇을 하면 오르는지"</span></h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <table style="font-size:13.5px">
-    <tr><th style="width:150px">임차인 선행 지표</th><th style="width:330px">지금 막히는 지점 (녹화)</th><th>앱 내 액션 (TO-BE)</th></tr>
-    <tr><td><b>날짜 입력 검색</b></td><td>홈에 날짜 질문 없음, 화면 간 날짜 초기화</td><td>홈 검색창을 "언제부터, 몇 주?"로 시작 + 날짜 유지</td></tr>
-    <tr><td><b>상세 조회</b></td><td>지도 가격 없음, 2글자 검색 실패, 관련도 낮음</td><td>지도 가격 핀, 자동완성, 거리순</td></tr>
-    <tr><td><b>찜 3개+</b></td><td>찜해도 돌아올 이유 없음</td><td>찜 시 가격·마감 알림 자동 제안, 찜 나란히 비교</td></tr>
-    <tr><td><b>문의 1회+</b></td><td>무엇을 물어볼지 모름</td><td>질문 템플릿("주차?", "입주 당일 몇 시?", "택배?") + 평균 응답 시간</td></tr>
-    <tr><td><b>계약 시작</b></td><td>총액·할인 직접 계산</td><td>총액·절약액, "1주 늘리면 OO원", 즉시 입주 할인 남은 시간</td></tr>
-    <tr><td><b>이탈 후 복귀</b></td><td>빈 계약·채팅 탭, 일반 안내 알림톡</td><td>빈 탭에 "찜한 방 이어보기", 본 매물+날짜 개인화 알림톡</td></tr>
-  </table>
-  <div style="display:flex;gap:14px;margin-top:14px;align-items:stretch">
-    <div class="card" style="flex:1"><p style="font-size:13.5px"><b>임대인:</b> 등록 진행률 바 · "즉시 계약 매물은 평균 OO일 빠름" · 빠른 답장 템플릿 · D+5 미계약 시 주변 가격 팁 · 첫 정산 리포트에 "장기 월세였다면 vs 단기"</p></div>
-    <div class="card amber" style="flex:1"><p style="font-size:13.5px"><b>검증:</b> 30일 내 계약자 vs 미계약자 코호트 lift → 활성화 기준 2~3개 → 홀드아웃으로 인과 확인 → 광고 최적화 이벤트로 연결</p></div>
-  </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27) · 선행 지표 후보는 가설, 입사 후 내부 데이터로 검증</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
-</section>
-
-<!-- 13 RETENTION + PROMO -->
-<section class="slide">
-  <div class="head">
-    <div><div class="kicker teal">12 · 리텐션</div><h2>몇 년에 1번인 이사 대신, <span class="hl teal">주기가 정해진 생활 이벤트</span>를 잡습니다</h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div class="grid" style="grid-template-columns:1.15fr 1fr;gap:20px">
-    <div>
-      <table style="font-size:13.5px">
-        <tr><th>새 소구</th><th>주기</th><th>리텐션 장치</th></tr>
-        <tr><td><b>학원가 방학 특강</b> (대치동 등)</td><td>연 2회</td><td>방학 6주 전 "작년 그 동네" 리마인드</td></tr>
-        <tr><td><b>실습·인턴 로테이션</b></td><td>분기·학기</td><td>다음 실습지 입력 → 자동 추천</td></tr>
-        <tr><td><b>현장 프로젝트 이동</b></td><td>프로젝트마다</td><td>"다음 현장 지역" 등록 → 알림</td></tr>
-        <tr><td><b>정기 치료</b> (주기 치료)</td><td>수주~수개월</td><td>다음 치료 일정 → 같은 집 우선 예약</td></tr>
-        <tr><td><b>시험 몰입</b> (고시·자격증)</td><td>연 1~2회</td><td>시험 일정 기반 알림</td></tr>
-        <tr><td><b>연장</b></td><td>계약 중</td><td>퇴실 D-7 원탭 연장</td></tr>
-      </table>
-    </div>
-    <div class="card out">
-      <h3>경품 추첨 대신, 단기 거주의 불편을 없애는 혜택</h3>
-      <p style="font-size:13px;color:var(--gray2);margin-top:4px">AS-IS: 가입 추첨(로봇청소기·백화점상품권), 댓글 커피 쿠폰</p>
-      <ul class="clean teal" style="margin-top:10px">
-        <li><b>청소 프리패스</b> (퇴실 청소비 면제) · 4주+ 계약</li>
-        <li><b>입주 웰컴 키트</b> (세제·휴지·수건) · 첫 계약</li>
-        <li><b>짐 보관·용달 할인</b> · 이사·인테리어 목적</li>
-        <li><b>연장 1주 할인권</b> · 퇴실 D-7</li>
-        <li><b>재계약 쿠폰</b> (다음 현장·실습용) · 6개월</li>
-      </ul>
-      <p style="font-size:13.5px;margin-top:6px">원칙: 혜택은 <b>계약·연장 행동에만</b>. 측정은 계약당 CAC·평균 계약 주수</p>
+  <div class="kick k-ten">임차인 ③ 안전</div>
+  <h2>가장 강한 장점 "보증금 보관"이 <span class="hl b">작은 글씨 1줄</span>이에요</h2>
+  <div class="ba">
+    <div class="col"><div class="lab now">지금</div>
+      <div class="ph"><div class="iw"><img src="img/escrow.jpg">
+        <div class="mk" style="left:3%;top:22%;width:94%;height:21%"><span>할인표를 보고 직접 계산</span></div>
+        <div class="mk" style="left:3%;top:67%;width:94%;height:8%"><span class="btm">보증금 안전 안내: 회색 1줄</span></div>
+      </div></div></div>
+    <div class="arrow">→</div>
+    <div class="col"><div class="lab new">바꾸면</div>
+      <div class="ph mk-h"><div class="ui">
+        <div style="height:110px;background:url(img/thumb1.jpg) center/cover"></div>
+        <div style="padding:8px 12px 2px"><div class="tt" style="font-size:12.5px">광주시 신현동 원룸</div>
+          <div class="big" style="font-size:18px">3주 총 603,000원</div><div class="sm">주당 201,000원 · 2주 이상 5% 할인 적용</div></div>
+        <div class="nudge">💡 1주만 더(4주) 살면 <b>주당 9천 원</b> 더 싸져요<br>4주 총 768,000원 · <u>4주로 바꾸기</u></div>
+        <div style="padding:6px 12px 2px;font-weight:800;font-size:11.5px">삼삼엠투가 지켜 드려요</div>
+        <div class="safe"><i>🔒</i>보증금 33만 원, 삼삼엠투가 보관 → 퇴실 후 돌려줌</div>
+        <div class="safe"><i>✅</i>입주 확인 후에 집주인에게 돈이 가요</div>
+        <div class="safe"><i>🛡️</i>파손이 생겨도 삼삼케어가 보상</div>
+        <div class="btn">3주 계약 시작하기</div>
+      </div></div></div>
+    <div class="why">
+      <div class="w"><h4>왜 바꾸나요?</h4><p>처음 쓰는 사람은 <b>"돈 떼이면 어떡하지?"</b>가 가장 걱정입니다. 이 답이 지금은 탭 안쪽 작은 글씨입니다.</p></div>
+      <div class="w"><h4>어떻게?</h4><p>가격 바로 밑에 <b>안심 3가지</b>를 크게. 기간이 할인 기준보다 조금 짧으면 <b>"1주 더"</b>를 제안합니다.</p></div>
+      <div class="w g"><h4>좋아지는 것</h4><p>걱정이 줄어 <b>"계약 시작" 버튼을 더 많이</b> 누르고, 평균 계약 기간도 길어집니다.</p></div>
     </div>
   </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> Meta 광고 라이브러리 오퍼(2026.10.27) · 뉴스핌 26.7 "계약·생활용품 구매 함께 제공" 방향 [자사발표] · 측정: 12개월 재계약률, 재계약까지 평균 일수</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
+  <div class="foot"><b>근거</b> 앱 녹화(계약 정보 탭: 임대료 180,000원/주, 2주+ 5%, 4주+ 10%, 관리비 30,000원/주, 보증금 330,000원) · 3주 = (171,000+30,000)×3 · 4주 = (162,000+30,000)×4</div>
 </section>
 
-<!-- 14 LANDLORD -->
+<!-- 8 임차인 ④ 첫 화면 -->
 <section class="slide">
-  <div class="head">
-    <div><div class="kicker amber">13 · 공급(임대인)</div><h2>앱 안의 좋은 임대인 콘텐츠를 <span class="hl">밖으로 꺼내고, 숫자를 붙입니다</span></h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div style="display:flex;gap:22px;align-items:flex-start">
-    <div style="flex:1">
-      <table style="font-size:13.5px">
-        <tr><th></th><th>장기 월세 (직방·다방)</th><th>숙박 운영 (에어비앤비형)</th><th>삼삼엠투</th></tr>
-        <tr><td><b>공실</b></td><td>다음 세입자까지 수개월</td><td>일 단위로 메움</td><td><b>주 단위, 첫 계약 평균 3일</b></td></tr>
-        <tr><td><b>운영 부담</b></td><td>낮음</td><td>매일 체크인·청소·침구</td><td><b>주 단위 입퇴실</b></td></tr>
-        <tr><td><b>신고</b></td><td>해당 없음</td><td>숙박업 신고 필수 (25.10~ 미신고 예약 차단)</td><td>임대차 구조 (4주 미만은 회색 지대)</td></tr>
-        <tr><td><b>보호</b></td><td>보증금 회수 분쟁</td><td>플랫폼 보호</td><td><b>보증금 회사 보관 + 삼삼케어</b></td></tr>
-        <tr><td><b>단가</b></td><td>시세 월세</td><td>높지만 변동 큼</td><td>월세보다 높은 주 단위 단가</td></tr>
-      </table>
-      <div class="card amber" style="margin-top:14px;padding:14px 18px">
-        <ul class="clean" style="margin:0">
-          <li style="font-size:14px">사례마다 <b>"장기 월세 OO만 원 → 단기 OO만 원"</b> (공실·청소·관리비 반영) 1줄</li>
-          <li style="font-size:14px">배포: 임대인 카페·블로그 시리즈·숏폼·공인중개사 자료</li>
-          <li style="font-size:14px"><b>지역별 수익 리포트</b>(월 1회) → 공급 부족 지역 임대인 광고의 랜딩</li>
-          <li style="font-size:14px" >수익 시뮬레이터를 웹에 공개 → 가입 전 계산 → 등록 시작</li>
-        </ul>
-      </div>
+  <div class="kick k-ten">임차인 ④ 첫 화면</div>
+  <h2>첫 화면이 "어디?"만 묻고 <span class="hl b">"언제부터?"</span>는 안 물어요</h2>
+  <div class="ba">
+    <div class="col"><div class="lab now">지금</div>
+      <div class="ph"><div class="iw"><img src="img/home.jpg">
+        <div class="mk" style="left:3%;top:26%;width:94%;height:10%"><span>장소만 입력</span></div>
+        <div class="mk" style="left:3%;top:40%;width:94%;height:47%"><span class="btm">방 종류만 → 누르면 전국 매물이 섞임</span></div>
+      </div></div></div>
+    <div class="arrow">→</div>
+    <div class="col"><div class="lab new">바꾸면</div>
+      <div class="ph mk-h"><div class="ui">
+        <div class="top"><span class="logo33">33m²</span><span>♡ 🔔</span></div>
+        <div class="q">언제부터 살 집이<br>필요하세요?</div>
+        <div class="field"><span>📅 입주일</span><b>11월 1일</b></div>
+        <div class="field"><span>⏱ 기간</span><b>6주</b></div>
+        <div class="field"><span>📍 가까웠으면 하는 곳</span><b>판교 회사</b></div>
+        <div style="padding:8px 12px 2px;font-weight:800;font-size:11px">어떤 일로 찾으세요?</div>
+        <div class="chips"><span class="chip on">💼 출장·현장</span><span class="chip">📦 이사·공사</span><span class="chip">🩺 병원</span><span class="chip">🎓 실습·인턴</span><span class="chip">✈️ 한 달 살기</span></div>
+        <div class="btn">6주 살 집 보기</div>
+        <div style="padding:2px 12px;font-size:10px;color:var(--gray2)">출장·현장 → 세탁기·주차 있는 방부터 보여 드려요</div>
+      </div></div></div>
+    <div class="why">
+      <div class="w"><h4>왜 바꾸나요?</h4><p>삼삼엠투 손님은 <b>"이사 날짜가 안 맞아서", "출장이 잡혀서"</b> 옵니다. 날짜가 먼저입니다.</p></div>
+      <div class="w"><h4>어떻게?</h4><p>입주일·기간·가까운 곳·이유를 먼저 묻고, <b>이유에 맞는 방</b>(현장직 → 세탁기·주차)부터 보여 줍니다.</p></div>
+      <div class="w g"><h4>좋아지는 것</h4><p>처음부터 <b>내 상황에 맞는 방</b>만 보여서, 상관없는 매물을 보다가 나가는 일이 줄어듭니다.</p></div>
     </div>
-    <div style="text-align:center"><div class="phone sm"><img src="img/llhome.jpg"></div><div class="cap">임대인 모드 홈: 장점 카드 ✓</div></div>
-    <div style="text-align:center"><div class="phone sm"><img src="img/llstory.jpg"></div><div class="cap">임대인 사례: 앱 안에만, 수익 숫자 없음</div></div>
   </div>
-  <div class="foot">
-    <span class="src"><b>출처</b> 앱 녹화(임대인 모드) · 벤처스퀘어(첫 계약 평균 3일) [자사발표] · 에어비앤비 뉴스룸(영업신고 의무화) · 10월 Meta 소재 "평균 계약률 95% 우수 임대인"</span>
-    <span>삼삼엠투 · 이도형</span>
-  </div>
+  <div class="foot"><b>근거</b> 앱 녹화(홈 화면, '원룸' 등을 누르면 진주·은평·중구 매물이 함께 나옴) · 이용 목적: 업무·출장 38%, 이사·인테리어 24%(바이라인 2026.2, 회사 발표)</div>
 </section>
 
-<!-- 15 KPI + ROADMAP -->
+<!-- 9 임차인 ⑤ 다시 오게 -->
 <section class="slide">
-  <div class="head">
-    <div><div class="kicker">14 · 기대효과</div><h2>북극성: <span class="hl">월 입주 완료 '주(週)' 수</span></h2></div>
-    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
-  </div>
-  <div class="flow">
-    <div class="step"><b style="font-size:15px">날짜 입력 검색 유저</b><p style="font-size:12.5px">홈 날짜 시작 · 웹2앱</p></div>
-    <div class="arr">×</div>
-    <div class="step" style="background:var(--violet-soft)"><b style="font-size:15px">검색 → 입주 전환율</b><p style="font-size:12.5px">총액 표시 · 신뢰 배지 · 가격 핀</p></div>
-    <div class="arr">×</div>
-    <div class="step"><b style="font-size:15px">평균 계약 주수</b><p style="font-size:12.5px">기간 넛지 · 원탭 연장 · 4주+ 혜택</p></div>
-    <div class="arr">+</div>
-    <div class="step" style="background:var(--teal-soft)"><b style="font-size:15px">재이용</b><p style="font-size:12.5px">주기 이벤트 · 재계약 쿠폰</p></div>
-  </div>
-  <p class="flag" style="margin-top:8px">거래액(GMV) = 북극성 × 주 단가. 단가 변동에 흔들리지 않는 '주 수'를 북극성으로 둡니다. 결제가 아닌 '입주 완료' 기준(에스크로 구조상 실제 가치 전달 시점).</p>
-  <div class="grid" style="grid-template-columns:1.25fr 1fr;gap:18px;margin-top:12px">
-    <div>
-      <table style="font-size:13.5px">
-        <tr><th>우선순위 (ICE)</th><th>지표</th><th style="width:90px">I·C·E</th></tr>
-        <tr class="hi"><td><b>1. 선택 기간 총액·절약액</b></td><td>상세 → 계약 시작</td><td>9·8·8</td></tr>
-        <tr><td><b>2. 날짜·필터 유지</b></td><td>날짜 입력 검색률</td><td>7·9·9</td></tr>
-        <tr><td><b>3. 안심 계약 3종 배지</b></td><td>계약 시작율</td><td>8·7·9</td></tr>
-        <tr><td><b>4. 페르소나 웹2앱 랜딩</b></td><td>설치 → 계약 전환율</td><td>9·7·7</td></tr>
-        <tr><td><b>5. 검색 자동완성·지도 가격 핀</b></td><td>검색·지도 → 상세</td><td>8·7·6</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3 style="font-size:17px">90일</h3>
-      <ul class="clean" style="margin-top:8px">
-        <li style="font-size:14px"><b>0~30일</b> 양면 퍼널 대시보드, 선행 지표 검증, 총액 표시·배지 A/B</li>
-        <li style="font-size:14px"><b>31~60일</b> 페르소나 웹2앱 랜딩, 검증된 선행 행동으로 광고 최적화</li>
-        <li style="font-size:14px"><b>61~90일</b> 연장·재계약 루프, 혜택형 프로모션, 임대인 수익 리포트</li>
-      </ul>
+  <div class="kick k-ten">임차인 ⑤ 다시 오게</div>
+  <h2>계약이 끝나면 <span class="hl b">다시 올 이유</span>가 없어요</h2>
+  <div class="ba">
+    <div class="col"><div class="lab now">지금</div>
+      <div class="ph"><div class="iw"><img src="img/emptytab.jpg">
+        <div class="mk" style="left:8%;top:38%;width:84%;height:20%"><span>빈 화면 + 버튼 1개</span></div>
+      </div></div></div>
+    <div class="arrow">→</div>
+    <div class="col"><div class="lab new">바꾸면</div>
+      <div class="ph"><div class="lock">
+        <div class="tm">9:41</div><div class="dt">12월 5일 금요일</div>
+        <div class="noti"><div class="h"><span>33m² 삼삼엠투</span><span>지금</span></div><b>퇴실 7일 전이에요 🏠</b><br>1주 더 지내실래요? 버튼 하나로 연장돼요</div>
+        <div class="noti"><div class="h"><span>33m² 삼삼엠투</span><span>어제</span></div><b>찜한 판교 원룸 가격이 내려갔어요</b><br>주당 21만 → 19만 원</div>
+        <div class="noti"><div class="h"><span>33m² 삼삼엠투</span><span>3일 전</span></div><b>🎁 4주 이상 계약 혜택</b><br>퇴실 청소비 0원 (청소 프리패스)</div>
+        <div class="noti"><div class="h"><span>33m² 삼삼엠투</span><span>1주 전</span></div><b>다음 현장은 어디세요?</b><br>지역을 알려 주시면 미리 찾아 드려요</div>
+      </div></div></div>
+    <div class="why">
+      <div class="w"><h4>혜택은 "경품"보다 "진짜 필요한 것"</h4><p>지금 광고 혜택: 가입하면 로봇청소기 추첨.<br>바꾸면: <b>청소비 0원</b>, <b>입주 생필품 키트</b>, <b>짐 보관 할인</b>, <b>연장 할인</b></p></div>
+      <div class="w"><h4>정해진 때에 또 오게</h4><p>방학 특강, 실습 교대, 다음 공사 현장처럼 <b>다시 오는 날이 정해진 일</b>을 미리 묻고 알려 줍니다.</p></div>
+      <div class="w g"><h4>좋아지는 것</h4><p><b>연장</b>과 <b>다시 계약</b>이 늘어, 같은 광고비로 계약이 더 생깁니다.</p></div>
     </div>
   </div>
-  <div class="foot">
-    <span class="src"><b>원칙</b> 하위 퍼널 실험은 표본이 크게 필요(전환율 5%에서 상대 10% 향상 확인에 그룹당 약 3만 명) → 상위 퍼널 지표로 먼저 판단, 취소율·분쟁률을 가드레일로</span>
-    <span>삼삼엠투 · 이도형</span>
+  <div class="foot"><b>근거</b> 앱 녹화(계약 탭 빈 화면) · Meta 광고 라이브러리(가입 추첨 로봇청소기·백화점상품권 이벤트) · 알림 내용은 예시</div>
+</section>
+
+<!-- 10 PART 2 -->
+<section class="slide" style="justify-content:center;background:var(--amber-s)">
+  <div class="kick k-own" style="background:#fff">PART 2</div>
+  <h1>🏠 방 내놓는 사람(임대인)</h1>
+  <p class="sub" style="font-size:22px">"그래서 얼마 더 버는데?"에 숫자로 답하기</p>
+  <div style="display:flex;gap:12px;margin-top:26px;font-size:17px;font-weight:700;color:#7A4E00">
+    <span>① 지금 문제</span><span>·</span><span>② 수익 계산기</span><span>·</span><span>③ 빈 방 알림·정산 리포트</span>
   </div>
 </section>
 
-<!-- 16 CLOSING -->
-<section class="slide" style="justify-content:center;background:
-  radial-gradient(900px 520px at 84% -10%, var(--violet-soft) 0%, transparent 55%),
-  radial-gradient(720px 520px at -5% 110%, var(--blue-soft) 0%, transparent 55%), #fff">
-  <div class="kicker vio">정리</div>
-  <div class="quote" style="max-width:1000px">
-    <div class="q">삼삼엠투는 이미 이기는 구조를 가졌습니다.<br><span class="g">그 구조를 숫자로 보여주는 순간</span>, 광고비는 같아도 계약은 늘어납니다.</div>
+<!-- 11 임대인 ① 문제 -->
+<section class="slide">
+  <div class="kick k-own">임대인 ① 지금 문제</div>
+  <h2>"높은 수익"이라고만 하고 <span class="hl a">얼마인지</span>는 안 보여 줘요</h2>
+  <div class="ba" style="gap:26px">
+    <div class="col"><div class="lab now">임대인 홈</div>
+      <div class="ph"><div class="iw"><img src="img/llhome.jpg">
+        <div class="mk" style="left:15%;top:33%;width:70%;height:19%"><span>"높은 임대 수익" → 얼마?</span></div>
+      </div></div></div>
+    <div class="col"><div class="lab now">임대인 이야기</div>
+      <div class="ph"><div class="iw"><img src="img/llstory.jpg">
+        <div class="mk" style="left:3%;top:63%;width:94%;height:30%"><span>좋은 사례인데 숫자가 없어요</span></div>
+      </div></div></div>
+    <div class="col" style="width:400px">
+      <div class="lab now">경쟁사는 지금</div>
+      <div class="ref warn" style="width:100%"><img src="ref/la_hostfee.jpg" style="height:260px;object-fit:cover;object-position:top"><div class="who">리브애니웨어 임대인 모집 광고</div><div class="do">"수수료 5%에서 3.3%로 내려간 거 알고 계셨나요?"</div><div class="our">→ 경쟁사는 <b>수수료</b>로 임대인을 데려가고 있어요. 삼삼엠투는 <b>"얼마 더 버는지"</b>와 <b>"며칠 만에 계약되는지"</b>로 답해야 합니다.</div></div>
+    </div>
   </div>
-  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:24px;max-width:1000px">
-    <div class="card out"><div class="num">보여주기</div><p><b>총액·절약액·가격 핀</b>으로 "길수록 싸다"를 결정 순간에</p></div>
-    <div class="card out"><div class="num">증명하기</div><p><b>안심 계약 행동</b>으로 "왜 33m²인가"를</p></div>
-    <div class="card out"><div class="num">연결하기</div><p><b>웹2앱</b>으로 광고 클릭 직후 그 숫자를</p></div>
+  <div class="foot"><b>근거</b> 앱 녹화(임대인 모드) · Meta 광고 라이브러리 리브애니웨어 게재 중 광고(2026.10.27)</div>
+</section>
+
+<!-- 12 임대인 ② 수익 계산기 -->
+<section class="slide">
+  <div class="kick k-own">임대인 ② 수익 계산기</div>
+  <h2>등록 전에 <span class="hl a">"내 방, 얼마 벌까?"</span>를 바로 계산해 줍니다</h2>
+  <div class="ba">
+    <div class="col"><div class="lab new">바꾸면 (앱·웹 공통)</div>
+      <div class="ph mk-h"><div class="ui">
+        <div class="top"><b>←</b><span class="tt">내 방 수익 계산기</span><span></span></div>
+        <div class="q" style="font-size:15px">내 방, 단기임대로<br>한 달에 얼마 벌까요?</div>
+        <div class="field"><span>📍 위치</span><b>경기 광주 신현동</b></div>
+        <div class="field"><span>🏠 방</span><b>원룸 · 9평</b></div>
+        <div class="field"><span>💰 지금 월세</span><b>40만 원</b></div>
+        <div style="padding:10px 12px 4px;font-weight:800;font-size:11.5px">한 달 예상 수입</div>
+        <div style="padding:0 12px"><div class="sm">장기 월세</div><div class="bar" style="width:52%;background:#A7B0C2">40만 원</div>
+          <div class="sm" style="margin-top:6px">삼삼엠투 (빈 날 20% 빼고 계산)</div><div class="bar" style="width:80%;background:var(--vio)">약 62만 원</div></div>
+        <div class="save" style="margin:8px 12px 0;font-size:11px">한 달 약 +22만 원</div>
+        <div class="safe" style="margin-top:8px"><i>⚡</i>등록 후 첫 계약까지 평균 3일</div>
+        <div class="safe"><i>🛡️</i>파손은 삼삼케어가 보상</div>
+        <div class="btn">이 방 등록 시작하기</div>
+      </div></div></div>
+    <div class="arrow">←</div>
+    <div class="col" style="width:290px">
+      <div class="lab" style="background:var(--soft);color:var(--gray2)">레퍼런스 · 에어비앤비 광고</div>
+      <div class="ref"><img src="ref/airbnb_revenue.jpg"><div class="who">Airbnb · 게재 중</div><div class="do">"에어비앤비로 가능한 수익을 확인해 보세요"</div><div class="our">광고를 누르면 바로 수익 계산 → 등록</div></div>
+    </div>
+    <div class="why">
+      <div class="w"><h4>계산 방법 (쉽게)</h4><p>주당 18만 원 × 한 달 4.3주 = 77만 원<br>빈 날 20% 빼면 = <b>약 62만 원</b></p></div>
+      <div class="w g"><h4>좋아지는 것</h4><p>"해 볼까?"가 <b>"해야겠다"</b>로 바뀝니다. 광고에서 바로 이 계산기로 보내면 등록이 늘어납니다.</p></div>
+    </div>
   </div>
-  <div style="margin-top:28px;display:flex;gap:10px">
-    <span class="pill k">이도형</span><span class="pill vio">퍼포먼스·그로스 마케터 지원</span>
+  <div class="foot"><b>근거</b> 주당 임대료 180,000원은 앱 녹화 속 실제 매물 · 월세 40만 원과 빈 날 20%는 설명용 가정 · 첫 계약 평균 3일: 앱 임대인 홈·벤처스퀘어(회사 발표) · 레퍼런스: Meta 광고 라이브러리 Airbnb</div>
+</section>
+
+<!-- 13 임대인 ③ 알림·리포트 -->
+<section class="slide">
+  <div class="kick k-own">임대인 ③ 빈 방 알림 · 정산 리포트</div>
+  <h2>빈 날짜는 <span class="hl a">미리 알려 주고</span>, 번 돈은 <span class="hl a">월세와 비교</span>해 줍니다</h2>
+  <div class="ba">
+    <div class="col"><div class="lab new">알림</div>
+      <div class="ph"><div class="lock" style="background:linear-gradient(170deg,#3A2A10,#8A5A10 60%,#E89A0C)">
+        <div class="tm">9:41</div><div class="dt">11월 20일 목요일</div>
+        <div class="noti"><div class="h"><span>33m² 임대인</span><span>지금</span></div><b>12월 2주가 비어 있어요</b><br>주변 비슷한 방은 주당 17만 원이에요. <u>가격 바꾸기</u></div>
+        <div class="noti"><div class="h"><span>33m² 임대인</span><span>10분 전</span></div><b>새 문의가 왔어요 💬</b><br>1시간 안에 답하면 '빠른 답장' 배지가 붙어요</div>
+        <div class="noti"><div class="h"><span>33m² 임대인</span><span>어제</span></div><b>사진 3장만 더 올려 주세요</b><br>사진이 많은 방이 더 위에 보여요</div>
+      </div></div></div>
+    <div class="col"><div class="lab new">첫 정산 리포트</div>
+      <div class="ph mk-h"><div class="ui">
+        <div class="top"><b>←</b><span class="tt">11월 정산 리포트</span><span></span></div>
+        <div class="q" style="font-size:15px">이번 달<br><span style="color:var(--vio-d)">62만 원</span> 벌었어요 🎉</div>
+        <div style="padding:0 12px"><div class="sm">장기 월세였다면</div><div class="bar" style="width:52%;background:#A7B0C2">40만 원</div>
+          <div class="sm" style="margin-top:6px">삼삼엠투</div><div class="bar" style="width:80%;background:var(--vio)">62만 원</div></div>
+        <div class="save" style="margin:8px 12px;font-size:11px">월세보다 +22만 원</div>
+        <div class="field"><span>계약된 날</span><b>24일 / 30일</b></div>
+        <div class="field"><span>받은 후기</span><b>★ 4.9 (3개)</b></div>
+        <div class="nudge">💡 방이 하나 더 있으세요? 두 번째 방도 등록해 보세요</div>
+        <div class="btn">이 리포트 공유하기</div>
+      </div></div></div>
+    <div class="why">
+      <div class="w"><h4>왜?</h4><p>첫 달에 빈 날이 길면 임대인은 <b>"역시 월세가 낫네"</b> 하고 떠납니다.</p></div>
+      <div class="w"><h4>성공 사례를 밖으로</h4><p>지금 앱 안에만 있는 임대인 이야기에 <b>"월세 OO만 → 단기 OO만"</b> 숫자를 붙여 블로그·임대인 카페·짧은 영상으로 알립니다.</p></div>
+      <div class="w g"><h4>좋아지는 것</h4><p>임대인이 <b>오래 남고</b>, 방을 <b>더 등록</b>하고, 다른 임대인을 <b>데려옵니다</b>.</p></div>
+    </div>
   </div>
+  <div class="foot"><b>근거</b> 숫자는 앞 장 계산기와 같은 설명용 예시 · 알림·리포트 화면은 제안 목업</div>
+</section>
+
+<!-- 14 PART 3 -->
+<section class="slide" style="justify-content:center;background:var(--vio-s)">
+  <div class="kick k-ad" style="background:#fff">PART 3</div>
+  <h1>📣 광고</h1>
+  <p class="sub" style="font-size:22px">앱 깔기 전에, 웹에서 "집과 가격"부터 보여 주기</p>
+  <div style="display:flex;gap:12px;margin-top:26px;font-size:17px;font-weight:700;color:var(--vio-d)">
+    <span>① 광고 흐름 바꾸기</span><span>·</span><span>② 임차인 광고 레퍼런스</span><span>·</span><span>③ 임대인 광고 레퍼런스</span>
+  </div>
+</section>
+
+<!-- 15 광고 ① 흐름 -->
+<section class="slide">
+  <div class="kick k-ad">광고 ① 흐름 바꾸기</div>
+  <h2>광고 → 바로 앱 설치 대신, <span class="hl">광고 → 집·가격 웹페이지 → 앱</span></h2>
+  <div style="margin-top:12px;background:var(--red-s);border-radius:18px;padding:12px 18px">
+    <div class="flowrow">
+      <div style="width:80px;font-weight:800;color:#C42A20;font-size:17px">지금</div>
+      <div class="col"><div class="mini" style="height:160px"><img src="ref/own_motel.jpg"></div><div class="step">광고 보고 클릭</div></div>
+      <div class="arrow" style="font-size:30px">→</div>
+      <div class="col"><div class="mini" style="height:160px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--gray2);flex-direction:column;gap:4px"><span style="font-size:30px">⬇️</span>앱 설치</div><div class="step">설치부터 해야 함</div></div>
+      <div class="arrow" style="font-size:30px">→</div>
+      <div class="col"><div class="mini" style="height:160px"><img src="img/home.jpg"></div><div class="step bad">첫 화면에서 다시 검색</div></div>
+      <div style="flex:1;font-size:16px;font-weight:700;color:#C42A20;padding-left:10px">광고에서 본 상황(현장·병원)이<br>앱에 들어가면 사라져요</div>
+    </div>
+  </div>
+  <div style="margin-top:14px;background:var(--green-s);border-radius:18px;padding:12px 18px">
+    <div class="flowrow">
+      <div style="width:80px;font-weight:800;color:#0B7A50;font-size:17px">바꾸면</div>
+      <div class="col"><div class="mini" style="height:200px"><img src="ref/own_hospital.jpg"></div><div class="step">광고 보고 클릭</div></div>
+      <div class="arrow" style="font-size:30px">→</div>
+      <div class="col"><div class="mini" style="width:210px;height:200px"><div class="ui">
+        <div style="background:#F1F3F7;font-size:8.5px;color:var(--gray2);padding:3px 8px">🔒 33m2.co.kr/병원/서울성모병원</div>
+        <div style="padding:4px 8px;font-weight:900;font-size:10.5px">서울성모병원 걸어서 10분 · 6주 살 집</div>
+        <div class="card" style="padding:3px 8px"><img src="img/thumb1.jpg" style="width:30px;height:30px"><div><div class="tt" style="font-size:9px">원룸 · 도보 7분</div><div class="big" style="font-size:10.5px">6주 총 115만</div></div></div>
+        <div class="card" style="padding:3px 8px"><img src="img/thumb2.jpg" style="width:30px;height:30px"><div><div class="tt" style="font-size:9px">투룸 · 도보 9분</div><div class="big" style="font-size:10.5px">6주 총액 표시</div></div></div>
+        <div class="btn" style="padding:4px;font-size:9.5px;margin:4px 8px">앱에서 이 집 이어 보기</div>
+      </div></div><div class="step">가입 없이 집·총액 확인</div></div>
+      <div class="arrow" style="font-size:30px">→</div>
+      <div class="col"><div class="mini" style="height:200px"><img src="img/superhost.jpg"></div><div class="step good">앱에서 바로 그 집</div></div>
+      <div style="flex:1;font-size:15px;color:#0B5A3C;padding-left:10px;line-height:1.5"><b style="color:#0B7A50">좋아지는 것</b><br>· 집을 보고 마음에 든 사람만 설치<br>· 앱을 열면 <b>같은 집·같은 날짜</b>로 이어짐<br>· 웹에서 문구·가격 표시를 빠르게 실험</div>
+    </div>
+  </div>
+  <div class="foot"><b>근거</b> Meta 광고 라이브러리(2026.10.27): 대부분 광고가 앱 설치 링크로 연결, 병원 광고만 웹 매물 페이지로 연결 · 웹페이지 화면은 제안 목업(예시 매물)</div>
+</section>
+
+<!-- 16 광고 ② 임차인 레퍼런스 -->
+<section class="slide">
+  <div class="kick k-ad">광고 ② 임차인(방 구하는 사람) 광고 레퍼런스</div>
+  <h2>이 광고들을 <span class="hl">따라 해 봤으면</span> 합니다</h2>
+  <div class="refgrid" style="grid-template-columns:repeat(5,1fr)">
+    <div class="ref"><img src="ref/airbnb_discount.jpg"><div class="who">Airbnb<span class="tagx t-copy">따라 하기</span></div><div class="do">"아끼는 돈"을 제목에</div><div class="our">→ "같은 6주, 모텔보다 155만 원 아껴요"</div></div>
+    <div class="ref"><img src="ref/airbnb_kitchen.jpg"><div class="who">Airbnb<span class="tagx t-copy">따라 하기</span></div><div class="do">요리·빨래하는 생활 장면</div><div class="our">→ "현장 끝나고 세탁기 돌리는 저녁" 영상</div></div>
+    <div class="ref"><img src="ref/la_listing.jpg"><div class="who">리브애니웨어<span class="tagx t-copy">따라 하기</span></div><div class="do">진짜 매물 사진+이름 → 그 매물 페이지</div><div class="our">→ 병원·회사 근처 실제 매물을 광고로</div></div>
+    <div class="ref"><img src="ref/own_motel.jpg"><div class="who">삼삼엠투 (지금)<span class="tagx t-keep">더 키우기</span></div><div class="do">"모텔 한 달 180만 원" 숫자 비교</div><div class="our">→ 이 숫자 비교를 모든 상황 광고로</div></div>
+    <div class="ref"><img src="ref/own_hospital.jpg"><div class="who">삼삼엠투 (지금)<span class="tagx t-keep">더 키우기</span></div><div class="do">병원 근처 매물 웹페이지로 연결</div><div class="our">→ 사진을 실제 매물로, 총액까지 표시</div></div>
+  </div>
+  <div style="margin-top:12px;display:flex;gap:12px">
+    <div style="flex:1;background:var(--soft);border-radius:14px;padding:12px 16px;font-size:15px"><b>공식:</b> 지금 쓰는 대안(모텔·고시원·호텔)의 <b>불편 + 숫자</b> → 삼삼엠투의 <b>총액</b> → <b>그 집 페이지</b></div>
+    <div style="flex:1;background:var(--red-s);border-radius:14px;padding:12px 16px;font-size:15px;color:#7A1C15"><b style="color:#C42A20">하지 않기:</b> "영업신고 없이 합법" 같은 법 이야기. 숙박업인지는 운영 방식으로 판단해서 단정할 수 없습니다.</div>
+  </div>
+  <div class="foot"><b>근거</b> Meta 광고 라이브러리 게재 중 광고(2026.10.27) · 155만 원 = 모텔 6주(한 달 180만 원 기준, 확인 필요) − 삼삼엠투 6주 115만 원 · 숙박업 판단: 보건복지부 2024 기준(1개월 미만이면 숙박업에 가깝다고 봄)</div>
+</section>
+
+<!-- 17 광고 ③ 임대인 레퍼런스 -->
+<section class="slide">
+  <div class="kick k-ad">광고 ③ 임대인(방 내놓는 사람) 광고 레퍼런스</div>
+  <h2>임대인 광고는 <span class="hl">"얼마 벌까" + "안전한가"</span> 두 가지면 됩니다</h2>
+  <div class="refgrid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="ref"><img src="ref/airbnb_revenue.jpg"><div class="who">Airbnb<span class="tagx t-copy">따라 하기</span></div><div class="do">"가능한 수익을 확인해 보세요"</div><div class="our">→ "내 방, 월세보다 얼마 더? 30초 계산" → 수익 계산기</div></div>
+    <div class="ref"><img src="ref/airbnb_host1.jpg"><div class="who">Airbnb<span class="tagx t-copy">따라 하기</span></div><div class="do">"첫날부터 안전하게" 보호 강조</div><div class="our">→ "보증금은 회사 보관, 파손은 삼삼케어"</div></div>
+    <div class="ref"><img src="ref/airbnb_host2.jpg"><div class="who">Airbnb<span class="tagx t-copy">따라 하기</span></div><div class="do">"어렵지 않아요" 쉬운 시작</div><div class="our">→ "사진 올리면 끝, 첫 계약 평균 3일"</div></div>
+    <div class="ref warn"><img src="ref/la_hostfee.jpg"><div class="who">리브애니웨어<span class="tagx t-warn">맞대응</span></div><div class="do">"수수료 인하"로 임대인 모집</div><div class="our">→ 수수료 싸움 대신 "<b>빨리 계약되고 더 번다</b>"로</div></div>
+  </div>
+  <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <div style="background:var(--amber-s);border-radius:14px;padding:12px 16px;font-size:14.5px"><b>누구에게</b><br>방이 비어 고민인 오피스텔·원룸 주인, 방이 많은 임대인</div>
+    <div style="background:var(--amber-s);border-radius:14px;padding:12px 16px;font-size:14.5px"><b>어디로 보내나</b><br>광고 → <b>수익 계산기 웹페이지</b> → 등록 시작</div>
+    <div style="background:var(--amber-s);border-radius:14px;padding:12px 16px;font-size:14.5px"><b>어느 지역에</b><br>방을 찾는 사람은 많은데 <b>방이 부족한 동네</b>부터</div>
+  </div>
+  <div class="foot"><b>근거</b> Meta 광고 라이브러리 게재 중 광고(2026.10.27) · 첫 계약 평균 3일: 앱 임대인 홈(회사 발표)</div>
+</section>
+
+<!-- 18 정리 -->
+<section class="slide">
+  <div class="kick k-gray">정리</div>
+  <h2>바꾸면 <span class="hl">무엇이 좋아지나</span></h2>
+  <div class="trio">
+    <div class="tcard tc-ten"><div class="ic">🙋</div><h3>방 구하는 사람</h3><ul><li>총액·아낀 돈·안전이 한눈에</li><li>→ <b>"계약 시작"을 더 많이</b> 누름</li><li>→ <b>더 길게</b> 계약, <b>다시</b> 계약</li></ul></div>
+    <div class="tcard tc-own"><div class="ic">🏠</div><h3>방 내놓는 사람</h3><ul><li>얼마 버는지 숫자로 확인</li><li>→ <b>등록이 늘고</b></li><li>→ <b>떠나지 않고 방을 더</b> 올림</li></ul></div>
+    <div class="tcard tc-ad"><div class="ic">📣</div><h3>광고</h3><ul><li>집·가격을 먼저 보여 주기</li><li>→ <b>마음에 든 사람만</b> 설치</li><li>→ 같은 광고비로 <b>계약이 더</b></li></ul></div>
+  </div>
+  <div style="margin-top:20px;display:flex;gap:14px">
+    <div style="flex:1.2;background:var(--ink);color:#fff;border-radius:18px;padding:16px 22px">
+      <div style="font-size:14px;color:#B9A6FF;font-weight:800">가장 먼저 할 3가지</div>
+      <div style="font-size:17px;margin-top:6px;line-height:1.6">① 목록·상세에 <b style="color:#fff">총액·아낀 돈</b> 표시 &nbsp; ② 가격 밑에 <b style="color:#fff">안심 3가지</b> &nbsp; ③ 병원 광고처럼 <b style="color:#fff">웹페이지 먼저</b>를 다른 광고에도</div>
+    </div>
+    <div style="flex:1;background:var(--soft);border-radius:18px;padding:16px 22px">
+      <div style="font-size:14px;color:var(--gray2);font-weight:800">무엇으로 확인하나</div>
+      <div style="font-size:15px;margin-top:6px;line-height:1.6">매달 <b>"입주 완료된 주(週)의 수"</b>가 늘었는지 봅니다.<br>(입주한 사람 수 × 머문 주 수, 결제가 아니라 실제 입주 기준)</div>
+    </div>
+  </div>
+  <div class="foot"><b>목표</b> 2026년 거래액 5,000억 원(채용 공고) · 상반기 1,500억 원(머니투데이 2026.7, 회사 발표) → 하반기에 상반기의 약 2.3배가 필요</div>
 </section>
 
 </div></div>
 
 <div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
-<div class="hint">← → 또는 Space · F 전체화면</div>
 
 <script>
 const slides=[...document.querySelectorAll('.slide')];
