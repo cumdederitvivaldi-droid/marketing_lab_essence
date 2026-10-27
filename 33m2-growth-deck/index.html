@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<!-- 면접 발표덱 스캐폴드. 검증됨(채널톡·리웨이크 등 15+건). 복제 후 채워라.
+     톤 오버라이드: :root 액센트 토큰만 회사 브랜드 컬러로 교체. 구조 토큰·폰트는 유지.
+     슬라이드 추가: <section class="slide">...</section> 반복. 첫 슬라이드만 .active.
+     컴포넌트 사용법은 slide-architecture.md 카탈로그 참고. -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>삼삼엠투 그로스 전략 제안 · 이도형</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root{
+  /* 구조 토큰 — 유지 */
+  --ink:#15171C; --navy:#1A1F2E; --black:#0E1118;
+  --gray:#8A8F99; --gray2:#5B6170;
+  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  /* 액센트 토큰 — 회사 브랜드로 교체 */
+  --blue:#4C7DF7; --blue-d:#2F5FD9; --blue-soft:#E6EEFF;
+  --violet:#7A4DF5; --violet-d:#5B33D6; --violet-soft:#EEE7FF;
+  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
+  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
+  --rose:#E0533D; --rose-soft:#FCE7E2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:46px 64px;overflow:hidden}
+.slide.active{display:flex;animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);text-transform:uppercase;margin-bottom:11px}
+.kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#c0402c} .kicker.gray{color:var(--gray)}
+h1{font-size:50px;font-weight:800;line-height:1.16;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:33px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+p,li{font-size:16.5px;line-height:1.6;color:#2C313C}
+.lead{font-size:20px;line-height:1.62;color:var(--gray2);font-weight:500}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
+.hl.vio{background:linear-gradient(transparent 58%, var(--violet-soft) 58%)}
+.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+b,strong{font-weight:800;color:var(--ink)}
+.mono{font-variant-numeric:tabular-nums}
+
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--ink)}
+.logo .ic{width:25px;height:25px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--violet));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+
+.grid{display:grid;gap:15px}
+.card{background:var(--soft);border-radius:var(--radius);padding:19px 21px;border:1px solid transparent}
+.card.blue{background:var(--blue-soft)} .card.vio{background:var(--violet-soft)} .card.teal{background:var(--teal-soft)} .card.amber{background:var(--amber-soft)} .card.rose{background:var(--rose-soft)}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.card.dark{background:var(--ink)} .card.dark h3{color:#fff} .card.dark p,.card.dark li{color:#D5D9E2}
+.card h3{margin-bottom:5px}
+.card .num{font-size:13.5px;font-weight:800;color:var(--gray);margin-bottom:5px}
+.card p{font-size:15px;line-height:1.55}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--gray2)}
+.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
+.pill.k{background:var(--ink);color:#fff}
+.pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)} .pill.teal{background:var(--teal-soft);color:var(--teal-d)}
+
+.goal{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:800;margin-bottom:13px}
+.goal b{color:#8FB6FF}
+
+.metric .big{font-size:36px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
+.metric .big.blue{color:var(--blue-d)} .metric .big.vio{color:var(--violet-d)} .metric .big.teal{color:var(--teal-d)} .metric .big.rose{color:var(--rose)} .metric .big.amber{color:var(--amber-d)}
+.metric .lab{font-size:13.5px;color:var(--gray2);margin-top:7px;font-weight:600;line-height:1.4}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12.5px;color:var(--gray);font-weight:700;letter-spacing:.02em}
+td b{font-weight:800}
+tr.hi td{background:var(--blue-soft)}
+.chk{color:var(--teal-d);font-weight:800} .x{color:var(--rose);font-weight:800}
+
+.shot{border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block}
+.cap{font-size:12px;color:var(--gray);margin-top:7px;text-align:center;line-height:1.4}
+.shotwrap{position:relative}
+.shotwrap .badge{position:absolute;left:10px;top:10px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px}
+
+.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:17px 23px}
+.callout h3{color:#fff} .callout p{color:#D5D9E2}
+.quote{background:linear-gradient(120deg,#1A1F2E,#241C4A);color:#fff;border-radius:var(--radius);padding:24px 28px}
+.quote .q{font-size:25px;font-weight:800;line-height:1.36;color:#fff}
+.quote .q .g{background:linear-gradient(90deg,#8FB6FF,#B9A6FF,#7FE6DA);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.flag{font-size:12.5px;color:var(--gray);font-style:italic}
+.src{font-size:11.5px;color:var(--gray);line-height:1.5}
+.src b{color:var(--gray2);font-weight:700}
+.foot{position:absolute;left:64px;right:64px;bottom:18px;display:flex;justify-content:space-between;font-size:11.5px;color:var(--gray);border-top:1px solid var(--line);padding-top:9px;gap:20px}
+.foot .src{flex:1}
+
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:23px;margin-bottom:8px;font-size:15.5px}
+ul.clean li:before{content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
+ul.clean.vio li:before{background:var(--violet)} ul.clean.teal li:before{background:var(--teal)} ul.clean.rose li:before{background:var(--rose)}
+
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .step{flex:1;background:var(--soft);border-radius:13px;padding:12px;text-align:center}
+.flow .arr{display:flex;align-items:center;padding:0 7px;font-size:19px;color:var(--gray);font-weight:800}
+
+.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow)}
+.adcard .ad{font-size:9px;font-weight:800;color:var(--teal-d);border:1px solid var(--teal);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:5px}
+.adcard .u{font-size:10px;color:var(--gray)}
+.adcard .ti{font-size:13px;font-weight:800;color:#1a0dab;line-height:1.3;margin:2px 0}
+.adcard .ds{font-size:10.5px;color:#4a4f5e;line-height:1.4}
+.stepbox{background:var(--soft);border-radius:12px;padding:12px 13px;flex:1}
+.stepbox .n{font-size:11px;font-weight:800;color:var(--blue-d)}
+.stepbox h4{font-size:13.5px;font-weight:800;color:var(--ink);margin:3px 0 4px}
+.stepbox p{font-size:12px;color:#4a4f5e;line-height:1.45}
+
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar,.hint{display:none}}
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+.hint{position:fixed;bottom:20px;right:22px;color:#8b8d94;font-size:12px;z-index:50}
+
+.phone{width:200px;border-radius:24px;border:6px solid #15171C;overflow:hidden;box-shadow:var(--shadow);background:#fff}
+.phone img{width:100%;display:block}
+.phone.sm{width:168px}
+.logo .ic{font-size:11px;background:linear-gradient(135deg,var(--violet),var(--blue))}
+.mock{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow)}
+.mock .t{font-size:13px;font-weight:700;color:var(--ink)}
+.mock .p{font-size:22px;font-weight:800;color:var(--ink);margin-top:4px}
+.mock .p span{font-size:14px;color:var(--violet-d)}
+.mock .s{font-size:12px;color:var(--gray2);margin-top:2px}
+.mock .d{font-size:11.5px;background:var(--soft);border-radius:8px;padding:6px 8px;margin-top:8px;color:var(--gray2)}
+.mock.on{border:2px solid var(--violet)} .mock.on .p{color:var(--violet-d)}
+.map{position:relative;height:200px;border-radius:12px;margin-top:10px;background:
+ linear-gradient(90deg,transparent 48%,#fff 48%,#fff 52%,transparent 52%),
+ linear-gradient(0deg,transparent 46%,#fff 46%,#fff 50%,transparent 50%),
+ linear-gradient(135deg,#E9EEF5,#DDE6F0)}
+.map .pin{position:absolute;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.map .pin.hot{background:var(--ink);color:#fff}
+.map .cl{position:absolute;background:var(--violet);color:#fff;border-radius:999px;padding:6px 10px;font-size:11.5px;font-weight:800}
+.hint{display:none} #nav{opacity:.3;transition:opacity .2s} #nav:hover{opacity:1}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide active" style="justify-content:center;background:
+  radial-gradient(900px 520px at 84% -10%, var(--violet-soft) 0%, transparent 55%),
+  radial-gradient(720px 520px at -5% 110%, var(--blue-soft) 0%, transparent 55%), #fff">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div class="logo" style="margin-bottom:30px"><span class="ic">33</span>삼삼엠투 33m²</div>
+      <div class="kicker vio">퍼포먼스·그로스 마케터 전략 제안</div>
+      <h1>우위는 이미 앱 안에 있습니다.<br><span class="hl vio">보이지 않을 뿐</span>입니다.</h1>
+      <p class="lead" style="margin-top:22px;max-width:700px">기간 할인·보증금 보관·생활형 집이라는 강점을 <b>숫자로 보여주고</b>, 그 숫자를 <b>광고 클릭 직후(웹2앱)</b>에 보여줘서 하반기 2.3배를 만드는 방법</p>
+      <div style="margin-top:34px;display:flex;gap:10px">
+        <span class="pill k">스페이스브이 · 삼삼엠투</span>
+        <span class="pill vio">퍼포먼스·그로스 마케터 지원</span>
+        <span class="pill blue">이도형</span>
+      </div>
+    </div>
+    <div class="phone" style="width:230px;transform:rotate(3deg)"><img src="img/home.jpg" alt="삼삼엠투 앱 홈"></div>
+  </div>
+</section>
+
+<!-- 2 CONTEXT -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">01 · 맥락</div><h2>목표까지의 거리: 하반기에 <span class="hl">상반기의 2.3배</span>가 필요합니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:8px">
+    <div class="card out metric"><div class="big">1,880억</div><div class="lab">2025 연 거래액<br>전년 대비 약 2.2배</div></div>
+    <div class="card out metric"><div class="big vio">5,000억</div><div class="lab">2026 목표<br>2025 대비 2.66배</div></div>
+    <div class="card out metric"><div class="big">1,500억+</div><div class="lab">2026 상반기 거래액</div></div>
+    <div class="card out metric"><div class="big rose">3,500억</div><div class="lab">하반기 필요 거래액<br>= 상반기의 2.3배</div></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1.1fr 1fr;margin-top:18px;flex:1;align-content:start">
+    <div class="card">
+      <h3>수요의 62%가 '생활 문제 해결'입니다</h3>
+      <div style="display:flex;gap:6px;margin-top:12px;height:34px;border-radius:10px;overflow:hidden;font-size:12.5px;font-weight:800;color:#fff">
+        <div style="flex:38;background:var(--violet);display:flex;align-items:center;padding-left:10px">업무·출장 38%</div>
+        <div style="flex:24;background:var(--blue);display:flex;align-items:center;padding-left:10px">이사·인테리어 24%</div>
+        <div style="flex:23;background:#A7B0C2;display:flex;align-items:center;padding-left:10px">여행 23%</div>
+        <div style="flex:15;background:#C9CFDA;display:flex;align-items:center;padding-left:8px;color:#2C313C">기타 15%</div>
+      </div>
+      <p style="margin-top:12px">여행지 한달살기보다 계절성이 낮고 검색 의도가 명확합니다. <b>"언제부터 살아야 하나"</b>라는 날짜가 정해진 문제입니다.</p>
+    </div>
+    <div class="callout">
+      <h3>그래서 이 발표의 질문</h3>
+      <p style="margin-top:8px;font-size:16px">같은 광고비로 계약을 더 만들려면, 사용자가 <b style="color:#fff">"왜 삼삼엠투여야 하는지"</b>를 언제·어디서 확인하게 해야 하는가?</p>
+      <p style="margin-top:10px;font-size:14px;color:#AEB4C2">→ 직접 앱을 써보고(녹화 3분), 집행 중인 광고 약 350개(Meta)를 보고 찾은 답</p>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 바이라인네트워크 26.2(2025 거래액·이용 목적) [자사발표] · 원티드 채용 공고(2026 목표) · 머니투데이 26.7(상반기) [자사발표]</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 3 COMPETITION -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker vio">02 · 경쟁 지형</div><h2>경쟁사마다 <span class="hl vio">이길 한 줄</span>이 다릅니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <table>
+    <tr><th style="width:130px">상대</th><th style="width:260px">상대의 강점</th><th>삼삼엠투가 이기는 한 줄</th><th style="width:270px">앱에서 보여줄 장치</th></tr>
+    <tr><td><b>에어비앤비</b></td><td>지도 가격·총액·리뷰 UX</td><td><b>"숙소가 아니라 집"</b> 길게 살수록 주당 단가가 내려가고 취사·세탁·택배까지 생활이 됩니다</td><td>기간별 주당 단가, 생활 옵션 필터</td></tr>
+    <tr><td><b>리브애니웨어</b></td><td>제주·강원 여행지 감성 숙소</td><td><b>"내 생활권에서, 입주일에 맞춰"</b> 회사·병원·현장 근처 매물 수 1위</td><td>목적지 입력 → 통근 시간순</td></tr>
+    <tr><td><b>직방·다방</b></td><td>장기 매물 수, 시세 정보</td><td><b>"2년 계약·중개수수료 없이 1주부터"</b> 보증금 33만 원, 비대면 계약</td><td>장기 계약 보증금 vs 33만 원 비교</td></tr>
+    <tr><td><b>호텔·모텔</b></td><td>즉시 예약</td><td><b>"같은 기간 절반 값 + 생활 가능"</b></td><td>같은 기간 총액·절약액 카드</td></tr>
+    <tr class="hi"><td><b>공통 공백</b></td><td colspan="3"><b>'같은 기간에 얼마를 내고 얼마를 아끼는지'</b>를 한눈에 보여주는 곳이 없습니다 → 삼삼엠투의 기간 할인 구조가 가장 잘 보여줄 수 있는 숫자</td></tr>
+  </table>
+  <div class="card rose" style="margin-top:16px;padding:14px 20px">
+    <p style="font-size:14.5px"><b>주의: '영업신고 없이 합법'은 소구하지 않습니다.</b> 숙박업 여부는 계약 이름이 아니라 운영 실질로 판단합니다(보건복지부 2024 기준: 이용 기간 1개월 미만이면 숙박업에 가깝다고 판단). 그래서 위닝 포인트는 법이 아니라 <b>생활 실질</b>(독립 점유·전자계약·보증금 보관)에서 찾습니다. 4주 이상 계약을 늘리는 할인 설계는 매출과 리스크 관리 양쪽에 맞습니다.</p>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 벤처스퀘어(리브애니웨어 여행지 강점) [제3자] · 숙박매거진 24.6(보건복지부 숙박업 판단 기준) [제3자] · 서울중앙지법 2016노1390 (로톡 요약) · 현장직 광고 "모텔 한 달 180만 원" [크리에이터 광고 문구]</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 4 DIAG 1 : advantage invisible -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">03 · 앱 진단 ① 우위가 안 보인다</div><h2>6주를 골라도 카드에는 <span class="hl rose">'1주 가격'</span>만 보입니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div style="display:flex;gap:26px;align-items:flex-start">
+    <div style="text-align:center"><div class="phone sm"><img src="img/period.jpg"></div><div class="cap">① 1~12주 칩 선택: 직관적 ✓</div></div>
+    <div style="text-align:center"><div class="phone sm"><img src="img/cards.jpg"></div><div class="cap">② 6주 선택 후에도 "210,000원 / 1주"<br>할인은 "최대 10%"로만</div></div>
+    <div style="text-align:center"><div class="phone sm"><img src="img/escrow.jpg"></div><div class="cap">③ 할인 계산·보증금 보관은<br>'계약 정보' 탭 안쪽에</div></div>
+    <div style="flex:1">
+      <div class="card out" style="padding:16px 18px">
+        <div class="num">녹화 속 실제 매물 · 경기 광주 원룸 · 6주</div>
+        <table style="font-size:13.5px">
+          <tr><td>카드 표시</td><td style="text-align:right">210,000원 / 1주</td></tr>
+          <tr><td>4주+ 할인 적용 임대료</td><td style="text-align:right">180,000 → 162,000</td></tr>
+          <tr class="hi"><td><b>6주 실제 총액</b></td><td style="text-align:right"><b>1,152,000원</b></td></tr>
+          <tr class="hi"><td><b>할인으로 아낀 돈</b></td><td style="text-align:right"><b>108,000원</b></td></tr>
+          <tr><td>모텔 6주 (한 달 180만 기준)</td><td style="text-align:right">약 2,700,000원</td></tr>
+        </table>
+        <p class="flag" style="margin-top:8px">총액·절약액은 앱 어디에도 표시되지 않습니다. 사용자가 직접 계산해야 합니다.</p>
+      </div>
+      <div class="callout" style="margin-top:12px;padding:14px 18px"><p style="font-size:15px;color:#fff"><b style="color:#fff">진단:</b> 삼삼엠투의 가장 강한 무기(길수록 싸지는 구조)가 <b style="color:#B9A6FF">결정 순간에 안 보입니다.</b></p></div>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27) · 계산: (162,000 임대료 + 30,000 관리비) × 6주, 서비스 수수료는 화면 미노출로 제외 · 모텔가는 크리에이터 광고 문구 기준 [미검증]</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 5 DIAG 2 : weaknesses -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">04 · 앱 진단 ② 경쟁사 대비 열위</div><h2>찾는 단계에서 <span class="hl rose">마찰</span>이 큽니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div style="display:flex;gap:18px">
+    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/map.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>지도에 매물 수만</b><br>가격은 하나씩 눌러야 확인</p></div>
+    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/nores.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>'판교' 2글자 → 결과 없음</b><br>'판교역'까지 쳐야 나옴</p></div>
+    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/gangnam.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>'강남' 검색에 화성시 매물</b><br>제목 '강남45분' 매칭 + 날짜 초기화</p></div>
+    <div style="flex:1;text-align:center"><div class="phone sm" style="margin:0 auto"><img src="img/nation.jpg"></div><p style="font-size:13.5px;margin-top:8px"><b>홈 카테고리 → 전국 결과</b><br>진주·은평·중구가 섞여 나옴</p></div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:14px">
+    <div class="card"><p style="font-size:14px"><b>에어비앤비·직방</b>은 지도에서 가격을 바로 봅니다 → <b>가격 핀</b></p></div>
+    <div class="card"><p style="font-size:14px"><b>자동완성</b>(지역·역·병원·대학·산업단지) + <b>거리순</b> 정렬</p></div>
+    <div class="card"><p style="font-size:14px">날짜·필터를 <b>화면 간 유지</b>, 홈은 "언제부터, 몇 주?"로 시작</p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27, 임차인 모드)</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 6 DIAG 3 : trust hidden -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">05 · 앱 진단 ③ 신뢰 장치</div><h2>가장 강한 신뢰 장치는 <span class="hl rose">임대인에게만</span> 설명되고 있습니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div style="display:flex;gap:24px;align-items:flex-start">
+    <div style="flex:1.25">
+      <table style="font-size:14px">
+        <tr><th>신뢰 장치</th><th>임차인에게 보이는 곳</th><th style="width:70px">노출</th></tr>
+        <tr><td>보증금 회사 보관 (에스크로)</td><td>상세 '계약 정보' 탭 하단 회색 1줄</td><td class="x">약함</td></tr>
+        <tr><td>입주 확인 후 정산</td><td>녹화 범위 내 미확인</td><td class="x">없음</td></tr>
+        <tr><td>삼삼케어 (파손 보호)</td><td>녹화 범위 내 미확인</td><td class="x">없음</td></tr>
+        <tr><td>분쟁률 약 0.3%</td><td>미노출</td><td class="x">없음</td></tr>
+        <tr><td>우수 임대인·본인 인증·응답률 90%+</td><td>상세 '임대인 정보'</td><td>중간</td></tr>
+        <tr class="hi"><td><b>장점 4가지</b> (빠른 해결·편리한 관리·안전 거래·높은 수익)</td><td><b>임대인 모드 가이드에만</b></td><td class="x">0</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:14.5px">후기 0개 신규 매물("첫 후기를 기다리고 있어요")은 신뢰 근거가 비어 있습니다. 후기 대신 <b>보호 장치를 먼저</b> 보여줘야 합니다.</p>
+    </div>
+    <div style="text-align:center"><div class="phone sm"><img src="img/superhost.jpg"></div><div class="cap">우수 임대인 배지: 있음 ✓</div></div>
+    <div style="text-align:center"><div class="phone sm"><img src="img/guide.jpg"></div><div class="cap">'장점 4가지'는 임대인 가이드 안</div></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27) · 분쟁률 0.3%: 벤처스퀘어 [자사발표]</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 7 PAIN -> STRATEGY -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker vio">06 · 전략 개요</div><h2>문제 3개 → 전략 3개</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 60px 1fr;row-gap:14px;align-items:center">
+    <div class="card rose"><div class="num">문제 1</div><h3>우위가 숫자로 안 보인다</h3><p>1주 가격만, 총액·절약액 없음 / 지도에 가격 없음</p></div>
+    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--gray)">→</div>
+    <div class="card vio"><div class="num">전략 1</div><h3>"얼마 내고 얼마 아끼는지"를 첫 화면에</h3><p>선택 기간 총액·절약액, 1주 연장 넛지, 지도 가격 핀</p></div>
+    <div class="card rose"><div class="num">문제 2</div><h3>신뢰 장치가 묻혀 있다</h3><p>보증금 보관은 탭 안 1줄, 장점은 임대인에게만</p></div>
+    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--gray)">→</div>
+    <div class="card vio"><div class="num">전략 2</div><h3>'왜 33m²인가'가 행동으로 드러나게</h3><p>안심 계약 배지, 입주 사진 기록, 보증금 반환 트래커</p></div>
+    <div class="card rose"><div class="num">문제 3</div><h3>설치 전에는 가치를 볼 수 없다</h3><p>광고 → 앱 설치 직행, 설치 후 홈에서 맥락 끊김</p></div>
+    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--gray)">→</div>
+    <div class="card vio"><div class="num">전략 3</div><h3>웹2앱: 웹에서 숫자를 보고, 앱에서 계약</h3><p>페르소나 웹 랜딩 → 지연 딥링크로 같은 매물·날짜 복원</p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>원칙</b> 매체를 늘리기보다, 같은 유입에서 계약 전환·평균 계약 주수·재이용을 함께 올립니다</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 8 STRATEGY 1 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker vio">07 · 전략 1</div><h2>카드 가격을 <span class="hl vio">"6주 총 115만 원, 10.8만 원 할인"</span>으로</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:18px">
+    <div>
+      <div class="num" style="font-size:13px;font-weight:800;color:var(--gray);margin-bottom:6px">AS-IS</div>
+      <div class="mock">
+        <div class="t">광주시 신현동의 단독주택</div>
+        <div class="p">210,000원 <span>/ 1주</span></div>
+        <div class="s">임대료 180,000원 관리비 30,000원</div>
+        <div class="d">장기계약 최대 10% 할인 · 즉시입주 최대 2만 원 할인</div>
+      </div>
+      <div class="num" style="font-size:13px;font-weight:800;color:var(--violet-d);margin:14px 0 6px">TO-BE</div>
+      <div class="mock on">
+        <div class="t">광주시 신현동의 단독주택 · 11.01~12.12</div>
+        <div class="p">6주 총 1,152,000원</div>
+        <div class="s">주당 192,000원 · <b style="color:var(--violet-d)">4주 이상 할인 −108,000원</b></div>
+        <div class="d">같은 기간 모텔보다 약 155만 원 절약 · 보증금 33만 원 회사 보관</div>
+      </div>
+    </div>
+    <div>
+      <div class="card blue" style="height:100%">
+        <h3>연박을 늘리는 넛지</h3>
+        <ul class="clean vio" style="margin-top:10px">
+          <li>3주 선택 시 <b>"4주로 늘리면 주당 9천 원 더 할인"</b></li>
+          <li>퇴실 D-7 <b>"1주 연장 시 주당 OO원"</b> 원탭 연장</li>
+          <li>상세 상단에 <b>기간별 주당 단가 그래프</b> (1·2·4주)</li>
+        </ul>
+        <p style="margin-top:8px;font-size:14px">지표: 상세 → 계약 시작, <b>평균 계약 주수</b></p>
+        <p class="flag" style="margin-top:6px">레퍼런스: Airbnb 총액 표시(2025 기본값)·장기 숙박 할인 표시, 항공권 앱 "날짜 바꾸면 OO원 절약"</p>
+      </div>
+    </div>
+    <div>
+      <div class="card out" style="height:100%">
+        <h3>지도 가격 핀</h3>
+        <div class="map">
+          <span class="pin" style="left:18%;top:22%">19만</span>
+          <span class="pin" style="left:55%;top:16%">28만</span>
+          <span class="pin hot" style="left:36%;top:48%">21만</span>
+          <span class="pin" style="left:68%;top:56%">45만</span>
+          <span class="pin" style="left:14%;top:72%">24만</span>
+          <span class="cl" style="left:72%;top:28%">18~45만</span>
+        </div>
+        <p style="font-size:14px;margin-top:10px">확대 시 <b>선택 기간 주당 가격 핀</b>, 축소 시 클러스터에 <b>가격 범위</b></p>
+        <p class="flag" style="margin-top:6px">레퍼런스: 에어비앤비 지도 가격 핀, 직방 지도 시세</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 앱 녹화 속 실제 매물로 계산(서비스 수수료 제외) · 모텔 비교는 크리에이터 광고 "한 달 180만 원" 기준 [미검증] → 실제 운영 시 내부 데이터·외부 평균가로 산출하고 근거 표기</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 9 STRATEGY 2 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker vio">08 · 전략 2</div><h2>신뢰를 문구가 아니라 <span class="hl vio">행동</span>으로 증명합니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:12px">
+    <div class="card vio"><div class="num">S1</div><h3 style="font-size:17px">안심 계약 3종 배지</h3><p style="font-size:13.5px">가격 바로 아래: 보증금 회사 보관 · 입주 확인 후 정산 · 삼삼케어</p></div>
+    <div class="card vio"><div class="num">S2</div><h3 style="font-size:17px">입주 사진 기록</h3><p style="font-size:13.5px">입주 당일 방 사진 6장 안내 → 퇴실 때 같은 각도로 비교</p></div>
+    <div class="card vio"><div class="num">S3</div><h3 style="font-size:17px">보증금 반환 트래커</h3><p style="font-size:13.5px">퇴실 후 "반환 처리 중 → OO일 입금 예정"</p></div>
+    <div class="card vio"><div class="num">S4</div><h3 style="font-size:17px">기간 변경 원탭</h3><p style="font-size:13.5px">"1주 연장" → 임대인 승인 → 자동 결제</p></div>
+    <div class="card vio"><div class="num">S5</div><h3 style="font-size:17px">응답 보장 배지</h3><p style="font-size:13.5px">1시간 내 응답 임대인 표시 + "평균 OO분 내 답장"</p></div>
+  </div>
+  <table style="margin-top:18px;font-size:14px">
+    <tr><th>장치</th><th>해소하는 걱정</th><th>왜 33m²만 가능한가</th></tr>
+    <tr><td>S1·S3</td><td>"보증금 돌려받을 수 있을까?"</td><td>회사가 보증금을 보관하는 구조 (직거래·카페에는 없음)</td></tr>
+    <tr><td>S2</td><td>"퇴실 때 파손 덤터기 쓰면?"</td><td>앱이 입·퇴실 상태를 증빙 + 삼삼케어</td></tr>
+    <tr><td>S4</td><td>"일정이 바뀌면?"</td><td>주 단위 계약 구조 (현재 13주+는 계약 후 연장 신청)</td></tr>
+    <tr><td>S5</td><td>"연락이 안 되면?"</td><td>1:1 전담 매니저가 임대인 운영을 관리</td></tr>
+  </table>
+  <div class="foot">
+    <span class="src"><b>측정</b> 배지 노출 vs 미노출 그룹의 상세 → 계약 시작 전환율, 문의 중 '보증금·환불' 질문 비중 · <b>출처</b> 앱 녹화(안내사항: 최대 12주, 13주+ 연장 신청), 뉴스핌 26.7(전담 컨설턴트·삼삼케어) [자사발표]</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 10 STRATEGY 3 WEB2APP -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker vio">09 · 전략 3</div><h2>웹2앱: <span class="hl vio">웹에서 숫자를 보고, 앱에서 계약</span>합니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <p style="font-size:15px;color:var(--gray2)">AS-IS: 대부분의 광고가 "Install Now"로 앱 설치에 직행합니다. 설치 전에는 가격·매물을 볼 수 없고, 설치 후 홈에서 광고 맥락이 끊깁니다. <b>병원 광고만 웹 매물 페이지</b>로 갑니다 — 이 패턴을 전체로 확장합니다.</p>
+  <div class="flow" style="margin-top:16px">
+    <div class="stepbox"><div class="n">1 · 광고</div><h4>페르소나 소재</h4><p>"간호대생 실습 집", "현장 근처 6주"</p></div>
+    <div class="arr">→</div>
+    <div class="stepbox" style="background:var(--violet-soft)"><div class="n">2 · 웹 랜딩</div><h4>가입 없이 가치 확인</h4><p>병원·현장 입력 + 기간 → 매물 3~5개 <b>총액·절약액</b></p></div>
+    <div class="arr">→</div>
+    <div class="stepbox"><div class="n">3 · 관심 표현</div><h4>찜·가격 알림</h4><p>"앱에서 알림 받기" 트리거</p></div>
+    <div class="arr">→</div>
+    <div class="stepbox" style="background:var(--violet-soft)"><div class="n">4 · 앱</div><h4>같은 매물·날짜 복원</h4><p>지연 딥링크 → 계약 화면 직행</p></div>
+    <div class="arr">→</div>
+    <div class="stepbox"><div class="n">5 · 이탈 복귀</div><h4>개인화 알림톡</h4><p>"11/1 입주 가능 판교 원룸 2개 남음"</p></div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:18px">
+    <div class="card"><h3 style="font-size:17px">학습 신호가 깊어짐</h3><p style="font-size:13.5px">웹 픽셀로 날짜 입력·총액 확인·찜을 매체에 전달. 설치보다 계약에 가까운 신호로 최적화</p></div>
+    <div class="card"><h3 style="font-size:17px">설치 품질 상승</h3><p style="font-size:13.5px">매물과 가격을 본 사람만 설치 → 설치 → 계약 전환율 ↑</p></div>
+    <div class="card"><h3 style="font-size:17px">실험이 빨라짐</h3><p style="font-size:13.5px">앱 배포 없이 카피·프리셋·총액 표시를 웹에서 A/B</p></div>
+    <div class="card"><h3 style="font-size:17px">자연 유입 자산</h3><p style="font-size:13.5px">"서울성모병원 근처 단기임대" 같은 지역×목적 페이지</p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>측정</b> 웹 랜딩 → 가치 확인율 → 앱 전환율 → 계약 · '바로 설치' 그룹과 계약당 CAC 비교(홀드아웃) · <b>출처</b> Meta 광고 라이브러리 2026.10.27 확인(에어브릿지 링크·병원 웹 랜딩)</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 11 PERSONA -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">10 · 소구점</div><h2>"단기임대 1위"가 아니라 <span class="hl teal">지금 쓰는 대안의 고통</span>을 숫자로</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <table style="font-size:13.5px">
+    <tr><th>페르소나</th><th>지금 쓰는 대안</th><th>대안의 페인 포인트</th><th>소구 (예시 카피)</th><th>웹2앱 랜딩 액션</th></tr>
+    <tr><td><b>현장직·장기 출장</b></td><td>모텔·여관</td><td>한 달 180만 원, 빨래·취사 불가</td><td>"모텔 한 달 값으로 세탁기 있는 원룸 6주"</td><td>현장 지역 + 세탁기·주차 + 4주</td></tr>
+    <tr><td><b>간호대생 실습·인턴</b></td><td>왕복 4시간 통학, 고시원</td><td>첫차 없음, 2년 계약 불가</td><td>"실습 기간만큼만, 병원 도보 10분"</td><td>병원 선택 → 거리순 + 실습 기간</td></tr>
+    <tr><td><b>이사 공백·인테리어</b></td><td>본가·호텔</td><td>짐 보관, 호텔 비용</td><td>"공백 3주, 호텔의 1/3 값으로 우리 동네에서"</td><td>현재 주소 → 같은 동네</td></tr>
+    <tr><td><b>병원 보호자</b></td><td>병원 앞 모텔</td><td>장기 간병 피로, 식사</td><td>"치료 기간 동안 병원 옆 우리 집처럼"</td><td>병원 페이지 (집행 중 → 확대)</td></tr>
+    <tr><td><b>발령 가족</b></td><td>레지던스·호텔</td><td>아이 동반 취사 불가</td><td>"아이와 지낼 투룸, 레지던스보다 OO% 싸게"</td><td>근무지 → 통근 시간순</td></tr>
+    <tr><td><b>이사 전 동네 탐색</b></td><td>주말 방문</td><td>2년 계약 후 후회</td><td>"2년 살기 전에 2주 살아보기"</td><td>관심 동네 + 2주</td></tr>
+  </table>
+  <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">
+    <div class="card teal"><p style="font-size:14px"><b>vs 리브애니웨어:</b> 제주 한달살기 소구는 줄이고, <b>생활권 거리(통근·병원)</b>를 숫자로 말합니다.</p></div>
+    <div class="card teal"><p style="font-size:14px"><b>vs 에어비앤비:</b> '숙소'가 아니라 '집'. <b>길수록 내려가는 주당 단가</b>와 생활 옵션을 보여줍니다.</p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> Meta 광고 라이브러리 게재 중 크리에이터 소재(현장직·간호대생·인턴·병원 보호자 등, 2026.10.27) · 수치는 크리에이터 문구 [미검증]</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 12 LEADING INDICATORS -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">11 · 선행 지표</div><h2>지표마다 <span class="hl">"무엇을 하면 오르는지"</span></h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <table style="font-size:13.5px">
+    <tr><th style="width:150px">임차인 선행 지표</th><th style="width:330px">지금 막히는 지점 (녹화)</th><th>앱 내 액션 (TO-BE)</th></tr>
+    <tr><td><b>날짜 입력 검색</b></td><td>홈에 날짜 질문 없음, 화면 간 날짜 초기화</td><td>홈 검색창을 "언제부터, 몇 주?"로 시작 + 날짜 유지</td></tr>
+    <tr><td><b>상세 조회</b></td><td>지도 가격 없음, 2글자 검색 실패, 관련도 낮음</td><td>지도 가격 핀, 자동완성, 거리순</td></tr>
+    <tr><td><b>찜 3개+</b></td><td>찜해도 돌아올 이유 없음</td><td>찜 시 가격·마감 알림 자동 제안, 찜 나란히 비교</td></tr>
+    <tr><td><b>문의 1회+</b></td><td>무엇을 물어볼지 모름</td><td>질문 템플릿("주차?", "입주 당일 몇 시?", "택배?") + 평균 응답 시간</td></tr>
+    <tr><td><b>계약 시작</b></td><td>총액·할인 직접 계산</td><td>총액·절약액, "1주 늘리면 OO원", 즉시 입주 할인 남은 시간</td></tr>
+    <tr><td><b>이탈 후 복귀</b></td><td>빈 계약·채팅 탭, 일반 안내 알림톡</td><td>빈 탭에 "찜한 방 이어보기", 본 매물+날짜 개인화 알림톡</td></tr>
+  </table>
+  <div style="display:flex;gap:14px;margin-top:14px;align-items:stretch">
+    <div class="card" style="flex:1"><p style="font-size:13.5px"><b>임대인:</b> 등록 진행률 바 · "즉시 계약 매물은 평균 OO일 빠름" · 빠른 답장 템플릿 · D+5 미계약 시 주변 가격 팁 · 첫 정산 리포트에 "장기 월세였다면 vs 단기"</p></div>
+    <div class="card amber" style="flex:1"><p style="font-size:13.5px"><b>검증:</b> 30일 내 계약자 vs 미계약자 코호트 lift → 활성화 기준 2~3개 → 홀드아웃으로 인과 확인 → 광고 최적화 이벤트로 연결</p></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 삼삼엠투 앱 화면 녹화(2026.10.27) · 선행 지표 후보는 가설, 입사 후 내부 데이터로 검증</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 13 RETENTION + PROMO -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker teal">12 · 리텐션</div><h2>몇 년에 1번인 이사 대신, <span class="hl teal">주기가 정해진 생활 이벤트</span>를 잡습니다</h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1.15fr 1fr;gap:20px">
+    <div>
+      <table style="font-size:13.5px">
+        <tr><th>새 소구</th><th>주기</th><th>리텐션 장치</th></tr>
+        <tr><td><b>학원가 방학 특강</b> (대치동 등)</td><td>연 2회</td><td>방학 6주 전 "작년 그 동네" 리마인드</td></tr>
+        <tr><td><b>실습·인턴 로테이션</b></td><td>분기·학기</td><td>다음 실습지 입력 → 자동 추천</td></tr>
+        <tr><td><b>현장 프로젝트 이동</b></td><td>프로젝트마다</td><td>"다음 현장 지역" 등록 → 알림</td></tr>
+        <tr><td><b>정기 치료</b> (주기 치료)</td><td>수주~수개월</td><td>다음 치료 일정 → 같은 집 우선 예약</td></tr>
+        <tr><td><b>시험 몰입</b> (고시·자격증)</td><td>연 1~2회</td><td>시험 일정 기반 알림</td></tr>
+        <tr><td><b>연장</b></td><td>계약 중</td><td>퇴실 D-7 원탭 연장</td></tr>
+      </table>
+    </div>
+    <div class="card out">
+      <h3>경품 추첨 대신, 단기 거주의 불편을 없애는 혜택</h3>
+      <p style="font-size:13px;color:var(--gray2);margin-top:4px">AS-IS: 가입 추첨(로봇청소기·백화점상품권), 댓글 커피 쿠폰</p>
+      <ul class="clean teal" style="margin-top:10px">
+        <li><b>청소 프리패스</b> (퇴실 청소비 면제) · 4주+ 계약</li>
+        <li><b>입주 웰컴 키트</b> (세제·휴지·수건) · 첫 계약</li>
+        <li><b>짐 보관·용달 할인</b> · 이사·인테리어 목적</li>
+        <li><b>연장 1주 할인권</b> · 퇴실 D-7</li>
+        <li><b>재계약 쿠폰</b> (다음 현장·실습용) · 6개월</li>
+      </ul>
+      <p style="font-size:13.5px;margin-top:6px">원칙: 혜택은 <b>계약·연장 행동에만</b>. 측정은 계약당 CAC·평균 계약 주수</p>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> Meta 광고 라이브러리 오퍼(2026.10.27) · 뉴스핌 26.7 "계약·생활용품 구매 함께 제공" 방향 [자사발표] · 측정: 12개월 재계약률, 재계약까지 평균 일수</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 14 LANDLORD -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker amber">13 · 공급(임대인)</div><h2>앱 안의 좋은 임대인 콘텐츠를 <span class="hl">밖으로 꺼내고, 숫자를 붙입니다</span></h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div style="display:flex;gap:22px;align-items:flex-start">
+    <div style="flex:1">
+      <table style="font-size:13.5px">
+        <tr><th></th><th>장기 월세 (직방·다방)</th><th>숙박 운영 (에어비앤비형)</th><th>삼삼엠투</th></tr>
+        <tr><td><b>공실</b></td><td>다음 세입자까지 수개월</td><td>일 단위로 메움</td><td><b>주 단위, 첫 계약 평균 3일</b></td></tr>
+        <tr><td><b>운영 부담</b></td><td>낮음</td><td>매일 체크인·청소·침구</td><td><b>주 단위 입퇴실</b></td></tr>
+        <tr><td><b>신고</b></td><td>해당 없음</td><td>숙박업 신고 필수 (25.10~ 미신고 예약 차단)</td><td>임대차 구조 (4주 미만은 회색 지대)</td></tr>
+        <tr><td><b>보호</b></td><td>보증금 회수 분쟁</td><td>플랫폼 보호</td><td><b>보증금 회사 보관 + 삼삼케어</b></td></tr>
+        <tr><td><b>단가</b></td><td>시세 월세</td><td>높지만 변동 큼</td><td>월세보다 높은 주 단위 단가</td></tr>
+      </table>
+      <div class="card amber" style="margin-top:14px;padding:14px 18px">
+        <ul class="clean" style="margin:0">
+          <li style="font-size:14px">사례마다 <b>"장기 월세 OO만 원 → 단기 OO만 원"</b> (공실·청소·관리비 반영) 1줄</li>
+          <li style="font-size:14px">배포: 임대인 카페·블로그 시리즈·숏폼·공인중개사 자료</li>
+          <li style="font-size:14px"><b>지역별 수익 리포트</b>(월 1회) → 공급 부족 지역 임대인 광고의 랜딩</li>
+          <li style="font-size:14px" >수익 시뮬레이터를 웹에 공개 → 가입 전 계산 → 등록 시작</li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center"><div class="phone sm"><img src="img/llhome.jpg"></div><div class="cap">임대인 모드 홈: 장점 카드 ✓</div></div>
+    <div style="text-align:center"><div class="phone sm"><img src="img/llstory.jpg"></div><div class="cap">임대인 사례: 앱 안에만, 수익 숫자 없음</div></div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>출처</b> 앱 녹화(임대인 모드) · 벤처스퀘어(첫 계약 평균 3일) [자사발표] · 에어비앤비 뉴스룸(영업신고 의무화) · 10월 Meta 소재 "평균 계약률 95% 우수 임대인"</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 15 KPI + ROADMAP -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">14 · 기대효과</div><h2>북극성: <span class="hl">월 입주 완료 '주(週)' 수</span></h2></div>
+    <div class="logo"><span class="ic">33</span>삼삼엠투</div>
+  </div>
+  <div class="flow">
+    <div class="step"><b style="font-size:15px">날짜 입력 검색 유저</b><p style="font-size:12.5px">홈 날짜 시작 · 웹2앱</p></div>
+    <div class="arr">×</div>
+    <div class="step" style="background:var(--violet-soft)"><b style="font-size:15px">검색 → 입주 전환율</b><p style="font-size:12.5px">총액 표시 · 신뢰 배지 · 가격 핀</p></div>
+    <div class="arr">×</div>
+    <div class="step"><b style="font-size:15px">평균 계약 주수</b><p style="font-size:12.5px">기간 넛지 · 원탭 연장 · 4주+ 혜택</p></div>
+    <div class="arr">+</div>
+    <div class="step" style="background:var(--teal-soft)"><b style="font-size:15px">재이용</b><p style="font-size:12.5px">주기 이벤트 · 재계약 쿠폰</p></div>
+  </div>
+  <p class="flag" style="margin-top:8px">거래액(GMV) = 북극성 × 주 단가. 단가 변동에 흔들리지 않는 '주 수'를 북극성으로 둡니다. 결제가 아닌 '입주 완료' 기준(에스크로 구조상 실제 가치 전달 시점).</p>
+  <div class="grid" style="grid-template-columns:1.25fr 1fr;gap:18px;margin-top:12px">
+    <div>
+      <table style="font-size:13.5px">
+        <tr><th>우선순위 (ICE)</th><th>지표</th><th style="width:90px">I·C·E</th></tr>
+        <tr class="hi"><td><b>1. 선택 기간 총액·절약액</b></td><td>상세 → 계약 시작</td><td>9·8·8</td></tr>
+        <tr><td><b>2. 날짜·필터 유지</b></td><td>날짜 입력 검색률</td><td>7·9·9</td></tr>
+        <tr><td><b>3. 안심 계약 3종 배지</b></td><td>계약 시작율</td><td>8·7·9</td></tr>
+        <tr><td><b>4. 페르소나 웹2앱 랜딩</b></td><td>설치 → 계약 전환율</td><td>9·7·7</td></tr>
+        <tr><td><b>5. 검색 자동완성·지도 가격 핀</b></td><td>검색·지도 → 상세</td><td>8·7·6</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="font-size:17px">90일</h3>
+      <ul class="clean" style="margin-top:8px">
+        <li style="font-size:14px"><b>0~30일</b> 양면 퍼널 대시보드, 선행 지표 검증, 총액 표시·배지 A/B</li>
+        <li style="font-size:14px"><b>31~60일</b> 페르소나 웹2앱 랜딩, 검증된 선행 행동으로 광고 최적화</li>
+        <li style="font-size:14px"><b>61~90일</b> 연장·재계약 루프, 혜택형 프로모션, 임대인 수익 리포트</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot">
+    <span class="src"><b>원칙</b> 하위 퍼널 실험은 표본이 크게 필요(전환율 5%에서 상대 10% 향상 확인에 그룹당 약 3만 명) → 상위 퍼널 지표로 먼저 판단, 취소율·분쟁률을 가드레일로</span>
+    <span>삼삼엠투 · 이도형</span>
+  </div>
+</section>
+
+<!-- 16 CLOSING -->
+<section class="slide" style="justify-content:center;background:
+  radial-gradient(900px 520px at 84% -10%, var(--violet-soft) 0%, transparent 55%),
+  radial-gradient(720px 520px at -5% 110%, var(--blue-soft) 0%, transparent 55%), #fff">
+  <div class="kicker vio">정리</div>
+  <div class="quote" style="max-width:1000px">
+    <div class="q">삼삼엠투는 이미 이기는 구조를 가졌습니다.<br><span class="g">그 구조를 숫자로 보여주는 순간</span>, 광고비는 같아도 계약은 늘어납니다.</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:24px;max-width:1000px">
+    <div class="card out"><div class="num">보여주기</div><p><b>총액·절약액·가격 핀</b>으로 "길수록 싸다"를 결정 순간에</p></div>
+    <div class="card out"><div class="num">증명하기</div><p><b>안심 계약 행동</b>으로 "왜 33m²인가"를</p></div>
+    <div class="card out"><div class="num">연결하기</div><p><b>웹2앱</b>으로 광고 클릭 직후 그 숫자를</p></div>
+  </div>
+  <div style="margin-top:28px;display:flex;gap:10px">
+    <span class="pill k">이도형</span><span class="pill vio">퍼포먼스·그로스 마케터 지원</span>
+  </div>
+</section>
+
+</div></div>
+
+<div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
+<div class="hint">← → 또는 Space · F 전체화면</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';}
+addEventListener('resize',fit);fit();show(0);
+</script>
+</body>
+</html>
