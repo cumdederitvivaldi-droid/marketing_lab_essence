@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>아타가 콘텐츠 파트 리드 전략 제안 · 이도형</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root{
+  --ink:#15171C; --gray:#8A8F99; --gray2:#5B6170;
+  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  --blue:#3D6BE0; --blue-d:#2449B8; --blue-soft:#E6EEFF;
+  --navy:#1E2B5C; --navy-soft:#E4E8F5;
+  --green:#5FA82E; --green-d:#3F7E17; --green-soft:#E7F4DC;
+  --yellow:#F2B705; --yellow-d:#A87C00; --yellow-soft:#FFF5CC;
+  --rose:#E0533D; --rose-d:#B23A26; --rose-soft:#FCE7E2;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:40px 60px 56px;overflow:hidden}
+.slide.active{display:flex;animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.kicker{font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--blue-d);margin-bottom:8px}
+.kicker.rose{color:var(--rose-d)} .kicker.green{color:var(--green-d)} .kicker.yellow{color:var(--yellow-d)}
+h1{font-size:52px;font-weight:800;line-height:1.16;color:var(--ink);letter-spacing:-.02em}
+h2{font-size:31px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:-.02em}
+h3{font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+p{font-size:15px;line-height:1.5;color:#2C313C}
+.lead{font-size:19px;line-height:1.6;color:var(--gray2);font-weight:500}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+.hl.green{background:linear-gradient(transparent 58%, var(--green-soft) 58%)}
+.hl.yellow{background:linear-gradient(transparent 58%, var(--yellow-soft) 58%)}
+b{font-weight:800;color:var(--ink)}
+.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:16px;color:var(--navy)}
+.logo .ic{width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,#9DB8FF,var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.grid{display:grid;gap:14px}
+.row{display:flex;align-items:center}
+.card{background:var(--soft);border-radius:var(--radius);padding:16px 18px}
+.card.blue{background:var(--blue-soft)} .card.green{background:var(--green-soft)} .card.yellow{background:var(--yellow-soft)} .card.rose{background:var(--rose-soft)} .card.navy{background:var(--navy);color:#fff}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
+.pill.k{background:var(--navy);color:#fff} .pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.green{background:var(--green-soft);color:var(--green-d)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:800;padding:6px 11px;border-radius:10px;background:#fff;border:1px solid var(--line);color:var(--ink);white-space:nowrap}
+.chip.rose{background:var(--rose-soft);border-color:transparent;color:var(--rose-d)}
+.chip.green{background:var(--green-soft);border-color:transparent;color:var(--green-d)}
+.chip.blue{background:var(--blue-soft);border-color:transparent;color:var(--blue-d)}
+.chip.navy{background:var(--navy);border-color:transparent;color:#fff}
+.chip.yellow{background:var(--yellow-soft);border-color:transparent;color:var(--yellow-d)}
+.chip.strike{text-decoration:line-through;opacity:.55}
+.big{font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.lab{font-size:12.5px;color:var(--gray2);font-weight:600;margin-top:6px;line-height:1.35}
+.cap{font-size:12px;color:var(--gray);margin-top:6px;text-align:center;line-height:1.35}
+.shot{border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;display:block;object-fit:cover;object-position:top}
+.flag{font-size:11.5px;color:var(--gray);font-style:italic}
+.src{font-size:10.5px;color:var(--gray);line-height:1.45}
+.src b{color:var(--gray2);font-weight:700}
+.foot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;color:var(--gray);border-top:1px solid var(--line);padding-top:7px;gap:20px;font-size:10.5px}
+.foot .src{flex:1}
+.arrow{font-size:26px;font-weight:800;color:var(--gray);display:flex;align-items:center;justify-content:center}
+.tagb{position:absolute;left:8px;top:8px;background:var(--navy);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px}
+.tagb.rose{background:var(--rose)} .tagb.green{background:var(--green)}
+.rel{position:relative}
+
+/* 제품 썸네일 */
+.pimg{width:100%;height:170px;object-fit:cover;border-radius:16px;border:1px solid var(--line)}
+.ptag{margin-top:10px;background:var(--soft);border-radius:12px;padding:8px 10px;text-align:center}
+.ptag .pr{font-size:20px;font-weight:800;color:var(--ink)}
+.ptag .sub{font-size:11.5px;font-weight:700;color:var(--gray2);margin-top:3px}
+.eq{font-size:30px;font-weight:800;color:var(--rose);display:flex;align-items:center;justify-content:center}
+
+/* 막대그래프 */
+.bars{display:flex;flex-direction:column;gap:11px}
+.bar{display:grid;grid-template-columns:118px 1fr 34px;align-items:center;gap:10px}
+.bar .n{font-size:13.5px;font-weight:800;color:var(--ink);text-align:right}
+.bar .track{height:24px;background:var(--soft);border-radius:7px;overflow:hidden}
+.bar .fill{height:100%;border-radius:7px}
+.bar .v{font-size:15px;font-weight:800;color:var(--ink)}
+
+/* 폰 목업 */
+.phone{width:196px;height:380px;border-radius:30px;background:#0f1115;padding:7px;box-shadow:var(--shadow);flex:0 0 auto}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#222}
+.phone .scr img{width:100%;height:100%;object-fit:cover}
+.phone .ov{position:absolute;left:8px;right:8px;padding:5px 8px;border-radius:8px;font-size:11.5px;font-weight:800;line-height:1.3}
+.ov.ad{background:var(--rose);color:#fff}
+.ov.ugc{background:rgba(0,0,0,.55);color:#fff;font-weight:600}
+.ov.lbl{background:rgba(255,255,255,.92);color:var(--ink)}
+
+/* 스토리보드 */
+.sb{display:grid;grid-template-columns:150px repeat(4,1fr) 150px;gap:8px;align-items:stretch}
+.sb .hd{font-size:12px;font-weight:800;color:#fff;border-radius:10px;padding:7px 8px;text-align:center}
+.sb .cell{background:var(--soft);border-radius:12px;padding:12px;min-height:92px;font-size:14px;font-weight:700;line-height:1.35;color:var(--ink);display:flex;align-items:center;gap:7px}
+.sb .cell .e{font-size:20px}
+.sb .pn{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800}
+.sb .pn img{width:56px;height:56px;border-radius:10px;object-fit:cover;border:1px solid var(--line)}
+.sb .ref{font-size:11.5px;font-weight:700;color:var(--gray2);background:#fff;border:1px dashed #C9CFDA;border-radius:12px;padding:8px;display:flex;align-items:center;line-height:1.3}
+
+/* 타임라인 */
+.tl{display:flex;height:46px;border-radius:12px;overflow:hidden;font-size:13.5px;font-weight:800;color:#fff}
+.tl div{display:flex;align-items:center;justify-content:center}
+.frames{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.frame{background:#0f1115;border-radius:18px;padding:6px;height:240px}
+.frame .in{height:100%;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;gap:10px}
+.frame .em{font-size:44px}
+.frame .tx{font-size:14px;font-weight:800;line-height:1.35}
+.frame .sm{font-size:11.5px;font-weight:600;opacity:.8;line-height:1.35}
+
+/* 비교 */
+.vsrow{display:grid;grid-template-columns:1fr 46px 1fr;align-items:center}
+.pair{display:flex;gap:6px;flex-wrap:wrap}
+
+/* 옵션박스 */
+.optbox{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.optbox .oh{background:var(--navy);color:#fff;font-size:12.5px;font-weight:800;padding:9px 14px}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);gap:10px}
+.opt:last-child{border-bottom:none}
+.opt .l{font-size:14px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.opt .l img{width:30px;height:30px;border-radius:7px;object-fit:cover;border:1px solid var(--line)}
+.opt .p{font-size:15px;font-weight:800;color:var(--blue-d);white-space:nowrap;text-align:right}
+.opt .p small{display:block;font-size:11px;color:var(--gray);font-weight:600;text-decoration:line-through}
+.opt.best{background:var(--blue-soft)}
+.b2{display:inline-block;font-size:10.5px;font-weight:800;color:#fff;background:var(--rose);border-radius:5px;padding:1px 6px}
+.dot{width:54px;height:54px;border-radius:14px;object-fit:cover;border:2px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+
+/* 루프 */
+.loop{position:relative;width:420px;height:400px;margin:0 auto}
+.loop .nd{position:absolute;width:150px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:10px 12px;text-align:center}
+.loop .nd .em{font-size:26px}
+.loop .nd .t{font-size:14.5px;font-weight:800;color:var(--ink);margin-top:2px}
+.loop .nd .s{font-size:11.5px;color:var(--gray2);font-weight:600;line-height:1.35;margin-top:3px}
+.loop .ctr{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;font-size:14px;line-height:1.35}
+
+/* KPI 트리 */
+.tree{display:grid;grid-template-columns:1fr 50px 1fr 50px 1fr;align-items:center}
+.node{border-radius:16px;padding:14px;text-align:center}
+.node .t{font-size:17px;font-weight:800}
+.node .s{font-size:12px;font-weight:600;margin-top:4px;opacity:.85}
+.gantt{display:grid;grid-template-columns:150px repeat(3,1fr);gap:6px 8px;align-items:center}
+.gantt .gh{font-size:12px;font-weight:800;color:var(--gray);text-align:center}
+.gantt .gl{font-size:13.5px;font-weight:800;color:var(--ink)}
+.gantt .gb{height:30px;border-radius:8px;font-size:12px;font-weight:800;color:#fff;display:flex;align-items:center;padding:0 10px}
+
+img[src$="p_sun.jpg"]{object-position:center 62%}
+img[src$="p_cushion.jpg"]{object-position:center 45%}
+#nav{position:fixed;top:12px;right:16px;display:flex;align-items:center;gap:12px;background:rgba(21,23,28,.55);backdrop-filter:blur(8px);padding:6px 14px;border-radius:999px;z-index:50;opacity:.35;transition:opacity .2s}
+#nav:hover{opacity:1}
+#nav button{background:none;border:none;color:#fff;font-size:16px;cursor:pointer;line-height:1}
+#nav .ct{color:#fff;font-size:12.5px;font-weight:600;min-width:50px;text-align:center;font-variant-numeric:tabular-nums}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar{display:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide active" style="justify-content:center;background:
+  radial-gradient(900px 520px at 86% -10%, var(--blue-soft) 0%, transparent 55%),
+  radial-gradient(720px 520px at -5% 110%, var(--green-soft) 0%, transparent 55%), #fff">
+  <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:40px;align-items:center">
+    <div>
+      <div class="logo" style="margin-bottom:26px"><span class="ic">✦</span>ataga</div>
+      <div class="kicker">콘텐츠 파트 리드 · 전략 제안</div>
+      <h1>광고처럼 보이지 않을수록<br>아타가는 <span class="hl">더 크게</span> 팔립니다</h1>
+      <div style="margin-top:28px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="chip rose">기존 제품의 불편</span><span class="arrow" style="font-size:18px">→</span>
+        <span class="chip green">고객 실사용 콘텐츠</span><span class="arrow" style="font-size:18px">→</span>
+        <span class="chip blue">루틴 묶음 구매</span>
+      </div>
+      <div style="margin-top:30px;display:flex;gap:10px">
+        <span class="pill k">ATAGA</span><span class="pill blue">콘텐츠 마케팅 파트 리드</span><span class="pill green">이도형</span>
+      </div>
+    </div>
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+      <img class="pimg" src="images/p_sun.jpg" style="height:200px" alt="">
+      <img class="pimg" src="images/p_vitc.jpg" style="height:200px;object-position:center 50%" alt="">
+      <img class="pimg" src="images/p_pore.jpg" style="height:200px" alt="">
+      <img class="pimg" src="images/p_cushion.jpg" style="height:200px" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- 2 직무 이해 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">01 · 직무 이해</div><h2>JD의 핵심은 <span class="hl">"반복 가능한 크리에이티브 구조"</span>입니다</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:14px">
+    <div class="card blue"><div class="big" style="color:var(--blue-d)">50억+</div><div class="lab">연매출 · 100억 목전</div></div>
+    <div class="card blue"><div class="big" style="color:var(--blue-d)">20억</div><div class="lab">아타가 월 매출 달성</div></div>
+    <div class="card"><div class="big">10만 개</div><div class="lab">누적 판매</div></div>
+    <div class="card"><div class="big">0원</div><div class="lab">외부 투자 · 자력 성장</div></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 60px 1fr;margin-top:26px;align-items:center;flex:1">
+    <div class="grid" style="gap:10px">
+      <div class="lab" style="font-size:13px;margin:0 0 2px">JD가 요구하는 것</div>
+      <div class="chip" style="font-size:15px;padding:12px 14px">🎯 파트 KPI·우선순위 설정, 팀 디렉팅</div>
+      <div class="chip" style="font-size:15px;padding:12px 14px">🎬 숏폼 DA 소재 기획 + A/B 테스트</div>
+      <div class="chip" style="font-size:15px;padding:12px 14px">🔁 성과 소재·소구점 → 반복 구조화</div>
+    </div>
+    <div class="arrow" style="font-size:34px">→</div>
+    <div class="grid" style="gap:10px">
+      <div class="lab" style="font-size:13px;margin:0 0 2px">제가 할 3가지</div>
+      <div class="chip green" style="font-size:15px;padding:12px 14px">① "불편 → 해결" 콘텐츠 공식</div>
+      <div class="chip green" style="font-size:15px;padding:12px 14px">② 실사용 티 나는 시딩 구조</div>
+      <div class="chip green" style="font-size:15px;padding:12px 14px">③ 상세페이지 루틴 묶음으로 객단가 ↑</div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 원티드 '콘텐츠 마케팅 파트 리드'(wd/392667)·아타가 인턴 공고(wd/390239) [자사발표·단일 출처, 기준 시점 불명]</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 3 현황 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">02 · 현황</div><h2>제품은 4개인데, 고객 눈에는 <span class="hl rose">모두 같은 제품</span>입니다</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr;align-items:start">
+    <div><img class="pimg" src="images/p_sun.jpg" alt=""><div class="ptag"><div class="pr">34,900원</div><div class="sub">30% ↓ · BEST · 1위</div></div><div class="cap" style="font-weight:800;color:var(--ink)">스노우 선세럼</div></div>
+    <div class="eq" style="height:170px">=</div>
+    <div><img class="pimg" src="images/p_vitc.jpg" style="object-position:center 50%" alt=""><div class="ptag"><div class="pr">34,900원</div><div class="sub">30% ↓ · BEST · 1위</div></div><div class="cap" style="font-weight:800;color:var(--ink)">씨타샷 미백세럼</div></div>
+    <div class="eq" style="height:170px">=</div>
+    <div><img class="pimg" src="images/p_pore.jpg" alt=""><div class="ptag"><div class="pr">34,900원</div><div class="sub">30% ↓ · BEST · 1위</div></div><div class="cap" style="font-weight:800;color:var(--ink)">캡슐 모공크림</div></div>
+    <div class="eq" style="height:170px">=</div>
+    <div><img class="pimg" src="images/p_cushion.jpg" alt=""><div class="ptag"><div class="pr">34,900원</div><div class="sub">30% ↓ · BEST · 완판</div></div><div class="cap" style="font-weight:800;color:var(--ink)">스노우 세럼쿠션</div></div>
+  </div>
+  <div class="row" style="gap:12px;margin-top:26px;justify-content:center">
+    <span class="chip rose" style="font-size:15px;padding:10px 16px">❓ 대표 제품이 뭐지?</span>
+    <span class="chip rose" style="font-size:15px;padding:10px 16px">❓ 왜 같이 써야 하지?</span>
+    <span class="chip rose" style="font-size:15px;padding:10px 16px">❓ 다른 브랜드와 뭐가 다르지?</span>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> ataga.co.kr 상품 상세페이지 직접 확인(2026-10-27). 4개 모두 정가 49,800원 → 판매가 34,900원</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 4 광고 진단 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">03 · 광고 진단</div><h2>지금 광고는 <span class="hl rose">"왜 지금 사야 하는지"</span>만 말합니다</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1.05fr 1fr;gap:28px;flex:1">
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px;align-content:start">
+      <div class="rel"><img class="shot" src="images/cr_oy.jpg" style="height:205px" alt=""><span class="tagb">공식 계정</span><div class="cap">"올영 1위🔥 해외대란 마지막 재고"</div></div>
+      <div class="rel"><img class="shot" src="images/cr_bb.jpg" style="height:205px" alt=""><span class="tagb rose">우회 페이지</span><div class="cap">"573명 구매 중 · 오늘 닫혀요"</div></div>
+      <div class="rel"><img class="shot" src="images/cr_aging.jpg" style="height:205px" alt=""><span class="tagb rose">우회 페이지</span><div class="cap">"모공삭제 루틴 · 자정까지만"</div></div>
+      <div class="rel"><img class="shot" src="images/cr_vitc.jpg" style="height:205px" alt=""><span class="tagb rose">우회 페이지</span><div class="cap">"기미삭제템 · 선착순 100명"</div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <h3 style="margin-bottom:4px">게재 중인 광고 11개, 무엇을 말하나</h3>
+      <p class="lab" style="margin:0 0 16px">메시지별 포함 광고 수 (중복 포함)</p>
+      <div class="bars">
+        <div class="bar"><span class="n">긴급성·한정</span><div class="track"><div class="fill" style="width:72.7%;background:var(--rose)"></div></div><span class="v">8</span></div>
+        <div class="bar"><span class="n">1위·해외대란</span><div class="track"><div class="fill" style="width:63.6%;background:var(--rose)"></div></div><span class="v">7</span></div>
+        <div class="bar"><span class="n">성분 나열</span><div class="track"><div class="fill" style="width:45.5%;background:#F0A090"></div></div><span class="v">5</span></div>
+        <div class="bar"><span class="n">단계 축소</span><div class="track"><div class="fill" style="width:36.4%;background:#9DB8FF"></div></div><span class="v">4</span></div>
+        <div class="bar"><span class="n">고객의 실제 불편</span><div class="track"><div class="fill" style="width:9.1%;background:var(--green)"></div></div><span class="v" style="color:var(--green-d)">1</span></div>
+      </div>
+      <div class="card navy" style="margin-top:22px;padding:14px 18px"><p style="color:#fff;font-size:15px"><b style="color:#C9F0A8">"내 얼굴에서 어떻게 되는지"</b>를 보여 주는 광고는 거의 없습니다</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> Meta 광고 라이브러리, 대한민국·게재 중, 키워드 '아타가'·'씨타샷'(2026-10-27). 광고 문구 기준 직접 분류 [자체 집계 — 키워드 검색 범위라 전체 집행량과 다를 수 있음]</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 5 페인 3 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker rose">04 · 문제 정의</div><h2>매출 상한을 막는 문제 3가지</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:16px;height:400px">
+    <div class="card rose" style="display:flex;flex-direction:column;gap:12px">
+      <div class="lab" style="color:var(--rose-d);margin:0;font-weight:800">PAIN 01</div>
+      <h3 style="font-size:21px">돈 주고 뿌린 티가 난다</h3>
+      <div class="row" style="gap:6px">
+        <img class="dot" src="images/cr_bb.jpg" alt=""><img class="dot" src="images/cr_aging.jpg" alt=""><img class="dot" src="images/cr_vitc.jpg" alt=""><img class="dot" src="images/cr_creator.jpg" alt="">
+      </div>
+      <div class="pair"><span class="chip">우회 페이지 3곳</span><span class="chip">#제품제공</span><span class="chip">같은 카피 ×3</span></div>
+      <div style="margin-top:auto" class="chip navy">→ 클릭은 와도 신뢰는 안 쌓임</div>
+    </div>
+    <div class="card yellow" style="display:flex;flex-direction:column;gap:12px">
+      <div class="lab" style="color:var(--yellow-d);margin:0;font-weight:800">PAIN 02</div>
+      <h3 style="font-size:21px">USP를 성분으로만 말한다</h3>
+      <div class="pair"><span class="chip strike">에델바이스</span><span class="chip strike">아쿠아자일™</span><span class="chip strike">글루타치온좀</span><span class="chip strike">레티날 100ppb</span><span class="chip strike">스피큘</span></div>
+      <div class="chip" style="white-space:normal;line-height:1.35">⚠️ 상세페이지 고지: "원료에 대한 설명으로, 제품과 무관합니다"</div>
+      <div style="margin-top:auto" class="chip navy">→ 차이가 안 보여 할인에 기댐</div>
+    </div>
+    <div class="card blue" style="display:flex;flex-direction:column;gap:12px">
+      <div class="lab" style="color:var(--blue-d);margin:0;font-weight:800">PAIN 03</div>
+      <h3 style="font-size:21px">같은 제품 1+1만 판다</h3>
+      <div class="row" style="gap:6px">
+        <img class="dot" src="images/p_sun.jpg" alt=""><span style="font-weight:800">+</span><img class="dot" src="images/p_sun.jpg" alt="">
+        <span style="font-weight:800;margin-left:6px">/</span>
+        <img class="dot" src="images/p_vitc.jpg" style="object-position:center 50%" alt=""><span style="font-weight:800">×4+2</span>
+      </div>
+      <div class="pair"><span class="chip">1+1</span><span class="chip">3+1</span><span class="chip">4+2</span><span class="chip">다른 제품 조합 0개</span></div>
+      <div style="margin-top:auto" class="chip navy">→ 교차 구매·객단가 정체</div>
+    </div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px">
+    <div class="chip green" style="justify-content:center;padding:10px">전략 2 · 실사용 콘텐츠 시딩</div>
+    <div class="chip green" style="justify-content:center;padding:10px">전략 1 · "불편 → 해결" 공식</div>
+    <div class="chip green" style="justify-content:center;padding:10px">전략 3 · 상세페이지 루틴 묶음</div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> ataga.co.kr 상세페이지, Meta 광고 라이브러리(2026-10-27) 직접 확인</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 6 불편 지도 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker green">05 · USP 재정의</div><h2>USP = <span class="hl green">기존 제품의 불편이 끝나는 지점</span></h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div style="display:grid;grid-template-columns:150px 1fr 40px 1fr;gap:12px 10px;align-items:center">
+    <div></div><div class="lab" style="font-weight:800;color:var(--rose-d);font-size:13px">😣 기존에 쓰던 제품의 불편</div><div></div><div class="lab" style="font-weight:800;color:var(--green-d);font-size:13px">😊 아타가가 끝내는 지점</div>
+
+    <div class="row" style="gap:10px"><img class="dot" src="images/p_sun.jpg" alt=""><b style="font-size:14px">선세럼</b></div>
+    <div class="pair"><span class="chip rose">톤업선 백탁·회끼</span><span class="chip rose">쿠션 오후 들뜸</span><span class="chip rose">아침 3~4단계</span></div>
+    <div class="arrow">→</div>
+    <div class="pair"><span class="chip green">캡슐 커버 + 세럼 촉촉</span><span class="chip green">1개로 끝</span></div>
+
+    <div class="row" style="gap:10px"><img class="dot" src="images/p_vitc.jpg" style="object-position:center 50%" alt=""><b style="font-size:14px">씨타샷</b></div>
+    <div class="pair"><span class="chip rose">유도체는 효과 더딤</span><span class="chip rose">순수 비타C 따가움</span><span class="chip rose">산화·변색</span></div>
+    <div class="arrow">→</div>
+    <div class="pair"><span class="chip green">순수 비타C 15%</span><span class="chip green">산화 전에 다 쓰는 15ml</span></div>
+
+    <div class="row" style="gap:10px"><img class="dot" src="images/p_pore.jpg" alt=""><b style="font-size:14px">모공크림</b></div>
+    <div class="pair"><span class="chip rose">패드는 순간뿐</span><span class="chip rose">스피큘 따가움</span><span class="chip rose">"피지 문제"로만 접근</span></div>
+    <div class="arrow">→</div>
+    <div class="pair"><span class="chip green">"모공 = 탄력" 재정의</span><span class="chip green">눈에 보이는 캡슐</span></div>
+
+    <div class="row" style="gap:10px"><img class="dot" src="images/p_cushion.jpg" alt=""><b style="font-size:14px">세럼쿠션</b></div>
+    <div class="pair"><span class="chip rose">매트=건조</span><span class="chip rose">촉촉=커버 부족</span><span class="chip rose">마스크 묻어남</span></div>
+    <div class="arrow">→</div>
+    <div class="pair"><span class="chip green">커버·촉촉 둘 다</span><span class="chip green">SPF50+</span></div>
+  </div>
+  <div class="card navy" style="margin-top:22px;padding:14px 20px;display:flex;gap:30px;align-items:center">
+    <span style="font-size:15px;font-weight:800;color:#C9F0A8">콘텐츠의 주인공</span><span style="font-size:15px;color:#fff">불편이 끝나는 <b style="color:#fff">순간</b></span>
+    <span style="font-size:15px;font-weight:800;color:#9DB8FF;margin-left:20px">성분의 역할</span><span style="font-size:15px;color:#fff">"왜 되는지" 보조 <b style="color:#fff">근거</b></span>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> 아타가 상세페이지 소구 [자사발표] + 카테고리 일반 불편 [추정 — 입사 후 자사·올영 리뷰 마이닝으로 검증]</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 7 전략1 공식 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">06 · 전략 1</div><h2>모든 소재를 하나의 공식으로: <span class="hl">20초 스토리보드</span></h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="tl">
+    <div style="flex:3;background:var(--rose)">0~3초 · 훅</div>
+    <div style="flex:5;background:#8A8F99">3~8초</div>
+    <div style="flex:7;background:var(--blue)">8~15초</div>
+    <div style="flex:5;background:var(--green)">15~20초</div>
+  </div>
+  <div class="frames" style="margin-top:14px">
+    <div class="frame"><div class="in" style="background:var(--rose-soft)"><div class="em">😩</div><div class="tx" style="color:var(--rose-d)">불편 장면</div><div class="sm" style="color:var(--ink)">"오후 3시,<br>또 들뜬 쿠션"</div></div></div>
+    <div class="frame"><div class="in" style="background:#ECEEF2"><div class="em">🧴❌</div><div class="tx">기존 제품의 실패</div><div class="sm" style="color:var(--ink)">회끼·각질·따가움을<br>실제로 보여 줌</div></div></div>
+    <div class="frame"><div class="in" style="background:var(--blue-soft)"><div class="em">✨</div><div class="tx" style="color:var(--blue-d)">아타가 등장</div><div class="sm" style="color:var(--ink)">텍스처 → 바르는 손<br>→ 결과</div></div></div>
+    <div class="frame"><div class="in" style="background:var(--green-soft)"><div class="em">⏱️</div><div class="tx" style="color:var(--green-d)">증거</div><div class="sm" style="color:var(--ink)">시간 경과 + 임상·1위는<br>작은 자막으로</div></div></div>
+    <div class="frame"><div class="in" style="background:var(--navy);color:#fff"><div class="em">🛒</div><div class="tx">CTA</div><div class="sm">단품이 아닌<br>루틴 세트로 연결</div></div></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1.2fr 1fr;gap:16px;margin-top:18px">
+    <div class="card" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <b style="font-size:14px">A/B는 칸 단위로</b>
+      <span class="chip rose">훅 3종</span><span>×</span><span class="chip green">증거 2종</span><span>×</span><span class="chip navy">CTA 2종</span><span class="lab" style="margin:0">→ 주 단위 교체</span>
+    </div>
+    <div class="card rose" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span class="chip strike">삭제</span><span class="chip strike">지우개</span><span class="chip strike">99.9% 제거</span><span>→</span><span class="chip green">2주 기록</span><span class="chip green">임상 확인</span>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>근거</b> JD "반복 가능한 크리에이티브 구조"(원티드 wd/392667). 표현 기준은 화장품 표시·광고 일반 원칙 [사전 심의 확인 필요]</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 8 제품별 스토리보드 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">06 · 전략 1</div><h2>제품별 스토리보드와 <span class="hl">빌려 올 레퍼런스</span></h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="sb">
+    <div></div>
+    <div class="hd" style="background:var(--rose)">😩 훅</div>
+    <div class="hd" style="background:#8A8F99">🧴 실패</div>
+    <div class="hd" style="background:var(--blue)">✨ 해결</div>
+    <div class="hd" style="background:var(--green)">⏱️ 증거</div>
+    <div class="hd" style="background:var(--navy)">📎 레퍼런스</div>
+
+    <div class="pn"><img src="images/p_sun.jpg" alt="">선세럼</div>
+    <div class="cell"><span class="e">🪞</span>"아침마다 4개 바르는 사람?"</div>
+    <div class="cell"><span class="e">👻</span>톤업선 회끼, 오후 들뜸</div>
+    <div class="cell"><span class="e">🫧</span>3개 치우고 1개, 캡슐 터짐</div>
+    <div class="cell"><span class="e">🕗</span>오전 8시 → 오후 7시</div>
+    <div class="ref">조선미녀 선크림<br>루틴 교육형 UGC</div>
+
+    <div class="pn"><img src="images/p_vitc.jpg" style="object-position:center 50%" alt="">씨타샷</div>
+    <div class="cell"><span class="e">😖</span>"비타C 따가워서 버린 사람?"</div>
+    <div class="cell"><span class="e">🟤</span>갈색으로 변한 세럼 병</div>
+    <div class="cell"><span class="e">💧</span>민감 피부 첫 사용 리액션</div>
+    <div class="cell"><span class="e">📅</span>1·7·14일 셀카 기록</div>
+    <div class="ref">메디큐브 US<br>크리에이터 → 구매 직결</div>
+
+    <div class="pn"><img src="images/p_pore.jpg" alt="">모공크림</div>
+    <div class="cell"><span class="e">🔍</span>"30대 모공은 탄력 문제"</div>
+    <div class="cell"><span class="e">🧻</span>패드로 닦아도 그대로</div>
+    <div class="cell"><span class="e">🟢</span>캡슐 터지는 매크로 ASMR</div>
+    <div class="cell"><span class="e">📸</span>같은 조명 2주 클로즈업</div>
+    <div class="ref">Rhode<br>질감 클로즈업 팬 리포스트</div>
+
+    <div class="pn"><img src="images/p_cushion.jpg" alt="">세럼쿠션</div>
+    <div class="cell"><span class="e">🤔</span>"매트 vs 촉촉, 왜 골라?"</div>
+    <div class="cell"><span class="e">😷</span>오후 각질, 마스크 묻어남</div>
+    <div class="cell"><span class="e">🌗</span>반얼굴 비교 + 호수 스와치</div>
+    <div class="cell"><span class="e">📱</span>마스크·폰 묻어남 테스트</div>
+    <div class="ref">e.l.f.<br>반복 포맷 → 고객이 따라 찍음</div>
+  </div>
+  <p class="flag" style="margin-top:12px">레퍼런스는 포맷·운영 방식을 빌려 오는 대상입니다. 해당 브랜드가 같은 구조를 썼다는 뜻은 아닙니다.</p>
+  <div class="foot"><span class="src"><b>출처</b> House of Marketers 조선미녀 [에이전시], TikTok for Business 메디큐브·e.l.f. [플랫폼 자사발표], Rhode 운영 분석 [제3자 블로그]</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 9 전략2 뿌린 티 vs 써 본 티 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker green">07 · 전략 2</div><h2>"뿌린 티" 대신 <span class="hl green">"써 본 티"</span></h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:22px;align-items:center;flex:1">
+    <div style="text-align:center">
+      <div class="chip rose" style="margin-bottom:10px">지금 · 뿌린 티</div>
+      <div class="phone"><div class="scr"><img src="images/cr_bb.jpg" alt="">
+        <div class="ov ad" style="top:12px">해외에서 난리난 '이것..'</div>
+        <div class="ov ad" style="bottom:52px">573명 구매 중 · 오늘 닫혀요</div>
+        <div class="ov lbl" style="bottom:12px;font-size:10.5px">Best Beauty · 광고</div>
+      </div></div>
+    </div>
+    <div class="grid" style="gap:9px">
+      <div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:8px;align-items:center">
+        <span class="chip rose" style="justify-content:center">우회 페이지</span><b style="text-align:center;font-size:12px;color:var(--gray)">화자</b><span class="chip green" style="justify-content:center">실제 구매자</span>
+        <span class="chip rose" style="justify-content:center">✔️성분 ✔️성분</span><b style="text-align:center;font-size:12px;color:var(--gray)">말투</b><span class="chip green" style="justify-content:center">"솔직히 첫날은…"</span>
+        <span class="chip rose" style="justify-content:center">편집 컷 + 할인 자막</span><b style="text-align:center;font-size:12px;color:var(--gray)">화면</b><span class="chip green" style="justify-content:center">폰 셀카 · 자연광</span>
+        <span class="chip rose" style="justify-content:center">1위·완판·해외대란</span><b style="text-align:center;font-size:12px;color:var(--gray)">증거</b><span class="chip green" style="justify-content:center">시간 경과 · 단점 1개</span>
+        <span class="chip rose" style="justify-content:center">브랜드와 무관한 척</span><b style="text-align:center;font-size:12px;color:var(--gray)">계정</b><span class="chip green" style="justify-content:center">파트너십 표기</span>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <div class="chip green" style="margin-bottom:10px">바꿀 것 · 써 본 티</div>
+      <div class="phone"><div class="scr"><img src="images/ugc1.jpg" alt="">
+        <div class="ov ugc" style="bottom:46px">"I only use this one now"<br>— 아침 루틴 1개로</div>
+        <div class="ov lbl" style="bottom:12px;font-size:10.5px">@creator · 아타가와 파트너십</div>
+      </div></div>
+    </div>
+    <div class="grid" style="gap:8px">
+      <img class="shot" src="images/ugc2.jpg" style="width:92px;height:150px" alt="">
+      <img class="shot" src="images/ugc3.jpg" style="width:92px;height:150px" alt="">
+    </div>
+  </div>
+  <div class="card blue" style="padding:12px 18px;margin-top:8px"><p style="font-size:14.5px">💡 아타가는 이미 <b>해외 실사용 영상</b>을 갖고 있습니다(상세페이지). 그런데 국내 광고에는 쓰지 않습니다.</p></div>
+  <div class="foot"><span class="src"><b>출처</b> 왼쪽: Meta 광고 라이브러리 'Best Beauty' 광고(2026-10-27). 오른쪽: 아타가 스노우 선세럼 상세페이지 '해외대란' 섹션 이미지(자막은 예시)</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 10 시딩 루프 + 레퍼런스 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker green">07 · 전략 2</div><h2>구매자가 크리에이터가 되는 <span class="hl green">시딩 루프</span></h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="grid" style="grid-template-columns:440px 1fr;gap:26px;flex:1">
+    <div class="loop">
+      <svg width="420" height="400" style="position:absolute;inset:0" viewBox="0 0 420 400">
+        <defs><marker id="ah" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9AA3B5"/></marker></defs>
+        <circle cx="210" cy="200" r="138" fill="none" stroke="#C9CFDA" stroke-width="3" stroke-dasharray="7 7"/>
+        <path d="M290 84 A138 138 0 0 1 346 168" fill="none" stroke="#9AA3B5" stroke-width="3" marker-end="url(#ah)"/>
+        <path d="M330 290 A138 138 0 0 1 250 332" fill="none" stroke="#9AA3B5" stroke-width="3" marker-end="url(#ah)"/>
+        <path d="M120 306 A138 138 0 0 1 74 226" fill="none" stroke="#9AA3B5" stroke-width="3" marker-end="url(#ah)"/>
+        <path d="M86 120 A138 138 0 0 1 160 70" fill="none" stroke="#9AA3B5" stroke-width="3" marker-end="url(#ah)"/>
+      </svg>
+      <div class="ctr">구매자<br>→<br>크리에이터</div>
+      <div class="nd" style="left:135px;top:0"><div class="em">📩</div><div class="t">① 수집</div><div class="s">구매 7일 후 알림톡<br>포맷 3종만 안내</div></div>
+      <div class="nd" style="right:-10px;top:150px"><div class="em">🔁</div><div class="t">② 리포스트</div><div class="s">주간 Top 5<br>공식 계정 소개</div></div>
+      <div class="nd" style="left:135px;bottom:0"><div class="em">💎</div><div class="t">③ 앰배서더</div><div class="s">신제품 선공개<br>대본 없이 포맷만</div></div>
+      <div class="nd" style="left:-10px;top:150px"><div class="em">🚀</div><div class="t">④ 증폭</div><div class="s">상위 영상만<br>파트너십 광고</div></div>
+    </div>
+    <div class="grid" style="gap:12px;align-content:center">
+      <div class="card out" style="display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;padding:12px">
+        <img class="shot" src="images/ref_medicube.jpg" style="height:84px" alt="">
+        <div><div class="big" style="font-size:30px;color:var(--blue-d)">1.03억 뷰</div><div class="lab">메디큐브 · 크리에이터 영상 1.08만 건<br>브랜드 인지도 +14.6%</div></div>
+      </div>
+      <div class="card out" style="display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;padding:12px">
+        <img class="shot" src="images/ref_elf.jpg" style="height:84px" alt="">
+        <div><div class="big" style="font-size:30px;color:var(--blue-d)">3,300건</div><div class="lab">e.l.f. · 고객 UGC → 상위만 Spark Ads<br>1.43억 노출, 광고 회상 +11.9%</div></div>
+      </div>
+      <div class="card green" style="display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;padding:12px">
+        <div style="text-align:center;font-size:40px">🤝</div>
+        <div><div class="big" style="font-size:30px;color:var(--green-d)">−45%</div><div class="lab">Meta 파트너십 광고 30%+ 혼합 시<br>증분 구매당 비용 (증분 ROAS +35%)</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> TikTok for Business 메디큐브·e.l.f. 사례 [플랫폼 자사발표], Meta 파트너십 광고 백서(2026-10, ppc.land 인용, EMEA 20개 연구) [플랫폼 자사발표·소표본 → 아타가 계정 A/B로 검증]. 루프 구조는 Glossier·Rhode 리포스트 운영 참고 [제3자]</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 11 촬영 가이드 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker green">07 · 전략 2</div><h2>대본 대신 <span class="hl green">촬영 가이드 6칸</span>만 줍니다</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:14px">
+    <div class="card out" style="text-align:center;padding:20px"><div style="font-size:46px">🤳</div><h3 style="margin-top:8px">폰 전면 카메라</h3><p class="lab">자연광 · 링라이트·필터 X</p></div>
+    <div class="card out" style="text-align:center;padding:20px"><div style="font-size:46px">🗣️</div><h3 style="margin-top:8px">첫 3초 = 내 불편</h3><p class="lab">내 말로, 내 피부 타입부터</p></div>
+    <div class="card out" style="text-align:center;padding:20px"><div style="font-size:46px">🖐️</div><h3 style="margin-top:8px">제품은 8초 이후</h3><p class="lab">손에 덜고 바르는 장면 포함</p></div>
+    <div class="card out" style="text-align:center;padding:20px"><div style="font-size:46px">⏱️</div><h3 style="margin-top:8px">시간 경과 1컷</h3><p class="lab">오전/오후 · 1일/14일</p></div>
+    <div class="card out" style="text-align:center;padding:20px"><div style="font-size:46px">🙋</div><h3 style="margin-top:8px">아쉬운 점 1개</h3><p class="lab">단점이 신뢰를 만든다</p></div>
+    <div class="card out" style="text-align:center;padding:20px"><div style="font-size:46px">🚫</div><h3 style="margin-top:8px">할인 문구 금지</h3><p class="lab">가격·긴급성은 광고 문구에서만</p></div>
+  </div>
+  <div class="card blue" style="margin-top:18px;display:flex;align-items:center;gap:14px;padding:14px 20px">
+    <span style="font-size:28px">📎</span>
+    <p style="font-size:15px"><b>조선미녀 선크림</b>은 "백탁·번들거림 없음"을 교육형 크리에이터 영상으로 풀고, 성과 영상만 유료로 증폭했습니다 — 미국·영국 매출 YoY 500% <span class="flag">[에이전시 자료·단일 출처]</span></p>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> House of Marketers 조선미녀 케이스 [에이전시 자료, Glossy 인터뷰는 TikTok Shop 리셀러 비중 이견]. 가이드 6칸은 아타가 맞춤 제안</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 12 전략3 묶음 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker yellow">08 · 전략 3</div><h2>객단가는 1+1이 아니라 <span class="hl yellow">루틴 묶음</span>으로 올립니다</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1.15fr;gap:26px;flex:1">
+    <div style="display:flex;flex-direction:column;justify-content:center;gap:18px">
+      <div class="card" style="padding:16px">
+        <div class="row" style="justify-content:space-between"><b>AS-IS · 1+1</b><span class="chip">59,800원</span></div>
+        <div class="row" style="gap:8px;margin-top:12px"><img class="dot" src="images/p_sun.jpg" alt=""><b>+</b><img class="dot" src="images/p_sun.jpg" alt=""><span class="arrow" style="font-size:20px;margin:0 8px">→</span><span class="chip rose">경험한 제품 1개</span></div>
+      </div>
+      <div class="card yellow" style="padding:16px">
+        <div class="row" style="justify-content:space-between"><b>TO-BE · 아침 2스텝 세트</b><span class="chip">59,800원</span></div>
+        <div class="row" style="gap:8px;margin-top:12px"><img class="dot" src="images/p_vitc.jpg" style="object-position:center 50%" alt=""><b>+</b><img class="dot" src="images/p_sun.jpg" alt=""><span class="arrow" style="font-size:20px;margin:0 8px">→</span><span class="chip green">경험한 제품 2개</span></div>
+      </div>
+      <div class="card navy" style="padding:14px 18px"><p style="color:#fff;font-size:15px">같은 59,800원, 다음 구매가 <b style="color:#FFD94D">"두 제품 재구매"</b>가 됩니다</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <div class="optbox">
+        <div class="oh">TO-BE · 상세페이지 구성 선택</div>
+        <div class="opt best"><div class="l"><img src="images/p_vitc.jpg" style="object-position:center 50%" alt=""><img src="images/p_sun.jpg" alt=""><span><span class="b2">추천</span> 아침 2스텝</span></div><div class="p"><small>99,600원</small>59,800원</div></div>
+        <div class="opt"><div class="l"><img src="images/p_sun.jpg" alt=""><img src="images/p_cushion.jpg" alt=""><span>스노우 베이스</span></div><div class="p"><small>99,600원</small>59,800원</div></div>
+        <div class="opt"><div class="l"><img src="images/p_vitc.jpg" style="object-position:center 50%" alt=""><img src="images/p_sun.jpg" alt=""><img src="images/p_cushion.jpg" alt=""><img src="images/p_pore.jpg" alt=""><span>24시간 풀루틴</span></div><div class="p"><small>199,200원</small>109,000원</div></div>
+        <div class="opt"><div class="l"><img src="images/p_sun.jpg" alt=""><img src="images/p_sun.jpg" alt=""><span>1+1 (재구매용)</span></div><div class="p"><small>99,600원</small>59,800원</div></div>
+        <div class="opt"><div class="l"><img src="images/p_sun.jpg" alt=""><span>단품 (첫 체험)</span></div><div class="p"><small>49,800원</small>34,900원</div></div>
+      </div>
+      <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap">
+        <span class="chip yellow">🎯 첫 화면 "내 고민 고르기"</span><span class="chip yellow">🔗 콘텐츠 CTA → 세트 옵션</span><span class="chip yellow">💠 쿠션은 세트로 첫 체험</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="src"><b>출처</b> AS-IS ataga.co.kr 상세페이지 구성(2026-10-27). 정가 합계는 제품당 정가 49,800원 기준, 세트 판매가는 현재 1+1과 같은 선의 예시 [가정 — 원가·마진 검토 후 확정]</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 13 KPI -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">09 · 기대효과</div><h2>매출 = <span class="hl">신규 구매 × 객단가</span>, 전략 3개가 각각 한 칸을 밉니다</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="tree">
+    <div class="node" style="background:var(--navy);color:#fff"><div class="t">매출</div><div class="s">North Star</div></div>
+    <div class="arrow">=</div>
+    <div class="grid" style="gap:10px">
+      <div class="node" style="background:var(--green-soft)"><div class="t" style="color:var(--green-d)">신규 구매</div><div class="s">전략 1·2 · 실사용 소재 비중, 3초 시청률</div></div>
+    </div>
+    <div class="arrow">×</div>
+    <div class="node" style="background:var(--yellow-soft)"><div class="t" style="color:var(--yellow-d)">객단가</div><div class="s">전략 3 · 2종 이상 구매 주문 비중</div></div>
+  </div>
+  <h3 style="margin:28px 0 12px">첫 90일</h3>
+  <div class="gantt">
+    <div></div><div class="gh">1개월</div><div class="gh">2개월</div><div class="gh">3개월</div>
+    <div class="gl">🔍 진단</div><div class="gb" style="background:var(--navy)">리뷰 마이닝 · 소재 감사</div><div></div><div></div>
+    <div class="gl">🎬 전략 1 공식</div><div></div><div class="gb" style="background:var(--blue)">불편 훅 3 × 제품 4 A/B</div><div class="gb" style="background:var(--blue);opacity:.55">승자 확장</div>
+    <div class="gl">🤳 전략 2 시딩</div><div class="gb" style="background:var(--green);opacity:.55">포맷·가이드</div><div class="gb" style="background:var(--green)">파트너십 vs 우회 A/B</div><div class="gb" style="background:var(--green)">루프 정착</div>
+    <div class="gl">🧺 전략 3 묶음</div><div></div><div class="gb" style="background:var(--yellow);opacity:.6">세트 설계</div><div class="gb" style="background:var(--yellow-d)">세트 상세페이지 런칭</div>
+  </div>
+  <div class="foot"><span class="src"><b>메모</b> 목표 수치는 입사 후 내부 데이터(현재 객단가·소재별 효율) 확인 뒤 설정. 지금은 측정 구조만 제안</span><span>ataga · 이도형</span></div>
+</section>
+
+<!-- 14 왜 나 -->
+<section class="slide">
+  <div class="head">
+    <div><div class="kicker">10 · 왜 이도형인가</div><h2>JD가 원하는 것 ↔ 제가 해 온 것</h2></div>
+    <div class="logo"><span class="ic">✦</span>ataga</div>
+  </div>
+  <div class="grid" style="gap:10px">
+    <div class="vsrow"><span class="chip" style="padding:12px 14px;font-size:14.5px">🎬 숏폼 소재 직접 기획·성과</span><span class="arrow">↔</span><span class="chip green" style="padding:12px 14px;font-size:14.5px">Meta·TikTok 숏폼을 훅·소구축 단위로 기획·컷 단위 진단</span></div>
+    <div class="vsrow"><span class="chip" style="padding:12px 14px;font-size:14.5px">📊 데이터 기반 A/B</span><span class="arrow">↔</span><span class="chip green" style="padding:12px 14px;font-size:14.5px">성과를 "타겟 효과 vs 소구 효과"로 분해, 회차별 사후분석</span></div>
+    <div class="vsrow"><span class="chip" style="padding:12px 14px;font-size:14.5px">🔁 반복 가능한 구조</span><span class="arrow">↔</span><span class="chip green" style="padding:12px 14px;font-size:14.5px">배너·알림톡·숏폼 제작을 템플릿·검수 기준으로 표준화</span></div>
+    <div class="vsrow"><span class="chip" style="padding:12px 14px;font-size:14.5px">💡 제품 소구점 발굴</span><span class="arrow">↔</span><span class="chip green" style="padding:12px 14px;font-size:14.5px">상세페이지 USP를 "성분 → 고객 불편 해결" 순서로 재설계</span></div>
+  </div>
+  <div style="margin-top:22px;background:linear-gradient(120deg,#1E2B5C,#2E4CA8);border-radius:20px;padding:24px 28px">
+    <div style="font-size:24px;font-weight:800;line-height:1.4;color:#fff">아타가는 이미 잘 만든 제품이 있습니다.<br>저는 고객이 그 제품을 <span style="color:#C9F0A8">자기 말로 설명하게</span> 만들겠습니다.</div>
+  </div>
+  <div class="foot"><span class="src"><b>메모</b> 구체 수치·사례는 포트폴리오에서 설명</span><span>ataga · 이도형</span></div>
+</section>
+
+</div></div>
+
+<div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';
+  history.replaceState(null,'','#'+(i+1));}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';}
+addEventListener('resize',fit);fit();show((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>
