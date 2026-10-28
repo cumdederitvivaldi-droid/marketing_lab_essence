@@ -8,100 +8,126 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
 :root{
-  --ink:#15171C; --navy:#1A1F2E; --black:#0E1118;
-  --gray:#8A8F99; --gray2:#5B6170;
+  --ink:#15171C; --gray:#8A8F99; --gray2:#5B6170;
   --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
   --radius:20px; --shadow:0 12px 40px rgba(21,23,28,.10);
   --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
-  --blue:#007BFF; --blue-d:#0052AD; --blue-soft:#E3F0FF;
-  --violet:#5B6CFF; --violet-d:#3F4FD9; --violet-soft:#E8EBFF;
+  --blue:#007BFF; --blue-d:#0052AD; --blue-soft:#E3F0FF; --blue-2:#7DB8FF;
   --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
   --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
-  --rose:#E0533D; --rose-soft:#FCE7E2;
+  --rose:#E0533D; --rose-d:#c0402c; --rose-soft:#FCE7E2;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
 #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .deck{position:relative;width:1280px;height:720px;transform-origin:center center}
-.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:42px 64px 60px;overflow:hidden}
-.slide.active{display:flex;animation:fade .5s ease}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--blue-d);margin-bottom:9px}
-.kicker.vio{color:var(--violet-d)} .kicker.teal{color:var(--teal-d)} .kicker.amber{color:var(--amber-d)} .kicker.rose{color:#c0402c}
-h1{font-size:48px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.02em}
-h2{font-size:31px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:-.02em}
-h3{font-size:18.5px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
-p,li{font-size:15.5px;line-height:1.55;color:#2C313C}
-.lead{font-size:19px;line-height:1.6;color:var(--gray2);font-weight:500}
-.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%);font-weight:800;color:var(--ink)}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:40px 64px 56px;overflow:hidden}
+.slide.active{display:flex;animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{font-size:13.5px;font-weight:800;letter-spacing:.04em;color:var(--blue-d);margin-bottom:8px}
+.kicker.teal{color:var(--teal-d)} .kicker.rose{color:var(--rose-d)}
+h1{font-size:52px;font-weight:800;line-height:1.18;color:var(--ink);letter-spacing:-.025em}
+h2{font-size:34px;font-weight:800;line-height:1.22;color:var(--ink);letter-spacing:-.025em}
+h3{font-size:19px;font-weight:800;color:var(--ink)}
+p{font-size:15.5px;line-height:1.55;color:#2C313C}
+.sub{font-size:17px;color:var(--gray2);font-weight:600;margin-top:8px}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%)}
 .hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
-b,strong{font-weight:800;color:var(--ink)}
-.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
-.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:16px;color:var(--ink)}
+.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
+b{font-weight:800;color:var(--ink)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:16px;color:var(--ink);flex:none}
 .logo .ic{width:24px;height:24px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px}
-.grid{display:grid;gap:14px}
-.card{background:var(--soft);border-radius:var(--radius);padding:17px 19px;border:1px solid transparent}
-.card.blue{background:var(--blue-soft)} .card.vio{background:var(--violet-soft)} .card.teal{background:var(--teal-soft)} .card.amber{background:var(--amber-soft)} .card.rose{background:var(--rose-soft)}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center}
+.row{display:flex;gap:16px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--soft);border-radius:var(--radius);padding:18px 20px}
+.card.blue{background:var(--blue-soft)} .card.teal{background:var(--teal-soft)} .card.rose{background:var(--rose-soft)} .card.amber{background:var(--amber-soft)}
 .card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
-.card.dark{background:var(--ink)} .card.dark h3{color:#fff} .card.dark p,.card.dark li{color:#D5D9E2}
-.card h3{margin-bottom:5px}
-.card .num{font-size:12.5px;font-weight:800;color:var(--gray);margin-bottom:4px}
-.card p{font-size:14.5px;line-height:1.5}
-.pill{display:inline-block;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
-.pill.k{background:var(--ink);color:#fff}
-.pill.blue{background:var(--blue-soft);color:var(--blue-d)} .pill.vio{background:var(--violet-soft);color:var(--violet-d)} .pill.rose{background:var(--rose-soft);color:#c0402c} .pill.teal{background:var(--teal-soft);color:var(--teal-d)}
-.metric .big{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
-.metric .big.blue{color:var(--blue-d)} .metric .big.rose{color:var(--rose)} .metric .big.teal{color:var(--teal-d)}
-.metric .lab{font-size:13px;color:var(--gray2);margin-top:6px;font-weight:600;line-height:1.4}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.45}
-th{font-size:12.5px;color:var(--gray);font-weight:700}
-tr.hi td{background:var(--blue-soft)}
-.chk{color:var(--teal-d);font-weight:800} .x{color:var(--rose);font-weight:800}
-.callout{background:var(--ink);color:#fff;border-radius:var(--radius);padding:15px 22px}
-.callout h3{color:#fff} .callout p{color:#D5D9E2}
-.quote{background:linear-gradient(120deg,#0E2A52,#1A1F4A);color:#fff;border-radius:var(--radius);padding:22px 26px}
-.quote .q{font-size:24px;font-weight:800;line-height:1.38;color:#fff}
-.quote .q .g{background:linear-gradient(90deg,#8FC2FF,#B9C2FF,#7FE6DA);-webkit-background-clip:text;background-clip:text;color:transparent}
-.flag{font-size:12.5px;color:var(--gray);font-style:italic}
-.src{font-size:11px;color:var(--gray);line-height:1.45}
-.src b{color:var(--gray2);font-weight:700}
+.dark{background:var(--ink);color:#fff;border-radius:var(--radius);padding:18px 22px}
+.dark p{color:#D5D9E2} .dark b{color:#fff}
+.big{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.big.blue{color:var(--blue)} .big.rose{color:var(--rose)} .big.teal{color:var(--teal-d)}
+.lab{font-size:14px;color:var(--gray2);font-weight:600;margin-top:8px;line-height:1.35}
+.emo{font-size:34px;line-height:1}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--gray2)}
+.chip.blue{background:var(--blue-soft);color:var(--blue-d)} .chip.rose{background:var(--rose-soft);color:var(--rose-d)} .chip.teal{background:var(--teal-soft);color:var(--teal-d)} .chip.k{background:var(--ink);color:#fff}
 .foot{position:absolute;left:64px;right:64px;bottom:16px;display:flex;justify-content:space-between;font-size:11px;color:var(--gray);border-top:1px solid var(--line);padding-top:8px;gap:20px}
-.foot .src{flex:1}
-ul.clean{list-style:none}
-ul.clean li{position:relative;padding-left:20px;margin-bottom:6px;font-size:14.5px}
-ul.clean li:before{content:"";position:absolute;left:3px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--blue)}
-ul.clean.rose li:before{background:var(--rose)} ul.clean.teal li:before{background:var(--teal)}
-.flow{display:flex;align-items:stretch;gap:0}
-.flow .step{flex:1;background:var(--soft);border-radius:14px;padding:13px 10px;text-align:center}
-.flow .step .s{font-size:12px;font-weight:800;color:var(--blue-d)}
-.flow .step .t{font-size:17px;font-weight:800;color:var(--ink);margin:3px 0}
-.flow .step .d{font-size:12.5px;color:var(--gray2);line-height:1.4;text-align:left;margin-top:4px}
-.hang{padding-left:1.25em !important;text-indent:-1.25em}
-.ic-row{display:flex;gap:6px;align-items:flex-start}
+.foot span:first-child{flex:1}
+.ic-row{display:flex;gap:8px;align-items:flex-start}
 .ic-row>i{font-style:normal;flex:none}
-.flow .arr{display:flex;align-items:center;padding:0 6px;font-size:20px;color:var(--gray);font-weight:800}
-.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow)}
-.adcard .ad{font-size:9.5px;font-weight:800;color:var(--teal-d);border:1px solid var(--teal);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:4px}
-.adcard .u{font-size:10.5px;color:var(--gray)}
-.adcard .ti{font-size:13.5px;font-weight:800;color:#1a0dab;line-height:1.3;margin:2px 0}
-.adcard .ds{font-size:11.5px;color:#4a4f5e;line-height:1.4}
-.lbl{font-size:12px;font-weight:800;padding:3px 9px;border-radius:6px;display:inline-block;margin-bottom:7px}
-.lbl.asis{background:var(--rose-soft);color:#c0402c} .lbl.tobe{background:var(--teal-soft);color:var(--teal-d)}
-.phone{width:250px;background:#fff;border:8px solid #1A1F2E;border-radius:30px;padding:14px 13px;box-shadow:var(--shadow)}
-.phone .bar{height:5px;width:60px;background:#1A1F2E;border-radius:4px;margin:0 auto 10px}
-.ui-t{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:6px}
-.ui-box{background:var(--soft);border-radius:10px;padding:8px 10px;font-size:11.5px;color:#2C313C;margin-bottom:6px;line-height:1.4}
-.ui-btn{background:var(--blue);color:#fff;border-radius:10px;padding:9px;text-align:center;font-size:12.5px;font-weight:800}
+/* 막대 */
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:150px 1fr 70px;align-items:center;gap:12px;font-size:14.5px;font-weight:700;color:var(--ink)}
+.bar .t{height:26px;border-radius:8px;background:var(--soft);overflow:hidden}
+.bar .f{height:100%;border-radius:8px;background:var(--blue)}
+.bar .v{font-weight:800;text-align:right}
+.vbars{display:flex;align-items:flex-end;gap:10px;height:190px;border-bottom:2px solid var(--line);padding:0 4px}
+.vbars .vb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
+.vbars .vb .f{width:100%;border-radius:8px 8px 0 0;background:var(--blue-2)}
+.vbars .vb .n{font-size:12.5px;font-weight:800;color:var(--ink)}
+.xl{display:flex;gap:10px;padding:6px 4px 0}
+.xl span{flex:1;text-align:center;font-size:11.5px;color:var(--gray);font-weight:600}
+/* 공식 블록 */
+.formula{display:flex;align-items:center;gap:10px}
+.fb{flex:1;border-radius:18px;padding:18px 10px;text-align:center;background:var(--soft)}
+.fb .e{font-size:34px}
+.fb .k{font-size:12.5px;font-weight:800;color:var(--blue-d);margin-top:6px}
+.fb .t{font-size:18px;font-weight:800;color:var(--ink);margin-top:2px}
+.fb .u{font-size:14px;font-weight:800;color:var(--teal-d);margin-top:6px}
+.op{font-size:30px;font-weight:800;color:var(--gray)}
+/* 퍼널 */
+.funnel{display:flex;flex-direction:column;gap:8px;align-items:center}
+.fn{display:flex;align-items:center;justify-content:space-between;border-radius:12px;color:#fff;font-weight:800;padding:0 18px;height:52px;position:relative}
+.fn .nm{font-size:16px} .fn .lk{font-size:13px;font-weight:800;background:rgba(255,255,255,.22);padding:4px 10px;border-radius:999px}
+/* 휴대폰 */
+.phone{width:270px;background:#fff;border:9px solid #1A1F2E;border-radius:32px;padding:16px 14px;box-shadow:var(--shadow);position:relative;flex:none}
+.phone .notch{height:5px;width:60px;background:#1A1F2E;border-radius:4px;margin:0 auto 12px}
+.ui-t{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:7px}
+.ui-box{background:var(--soft);border-radius:10px;padding:9px 11px;font-size:12px;color:#2C313C;margin-bottom:7px;line-height:1.45;position:relative}
+.ui-btn{background:var(--blue);color:#fff;border-radius:10px;padding:10px;text-align:center;font-size:13px;font-weight:800;position:relative}
 .ui-btn.off{background:#A9C9F5}
-.stage-tag{display:inline-block;background:var(--blue);color:#fff;font-weight:800;font-size:12.5px;padding:4px 11px;border-radius:999px;margin-right:6px}
-@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar,.hint{display:none}}
+.pin{position:absolute;right:-30px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:var(--rose);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(224,83,61,.4)}
+.pin.g{background:var(--teal);box-shadow:0 4px 10px rgba(0,181,163,.4)}
+.pain{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow)}
+.pain .no{width:34px;height:34px;border-radius:50%;background:var(--rose);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.pain .no.g{background:var(--teal)}
+.pain .tt{font-size:17px;font-weight:800;color:var(--ink)}
+.pain .vo{font-size:14px;color:var(--gray2);margin-top:2px}
+/* 표 */
+.mx{width:100%;border-collapse:separate;border-spacing:0 6px}
+.mx th{font-size:13px;color:var(--gray2);font-weight:800;padding:4px 8px;text-align:center}
+.mx td{background:var(--soft);padding:12px 8px;text-align:center;font-size:22px}
+.mx td:first-child{text-align:left;font-size:15px;font-weight:800;color:var(--ink);border-radius:12px 0 0 12px;padding-left:16px}
+.mx td:last-child{border-radius:0 12px 12px 0}
+.mx td.me{background:var(--blue-soft)}
+.mx th.me{color:var(--blue-d)}
+/* 타임라인 */
+.tl{position:relative;display:flex;justify-content:space-between;padding-top:30px}
+.tl:before{content:"";position:absolute;left:30px;right:30px;top:52px;height:4px;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:4px}
+.tl .pt{position:relative;width:180px;text-align:center}
+.tl .dot{width:48px;height:48px;border-radius:50%;background:#fff;border:4px solid var(--blue);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:22px;position:relative;z-index:1}
+.tl .when{font-size:12.5px;font-weight:800;color:var(--blue-d);margin-top:10px}
+.tl .what{font-size:15.5px;font-weight:800;color:var(--ink);margin-top:3px}
+.tl .how{font-size:13px;color:var(--gray2);margin-top:3px;line-height:1.4}
+/* 순환 */
+.loop{position:relative;width:420px;height:420px;flex:none}
+.loop .ring{position:absolute;inset:60px;border:4px dashed var(--blue-2);border-radius:50%}
+.loop .nd{position:absolute;width:150px;text-align:center}
+.loop .nd .c{width:72px;height:72px;border-radius:50%;background:#fff;border:3px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto;box-shadow:var(--shadow)}
+.loop .nd .l{font-size:14.5px;font-weight:800;color:var(--ink);margin-top:6px}
+.loop .ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+/* 간트 */
+.gantt{display:grid;grid-template-columns:150px repeat(12,1fr);gap:6px 4px;align-items:center}
+.gantt .lb{font-size:14px;font-weight:800;color:var(--ink)}
+.gantt .wk{font-size:11.5px;color:var(--gray);text-align:center;font-weight:700}
+.gantt .gb{height:34px;border-radius:9px;color:#fff;font-size:12.5px;font-weight:800;display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden}
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar{display:none}}
 #nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50;opacity:0;transition:opacity .2s}
 #nav:hover{opacity:1}
 #nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
-#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center}
 #bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
-.hint{display:none}
 </style>
 </head>
 <body>
@@ -109,301 +135,340 @@ ul.clean.rose li:before{background:var(--rose)} ul.clean.teal li:before{backgrou
 <div id="stage"><div class="deck" id="deck">
 
 <!-- 1 표지 -->
-<section class="slide active" style="justify-content:center;background:
-  radial-gradient(900px 520px at 84% -10%, var(--blue-soft) 0%, transparent 55%),
-  radial-gradient(720px 520px at -5% 110%, var(--teal-soft) 0%, transparent 55%), #fff">
-  <div class="logo" style="margin-bottom:28px"><span class="ic">⌂</span>홈코</div>
+<section class="slide active" style="justify-content:center;background:radial-gradient(900px 520px at 88% -10%, var(--blue-soft) 0%, transparent 55%),radial-gradient(700px 500px at -5% 110%, var(--teal-soft) 0%, transparent 55%),#fff">
+  <div class="logo" style="margin-bottom:26px"><span class="ic">⌂</span>홈코</div>
   <div class="kicker">그로스 오너 전략 제안</div>
   <h1>동네를 가장 잘 아는 집수리를<br><span class="hl">수리를 몰라도 쓰기 쉬운 집수리</span>로</h1>
-  <p class="lead" style="margin-top:20px;max-width:960px">홈코의 매출을 "유입 × 전환율 × 객단가 × 재이용 + 추천" 다섯 칸으로 나누고,<br>칸마다 직접 확인한 문제와 해결책, 볼 숫자를 정리했습니다.</p>
-  <div style="margin-top:30px;display:flex;gap:10px">
-    <span class="pill k">홈앤코</span><span class="pill blue">Growth Owner 지원</span><span class="pill vio">이도형</span>
+  <div class="formula" style="margin-top:38px;max-width:900px">
+    <div class="fb"><div class="e">🔎</div><div class="t">유입</div></div><div class="op">×</div>
+    <div class="fb" style="background:var(--blue-soft)"><div class="e">📲</div><div class="t">전환율</div></div><div class="op">×</div>
+    <div class="fb"><div class="e">🧰</div><div class="t">객단가</div></div><div class="op">×</div>
+    <div class="fb"><div class="e">🔁</div><div class="t">재이용</div></div><div class="op">+</div>
+    <div class="fb"><div class="e">🤝</div><div class="t">추천</div></div>
   </div>
+  <div style="margin-top:30px;display:flex;gap:10px"><span class="chip k">홈앤코</span><span class="chip blue">Growth Owner 지원</span><span class="chip">이도형</span></div>
 </section>
 
-<!-- 2 지금 홈코 -->
+<!-- 2 현황 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">01 · 지금 홈코</div><h2>광고는 이미 하고 있습니다. 문제는 "어디서 새는지" 모른다는 것</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:16px">
-    <div class="card metric"><div class="big blue">1억 원</div><div class="lab">한 달 매출</div></div>
-    <div class="card metric"><div class="big">5,000건</div><div class="lab">지금까지 받은 수리 요청</div></div>
-    <div class="card metric"><div class="big">2,400곳</div><div class="lab">강남3구에서 끝낸 수리</div></div>
-    <div class="card metric"><div class="big">30%</div><div class="lab">회사 손님(B2B) 매출 비중</div></div>
-    <div class="card metric"><div class="big">3곳</div><div class="lab">지점 (본점·개포·강동)</div></div>
+  <div class="head"><div><div class="kicker">01 · 지금 홈코</div><h2>광고는 하고 있지만, <span class="hl rose">어디서 새는지 모릅니다</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body" style="gap:22px">
+    <div class="row">
+      <div class="card" style="flex:1"><div class="big blue">1억</div><div class="lab">한 달 매출 (원)</div></div>
+      <div class="card" style="flex:1"><div class="big">5,000</div><div class="lab">누적 수리 요청 (건)</div></div>
+      <div class="card" style="flex:1"><div class="big">2,400</div><div class="lab">강남3구 수리 완료 (곳)</div></div>
+      <div class="card" style="flex:1"><div class="big">30%</div><div class="lab">회사 손님(B2B) 매출</div></div>
+    </div>
+    <div class="row">
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">🟢</div><h3 style="margin-top:8px">네이버 광고</h3><p class="lab">17/24 검색어 노출</p></div>
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">🟢</div><h3 style="margin-top:8px">구글 광고</h3><p class="lab">광고 57개</p></div>
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">🟡</div><h3 style="margin-top:8px">당근</h3><p class="lab">프로필 3개, 2개는 후기 0</p></div>
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">⚪</div><h3 style="margin-top:8px">인스타·카카오</h3><p class="lab">광고 없음</p></div>
+      <div class="card rose" style="flex:1.2;text-align:center"><div class="emo">🔴</div><h3 style="margin-top:8px">광고 성과 재기</h3><p class="lab">네이버 추적 코드 없음</p></div>
+    </div>
   </div>
-  <table>
-    <tr><th style="width:20%">채널 (직접 확인)</th><th style="width:16%">하고 있나</th><th>확인한 내용</th></tr>
-    <tr><td><b>네이버 검색광고</b></td><td class="chk">✅ 집행 중</td><td>검색어 24개 중 17개에 노출. "집수리·변기 교체·싱크대 수전 교체" 1등. <b>하지만 "하남·강동 집수리"에는 없음</b></td></tr>
-    <tr><td><b>구글 검색광고</b></td><td class="chk">✅ 집행 중</td><td>광고 57개 ("수전 교체 비용 1분 셀프 견적" 등)</td></tr>
-    <tr><td><b>당근</b></td><td>🟡 프로필 3개</td><td>본점·강동점 후기 0개. 배관케어만 별점 4.8·후기 56개. 1점 후기에 답글 없음</td></tr>
-    <tr><td><b>인스타·카카오 광고</b></td><td class="x">❌ 없음</td><td>광고 기록 없음, 추적 코드 없음</td></tr>
-    <tr class="hi"><td><b>광고 성과 재기</b></td><td class="x">❌ 네이버 불가</td><td><b>네이버 광고 추적 코드가 없어 어떤 검색어가 예약을 만드는지 모름.</b> 전화·카톡 문의 출처도 기록 안 됨</td></tr>
-  </table>
-  <div class="foot"><span class="src"><b>출처</b> 원티드·리멤버 채용 공고 [자사발표], 홈코 홈페이지 코드·네이버 검색·구글 광고 투명성 센터·메타 광고 라이브러리·당근 프로필 직접 확인 (2026-10-28)</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>출처: 원티드·리멤버 채용 공고 [자사발표], 홈코 홈페이지 코드·네이버·구글 광고 투명성 센터·메타 광고 라이브러리·당근 직접 확인 (2026-10-28)</span><span>홈코 · 이도형</span></div>
 </section>
 
 <!-- 3 매출 공식 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">02 · 생각의 틀</div><h2>매출은 다섯 칸의 곱입니다. 한 칸만 고쳐도 전체가 오릅니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="flow" style="margin-bottom:18px">
-    <div class="step"><div class="s">1 · 유입</div><div class="t">찾아온 사람</div><div class="d"><div>검색·당근·AI 검색에서</div><div>홈코를 발견</div></div></div><div class="arr">×</div>
-    <div class="step" style="background:var(--blue-soft)"><div class="s">2 · 전환율</div><div class="t">예약하는 비율</div><div class="d"><div>견적 화면에서</div><div>실제 예약까지</div></div></div><div class="arr">×</div>
-    <div class="step"><div class="s">3 · 객단가</div><div class="t">한 번에 내는 돈</div><div class="d"><div>한 번 방문에</div><div>함께 고치는 것</div></div></div><div class="arr">×</div>
-    <div class="step"><div class="s">4 · 재이용</div><div class="t">다시 오는 횟수</div><div class="d"><div>다음 고장 때</div><div>검색 없이 홈코</div></div></div><div class="arr">+</div>
-    <div class="step"><div class="s">5 · 추천</div><div class="t">소개로 온 손님</div><div class="d"><div>이웃·같은 단지에</div><div>소개</div></div></div>
+  <div class="head"><div><div class="kicker">02 · 생각의 틀</div><h2>매출은 다섯 칸의 곱. <span class="hl">조금씩 올려도 1.5배</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body" style="gap:30px">
+    <div class="formula">
+      <div class="fb"><div class="e">🔎</div><div class="k">AARRR · Acquisition</div><div class="t">유입</div><div class="u">+10%</div></div><div class="op">×</div>
+      <div class="fb" style="background:var(--blue-soft)"><div class="e">📲</div><div class="k">Activation</div><div class="t">전환율</div><div class="u">+15%</div></div><div class="op">×</div>
+      <div class="fb"><div class="e">🧰</div><div class="k">Revenue</div><div class="t">객단가</div><div class="u">+10%</div></div><div class="op">×</div>
+      <div class="fb"><div class="e">🔁</div><div class="k">Retention</div><div class="t">재이용</div><div class="u">+8%</div></div><div class="op">+</div>
+      <div class="fb"><div class="e">🤝</div><div class="k">Referral</div><div class="t">추천</div><div class="u">덤</div></div>
+    </div>
+    <div class="row" style="align-items:flex-end;gap:40px">
+      <div style="flex:1">
+        <div class="bars">
+          <div class="bar"><span>지금 (한 달)</span><div class="t"><div class="f" style="width:66%;background:#B8C2D1"></div></div><span class="v">1.0억</span></div>
+          <div class="bar"><span>12개월 뒤 목표</span><div class="t"><div class="f" style="width:100%"></div></div><span class="v" style="color:var(--blue)">1.5억</span></div>
+        </div>
+      </div>
+      <div class="dark" style="flex:none;width:400px"><p><b>1.1 × 1.15 × 1.1 × 1.08 ≈ 1.5</b><br>한 칸에 몰빵하지 않고 다섯 칸을 조금씩</p></div>
+    </div>
   </div>
-  <div class="grid" style="grid-template-columns:1.15fr 1fr">
-    <div class="quote"><div class="q">유입 +10% × 전환율 +15% × 객단가 +10% × 재이용 +8%<br>= <span class="g">약 1.5배 · 한 달 1억 원 → 1.5억 원</span></div><p style="color:#C9D3E6;margin-top:10px;font-size:14px">12개월 목표 (가정값. 입사 후 1~2주 안에 실제 시작 숫자로 다시 계산)</p></div>
-    <div class="card out"><h3>그로스에서는 이것을 AARRR이라 부릅니다</h3><p style="margin-top:6px">유입(Acquisition) → 전환(Activation) → 재이용(Retention) → 추천(Referral) → 매출(Revenue).<br>이 발표는 <b>다섯 칸마다 "문제 → 증거 → 해결 → 볼 숫자"</b> 순서로 설명합니다. 그 전에 다섯 칸을 숫자로 볼 수 있게 <b>재는 일</b>을 먼저 합니다.</p></div>
-  </div>
-  <div class="foot"><span class="src"><b>주석</b> 증가율은 [추정] 가정값입니다. 근거와 계산은 노션 전략 문서 0장·11장에 있습니다.</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>증가율은 [추정] 가정값. 입사 후 1~2주 안에 실제 숫자로 다시 계산</span><span>홈코 · 이도형</span></div>
 </section>
 
-<!-- 4 진단 맵 -->
+<!-- 4 진단 퍼널 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">03 · 진단</div><h2>칸마다 새는 곳이 있습니다. 가장 크게 새는 곳은 "전환율"입니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <table>
-    <tr><th style="width:15%">칸</th><th style="width:45%">지금 문제 (직접 확인한 증거)</th><th style="width:40%">해결 방향</th></tr>
-    <tr><td><b>0 · 재기</b></td><td>네이버 광고 추적 코드 없음, 전화·카톡 문의 출처 모름</td><td>추적 코드 설치, 광고별 전화번호, "광고비 → 견적 → 결제" 표</td></tr>
-    <tr><td><b>1 · 유입</b></td><td>강동·하남 검색에 광고 없음 / 문구가 경쟁사와 같음("출장비 0원") / AI 검색에서 숨고에 밀림</td><td>지역 검색어 묶음, "비용" 검색어 집중, 지역×품목 가격 페이지, 숨고 입점</td></tr>
-    <tr class="hi"><td><b>2 · 전환율</b></td><td>견적 화면이 전문 용어(원홀/투홀) / 가격 "???원" / 버튼이 왜 안 눌리는지 설명 없음 / 가격 근거·제품명 없음 / 기사·안전 정보 없음 / 후기 7개</td><td><b>사진 한 장 진단, 그림으로 고르기, 가격 근거·비교, 기사 카드, 안전 약속</b></td></tr>
-    <tr><td><b>3 · 객단가</b></td><td>요청한 1건만 고침, 제품 선택지 없음</td><td>"오신 김에" 목록, 2개 이상 할인, 제품 기본·인기·고급</td></tr>
-    <tr><td><b>4 · 재이용</b></td><td>1년 A/S를 말로만 안내, 다시 부를 통로 없음</td><td>우리집 수리 기록 카드, A/S 끝나기 전 점검, 교체 주기 알림</td></tr>
-    <tr><td><b>5 · 추천</b></td><td>추천 제도 없음, 당근 쿠폰은 모두에게 주는 내용</td><td>이웃 추천 코드, 같은 단지 3집 할인, 전후 사진 카드</td></tr>
-  </table>
-  <div class="callout" style="margin-top:14px"><p><b style="color:#fff">순서: 재기 → 전환율 → 유입 → 재이용·추천.</b> 구멍 난 바가지에 물을 더 부으면 광고비만 샙니다. 전환율을 먼저 고치면 같은 광고비로 예약이 늘어납니다.</p></div>
-  <div class="foot"><span class="src"><b>출처</b> 홈코 홈페이지·견적 계산기·시공 사례 페이지·당근 프로필·네이버 검색 직접 확인 (2026-10-28)</span><span>홈코 · 이도형</span></div>
+  <div class="head"><div><div class="kicker">03 · 진단</div><h2>가장 크게 새는 곳은 <span class="hl rose">"예약하기 직전"</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body">
+    <div class="row" style="gap:36px;align-items:center">
+      <div class="funnel" style="flex:1">
+        <div class="fn" style="width:100%;background:#4E9BFF"><span class="nm">🔎 유입 · 찾아온다</span><span class="lk">하남·강동 광고 없음</span></div>
+        <div class="fn" style="width:88%;background:var(--rose)"><span class="nm">📲 전환 · 예약한다</span><span class="lk">💧💧💧 견적 화면에서 이탈</span></div>
+        <div class="fn" style="width:72%;background:#2F7FE8"><span class="nm">🧰 객단가 · 함께 고친다</span><span class="lk">1건만 수리</span></div>
+        <div class="fn" style="width:58%;background:#1E68C8"><span class="nm">🔁 재이용</span><span class="lk">기록 없음</span></div>
+        <div class="fn" style="width:44%;background:#1553A6"><span class="nm">🤝 추천</span><span class="lk">제도 없음</span></div>
+      </div>
+      <div class="col" style="width:330px">
+        <div class="card rose"><h3>🪣 구멍 난 바가지</h3><p style="margin-top:6px">물(광고비)을 더 붓기 전에<br><b>구멍(전환율)부터</b> 막습니다</p></div>
+        <div class="card"><h3>고치는 순서</h3><div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px"><span class="chip k">① 재기</span><span class="chip rose">② 전환율</span><span class="chip blue">③ 유입</span><span class="chip teal">④ 재이용·추천</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>근거: 견적 계산기·시공 사례·당근·네이버 검색 직접 확인 (2026-10-28). 퍼널 폭은 개념 그림</span><span>홈코 · 이도형</span></div>
 </section>
 
 <!-- 5 고객 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">04 · 누가, 언제 찾나</div><h2>검색은 "직접 고칠 수 있나?"에서 시작해 "얼마야?"로 끝납니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:1fr 2.1fr">
-    <div class="card blue">
-      <h3>관찰: "안정기교체" 검색자</h3>
-      <div class="grid" style="grid-template-columns:1fr 1fr;margin:10px 0">
-        <div class="metric"><div class="big blue">76%</div><div class="lab">남성 (컴퓨터)</div></div>
-        <div class="metric"><div class="big blue">58%</div><div class="lab">남성 (휴대폰)</div></div>
+  <div class="head"><div><div class="kicker">04 · 누가, 언제</div><h2>"직접 고칠 수 있나?" → 실패 → <span class="hl">"얼마야?"</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body" style="gap:22px">
+    <div class="row" style="gap:20px">
+      <div class="card" style="width:330px">
+        <h3>"안정기교체" 검색자 성별</h3>
+        <div class="bars" style="margin-top:14px">
+          <div class="bar" style="grid-template-columns:70px 1fr 46px"><span>💻 PC</span><div class="t" style="display:flex"><div class="f" style="width:76%"></div><div class="f" style="width:24%;background:#FFB3A6;border-radius:0 8px 8px 0"></div></div><span class="v">남76</span></div>
+          <div class="bar" style="grid-template-columns:70px 1fr 46px"><span>📱 폰</span><div class="t" style="display:flex"><div class="f" style="width:58%"></div><div class="f" style="width:42%;background:#FFB3A6;border-radius:0 8px 8px 0"></div></div><span class="v">남58</span></div>
+        </div>
+        <p class="lab" style="margin-top:10px">🟦 남성 🟥 여성 · 30~40대 중심</p>
       </div>
-      <p>30~40대 중심, 50대 이상도 25%+. <b>10~12월에 가장 많음.</b> 함께 검색하는 말: "셀프", "방법", "비용", "가격"</p>
-      <p class="flag" style="margin-top:8px">가설: 남성이 많은 이유는 고치는 사람이라서가 아니라 "내가 알아볼게"라고 맡은 사람이라서. 검색어 1개 값이라 실제 손님 자료로 확인 필요</p>
+      <div class="card" style="flex:1">
+        <h3>월별 검색 (휴대폰, 회) — 10~12월이 가장 많음</h3>
+        <div class="vbars" style="height:120px;margin-top:10px">
+          <div class="vb"><span class="n">3.9k</span><div class="f" style="height:100%;background:var(--blue)"></div></div>
+          <div class="vb"><span class="n">3.3k</span><div class="f" style="height:85%;background:var(--blue)"></div></div>
+          <div class="vb"><span class="n">3.6k</span><div class="f" style="height:93%;background:var(--blue)"></div></div>
+          <div class="vb"><div class="f" style="height:67%"></div></div>
+          <div class="vb"><div class="f" style="height:58%"></div></div>
+          <div class="vb"><div class="f" style="height:72%"></div></div>
+          <div class="vb"><div class="f" style="height:59%"></div></div>
+          <div class="vb"><div class="f" style="height:61%"></div></div>
+          <div class="vb"><div class="f" style="height:57%"></div></div>
+          <div class="vb"><div class="f" style="height:59%"></div></div>
+          <div class="vb"><div class="f" style="height:65%"></div></div>
+          <div class="vb"><div class="f" style="height:56%"></div></div>
+        </div>
+        <div class="xl"><span>10월</span><span>11월</span><span>12월</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9월</span></div>
+      </div>
     </div>
-    <table>
-      <tr><th style="width:24%">고객 유형</th><th style="width:30%">찾는 순간</th><th>가장 큰 걱정</th></tr>
-      <tr class="hi"><td><b>A. 직접 해 보는<br>30~40대 아파트 아빠</b><br><span class="pill blue" style="margin-top:4px">첫 타겟</span></td><td>저녁에 고장 → 다음 날 회사 컴퓨터로 검색 → 주말에 해 보다 실패</td><td>"비싸게 받을까?" "하다가 더 망가뜨리면?" "부품을 뭘 사야 하지?"</td></tr>
-      <tr><td><b>B. 멀리 사는<br>50대 이상 집주인</b></td><td>세입자에게 "고장 났어요" 연락을 받은 날</td><td>"가 볼 수 없는데 믿을 수 있나?" "세금계산서 되나?"</td></tr>
-      <tr><td><b>C. 이사하는<br>30대 세입자·신혼부부</b></td><td>이사 들어가기 전·나가기 전 (가을 이사철)</td><td>"여러 개를 한 번에" "누가 돈을 내야 하지?"</td></tr>
+    <div class="tl" style="padding-top:4px">
+      <div class="pt"><div class="dot">💡</div><div class="when">저녁</div><div class="what">불이 깜빡</div></div>
+      <div class="pt"><div class="dot">💻</div><div class="when">다음 날 회사</div><div class="what">"교체 방법" 검색</div></div>
+      <div class="pt"><div class="dot">🔧</div><div class="when">주말</div><div class="what">직접 해 보다 실패</div></div>
+      <div class="pt"><div class="dot" style="border-color:var(--teal)">💸</div><div class="when" style="color:var(--teal-d)">← 홈코가 잡을 순간</div><div class="what">"교체 비용" 검색</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>출처: 네이버 키워드 도구 "안정기교체" (2025.10~2026.09) [제3자]. 검색 순간 해석은 [추정]</span><span>홈코 · 이도형</span></div>
+</section>
+
+<!-- 6 진짜 걱정 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">05 · 진짜 걱정</div><h2>손님이 두려운 건 "가격표"가 아니라 <span class="hl rose">뜯은 뒤와 고친 뒤</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body" style="gap:26px">
+    <div class="bars" style="gap:16px">
+      <div class="bar" style="grid-template-columns:330px 1fr 80px;font-size:16px"><span>🔓 배관 연 뒤 추가비 요구</span><div class="t" style="height:34px"><div class="f" style="width:34.5%;background:var(--rose)"></div></div><span class="v" style="color:var(--rose)">34.5%</span></div>
+      <div class="bar" style="grid-template-columns:330px 1fr 80px;font-size:16px"><span>🔁 고쳐도 효과 없음</span><div class="t" style="height:34px"><div class="f" style="width:48.9%;background:var(--rose)"></div></div><span class="v" style="color:var(--rose)">48.9%</span></div>
+      <div class="bar" style="grid-template-columns:330px 1fr 80px;font-size:16px"><span>📵 업체가 연락 피해 보상 못 받음</span><div class="t" style="height:34px"><div class="f" style="width:75.1%;background:var(--rose)"></div></div><span class="v" style="color:var(--rose)">75.1%</span></div>
+    </div>
+    <div class="row" style="align-items:center;gap:20px">
+      <div class="card" style="flex:1;text-align:center"><div style="font-size:15px;color:var(--gray2);font-weight:700">지금 홈코가 말하는 것</div><div style="font-size:26px;font-weight:800;color:var(--gray);margin-top:6px;text-decoration:line-through">정찰제</div></div>
+      <div class="op">→</div>
+      <div class="dark" style="flex:2.2;text-align:center"><div style="font-size:15px;color:#9FB5D6;font-weight:700">손님이 듣고 싶은 것</div><div style="font-size:24px;font-weight:800;margin-top:6px">시작 전에 총액 · 못 고치면 0원 · 고친 뒤 1년 회사 책임</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>출처: 한국소비자원 하수도위생 서비스 피해 분석 (2026-07 발표) [제3자], 주택 인테리어·설비 피해 (비즈한국) [제3자]</span><span>홈코 · 이도형</span></div>
+</section>
+
+<!-- 7 경쟁 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">06 · 경쟁 비교</div><h2>"부르기 전에 알고, 부른 뒤 책임지는 곳"은 <span class="hl">홈코뿐</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body">
+    <table class="mx">
+      <tr><th></th><th>📱 숨고·짐고<br>기사 연결 앱</th><th>🏪 동네<br>설비 가게</th><th>🏢 한샘<br>리모델링</th><th>🛠️ 직접<br>고치기</th><th class="me">⌂ 홈코</th></tr>
+      <tr><td>💰 부르기 전에 총액</td><td>❌</td><td>❌</td><td>🔺</td><td>🔺</td><td class="me">✅</td></tr>
+      <tr><td>🔩 작은 수리 1건</td><td>✅</td><td>🔺</td><td>❌</td><td>✅</td><td class="me">✅</td></tr>
+      <tr><td>🛡️ 고친 뒤 회사 책임</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td><td class="me">✅</td></tr>
+      <tr><td>0️⃣ 못 고치면 0원</td><td>🔺</td><td>❌</td><td>—</td><td>❌</td><td class="me">✅</td></tr>
+      <tr><td>🗂️ 같은 동네 수리 기록</td><td>❌</td><td>🔺</td><td>❌</td><td>❌</td><td class="me">✅</td></tr>
     </table>
   </div>
-  <div class="foot"><span class="src"><b>출처</b> 네이버 키워드 도구 "안정기교체" 성별·연령·월별 (2025.10~2026.09) [제3자], 네이버 자동완성 [제3자]. 해석은 [추정]</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>✅ 됨 · 🔺 경우에 따라 · ❌ 어려움. 근거: 숨고 가격 페이지(평균 18만 원, 재료비 별도), 82cook 출장비 경험담, 홈코 배관케어 "미해결 시 0원" [자사발표]</span><span>홈코 · 이도형</span></div>
 </section>
 
-<!-- 6 진짜 페인포인트 -->
+<!-- 8 전환 AS-IS -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">05 · 진짜 걱정</div><h2>손님은 "가격표"가 아니라 "뜯은 뒤"와 "고친 뒤"를 걱정합니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px">
-    <div class="card rose metric"><div class="big rose">34.5%</div><div class="lab">하수도 서비스 피해 중 <b>현장 추가비</b>. "기본 5만 원"을 보고 불렀는데 배관을 연 뒤 수십만 원 요구</div></div>
-    <div class="card rose metric"><div class="big rose">48.9%</div><div class="lab">하수도 서비스 피해 중 <b>고쳐도 효과 없음</b></div></div>
-    <div class="card rose metric"><div class="big rose">75.1%</div><div class="lab">주택 인테리어·설비 피해 중 <b>업체가 연락을 피해</b> 보상을 못 받은 비율</div></div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr">
-    <div class="card out"><h3>커뮤니티 목소리</h3><ul class="clean rose" style="margin-top:6px">
-      <li>"5천 원 부품에 5만 원을 내니 아깝다" (82cook)</li>
-      <li>"출장비만 5만 원을 불러서 다른 데 알아봄" (82cook)</li>
-      <li>"유튜브에선 쉬웠는데, 대충 했다가 누수 탐지비 40만 원" (클리앙)</li></ul></div>
-    <div class="quote"><div class="q" style="font-size:21px">그래서 홈코의 강점은 "정찰제"가 아니라<br><span class="g">"시작 전에 총액, 못 고치면 0원, 고친 뒤 1년은 회사가 책임"</span></div><p style="color:#C9D3E6;margin-top:10px;font-size:13.5px">기사가 회사 직원이라 현장에서 값을 올릴 이유가 없고, 기사가 그만둬도 회사가 남습니다. 건당 돈을 받는 기사 연결 앱·동네 업체는 하기 어려운 약속입니다.</p></div>
-  </div>
-  <div class="foot"><span class="src"><b>출처</b> 한국소비자원 청소·하수도위생 피해구제 1,204건 분석 (2026-07, 경기일보 보도) [제3자], 주택 인테리어·설비 피해 (비즈한국) [제3자], 82cook(2020)·클리앙(2023) [제3자]</span><span>홈코 · 이도형</span></div>
-</section>
-
-<!-- 7 경쟁사 -->
-<section class="slide">
-  <div class="head"><div><div class="kicker">06 · 경쟁 비교</div><h2>"부르기 전에 알고, 부른 뒤에 책임지는 곳"이 비어 있습니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <table>
-    <tr><th style="width:20%"></th><th>기사 연결 앱<br>(숨고·짐고)</th><th>동네 설비 가게</th><th>큰 인테리어 회사<br>(한샘 리모델링)</th><th>직접 고치기<br>(다이소·유튜브)</th><th style="background:var(--blue-soft)">홈코</th></tr>
-    <tr><td><b>부르기 전에 총액</b></td><td class="x">기사마다 다름 (평균 18만 원, 재료비 별도)</td><td class="x">가서 보고 말함</td><td>큰 공사 견적</td><td>부품값만</td><td class="chk" style="background:var(--blue-soft)">사진으로 범위 → 확정</td></tr>
-    <tr><td><b>작은 수리 1건</b></td><td>가능</td><td>출장비 3~5만 원</td><td class="x">어려움</td><td class="chk">가능</td><td class="chk" style="background:var(--blue-soft)">출장비 0원, 함께 고치기</td></tr>
-    <tr><td><b>고친 뒤 책임</b></td><td class="x">기사 개인</td><td class="x">사장님 말뿐</td><td class="chk">회사</td><td class="x">본인</td><td class="chk" style="background:var(--blue-soft)">회사 1년 A/S</td></tr>
-    <tr><td><b>못 고치면</b></td><td>기사마다 다름</td><td class="x">출장비 청구</td><td>—</td><td class="x">더 큰 비용</td><td class="chk" style="background:var(--blue-soft)">0원 (배관케어 약속)</td></tr>
-    <tr><td><b>동네 기록</b></td><td class="x">흩어짐</td><td>사장님 기억</td><td class="x">없음</td><td class="x">없음</td><td class="chk" style="background:var(--blue-soft)">같은 동네 2,400곳 사진·부품 기록</td></tr>
-  </table>
-  <div class="callout" style="margin-top:16px"><p><b style="color:#fff">한 문장 약속:</b> "사진 한 장이면 무엇이 고장인지, 총 얼마인지 부르기 전에 알 수 있고, 고친 뒤 1년은 회사가 책임집니다." — 이 약속을 광고 첫 줄, 견적 화면, 사례 페이지, 당근 소개에 똑같이 씁니다.</p></div>
-  <div class="foot"><span class="src"><b>출처</b> 숨고 집수리 가격 페이지 [자사발표], 82cook 출장비 경험담 [제3자], 홈코 배관케어 당근 소개 "미해결 시 0원" [자사발표]. 사진 진단은 제안 기능</span><span>홈코 · 이도형</span></div>
-</section>
-
-<!-- 8 전환율 AS-IS -->
-<section class="slide">
-  <div class="head"><div><div class="kicker">07 · 전환율 (1순위) · 문제</div><h2>지금 견적 화면은 "수리를 아는 사람"만 쓸 수 있습니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:270px 1fr;gap:26px;align-items:start">
-    <div class="phone"><div class="bar"></div>
-      <span class="lbl asis">지금 (직접 써 봄)</span>
-      <div class="ui-t">작업 구역 → 카테고리 → 시공 항목</div>
-      <div class="ui-box"><div>원홀/투홀 수전 교체</div><div>쓰리홀/벽붙이 수전 교체</div><div>4홀/5홀 데크수전 교체</div></div>
-      <div class="ui-box" style="text-align:center;font-size:20px;font-weight:800">???원</div>
-      <div class="ui-box ic-row"><i>☐</i><span>강남, 서초, 강동, 송파·하남 일부 지역이신가요?</span></div>
-      <div class="ui-btn off">계산한 가격으로 상담하기</div>
-      <p style="font-size:10.5px;color:var(--gray);text-align:center;margin-top:5px">전화번호를 남기면 상담사가 연락드려요</p>
-    </div>
-    <table>
-      <tr><th style="width:52%">화면에서 본 것</th><th>손님의 마음</th></tr>
-      <tr><td>마지막 선택지가 "원홀/투홀", "데크수전" 같은 전문 용어</td><td>"우리 집 수전이 뭔지 모르겠는데?"</td></tr>
-      <tr><td>다 고르기 전까지 가격이 "???원"</td><td>"가격 보려고 왔는데 안 보여 주네"</td></tr>
-      <tr class="hi"><td><b>상담 버튼이 연한 파랑으로 잠겨 있고, 왜 안 눌리는지 설명이 없음</b></td><td><b>"고장 난 사이트인가?" → 이탈</b></td></tr>
-      <tr><td>"442,100원~ = 시공비 188,000 + 제품 254,100". 말풍선은 "최소 254,100원"으로 숫자가 다름. 제품 브랜드 없음</td><td>"이 값이 맞는지 비교할 수가 없네"</td></tr>
-      <tr><td>시공 사례 95,000원에 내역은 있지만 비교 기준·기사·안전 내용 없음. 제목은 압구정동, 본문은 개포동</td><td>"화장실 전기 작업인데 안전한가?"</td></tr>
-      <tr><td>마지막은 "전화번호를 남기면 연락"</td><td>"결국 기다려야 하네. 숨고도 보자"</td></tr>
-    </table>
-  </div>
-  <div class="foot"><span class="src"><b>출처</b> homeco.kr 견적 계산기·시공 사례(현대2차아파트 다운라이트 5개 교체) 직접 확인 (2026-10-28)</span><span>홈코 · 이도형</span></div>
-</section>
-
-<!-- 9 전환율 TO-BE -->
-<section class="slide">
-  <div class="head"><div><div class="kicker teal">07 · 전환율 (1순위) · 해결</div><h2>고르게 하지 말고, <span class="hl">보여 주게</span> 합니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:270px 1fr;gap:26px;align-items:start">
-    <div class="phone"><div class="bar"></div>
-      <span class="lbl tobe">바꾼 화면</span>
-      <div class="ui-t ic-row"><i>📷</i><span>고장 난 곳을 찍어 주세요</span></div>
-      <div class="ui-box"><div><b>구멍 2개짜리 세면대 수전</b>이에요</div><div>원인: 안쪽 부품이 닳음</div><div>직접 하기: <b style="color:#c0402c">어려움</b> (녹슨 나사)</div></div>
-      <div class="ui-box"><div><b>홈코 총액 89,000~119,000원</b></div><div>인건비 · 부품(대림 OO) · 버리기 포함</div><div>현장 추가금 0원 · 못 고치면 0원</div></div>
-      <div class="ui-box"><div class="ic-row"><i>👷</i><span>김OO 기사 · 경력 12년 · ★4.9</span></div><div class="ic-row"><i>✅</i><span>물 잠금·누수 확인</span></div><div class="ic-row"><i>✅</i><span>배상책임보험 가입</span></div></div>
-      <div class="ui-btn">목요일 오전 10시 예약하기</div>
-    </div>
-    <div class="grid" style="grid-template-columns:1fr 1fr">
-      <div class="card blue"><div class="num">01 · 가장 큰 차별점</div><h3>사진 한 장 진단</h3><p>AI가 종류·원인·직접 할 수 있는 난이도·가격 범위를 알려 줍니다. 확실하지 않으면 상담사가 10분 안에 확인. <b>홈코만의 5,000건 사진·수리 기록</b>이 재료입니다. 수전·변기·전등 10개 품목부터.</p></div>
-      <div class="card"><div class="num">02</div><h3>용어 대신 그림과 증상</h3><p>"물이 새요 / 안 나와요 / 바꾸고 싶어요"로 시작. "이 중 어느 것과 비슷한가요?" 사진 카드. 첫 화면부터 가격 범위를 보여 주고, 고를수록 좁혀집니다.</p></div>
-      <div class="card"><div class="num">03</div><h3>가격의 근거와 비교</h3><p>제품 기본·인기·고급 + 브랜드·인터넷 최저가, 시공비 내역, "할인 전 가격", "기사 연결 앱 평균"과 총액·보장 비교. 숫자 불일치는 즉시 수정.</p></div>
-      <div class="card"><div class="num">04</div><h3>버튼·지역·믿음</h3><p>버튼은 항상 눌리고 빠진 것을 그 자리에서 안내. 지역은 아파트 이름 검색으로 자동 확인. 기사 카드·안전 체크·배상책임보험을 예약 전에 보여 줌.</p></div>
+  <div class="head"><div><div class="kicker rose">07 · 전환율 (1순위) · 지금</div><h2>지금 견적 화면은 <span class="hl rose">수리를 아는 사람</span>만 쓸 수 있습니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body">
+    <div class="row" style="gap:60px;align-items:center">
+      <div class="phone" style="margin-left:20px"><div class="notch"></div>
+        <div class="ui-t">작업 구역 → 카테고리 → 시공 항목</div>
+        <div class="ui-box"><div>원홀/투홀 수전 교체</div><div>쓰리홀/벽붙이 수전 교체</div><div>4홀/5홀 데크수전 교체</div><span class="pin">1</span></div>
+        <div class="ui-box" style="text-align:center;font-size:22px;font-weight:800">???원<span class="pin">2</span></div>
+        <div class="ui-box ic-row"><i>☐</i><span>강남, 서초, 강동, 송파·하남 일부 지역이신가요?</span></div>
+        <div class="ui-btn off">계산한 가격으로 상담하기<span class="pin">3</span></div>
+        <div style="font-size:11px;color:var(--gray);text-align:center;margin-top:6px">전화번호를 남기면 상담사가 연락드려요</div>
+      </div>
+      <div class="col" style="flex:1;gap:14px">
+        <div class="pain"><div class="no">1</div><div><div class="tt">전문 용어로 고르게 함</div><div class="vo">"우리 집 수전이 뭔지 모르겠는데?"</div></div></div>
+        <div class="pain"><div class="no">2</div><div><div class="tt">다 고르기 전엔 "???원"</div><div class="vo">"가격 보러 왔는데 안 보여 주네"</div></div></div>
+        <div class="pain"><div class="no">3</div><div><div class="tt">버튼이 잠겼는데 이유 없음</div><div class="vo">"고장 난 사이트인가?" → 이탈</div></div></div>
+        <div class="pain"><div class="no">4</div><div><div class="tt">가격 근거·제품명·기사·안전 정보 없음</div><div class="vo">"이 값이 맞나? 숨고도 보자"</div></div></div>
+      </div>
     </div>
   </div>
-  <div class="foot"><span class="src"><b>볼 숫자</b> 견적 시작 → 가격 확인 → 예약 비율 (지금 화면 vs 새 화면을 절반씩 보여 주고 비교). 화면 속 가격·기사 정보는 예시입니다</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>homeco.kr 견적 계산기·시공 사례 직접 확인 (2026-10-28). 계산 결과 총액 442,100원과 말풍선 "최소 254,100원" 숫자 불일치도 확인</span><span>홈코 · 이도형</span></div>
+</section>
+
+<!-- 9 전환 TO-BE -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">07 · 전환율 (1순위) · 바꾼 뒤</div><h2>고르게 하지 말고, <span class="hl teal">사진 한 장으로 보여 주기</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body">
+    <div class="row" style="gap:60px;align-items:center">
+      <div class="phone" style="margin-left:20px"><div class="notch"></div>
+        <div class="ui-t ic-row"><i>📷</i><span>고장 난 곳을 찍어 주세요</span></div>
+        <div class="ui-box"><div><b>구멍 2개짜리 세면대 수전</b></div><div>직접 하기: <b style="color:var(--rose-d)">어려움</b> (녹슨 나사)</div><span class="pin g">1</span></div>
+        <div class="ui-box"><div><b>총액 89,000~119,000원</b></div><div>인건비 · 부품(브랜드명) · 버리기 포함</div><span class="pin g">2</span></div>
+        <div class="ui-box"><div class="ic-row"><i>👷</i><span>김OO 기사 · 12년 · ★4.9</span></div><div class="ic-row"><i>✅</i><span>누수 확인 · 보험 가입</span></div><span class="pin g">3</span></div>
+        <div class="ui-btn">목요일 10시 예약하기<span class="pin g">4</span></div>
+      </div>
+      <div class="col" style="flex:1;gap:14px">
+        <div class="pain"><div class="no g">1</div><div><div class="tt">📷 사진 한 장 진단</div><div class="vo">종류·원인·난이도를 AI가 알려 줌. 5,000건 수리 사진이 재료</div></div></div>
+        <div class="pain"><div class="no g">2</div><div><div class="tt">🧾 첫 화면부터 총액 + 근거</div><div class="vo">제품 브랜드·인건비 내역 · 추가금 0원 · 못 고치면 0원</div></div></div>
+        <div class="pain"><div class="no g">3</div><div><div class="tt">👷 예약 전에 기사와 안전 약속</div><div class="vo">이름·경력·별점 · 전기·누수 확인 · 배상책임보험</div></div></div>
+        <div class="pain"><div class="no g">4</div><div><div class="tt">✅ 버튼은 항상 눌리게</div><div class="vo">빠진 건 그 자리에서 안내 · 지역은 아파트 이름으로 자동 확인</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>볼 숫자: 견적 시작 → 가격 확인 → 예약 비율 (지금 화면과 절반씩 비교). 화면 속 가격·기사 정보는 예시</span><span>홈코 · 이도형</span></div>
 </section>
 
 <!-- 10 유입 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">08 · 유입</div><h2>"비용"을 검색하는 순간을 잡고, 새로 연 동네와 AI 검색을 채웁니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="flow" style="margin-bottom:14px">
-    <div class="step"><div class="s">① 고장 알아챔</div><div class="d"><div>형광등 깜빡임</div><div class="hang">→ 원인 설명 글·짧은 영상</div></div></div><div class="arr">›</div>
-    <div class="step"><div class="s">② 직접 해 보기</div><div class="d"><div>안정기 교체방법 (월 약 2,500~4,400)</div><div class="hang">→ "방법 + 어려우면 홈코" 글</div></div></div><div class="arr">›</div>
-    <div class="step" style="background:var(--blue-soft)"><div class="s">③ 비용 비교 ← 집중</div><div class="d"><div><b>싱크대수전교체 9,860 · 싱크대교체 4,370 · 세면대교체 2,750</b></div><div class="hang">→ 검색광고 + 가격 페이지</div></div></div><div class="arr">›</div>
-    <div class="step"><div class="s">④ 업체 고르기</div><div class="d"><div>하남·강동·단지 이름 + 수리</div><div class="hang">→ 지역 광고·후기·당근</div></div></div>
-  </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr 1fr">
-    <div>
-      <span class="lbl asis">지금 광고 문구</span>
-      <div class="adcard"><span class="ad">광고</span><div class="u">homeco.kr</div><div class="ti">홈코집수리 · 압구정집 수리</div><div class="ds">베테랑 기사님들 출동 대기중! 무료 출장에 확실한 수리까지! 출장비 0원</div></div>
-      <p class="flag" style="margin-top:5px">"강남 화장실 수리" 검색 결과. 경쟁사와 같은 말 + 지역 오류</p>
-      <span class="lbl tobe" style="margin-top:8px">바꾼 문구</span>
-      <div class="adcard"><span class="ad">광고</span><div class="u">homeco.kr/강남-수전교체</div><div class="ti">강남 수전 교체, 사진 한 장이면 총액 안내</div><div class="ds">현장 추가금 0원 · 못 고치면 0원 · 1년 회사 A/S · 강남3구 2,400곳</div></div>
+  <div class="head"><div><div class="kicker">08 · 유입</div><h2>"비용"을 검색하는 순간에 <span class="hl">홈코가 먼저</span> 보이게</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body">
+    <div class="row" style="gap:28px">
+      <div class="card" style="flex:1.25">
+        <h3>한 달 검색 횟수 (전국)</h3>
+        <div class="bars" style="margin-top:14px">
+          <div class="bar"><span>싱크대수전교체</span><div class="t"><div class="f" style="width:100%"></div></div><span class="v">9,860</span></div>
+          <div class="bar"><span>싱크대교체</span><div class="t"><div class="f" style="width:44%"></div></div><span class="v">4,370</span></div>
+          <div class="bar"><span>싱크대하부장</span><div class="t"><div class="f" style="width:41%"></div></div><span class="v">4,070</span></div>
+          <div class="bar"><span>안정기교체</span><div class="t"><div class="f" style="width:28%;background:var(--blue-2)"></div></div><span class="v">약 2,800</span></div>
+          <div class="bar"><span>세면대교체</span><div class="t"><div class="f" style="width:28%"></div></div><span class="v">2,750</span></div>
+        </div>
+        <p class="lab" style="margin-top:12px">홈코 지역은 이 중 약 5% → 품목 20~30개를 묶어서 운영</p>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="card out ic-row"><i class="emo">📍</i><div><h3>새로 연 동네 채우기</h3><p class="lab">하남·강동·미사·위례 검색 광고 시작 (지금 0)</p></div></div>
+        <div class="card out ic-row"><i class="emo">✍️</i><div><h3>광고 첫 줄 바꾸기</h3><p class="lab">"출장비 0원" → "사진 한 장이면 총액, 못 고치면 0원"</p></div></div>
+        <div class="card out ic-row"><i class="emo">🤖</i><div><h3>AI 검색에서 숨고 이기기</h3><p class="lab">지역×품목 가격 페이지 150개 + 숨고에도 입점 → 다음엔 바로 홈코</p></div></div>
+      </div>
     </div>
-    <div class="card"><h3>새로 연 동네 채우기</h3><ul class="clean" style="margin-top:6px"><li>"하남·강동·미사·고덕·위례 집수리" 광고 시작 (지금 없음)</li><li>지점별 광고비 분리</li><li>당근: 단지 이름 소식 → 단지 단위 광고</li><li>전국 검색어("집수리" 1등)는 지역 설정 확인 — 서비스 밖 클릭이면 돈이 샘</li></ul></div>
-    <div class="card"><h3>AI 검색에서 숨고 이기기</h3><ul class="clean" style="margin-top:6px"><li>Gemini에 "강남구 수전 교체"를 물으면 숨고가 나옴. 숨고는 지역×품목 가격 페이지가 많음</li><li>홈코 지역 5 × 품목 30 = <b>150개 가격 페이지</b> + AI가 읽는 가격·별점 정보</li><li>"강남3구 2,400건 실제 수리비 리포트" 공개</li><li><b>숨고에도 입점</b> → 첫 손님 → A/S 등록·수리 기록으로 다음엔 바로 홈코 (약관 확인 필수)</li></ul></div>
   </div>
-  <div class="foot"><span class="src"><b>출처</b> 네이버 파워링크·키워드 도구 월 검색량(전국) [제3자], Gemini 검색 결과(사용자 확인), homeco.kr 구조화 데이터 점검. <b>볼 숫자</b> 광고비 대비 견적, AI 답변 속 홈코 등장 수(질문 50개, 매주)</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>출처: 네이버 키워드 도구 [제3자], Gemini "강남구 수전 교체" 결과 (사용자 확인). 볼 숫자: 광고비 대비 견적, AI 답변 속 홈코 등장 수</span><span>홈코 · 이도형</span></div>
 </section>
 
 <!-- 11 객단가 + 재이용 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">09 · 객단가 + 재이용</div><h2>한 번 갈 때 더 고치고, 다음 고장 때는 검색 없이 홈코로</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:1fr 1.25fr;gap:20px">
-    <div>
-      <div class="card amber" style="margin-bottom:12px"><div class="num">객단가 · 한 번에 내는 돈</div><h3>"오신 김에" 함께 고치기</h3><p>견적 신청 때 "다른 고장도 있나요?" 목록(실리콘·문고리·방충망). 기사는 점검표로 확인 → 카톡 추가 견적. 2개 이상이면 할인·A/S 연장. 기사 이동은 한 번이라 회사도 이익.</p></div>
-      <div class="card amber"><div class="num">객단가</div><h3>제품 기본·인기·고급</h3><p>같은 수전도 고르게 하면 평균 금액이 오릅니다. 손님은 "선택권"이 생겨 비싸다고 느끼지 않습니다.</p></div>
+  <div class="head"><div><div class="kicker">09 · 객단가 + 재이용</div><h2>한 번 갈 때 더 고치고, <span class="hl">다음엔 검색 없이 홈코로</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body" style="gap:30px">
+    <div class="tl">
+      <div class="pt"><div class="dot">🧰</div><div class="when">수리 날</div><div class="what">"오신 김에" 목록</div><div class="how">실리콘·문고리도 함께</div></div>
+      <div class="pt"><div class="dot">🗂️</div><div class="when">다음 날</div><div class="what">우리집 수리 기록</div><div class="how">부품·A/S 날짜·다시 부르기</div></div>
+      <div class="pt"><div class="dot">🍂</div><div class="when">계절마다</div><div class="what">점검 알림</div><div class="how">조명·동파·방충망</div></div>
+      <div class="pt"><div class="dot">🛡️</div><div class="when">11개월 뒤</div><div class="what">A/S 끝나기 전 점검</div><div class="how">무료 방문</div></div>
+      <div class="pt"><div class="dot" style="border-color:var(--teal)">🔁</div><div class="when" style="color:var(--teal-d)">5~10년</div><div class="what">교체 주기 알림</div><div class="how">실리콘 5년 · 수전 7~10년</div></div>
     </div>
-    <div>
-      <div class="card teal" style="margin-bottom:12px"><div class="num">재이용 · 다시 오는 횟수</div><h3>"우리집 수리 기록" 카카오톡 카드</h3><p>고친 곳 · 부품 이름 · A/S 끝나는 날 · <b>[다시 부르기]</b> 버튼. 다음 고장 때 손님은 검색하지 않고 기록이 있는 홈코를 부릅니다.</p></div>
-      <table>
-        <tr><th style="width:34%">언제</th><th>무엇을 보내나</th></tr>
-        <tr><td>A/S 끝나기 30일 전</td><td>무료 점검 제안</td></tr>
-        <tr><td>계절</td><td>가을 조명·환풍기 / 겨울 전 수도 동파 / 초여름 방충망</td></tr>
-        <tr><td>교체 주기</td><td>욕실 실리콘 약 5년, 수전 약 7~10년</td></tr>
-        <tr><td>3번 이상 이용·집주인</td><td>단골 혜택: 우선 예약, A/S 2년</td></tr>
-      </table>
+    <div class="row">
+      <div class="card amber" style="flex:1;text-align:center"><div class="big" style="color:var(--amber-d)">+10%</div><div class="lab">건당 결제액 (함께 고치기 · 제품 3단계)</div></div>
+      <div class="card teal" style="flex:1;text-align:center"><div class="big teal">+8%</div><div class="lab">다시 부르는 손님 (기록·알림)</div></div>
+      <div class="card" style="flex:1;text-align:center"><div class="big">0</div><div class="lab">지금 있는 적립·쿠폰·기록 기능</div></div>
     </div>
   </div>
-  <div class="foot"><span class="src"><b>볼 숫자</b> 건당 결제액, 30·90·180일 안에 다시 부른 비율, 손님 1명당 수리 횟수. <b>근거</b> 홈페이지·당근 확인 결과 적립·쿠폰·수리 기록 기능 없음 (2026-10-28)</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>홈페이지·당근 확인 결과 적립·쿠폰·수리 기록 없음 (2026-10-28). 증가율은 [추정]</span><span>홈코 · 이도형</span></div>
 </section>
 
 <!-- 12 추천 + 신뢰 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">10 · 추천 + 믿음</div><h2>같은 단지 이웃이 데려오고, 기사와 후기가 믿게 합니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px">
-    <div class="card blue"><div class="num">추천</div><h3>이웃 추천 코드</h3><p>수리 다음 날 코드 발송. 소개받은 사람 첫 수리 1만 원, 추천한 사람 다음 수리 1만 원. 광고로 1명 데려오는 비용(약 2.5만 원 가정)보다 쌉니다.</p></div>
-    <div class="card blue"><div class="num">입소문</div><h3>같은 단지 3집이면 모두 할인</h3><p>단지 단톡방에 링크가 퍼집니다. 기사는 한 단지에서 여러 집을 돌아 이동 시간이 줄어듭니다.</p></div>
-    <div class="card blue"><div class="num">공유</div><h3>수리 전후 사진 카드</h3><p>"우리 집 욕실 이렇게 바뀌었어요" 카드 아래에 추천 코드. 당근·단톡에 올리기 쉽게.</p></div>
+  <div class="head"><div><div class="kicker">10 · 추천 + 믿음</div><h2>같은 단지 이웃이 <span class="hl">다음 손님을 데려옵니다</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body">
+    <div class="row" style="gap:40px;align-items:center">
+      <div class="loop">
+        <div class="ring"></div>
+        <div class="nd" style="left:135px;top:0"><div class="c">🔧</div><div class="l">수리 완료</div></div>
+        <div class="nd" style="right:0;top:150px"><div class="c">📸</div><div class="l">전후 사진 카드</div></div>
+        <div class="nd" style="left:135px;bottom:0"><div class="c">💬</div><div class="l">단지 단톡방 공유</div></div>
+        <div class="nd" style="left:0;top:150px"><div class="c">🏠</div><div class="l">이웃 예약</div></div>
+        <div class="ctr"><div style="font-size:13px;font-weight:800;color:var(--blue-d)">추천 코드</div><div style="font-size:22px;font-weight:800;color:var(--ink)">둘 다 1만 원</div></div>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="card blue ic-row"><i class="emo">🏘️</i><div><h3>같은 단지 3집이면 모두 할인</h3><p class="lab">기사 이동도 줄어 회사도 이익</p></div></div>
+        <div class="card out ic-row"><i class="emo">👷</i><div><h3>기사 카드 + "홈코 기사가 되는 과정" 공개</h3><p class="lab">경력·자격·범죄경력 확인 → 교육 → 실습 평가</p></div></div>
+        <div class="card rose ic-row"><i class="emo">⭐</i><div><h3>후기 7개 → 3개월 100개</h3><p class="lab">수리 날 자동 요청 · 1점 후기에도 48시간 안 답글</p></div></div>
+      </div>
+    </div>
   </div>
-  <div class="grid" style="grid-template-columns:1fr 1fr">
-    <div class="card out"><h3>기사님을 믿게 하는 콘텐츠 (지금 없음)</h3><ul class="clean teal" style="margin-top:6px"><li>"홈코 기사가 되는 과정" 공개: 경력·자격증·범죄경력 확인 → 표준 작업 교육 → 실습 평가 → 완료 사진 검수</li><li>예약 확정 시 기사 카드 (이름·사진·경력·별점), 도착 30분 전 알림</li><li>"같은 수전 교체, 무엇이 다른가" 짧은 영상</li></ul></div>
-    <div class="card out"><h3>후기와 당근 관리</h3><ul class="clean teal" style="margin-top:6px"><li>지금: 네이버 리뷰 7개, 본점·강동점 당근 후기 0개</li><li>배관케어 첫 화면 1점 후기 "실력에 비해 비쌉니다"에 답글 없음 → 48시간 안 답글·해결 제안</li><li>"최저가" 대신 지킬 수 있는 약속으로 브랜드 말 통일</li><li>수리 끝난 날 사진 후기 자동 요청 → 3개월 리뷰 100개</li></ul></div>
-  </div>
-  <div class="foot"><span class="src"><b>출처</b> 당근 홈코 집수리·강동직영점·배관케어 프로필, 네이버 플레이스, homeco.kr 확인 (2026-10-28). <b>볼 숫자</b> 추천으로 온 손님 수, 리뷰 수·별점, 답글 비율</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>근거: 네이버 리뷰 7개, 당근 본점·강동점 후기 0개, 배관케어 1점 후기 무응답 (2026-10-28). 광고로 1명 데려오는 비용 약 2.5만 원 [추정]</span><span>홈코 · 이도형</span></div>
 </section>
 
 <!-- 13 성장 선택지 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">11 · 성장 선택지</div><h2>서울 전체 출장보다 "지금 동네 집중 + 다음 지점 시험"이 남는 돈이 큽니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:1fr 1.35fr;gap:20px">
-    <div>
-      <table>
-        <tr><th>수리 1건 (가정값)</th><th>지금 지역</th><th>서울 외곽</th></tr>
-        <tr><td>손님이 내는 돈</td><td>15만 원</td><td>18만 원 (출장비 3만)</td></tr>
-        <tr><td>기사 1명 하루 방문</td><td>4집</td><td>2.5집</td></tr>
-        <tr class="hi"><td><b>광고비까지 빼고 남는 돈</b></td><td><b>2.75만 원</b></td><td><b>0.5만 원</b></td></tr>
-        <tr><td>A/S 출동 1번 비용</td><td>약 6만 원</td><td>약 10만 원</td></tr>
-      </table>
-      <div class="card teal" style="margin-top:12px"><h3>회사 손님(B2B) 다음 시험</h3><p>매출 30%는 이미 B2B. 그로스는 <b>제휴가 개인 손님을 데려오게</b> 만들고, 새 고객군으로 <b>임대 관리·공유주택 운영사 월 계약 유지보수</b>를 1곳에서 3개월 시험합니다.</p></div>
+  <div class="head"><div><div class="kicker">11 · 성장 선택지</div><h2>서울 전체 출장보다 <span class="hl">지금 동네 집중</span>이 남는 돈이 큽니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body">
+    <div class="row" style="gap:28px">
+      <div class="card" style="flex:1">
+        <h3>수리 1건에서 남는 돈 (광고비까지 뺀 값)</h3>
+        <div class="vbars" style="height:220px;margin-top:16px;gap:50px;padding:0 50px">
+          <div class="vb"><span class="n" style="font-size:20px">2.75만</span><div class="f" style="height:100%;background:var(--blue)"></div></div>
+          <div class="vb"><span class="n" style="font-size:20px;color:var(--rose)">0.5만</span><div class="f" style="height:18%;background:var(--rose)"></div></div>
+        </div>
+        <div class="xl" style="gap:50px;padding:6px 50px 0"><span style="font-size:14px;color:var(--ink)">📍 지금 지역</span><span style="font-size:14px;color:var(--ink)">🚗 서울 외곽</span></div>
+        <p class="lab" style="text-align:center;margin-top:8px">기사 하루 4집 vs 2.5집 · A/S 출동 6만 vs 10만 원</p>
+      </div>
+      <div class="col" style="flex:1.1">
+        <div class="card out"><div class="row" style="align-items:center;gap:12px"><span class="chip">A</span><h3 style="flex:1">지금 동네 집중</h3><span style="font-weight:800">1.4억</span></div></div>
+        <div class="card out"><div class="row" style="align-items:center;gap:12px"><span class="chip rose">B</span><h3 style="flex:1">서울 전체 출장</h3><span style="font-weight:800">1.5억</span></div><p class="lab">기사 5~6명 더 · 남는 돈 비율 35% → 31%</p></div>
+        <div class="card blue"><div class="row" style="align-items:center;gap:12px"><span class="chip k">C 추천</span><h3 style="flex:1">집중 + 출장 시험</h3><span style="font-weight:800;color:var(--blue)">1.5억</span></div><p class="lab">빈 시간에만 출장 · 한 구에서 월 60건 3달 → 다음 지점</p></div>
+        <div class="card teal ic-row"><i class="emo">🏢</i><div><h3>B2B 다음 시험</h3><p class="lab">임대 관리·공유주택 운영사 월 계약 1곳, 3개월</p></div></div>
+      </div>
     </div>
-    <table>
-      <tr><th style="width:22%">12개월 뒤 (한 달)</th><th>A. 지금 지역 집중</th><th>B. 서울 전체 출장</th><th style="background:var(--blue-soft)">C. 집중 + 출장 시험</th></tr>
-      <tr><td>수리 건수</td><td>약 870건</td><td>약 970건</td><td style="background:var(--blue-soft)">약 970건</td></tr>
-      <tr><td>매출</td><td>약 1.4억 원</td><td>약 1.5억 원</td><td style="background:var(--blue-soft)"><b>약 1.5억 원</b></td></tr>
-      <tr><td>남는 돈 비율</td><td>오름</td><td class="x">내려감 (약 35%→31%)</td><td style="background:var(--blue-soft)">거의 그대로</td></tr>
-      <tr><td>새 기사</td><td>적음</td><td class="x">약 5~6명</td><td style="background:var(--blue-soft)">적음 (빈 시간 활용)</td></tr>
-      <tr><td>위험</td><td>성장이 느릴 수 있음</td><td>A/S 비용↑, 늦은 도착 → 후기↓</td><td style="background:var(--blue-soft)">외곽 요청 거절 시 불만</td></tr>
-      <tr><td colspan="4" style="font-size:13px;color:var(--gray2)"><b>C 실행:</b> 기존·추천 손님의 외곽 요청만 기사 빈 시간에 받음 + 서비스 밖 손님 대기 명단 → <b>한 구에서 월 60건 넘는 달이 3번 이어지면 다음 지점</b> (후보: 송파 전역, 성동·광진, 동작·관악)</td></tr>
-    </table>
   </div>
-  <div class="foot"><span class="src"><b>가정</b> 건당 15만 원, 재료비 3.5만 원, 기사 1명 하루 비용 25만 원, 외곽 손님 1명당 광고비 4만 원·지역 2.5만 원 [추정]. B2B 30%: 홈코 B2B 채용 공고 [자사발표]</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>가정 [추정]: 건당 15만 원, 재료비 3.5만 원, 기사 1명 하루 25만 원, 손님 1명당 광고비 지역 2.5만·외곽 4만 원. 12개월 뒤 한 달 매출</span><span>홈코 · 이도형</span></div>
 </section>
 
-<!-- 14 90일 + KPI -->
+<!-- 14 90일 -->
 <section class="slide">
-  <div class="head"><div><div class="kicker">12 · 90일 계획</div><h2>재기 → 전환율 → 유입 → 재이용·추천 순서로 90일</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:14px">
-    <div class="card"><div class="num">1~2주 · 재기 + 급한 수리</div><ul class="clean" style="margin-top:4px"><li>네이버 추적 코드, 메타 코드 확인</li><li>전화·카톡 문의 출처 기록</li><li>견적 버튼·가격 숫자 오류 수정</li><li>광고 문구 오류, 지역 설정 확인</li><li>당근 1점 후기 답글</li><li>시작 숫자 기록</li></ul><p style="margin-top:6px"><b>성공:</b> 광고별 "광고비→견적→결제" 표</p></div>
-    <div class="card blue"><div class="num">3~6주 · 전환율 + 유입</div><ul class="clean" style="margin-top:4px"><li>그림·증상으로 고르는 견적 화면 시험</li><li>가격 근거·기사 카드·안전 약속</li><li>하남·강동 광고, "비용" 검색어 20개 + 가격 페이지</li><li>후기 자동 요청</li></ul><p style="margin-top:6px"><b>성공:</b> 견적→예약 비율 상승, 강동·하남 견적 2배, 리뷰 월 30개</p></div>
-    <div class="card teal"><div class="num">7~12주 · 객단가 + 재이용 + 추천</div><ul class="clean teal" style="margin-top:4px"><li>사진 진단 시험 (수전·변기·전등)</li><li>수리 기록 카드, A/S 만료 안내</li><li>"오신 김에" 목록, 이웃 추천 코드</li><li>지역×품목 페이지, 숨고 입점 시험</li><li>임대 관리 회사 1곳 시험 계약</li></ul><p style="margin-top:6px"><b>성공:</b> 건당 결제액 +10%, 한 달 매출 1.2억 원에 근접</p></div>
+  <div class="head"><div><div class="kicker">12 · 90일 계획</div><h2>재기 → 전환율 → 유입 → <span class="hl">재이용·추천</span></h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body" style="gap:26px">
+    <div class="gantt">
+      <span></span><span class="wk">1주</span><span class="wk">2</span><span class="wk">3</span><span class="wk">4</span><span class="wk">5</span><span class="wk">6</span><span class="wk">7</span><span class="wk">8</span><span class="wk">9</span><span class="wk">10</span><span class="wk">11</span><span class="wk">12주</span>
+      <span class="lb">📏 재기</span><div class="gb" style="grid-column:2 / span 2;background:var(--ink)">추적 코드·버튼 오류</div><span style="grid-column:4 / span 10"></span>
+      <span class="lb">📲 전환율</span><span style="grid-column:2 / span 2"></span><div class="gb" style="grid-column:4 / span 6;background:var(--rose)">쉬운 견적 화면 · 가격 근거 · 기사 카드</div><span style="grid-column:10 / span 4"></span>
+      <span class="lb">🔎 유입</span><span style="grid-column:2 / span 2"></span><div class="gb" style="grid-column:4 / span 9;background:var(--blue)">하남·강동 광고 · 비용 검색어 · 가격 페이지 · 숨고</div><span></span>
+      <span class="lb">🔁 재이용·추천</span><span style="grid-column:2 / span 6"></span><div class="gb" style="grid-column:8 / span 6;background:var(--teal)">수리 기록 · 추천 코드 · 사진 진단</div>
+    </div>
+    <div class="row" style="align-items:stretch">
+      <div class="dark" style="flex:1.3;display:flex;align-items:center;gap:20px"><span class="emo">⭐</span><div><div style="font-size:13px;color:#9FB5D6;font-weight:800">하나만 본다면</div><div style="font-size:26px;font-weight:800">한 달 결제 완료 수리 건수</div></div></div>
+      <div class="card" style="flex:1;text-align:center"><div class="big blue" style="font-size:38px">1.2억</div><div class="lab">90일 뒤 한 달 매출 목표</div></div>
+    </div>
   </div>
-  <div class="quote" style="display:flex;align-items:center;gap:26px">
-    <div style="flex:none"><div style="font-size:13px;color:#9FB5D6;font-weight:700">하나만 본다면 (북극성 지표)</div><div class="q" style="font-size:26px">한 달 <span class="g">결제 완료 수리 건수</span></div></div>
-    <p style="color:#C9D3E6;font-size:14.5px">유입·전환율·재이용·추천이 모두 이 숫자로 모입니다. 매주 다섯 칸의 숫자로 쪼개서 어디가 움직였는지 봅니다.</p>
-  </div>
-  <div class="foot"><span class="src"><b>주석</b> 목표 수치는 [추정]. 1~2주차 시작 숫자로 다시 정합니다</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>목표는 [추정]. 1~2주차 시작 숫자로 다시 정함</span><span>홈코 · 이도형</span></div>
 </section>
 
-<!-- 15 질문 -->
+<!-- 15 마무리 -->
 <section class="slide" style="background:radial-gradient(900px 520px at 90% -10%, var(--blue-soft) 0%, transparent 55%), #fff">
-  <div class="head"><div><div class="kicker">13 · 함께 확인하고 싶은 것</div><h2>제 가설이 맞는지, 입사 첫 주에 이 질문부터 확인하겠습니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
-  <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px">
-    <div class="card out"><ul class="clean">
-      <li>전화·카톡 문의가 어떤 광고에서 왔는지 보고 있나요?</li>
-      <li>네이버 광고는 서비스 지역에서만 보이도록 설정되어 있나요?</li>
-      <li>하수구·누수는 "홈코 배관케어"로 따로 광고하나요?</li>
-      <li>견적 화면에서 가격까지 본 사람 중 예약 비율은 얼마인가요?</li></ul></div>
-    <div class="card out"><ul class="clean">
-      <li>다시 부르는 손님 비율과 한 사람당 수리 횟수는 어느 정도인가요?</li>
-      <li>아파트 단지별로 어떤 부품을 썼는지 기록하고 있나요?</li>
-      <li>기사 한 명이 하루에 몇 집을 가나요? 빈 시간이 있나요?</li>
-      <li>기사 뽑기·교육은 지금 어떻게 하나요? 있는 것을 보여 주는 것부터 시작하겠습니다.</li></ul></div>
+  <div class="head"><div><div class="kicker">13 · 첫 주에 확인할 것</div><h2>제 가설이 맞는지, <span class="hl">이 질문부터</span> 확인하겠습니다</h2></div><div class="logo"><span class="ic">⌂</span>홈코</div></div>
+  <div class="body" style="gap:24px">
+    <div class="row">
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">📞</div><h3 style="margin-top:10px">전화·카톡 문의는<br>어느 광고에서?</h3></div>
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">📲</div><h3 style="margin-top:10px">가격 본 사람 중<br>예약 비율은?</h3></div>
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">🔁</div><h3 style="margin-top:10px">다시 부르는<br>손님 비율은?</h3></div>
+      <div class="card out" style="flex:1;text-align:center"><div class="emo">👷</div><h3 style="margin-top:10px">기사 하루 방문 수,<br>빈 시간은?</h3></div>
+    </div>
+    <div class="dark" style="padding:24px 28px"><div style="font-size:24px;font-weight:800;line-height:1.4">홈코가 이미 가진 <span style="color:#8FC2FF">직영 기사 · 동네 2,400곳의 기록 · 1년 책임</span>을<br>손님이 <span style="color:#7FE6DA">"부르기 전에"</span> 느끼게 만드는 것이 제가 할 일입니다.</div></div>
   </div>
-  <div class="quote" style="margin-top:18px"><div class="q">홈코가 이미 가진 것 — <span class="g">직영 기사, 같은 동네 2,400곳의 기록, 1년 책임</span> — 을<br>손님이 "부르기 전에" 느끼게 만드는 것이 제가 할 일입니다.</div></div>
-  <div class="foot"><span class="src">상세 근거와 계산: 노션 전략 문서 (0~15장)</span><span>홈코 · 이도형</span></div>
+  <div class="foot"><span>상세 근거와 계산: 노션 전략 문서 (0~15장)</span><span>홈코 · 이도형</span></div>
 </section>
 
 </div></div>
 
 <div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
-<div class="hint">← → 또는 Space · F 전체화면</div>
 
 <script>
 const slides=[...document.querySelectorAll('.slide')];
