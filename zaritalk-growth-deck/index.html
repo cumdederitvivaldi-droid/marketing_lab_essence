@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>자리톡 그로스 전략</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --ink:#15171C; --gray:#8A8F99; --gray2:#5B6170;
+  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --radius:18px; --shadow:0 12px 36px rgba(21,23,28,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  --blue:#2F6BFF; --blue-d:#1D4FD8; --blue-soft:#E7EEFF; --blue-2:#8DAEFF;
+  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
+  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
+  --rose:#E0533D; --rose-d:#c0402c; --rose-soft:#FCE7E2;
+  --vio:#6E4BFF; --vio-soft:#ECE6FF; --vio-d:#5436E0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:34px 60px 52px;overflow:hidden}
+.slide.active{display:flex;animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.03em;color:var(--blue-d);margin-bottom:6px}
+.kicker.rose{color:var(--rose-d)} .kicker.teal{color:var(--teal-d)} .kicker.vio{color:var(--vio-d)}
+h1{font-size:50px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:-.025em}
+h2{font-size:30px;font-weight:800;line-height:1.25;color:var(--ink);letter-spacing:-.025em}
+h3{font-size:17.5px;font-weight:800;color:var(--ink)}
+p{font-size:14.5px;line-height:1.55;color:#2C313C}
+.sub{font-size:17px;color:var(--gray2);font-weight:600;line-height:1.55}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
+b{font-weight:800;color:var(--ink)}
+.small{font-size:13px;color:var(--gray2);line-height:1.45}
+.head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:20px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--ink);flex:none}
+.logo .ic{width:22px;height:22px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+.row{display:flex;gap:14px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--soft);border-radius:var(--radius);padding:15px 18px}
+.card.blue{background:var(--blue-soft)} .card.teal{background:var(--teal-soft)} .card.rose{background:var(--rose-soft)} .card.amber{background:var(--amber-soft)} .card.vio{background:var(--vio-soft)}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.dark{background:var(--ink);color:#fff;border-radius:var(--radius);padding:16px 20px}
+.dark p{color:#D5D9E2} .dark b{color:#fff}
+.big{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.big.blue{color:var(--blue)} .big.rose{color:var(--rose)} .big.teal{color:var(--teal-d)}
+.lab{font-size:13.5px;color:var(--gray2);font-weight:600;margin-top:6px;line-height:1.4}
+.emo{font-size:30px;line-height:1}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;padding:5px 11px;border-radius:999px;background:var(--soft);color:var(--gray2)}
+.chip.blue{background:var(--blue-soft);color:var(--blue-d)} .chip.rose{background:var(--rose-soft);color:var(--rose-d)} .chip.teal{background:var(--teal-soft);color:var(--teal-d)} .chip.k{background:var(--ink);color:#fff} .chip.amber{background:var(--amber-soft);color:var(--amber-d)}
+.foot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--gray);border-top:1px solid var(--line);padding-top:7px;gap:20px}
+.foot span:first-child{flex:1}
+.ic-row{display:flex;gap:8px;align-items:flex-start}
+.ic-row>i{font-style:normal;flex:none}
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:16px;margin-bottom:4px;font-size:13.5px;line-height:1.45;color:#2C313C}
+ul.clean li:before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:2px;background:var(--blue)}
+ul.clean.rose li:before{background:var(--rose)} ul.clean.teal li:before{background:var(--teal)}
+/* 실제 화면 캡처 */
+.crop{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+.crop img{position:absolute;max-width:none;display:block}
+.crop .cap{position:absolute;left:8px;top:8px;z-index:2;background:rgba(21,23,28,.86);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px}
+.crop .cap.r{background:var(--rose)}
+/* 단계 표시 */
+.stg{display:flex;gap:4px;align-items:center;flex:none}
+.stg span{font-size:11.5px;font-weight:800;padding:5px 9px;border-radius:7px;background:var(--soft);color:#B3B8C2}
+.stg span.on{background:var(--blue);color:#fff}
+.stg i{font-style:normal;font-size:11px;color:#C5C9D1;font-weight:800}
+/* 가설 박스 */
+.hyp{display:flex;gap:12px;align-items:flex-start;background:#FFF9EC;border:1px solid #F6E2B3;border-radius:14px;padding:11px 16px;margin-bottom:14px}
+.hyp .t{flex:none;font-size:12px;font-weight:800;color:#fff;background:var(--amber-d);border-radius:6px;padding:3px 8px;margin-top:1px}
+.hyp p{font-size:14.5px;line-height:1.5}
+.hyp .ev{font-size:12.5px;color:var(--gray2);margin-top:2px}
+/* AS-IS → TO-BE */
+.ab{display:grid;grid-template-columns:1fr 46px 1fr;gap:0;flex:1;min-height:0}
+.ab .arr{display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--blue)}
+.side{border-radius:var(--radius);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.side.asis{background:#FFF4F2;border:1px solid #F7D5CE}
+.side.tobe{background:#F0FBF9;border:1px solid #BDEAE3}
+.tagx{display:inline-block;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px;align-self:flex-start}
+.tagx.a{background:var(--rose);color:#fff} .tagx.b{background:var(--teal);color:#fff}
+/* 광고 카드 */
+.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+.adcard .ad{font-size:10px;font-weight:800;color:#202124}
+.adcard .u{font-size:11px;color:var(--gray)}
+.adcard .ti{font-size:15px;font-weight:700;color:#1a0dab;line-height:1.3;margin:3px 0}
+.adcard .ds{font-size:12px;color:#4a4f5e;line-height:1.4}
+/* 휴대폰 */
+.phone{width:250px;background:#fff;border:8px solid #1A1F2E;border-radius:28px;padding:12px 12px;box-shadow:var(--shadow);position:relative;flex:none}
+.phone .notch{height:5px;width:56px;background:#1A1F2E;border-radius:4px;margin:0 auto 9px}
+.ui-t{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.ui-box{background:var(--soft);border-radius:9px;padding:7px 9px;font-size:11.5px;color:#2C313C;margin-bottom:6px;line-height:1.4;position:relative}
+.ui-btn{background:var(--blue);color:#fff;border-radius:9px;padding:8px;text-align:center;font-size:12px;font-weight:800;position:relative}
+.ui-btn.off{background:#A9C9F5}
+.pin{position:absolute;right:-26px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--rose);color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.pin.g{background:var(--teal)}
+.pt{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:#2C313C}
+.pt .no{width:22px;height:22px;border-radius:50%;background:var(--rose);color:#fff;font-weight:800;font-size:11.5px;display:flex;align-items:center;justify-content:center;flex:none}
+.pt .no.g{background:var(--teal)}
+/* 막대 */
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:150px 1fr 74px;align-items:center;gap:10px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.bar .t{height:24px;border-radius:7px;background:#fff;overflow:hidden;border:1px solid var(--line)}
+.bar .f{height:100%;border-radius:7px;background:var(--blue)}
+.bar .v{font-weight:800;text-align:right}
+.vbars{display:flex;align-items:flex-end;gap:10px;border-bottom:2px solid var(--line);padding:0 4px}
+.vbars .vb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}
+.vbars .vb .f{width:100%;border-radius:7px 7px 0 0;background:var(--blue-2)}
+.vbars .vb .n{font-size:12.5px;font-weight:800;color:var(--ink)}
+.xl{display:flex;gap:10px;padding:5px 4px 0}
+.xl span{flex:1;text-align:center;font-size:11.5px;color:var(--gray2);font-weight:700}
+/* 공식 */
+.formula{display:flex;align-items:center;gap:8px}
+.fb{flex:1;border-radius:16px;padding:14px 8px;text-align:center;background:var(--soft)}
+.fb .e{font-size:28px}
+.fb .k{font-size:11.5px;font-weight:800;color:var(--blue-d);margin-top:4px}
+.fb .t{font-size:17px;font-weight:800;color:var(--ink);margin-top:2px}
+.op{font-size:26px;font-weight:800;color:var(--gray)}
+/* 접점 지도 */
+.tp{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
+.tp .e{font-size:26px}
+.tp .n{font-size:15px;font-weight:800;color:var(--ink)}
+.tp .s{font-size:11.5px;font-weight:800;color:var(--blue-d)}
+.tp .say{font-size:12px;color:var(--gray2);line-height:1.4;background:var(--soft);border-radius:8px;padding:6px}
+.tp .x{font-size:13px;font-weight:800;color:var(--rose)}
+/* 비교 표 */
+.mx{width:100%;border-collapse:separate;border-spacing:0 5px}
+.mx th{font-size:12.5px;color:var(--gray2);font-weight:800;padding:3px 6px;text-align:center}
+.mx td{background:var(--soft);padding:9px 6px;text-align:center;font-size:19px}
+.mx td:first-child{text-align:left;font-size:14px;font-weight:800;color:var(--ink);border-radius:10px 0 0 10px;padding-left:14px}
+.mx td:last-child{border-radius:0 10px 10px 0}
+.mx td.me{background:var(--blue-soft)} .mx th.me{color:var(--blue-d)}
+/* 표 */
+table.tb{width:100%;border-collapse:collapse;font-size:13px}
+table.tb th,table.tb td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.4}
+table.tb th{font-size:12px;color:var(--gray);font-weight:800}
+table.tb tr.hi td{background:var(--blue-soft)}
+/* 간트 */
+.gantt{display:grid;grid-template-columns:130px repeat(12,1fr);gap:6px 4px;align-items:center}
+.gantt .lb{font-size:13.5px;font-weight:800;color:var(--ink)}
+.gantt .wk{font-size:11px;color:var(--gray);text-align:center;font-weight:700}
+.gantt .gb{height:30px;border-radius:8px;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden}
+/* 제품 카드 */
+.prod{background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:6px 8px;margin-bottom:5px;font-size:11px;line-height:1.35;position:relative}
+.prod.on{border-color:var(--blue);background:#F3F8FF}
+.prod .pn{font-weight:800;color:var(--ink);font-size:11.5px}
+.prod .pr{position:absolute;right:8px;top:6px;font-weight:800;color:var(--ink);font-size:11.5px}
+.prod .bd{display:inline-block;font-size:9.5px;font-weight:800;color:#fff;background:var(--blue);border-radius:4px;padding:0 5px;margin-left:4px}
+.mini{display:grid;grid-template-columns:70px 1fr 52px;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--ink);margin-top:3px}
+.mini .t{height:10px;border-radius:4px;background:#E9EDF3;overflow:hidden}
+.mini .f{height:100%;background:var(--blue);border-radius:4px}
+/* 계단 */
+.stairs{display:flex;align-items:flex-end;gap:14px;height:450px}
+.stair{flex:1;border-radius:14px 14px 0 0;padding:12px 14px;color:#fff;display:flex;flex-direction:column;justify-content:flex-start}
+.stair .s{font-size:12px;font-weight:800;opacity:.85}
+.stair .t{font-size:14.5px;font-weight:800;margin-top:2px;line-height:1.35}
+.stair .m{font-size:21px;font-weight:800;margin-top:6px;letter-spacing:-.02em}
+.stair .d{font-size:12px;opacity:.9;margin-top:4px;line-height:1.4}
+.gate{flex:none;width:118px;align-self:center;text-align:center;font-size:11.5px;font-weight:800;color:var(--amber-d);background:var(--amber-soft);border-radius:10px;padding:8px 6px;line-height:1.4}
+/* 폭포 */
+.wf{display:flex;align-items:flex-end;gap:12px;height:390px;border-bottom:2px solid var(--line);padding:0 6px}
+.wf .w{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative}
+.wf .w .f{width:100%;border-radius:8px 8px 0 0}
+.wf .w .n{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:4px}
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.why .w{background:var(--soft);border-radius:16px;padding:14px 16px}
+.why .w .n2{font-size:26px;font-weight:800;color:var(--blue);letter-spacing:-.02em}
+.why .w h3{margin-top:4px;font-size:16px}
+.why .w p{font-size:13px;margin-top:4px;line-height:1.45}
+.why .w .lk{display:inline-block;margin-top:6px;font-size:12px;font-weight:800;color:var(--teal-d)}
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar{display:none}}
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50;opacity:0;transition:opacity .2s}
+#nav:hover{opacity:1}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+.logo .ic{font-size:12px}
+p{font-size:15.5px} .small{font-size:14.5px;line-height:1.5} h3{font-size:19px}
+ul.clean li{font-size:15px;line-height:1.5;margin-bottom:5px} ul.clean li:before{top:9px}
+table.tb{font-size:14.5px} table.tb th{font-size:13px} table.tb th,table.tb td{padding:9px 10px}
+.bar{font-size:15px;grid-template-columns:170px 1fr 90px} .bar .t{height:28px}
+.hyp p{font-size:15.5px} .hyp .ev{font-size:13.5px}
+.lab{font-size:14.5px} .side{gap:12px;padding:16px 18px}
+.why .w p{font-size:14.5px} .why .w h3{font-size:17.5px} .why .w .lk{font-size:13.5px} .why .w{padding:16px 18px}
+.mx td{padding:12px 6px;font-size:21px} .mx td:first-child{font-size:15.5px} .mx th{font-size:14px}
+.gantt .gb{height:40px;font-size:13.5px} .gantt .lb{font-size:15px} .gantt{gap:10px 4px}
+.tp .n{font-size:16px} .tp .s{font-size:13px} .tp .say{font-size:13.5px}
+.adcard .ti{font-size:16px} .adcard .ds{font-size:13px}
+.pt{font-size:15px}
+.ui-box{font-size:12.5px} .ui-t{font-size:13.5px}
+.foot{font-size:11px}
+.fb .t{font-size:19px} .fb .k{font-size:13px}
+.phone.lg{width:300px} .phone.lg .ui-box{font-size:13.5px;padding:9px 11px} .phone.lg .ui-t{font-size:15px} .phone.lg .ui-btn{font-size:13.5px;padding:10px}
+.why.fill{flex:1;grid-auto-rows:1fr} .why.fill .w .n2{font-size:30px}
+table.tb.tall td{padding:12px 10px;font-size:15px}
+.hang{padding-left:1.35em !important;text-indent:-1.35em}
+.ic-row p{flex:1}
+</style>
+
+</head><body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+<!-- 1 표지 + 핵심 메시지 -->
+<section class="slide active" style="justify-content:center;background:radial-gradient(900px 520px at 88% -10%, var(--blue-soft) 0%, transparent 55%),radial-gradient(700px 500px at -5% 110%, var(--teal-soft) 0%, transparent 55%),#fff">
+  <div class="row" style="gap:8px;margin-bottom:22px"><span class="chip k">자리톡 · 그로스 마케터</span><span class="chip blue">면접 발표 · 2026-10-29</span></div>
+  <div class="kicker">핵심 메시지</div>
+  <h1>월세를 <span class="hl rose">"급할 때 카드로 내는 돈"</span>에서<br><span class="hl">"내면 돌려받고 쌓이는 돈"</span>으로</h1>
+  <p class="sub" style="margin-top:18px;max-width:1000px">카드로 월세 내기는 이제 12곳이 똑같이 말합니다. 자리톡만 가진 것은 <b>집주인 70만 명과 세입자 600만 명이 함께 쓰는 월세 기록</b>입니다. 이 기록으로</p>
+  <ul class="clean" style="margin-top:8px;font-size:16px"><li><b>기록·환급은 모두에게 무료</b>로 열어 데려오고</li><li><b>카드 혜택이 필요한 사람은 매달 자동 결제</b>로 이어서</li><li>집주인과 묶어 한 사람이 오래 쓰며 내는 돈 전체(<b>LTV</b>)를 키우겠습니다</li></ul>
+  <div class="row" style="margin-top:26px;gap:12px">
+    <div class="card out" style="flex:1"><div class="emo">🔎</div><h3 style="margin-top:6px">사람들이 찾는 것</h3><p class="small" style="margin-top:3px">"월세 세액공제"(낸 세금 일부 돌려받기) 월 1.1만 회 검색<br>"월세 밀림" 월 50회 검색</p></div>
+    <div class="card out" style="flex:1"><div class="emo">🔁</div><h3 style="margin-top:6px">바꿀 것</h3><p class="small" style="margin-top:3px">급할 때 1번 쓰는 앱 → 매달 자동으로 쓰는 앱</p></div>
+    <div class="card out" style="flex:1"><div class="emo">🤝</div><h3 style="margin-top:6px">자리톡만 할 수 있는 것</h3><p class="small" style="margin-top:3px">집주인과 세입자가 같이 확인한 "월세 기록"</p></div>
+    <div class="card blue" style="flex:1"><div class="emo">⭐</div><h3 style="margin-top:6px">목표 지표 1개</h3><p class="small" style="margin-top:3px"><b>매달 자리톡으로 월세를 내는 세입자 수</b><br>먼저 볼 숫자: 기록을 켠 세입자 수</p></div>
+  </div>
+  <p class="small" style="margin-top:22px">이도형 · 그로스 마케터 &nbsp;|&nbsp; ← → 키로 넘기기 · F 전체 화면</p>
+</section>
+
+<!-- 2 목차 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">목차</div><h2>4단계로 설명합니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="row" style="gap:14px;flex:1;margin-top:8px">
+    <div class="card" style="flex:1;display:flex;flex-direction:column;gap:8px"><span class="chip k" style="align-self:flex-start">PART 1</span><h3>지금 자리톡</h3><ul class="clean"><li>이 자리가 원하는 역할</li><li>자리톡의 서비스 5개</li><li>지금 하는 광고와 앱 안의 흐름</li></ul></div>
+    <div class="card rose" style="flex:1;display:flex;flex-direction:column;gap:8px"><span class="chip rose" style="align-self:flex-start">PART 2</span><h3>문제 진단</h3><ul class="clean rose"><li>메시지가 현실과 멀다</li><li>경쟁사가 똑같이 말한다</li><li>앱 리뷰의 불만 3가지</li><li>카드결제 말고 다른 서비스의 문제</li></ul></div>
+    <div class="card teal" style="flex:1;display:flex;flex-direction:column;gap:8px"><span class="chip teal" style="align-self:flex-start">PART 3</span><h3>해결책</h3><ul class="clean teal"><li>진짜 불편함과 자리톡만의 무기</li><li>새 포지셔닝(고객 머릿속 자리톡의 자리)</li><li>LTV 공식 → AARRR(고객 5단계)마다 AS-IS(지금) / TO-BE(바꾼 뒤)</li><li>기대 효과와 90일 계획</li></ul></div>
+    <div class="card blue" style="flex:1;display:flex;flex-direction:column;gap:8px"><span class="chip blue" style="align-self:flex-start">PART 4</span><h3>왜 이도형</h3><ul class="clean"><li>공고 ↔ 제 경험</li><li>회고에서 배운 일하는 방식</li><li>자리톡에서 해낼 일</li></ul></div>
+  </div>
+  <div class="dark" style="margin-top:14px"><p><b>읽는 법</b> · 모든 숫자 옆에 출처를 적었습니다. <b>[자사발표]</b> 회사가 직접 낸 숫자 · <b>[제3자]</b> 기사·통계 · <b>[직접 확인]</b> 제가 2026-10-28에 직접 조회 · <b>[가정]</b> 제가 세운 예상치</p></div>
+  <div class="foot"><span>자리톡 그로스 전략 · 이도형</span><span>2</span></div>
+</section>
+
+<!-- 3 JD -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 1 · 이 자리가 원하는 역할</div><h2>채널 담당이 아니라 <span class="hl">"유입부터 결제까지 병목(막히는 곳)을 찾는 사람"</span>을 찾습니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="row" style="gap:12px">
+    <div class="card out" style="flex:1"><span class="chip blue">획득 · 활성화</span><h3 style="margin-top:8px">효율 좋은 유입 채널 찾기</h3><p class="small" style="margin-top:4px">처음 온 사람이 핵심 가치를 빨리 느끼도록 첫 화면(온보딩)을 다듬기</p></div>
+    <div class="card out" style="flex:1"><span class="chip teal">유지 · 추천</span><h3 style="margin-top:8px">CRM(고객 메시지) 자동화 + 추천 구조</h3><p class="small" style="margin-top:4px">다시 쓰는 습관과 스스로 소개하는 흐름을 설계하기</p></div>
+    <div class="card out" style="flex:1"><span class="chip rose">수익</span><h3 style="margin-top:8px">자리페이 · 새 수익 모델 전환율(본 사람 중 결제한 비율)</h3><p class="small" style="margin-top:4px">A/B 테스트(두 안을 나눠 비교)로 결제 전환을 올리고 숫자로 증명하기</p></div>
+  </div>
+  <div class="row" style="gap:12px;margin-top:12px;flex:1">
+    <div class="card" style="flex:1.2"><h3>자격 요건에서 읽은 3가지</h3>
+      <ul class="clean" style="margin-top:8px">
+        <li><b>MVP(작은 시험판) 실험</b> · 완벽한 기획보다 작게 빨리 해 보고 배우는 사람</li>
+        <li><b>가설 → 실행 → 분석 → 회고</b> · 이 사이클을 직접 돌린 경험</li>
+        <li><b>쉬운 말</b> · 어려운 금융·부동산 서비스를 쉬운 문장으로 바꾸는 카피</li>
+      </ul>
+      <p class="small" style="margin-top:8px">우대(리멤버 공고): MAU(한 달 이용자) 100만 이상 서비스, 0→1(처음부터 키운) 성장 경험</p>
+    </div>
+    <div class="dark" style="flex:1;display:flex;flex-direction:column;justify-content:center"><p style="font-size:13px">그래서 이 발표는</p><p style="font-size:19px;line-height:1.45;margin-top:6px"><b>AARRR 5단계마다 병목 1개를 찾고</b>,<br>AS-IS → TO-BE로 바꾼 뒤,<br><b>LTV가 왜 오르는지</b> 숫자로 연결합니다.</p></div>
+  </div>
+  <div class="foot"><span>출처: 원티드 wd/366610 · 리멤버 343051 그로스 마케터 공고 [자사발표]</span><span>3</span></div>
+</section>
+
+<!-- 4 서비스 지도 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 1 · 자리톡의 서비스</div><h2>집주인에게는 <span class="hl">무료 관리</span>, 세입자에게서 <span class="hl rose">결제 이용료</span>로 법니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="row" style="gap:14px;flex:1">
+    <div class="col" style="flex:1.6">
+      <table class="tb">
+        <tr><th>서비스</th><th>누구</th><th>무엇</th><th>돈</th></tr>
+        <tr><td><b>임대장부 · 카톡 고지서</b></td><td>집주인</td><td>월세 입금 확인, 미납 알림, 세입자에게 고지서 자동 발송</td><td>무료</td></tr>
+        <tr class="hi"><td><b>자리페이 (월세 카드결제)</b></td><td>세입자</td><td>카드로 결제하면 집주인 계좌에 현금 입금. 집주인 동의 불필요, 최대 7개월 무이자</td><td><b>이용료 4.9%</b></td></tr>
+        <tr><td><b>월세 환급</b></td><td>세입자</td><td>놓친 월세 세액공제를 5년 전까지 돌려받게 도움</td><td>확인 불가</td></tr>
+        <tr><td><b>자리스테이 (단기임대)</b></td><td>집주인·세입자</td><td>1주~몇 달 짧게 사는 집 예약</td><td>집주인(호스트) 무료</td></tr>
+        <tr><td><b>매물 · 실거주 리뷰</b></td><td>세입자</td><td>집주인 직접 매물, 층간소음 같은 실제 후기</td><td>무료</td></tr>
+      </table>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card blue"><div class="big blue">600만 · 70만</div><div class="lab">세입자 · 집주인 이용자 [제3자, 2026-10]</div></div>
+      <div class="card"><div class="big">125억</div><div class="lab">2025년 매출, 전년보다 +61% · 2024년 흑자 [제3자]</div></div>
+      <div class="card"><div class="big">9,640억</div><div class="lab">한 달 고지서 발송액 · 자리페이 가입자 450만 [자사발표, 결제 안내 페이지(랜딩)]</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>출처: 자리톡 고객센터·앱스토어 [자사발표], 파이낸셜뉴스 2026-10-01 · IB토마토 [제3자]. 자리페이 결제 랜딩 [자사발표, 직접 확인 2026-10-28]. 이용자 수는 시점마다 480만~600만으로 달라 범위로 봐야 함</span><span>4</span></div>
+</section>
+
+<!-- 5 지금 광고 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 1 · 지금 하는 마케팅</div><h2>광고 대부분이 <span class="hl rose">"현금 없을 때 카드로"</span>를 말합니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="crop" style="height:225px"><span class="cap">실제 화면 · 메타(인스타·페북) 광고 라이브러리 "자리톡" (게재 중 약 57개)</span><img src="img/meta-ads-c.jpg" style="width:100%;top:0;left:0"></div>
+  <div class="row" style="gap:12px;margin-top:12px;flex:1;min-height:0">
+    <div class="card out" style="flex:1.15"><h3>메타 광고 문구를 묶어 보면</h3>
+      <div class="bars" style="margin-top:10px">
+        <div class="bar"><span>💳 카드 할부 결제</span><div class="t"><div class="f" style="width:72%;background:var(--rose)"></div></div><span class="v">가장 많음</span></div>
+        <div class="bar"><span>💸 현금 부족·급할 때</span><div class="t"><div class="f" style="width:45%;background:var(--rose)"></div></div><span class="v">인플루언서</span></div>
+        <div class="bar"><span>🧾 월세 환급 17%</span><div class="t"><div class="f" style="width:30%"></div></div><span class="v">일부</span></div>
+        <div class="bar"><span>🏠 단기임대</span><div class="t"><div class="f" style="width:15%;background:var(--teal)"></div></div><span class="v">일부 · 구글</span></div>
+      </div>
+      <p class="small" style="margin-top:10px">구글은 영상 약 200개 · 인플루언서 "솔직히 현금 귀하잖아요"</p>
+    </div>
+    <div class="col" style="flex:1.25">
+      <div class="crop" style="flex:1;min-height:150px"><span class="cap">앱스토어 첫 장 · "주거생활 환급앱"</span><img src="img/appstore-shots.jpg" style="width:100%;top:0;left:0"></div>
+      <div class="card rose" style="padding:10px 14px"><p class="small"><b>말이 서로 다름</b> · 앱스토어는 "<b>환급앱</b>", 결제 화면은 "<b>현금 부족하신가요?</b>"</p></div>
+    </div>
+    <div class="crop" style="width:170px;flex:none"><span class="cap">결제 안내 페이지</span><img src="img/pay-landing.jpg" style="width:100%;top:0;left:0"></div>
+  </div>
+  <div class="foot"><span>출처: 메타 광고 라이브러리·구글 광고 투명성 센터 ·앱스토어·자리페이 랜딩 [직접 확인 2026-10-28]. 문구 비중은 57개를 눈으로 묶은 대략값</span><span>5</span></div>
+</section>
+
+<!-- 6 문제1 메시지 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">PART 2 · 문제 ① 메시지</div><h2>사람들은 <span class="hl rose">"늦게 내는 법"</span>이 아니라 <span class="hl">"돌려받는 법"</span>을 찾습니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="hyp"><span class="t">가설</span><div><p>"월급이 밀렸을 때 카드로 월세"는 대부분의 세입자에게 <b>매달 일어나는 일이 아닙니다.</b> 그래서 공감이 약하고, 써도 <b>급할 때 한 번</b>만 씁니다.</p><p class="ev">근거: 네이버 검색광고 키워드 도구 월간 검색 수 (PC+모바일)</p></div></div>
+  <div class="row" style="gap:16px;flex:1">
+    <div class="card out" style="flex:1.4">
+      <div class="bars">
+        <div class="bar"><span>월세 세액공제</span><div class="t"><div class="f" style="width:100%;background:var(--teal)"></div></div><span class="v">11,300</span></div>
+        <div class="bar"><span>월세 카드결제</span><div class="t"><div class="f" style="width:80%"></div></div><span class="v">9,100</span></div>
+        <div class="bar"><span>월세 소득공제</span><div class="t"><div class="f" style="width:12.5%;background:var(--teal)"></div></div><span class="v">1,410</span></div>
+        <div class="bar"><span>월세 현금영수증</span><div class="t"><div class="f" style="width:12%;background:var(--teal)"></div></div><span class="v">1,370</span></div>
+        <div class="bar"><span>월세 미납</span><div class="t"><div class="f" style="width:1.6%;background:var(--rose)"></div></div><span class="v">180</span></div>
+        <div class="bar"><span>월세 연체</span><div class="t"><div class="f" style="width:1%;background:var(--rose)"></div></div><span class="v">100</span></div>
+        <div class="bar"><span>월세 밀림</span><div class="t"><div class="f" style="width:.6%;background:var(--rose)"></div></div><span class="v">50</span></div>
+      </div>
+      <div class="row" style="gap:8px;margin-top:12px"><span class="chip teal">🟩 돌려받기</span><span class="chip blue">🟦 카드결제</span><span class="chip rose">🟥 밀림·연체</span></div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="side asis"><span class="tagx a">AS-IS</span><p><b>"당장 현금이 없을 때"</b><br>나와 상관없는 이야기 → 급할 때만 기억남</p></div>
+      <div class="side tobe"><span class="tagx b">TO-BE</span><p><b>"올해 낸 월세, 얼마 돌려받을 수 있을까?"</b><br>월세 내는 모든 사람의 이야기 → 매년, 매달 다시 옴</p></div>
+      <div class="dark"><p><b>"카드결제" 검색 9,100</b>은 12곳이 나눠 갖습니다.<br><b>"돌려받기" 검색 1.4만</b>은 결제 회사 중 노리는 곳이 없습니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>출처: 네이버 검색광고 키워드 도구 [직접 확인 2026-10-28], "월세밀림" PC 10회 미만+모바일 40회 → 약 50회. 돌려받기 1.4만 = 세액공제+소득공제+현금영수증 합. 세액공제 검색은 연말정산(1~2월)·종합소득세(5월)에 몰리고, 홈택스·삼쩜삼과도 겹침</span><span>6</span></div>
+</section>
+
+<!-- 7 문제2 경쟁 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">PART 2 · 문제 ② 경쟁</div><h2>"카드로 월세"는 <span class="hl rose">12곳이 같은 말</span>을 합니다 — 가격 싸움이면 수수료 4.9%인 자리톡이 집니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="crop" style="height:232px"><span class="cap r">실제 화면 · 메타 광고 라이브러리 "월세 카드결제" (게재 중 54개)</span><img src="img/meta-comp-c.jpg" style="width:100%;top:0;left:0"></div>
+  <div class="row" style="gap:14px;margin-top:12px;flex:1">
+    <div class="card out" style="flex:1.3">
+      <h3>같은 문구, 다른 가격</h3>
+      <div class="bars" style="margin-top:8px">
+        <div class="bar"><span>카드사 직접 납부</span><div class="t"><div class="f" style="width:20%;background:var(--gray)"></div></div><span class="v">약 1%</span></div>
+        <div class="bar"><span>렌탈페이</span><div class="t"><div class="f" style="width:37%;background:var(--gray)"></div></div><span class="v">1.8%</span></div>
+        <div class="bar"><span>집업페이</span><div class="t"><div class="f" style="width:37%;background:var(--gray)"></div></div><span class="v">1.8~2.8%</span></div>
+        <div class="bar"><span>자리페이</span><div class="t"><div class="f" style="width:100%;background:var(--rose)"></div></div><span class="v">4.9%</span></div>
+      </div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card"><p class="small"><b>같은 날 광고 중인 곳</b><br>집업 · 렌탈페이 · 페이클로버 · 오픈페이 · 홈큐 · 사장님페이 · 3분페이 · 봄날페이 · 페이원 · 네잎페이 · Zpayments · 자리톡</p></div>
+      <div class="dark"><p>"집주인 동의 없이 · 할부 · 카드 실적"은 이제 <b>모두의 문구</b>입니다. 자리톡이 <b>남이 못 따라 하는 말</b>을 해야 합니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>출처: 메타 광고 라이브러리 [직접 확인 2026-10-28], 수수료: 뉴데일리 2025 · 한경 2025-08 · 유니콘팩토리 2025-11 [제3자], 자리톡 고객센터 [자사발표]. 자리페이 4.9%는 최대 7개월 무이자 포함, 다른 곳은 일시불·프로모션 기준일 수 있어 조건이 다름</span><span>7</span></div>
+</section>
+
+<!-- 8 문제3 리뷰 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">PART 2 · 문제 ③ 앱 리뷰</div><h2>낮은 평점 리뷰는 <span class="hl rose">3가지 불만</span>에 몰려 있습니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="row" style="gap:14px">
+    <div class="side asis" style="flex:1"><span class="tagx a">불만 1 · 가장 많음</span><h3>📢 카톡 알림이 너무 많다</h3><p class="small">"제발 카톡좀 그만 보내세요"<br>차단해도 <b>다른 채널 이름</b>으로 다시 옴</p><p class="small">회사 답변: 채널이 여러 개라 하나만 막으면 다른 데서 올 수 있음, 수신 거부는 고객센터로</p></div>
+    <div class="side asis" style="flex:1"><span class="tagx a">불만 2 · 가장 위험</span><h3>🎣 피싱 같다</h3><p class="small">"피싱 업체세요?"<br>월세를 낸 적 없는데 <b>납부 안내</b>가 옴. 부모님 세대는 속을 수 있다고 걱정</p><p class="small">원인: 집주인이 입력한 정보로 세입자에게 고지서가 감 → 누가 보냈는지 안 보임</p></div>
+    <div class="side asis" style="flex:1"><span class="tagx a">불만 3</span><h3>💸 수수료</h3><p class="small">"수수료만 받아먹고"<br>좋다는 리뷰도 "수수료가 있다"를 같이 적음</p><p class="small">월세 50만 원이면 이용료 24,500원 (4.9%)</p></div>
+  </div>
+  <div class="row" style="gap:14px;margin-top:12px;flex:1;min-height:0">
+    <div class="crop" style="flex:1.3"><span class="cap">앱스토어 · 평점 4.6 (7.6천 개)</span><img src="img/appstore-reviews.jpg" style="width:100%;top:-60px;left:0"></div>
+    <div class="card teal" style="flex:1;display:flex;flex-direction:column;justify-content:center"><h3>👍 좋은 리뷰의 이유</h3><ul class="clean teal" style="margin-top:6px"><li>"환급 받기 좋은 앱"</li><li>무이자 할부로 부담이 줄었다</li><li>입금이 약속대로 왔다</li></ul><p style="margin-top:6px"><b>→ 사람들이 좋아하는 건 "돌려받기"와 "부담 나누기"</b></p></div>
+  </div>
+  <div class="foot"><span>출처: 앱스토어(KR) 자리톡 리뷰와 개발사 답변 [제3자, 2026-10-28 열람]. 노출된 리뷰 10건 표본이라 빈도는 방향만 참고. 인용은 리뷰 제목·짧은 구절</span><span>8</span></div>
+</section>
+
+<!-- 9 다른 서비스 진단 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">PART 2 · 카드결제 말고 다른 서비스</div><h2>좋은 서비스가 <span class="hl rose">따로 놀고 있습니다</span> — 이어 주면 효과가 커집니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <table class="tb" style="margin-top:4px">
+    <tr><th style="width:150px">서비스</th><th>지금 하는 방식</th><th>문제</th><th>이렇게 고치면</th></tr>
+    <tr><td class="hang"><b>🧾 월세 환급</b><br><span class="small">"세액공제" 월 1.1만 검색</span></td><td>광고로 데려와 한 번 환급해 줌</td><td><b>한 번 받고 떠남.</b> 계약서·납부 내역을 받아 놓고 다음 단계로 안 이어짐</td><td>환급 = <b>첫 관문</b>. 받은 서류로 "매달 기록"을 켜고 첫 결제까지 연결</td></tr>
+    <tr class="hi"><td class="hang"><b>📨 카톡 고지서</b><br><span class="small">한 달 9,640억 원 발송</span></td><td>집주인이 세입자에게 무료로 보냄</td><td>세입자에게 <b>누가 보냈는지 안 보여</b> 피싱 오해 · 차단</td><td>"<b>집주인 ○○○님이 보낸 고지서</b>" + 납부 확인 버튼 → <b>돈 안 드는 세입자 유입 통로</b></td></tr>
+    <tr><td class="hang"><b>🏠 단기임대</b><br><span class="small">"단기임대" 월 2.4만 검색</span></td><td>광고로 세입자를 모음</td><td>검색 경쟁이 높고(광고 10개) 비쌈. 공급(집) 쪽 강점이 안 쓰임</td><td>집주인 장부의 <b>빈 방(공실)</b>을 단기임대로 바로 올리게 → 공급은 자리톡만 빠름</td></tr>
+    <tr><td class="hang"><b>💬 실거주 리뷰 · 매물</b></td><td>따로 있는 탭</td><td>이사할 때만 열림</td><td>계약 끝나기 2달 전 "다음 집" 알림 → <b>이사해도 자리톡에 남게</b></td></tr>
+  </table>
+  <div class="dark" style="margin-top:12px"><p>모든 서비스의 공통 재료는 <b>"이 사람이 어디서, 얼마를, 언제 냈는가" = 월세 기록</b>입니다. 기록을 중심에 두면 서비스끼리 이어집니다.</p></div>
+  <div class="row" style="gap:8px;margin-top:14px;align-items:center">
+    <div class="tp"><div class="e">📨</div><div class="n">고지서 받음</div><div class="s">공짜 유입</div></div><span class="op">›</span>
+    <div class="tp"><div class="e">🧾</div><div class="n">환급 신청</div><div class="s">계약서·계좌 입력</div></div><span class="op">›</span>
+    <div class="tp" style="border:2px solid var(--teal)"><div class="e">📒</div><div class="n">월세 기록 켜기</div><div class="s">매달 자동 저장</div></div><span class="op">›</span>
+    <div class="tp"><div class="e">💳</div><div class="n">매달 자리페이</div><div class="s">이용료 수익</div></div><span class="op">›</span>
+    <div class="tp"><div class="e">🏠</div><div class="n">이사 · 단기임대</div><div class="s">다음 집도 자리톡</div></div>
+  </div>
+  <div class="foot"><span>출처: 네이버 키워드 도구 [직접 확인], 고지서 발송액: 자리페이 결제 랜딩 [자사발표], 서비스 구성: 자리톡 앱스토어·고객센터 [자사발표]</span><span>9</span></div>
+</section>
+
+<!-- 10 진짜 불편함 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">PART 3 · 진짜 불편함</div><h2>세입자의 진짜 불편함은 <span class="hl teal">"매달 내는데 남는 게 없다"</span>입니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="row" style="gap:14px;flex:1">
+    <div class="col" style="flex:1">
+      <div class="card blue"><div class="big blue">68.5%</div><div class="lab">2026년 1~4월 전국 집 계약(임대차) 중 월세 비중. 1년 새 +8.1%p(퍼센트포인트) [제3자, 국토부]</div></div>
+      <div class="card"><div class="big">66.6%</div><div class="lab">34세 이하 가구 중 월세로 사는 비율 [제3자, 주거실태조사 2차 인용]</div></div>
+      <div class="card"><div class="big">18.4%</div><div class="lab">수도권 소득 중 월세로 나가는 비율(중간값) [제3자, 국토부]</div></div>
+    </div>
+    <div class="col" style="flex:1.5">
+      <div class="card out"><h3>😮‍💨 세입자 — 월세는 "사라지는 돈"</h3>
+        <ul class="clean rose" style="margin-top:6px">
+          <li><b>돌려받을 돈을 놓침</b> · 세액공제 받은 사람은 약 87만 명. 몰라서 나중에 5년 치를 찾는 경우가 많음</li>
+          <li><b>기록이 안 남음</b> · 몇 년을 꼬박 내도 신용점수나 다음 집 계약에 쓰이지 않음 ("월세 신용점수" 검색 거의 0)</li>
+          <li><b>보증금이 불안함</b> · "임차권등기명령"(보증금 못 받을 때 신청) 월 9,800 · "전세사기" 월 8,600 검색</li>
+        </ul></div>
+      <div class="card out"><h3>🏠 집주인 — 확인하고 챙길 게 많음</h3>
+        <ul class="clean" style="margin-top:6px">
+          <li>입금 확인 · 미납 연락 · 세금 정리를 손으로 함</li>
+          <li>세입자를 직접 고르기 어려움 → "<b>믿을 만한 세입자인지</b>" 알 방법이 없음</li>
+        </ul></div>
+    </div>
+  </div>
+  <div class="foot"><span>출처: 국토교통부 2026-04 주택통계(뉴시스) · 2024 주거실태조사 · 국세통계연보 2024 귀속(언론) [제3자], 검색 수: 네이버 키워드 도구 [직접 확인]. 세액공제 "놓친 비율" 공식 통계는 없음</span><span>10</span></div>
+</section>
+
+<!-- 11 자리톡만의 무기 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">PART 3 · 자리톡만 할 수 있는 것</div><h2>남들은 결제만 합니다. 자리톡만 <span class="hl teal">"집주인과 세입자가 같이 확인한 월세 기록"</span>을 만듭니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <table class="mx" style="margin-top:4px">
+    <tr><th></th><th>카드사 직접</th><th>집업 · 렌탈페이 등</th><th>삼쩜삼 · 홈택스</th><th>직방 · 다방</th><th class="me">자리톡</th></tr>
+    <tr><td>월세 카드결제</td><td>🟡</td><td>🟢</td><td>⚪</td><td>⚪</td><td class="me">🟢</td></tr>
+    <tr><td>집주인이 쓰는 장부</td><td>⚪</td><td>⚪</td><td>⚪</td><td>⚪</td><td class="me">🟢 70만 명</td></tr>
+    <tr><td>월세 환급(세액공제)</td><td>⚪</td><td>⚪</td><td>🟢</td><td>⚪</td><td class="me">🟢</td></tr>
+    <tr><td>빈 방 → 단기임대·매물</td><td>⚪</td><td>⚪</td><td>⚪</td><td>🟢</td><td class="me">🟢</td></tr>
+    <tr style="outline:2px solid var(--teal);outline-offset:-2px;border-radius:10px"><td><b>양쪽이 확인한 월세 기록</b></td><td>⚪</td><td>⚪</td><td>⚪</td><td>⚪</td><td class="me">🟢 <b>유일</b></td></tr>
+  </table>
+  <div class="row" style="gap:12px;margin-top:10px">
+    <div class="card teal" style="flex:1"><p class="small"><b>왜 못 따라 하나</b> · 결제 앱은 세입자 한쪽만 봅니다. 집주인 70만 명이 매달 쓰는 장부가 있어야 "그 돈이 정말 월세로 들어왔다"를 확인할 수 있습니다. <b>단, 양쪽 이익이 맞는 범위에서</b> — 집주인에게는 미납 감소·입금 자동 확인, 세입자에게는 기록.</p></div>
+    <div class="card" style="flex:1"><p class="small"><b>해외 사례 · Bilt</b> · 월세 결제에 포인트를 주고 신용평가사(신용점수 매기는 회사)에 납부 기록을 보냄 → 기업가치 107.5억 달러(2025). 회원 중 카드 보유는 약 15% → <b>결제 기록이 먼저, 카드는 나중</b>.</p></div>
+  </div>
+  <div class="foot"><span>🟢 있음 🟡 조건부(집주인 동의 필요) ⚪ 확인 못 함. 출처: 각 사 공식·보도 [제3자], Bilt: Wikipedia·View from the Wing [제3자, 자사 서한 재인용]. 경쟁사 기능은 "조사 범위 안에서 확인 못 함"이며 없다는 단정이 아님</span><span>11</span></div>
+</section>
+
+<!-- 12 새 포지셔닝 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">PART 3 · 새 포지셔닝</div><h2>"월세 카드결제 앱"에서 <span class="hl teal">"낸 월세가 돌아오는 월세 통장"</span>으로</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="ab" style="max-height:300px">
+    <div class="side asis"><span class="tagx a">AS-IS</span><h3>급할 때 카드로 내는 앱</h3>
+      <ul class="clean rose"><li>누구에게: 현금이 부족한 사람 (가끔)</li><li>무엇을: 카드 할부 · 동의 없이</li><li>비교 상대: 수수료 1.8% 결제 대행사 → <b>가격 싸움</b></li><li>쓰는 횟수: 급할 때 1~2번</li></ul></div>
+    <div class="arr">→</div>
+    <div class="side tobe"><span class="tagx b">TO-BE</span><h3>낸 월세가 돌아오는 월세 통장</h3>
+      <ul class="clean teal"><li><b>무료층 · 모든 세입자</b> · 환급 계산 + 쌓이는 월세 기록</li><li><b>유료층 · 카드가 필요한 세입자</b> · 카드 실적(혜택 받는 사용액) 채우기 · 할부 · 포인트를 매달 자동으로</li><li>비교 상대: 1.8% 대행사가 아니라 <b>"기록이 안 남는 계좌이체"</b></li><li>쓰는 횟수: 매달 자동</li></ul></div>
+  </div>
+  <div class="dark" style="margin-top:14px;text-align:center"><p style="font-size:13px">한 줄 약속</p><p style="font-size:26px;font-weight:800;color:#fff;margin-top:4px">"월세, 내면 남게. 자리톡"</p></div>
+  <div class="row" style="gap:12px;margin-top:12px">
+    <div class="card" style="flex:1"><div class="ic-row"><i>💰</i><p class="small"><b>돌려받기</b> · 올해 낸 월세로 받을 환급을 미리 계산</p></div></div>
+    <div class="card" style="flex:1"><div class="ic-row"><i>📒</i><p class="small"><b>쌓이기</b> · 매달 낸 기록이 자동 저장, 내년 서류 준비 끝</p></div></div>
+    <div class="card" style="flex:1"><div class="ic-row"><i>🤝</i><p class="small"><b>인정받기</b> · 집주인이 확인한 "성실 납부 기록"을 다음 집에서 사용</p></div></div>
+  </div>
+  <div class="foot"><span>"성실 납부 기록"을 신용평가에 반영하는 것은 아직 한국에서 확인된 제도가 아님 [미검증]. NICE는 전기요금 납부 기록 반영을 2026-11 목표로 준비 중 [자사발표, NICE 보도자료] → 다음 단계 제휴 후보</span><span>12</span></div>
+</section>
+
+<!-- 13 LTV 공식 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 3 · LTV 공식</div><h2>LTV를 <span class="hl">4개의 칸</span>으로 나누고, AARRR 단계마다 한 칸씩 키웁니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="formula" style="margin-top:4px">
+    <div class="fb"><div class="e">💳</div><div class="k">한 번 낼 때 수익</div><div class="t">월세 × 4.9%</div></div><span class="op">×</span>
+    <div class="fb blue" style="background:var(--blue-soft)"><div class="e">🔁</div><div class="k">1년에 내는 횟수</div><div class="t">급할 때 → 매달</div></div><span class="op">×</span>
+    <div class="fb"><div class="e">📅</div><div class="k">머무는 기간</div><div class="t">계약 2년 + 이사 후</div></div><span class="op">+</span>
+    <div class="fb"><div class="e">🧩</div><div class="k">함께 쓰는 서비스</div><div class="t">단기임대 · 이사</div></div>
+  </div>
+  <table class="tb" style="margin-top:14px">
+    <tr><th style="width:120px">AARRR</th><th>지금 병목 (AS-IS)</th><th>바꿀 것 (TO-BE)</th><th style="width:150px">키우는 칸</th></tr>
+    <tr><td><span class="chip blue">A 획득</span></td><td>"현금 없을 때" 메시지 · 12곳과 같은 말</td><td>"돌려받기"로 데려오기 + 고지서를 공짜 통로로</td><td>들어오는 사람 수</td></tr>
+    <tr><td><span class="chip blue">A 활성화</span></td><td>환급 받고 끝 · 첫 결제로 안 이어짐</td><td>환급 서류 → 기록 켜기 → 첫 결제</td><td>첫 결제율</td></tr>
+    <tr class="hi"><td><span class="chip k">R 유지</span></td><td>급할 때 한 번 쓰는 구조</td><td>매달 자동 예약 + 쌓이는 기록 리포트</td><td><b>1년에 내는 횟수</b></td></tr>
+    <tr><td><span class="chip teal">R 추천</span></td><td>카톡 폭탄 · 피싱 오해로 차단</td><td>알림은 줄이고, 집주인-세입자 서로 초대</td><td>머무는 기간 · 공짜 유입</td></tr>
+    <tr><td><span class="chip rose">R 수익</span></td><td>4.9% 불만, 가격 비교에 짐</td><td>매달 쓰면 덜 내는 구조 + 이사·단기임대 연결</td><td>함께 쓰는 서비스</td></tr>
+  </table>
+  <div class="row" style="gap:12px;margin-top:12px">
+    <div class="card amber" style="flex:1.3"><div class="ic-row"><i>💡</i><p class="small"><b>수익은 "이익" 기준으로</b> · 1건 공헌이익(비용 빼고 실제 남는 돈) = 4.9% − 카드 결제망 비용 − 무이자 할부 비용. 비용 비율은 회사 내부 숫자라 <b>입사 후 확인</b>합니다.</p></div></div>
+    <div class="card" style="flex:1"><div class="ic-row"><i>⏱</i><p class="small"><b>회수 기간</b> = 1명 데려오는 비용(CAC) ÷ 1명 한 달 공헌이익 → 몇 달 만에 광고비를 되찾는지</p></div></div>
+  </div>
+  <div class="foot"><span>가장 큰 칸은 "1년에 내는 횟수"입니다. 같은 사람이 3번 → 12번 쓰면 수익이 4배가 됩니다 (17장에서 계산)</span><span>13</span></div>
+</section>
+
+<!-- 14 획득 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 3 · ① 획득 Acquisition</div><h2>광고는 <span class="hl">"돌려받기"</span>로, 고지서는 <span class="hl teal">돈 안 드는 유입 통로</span>로</h2></div><div class="stg"><span class="on">획득</span><i>›</i><span>활성화</span><i>›</i><span>유지</span><i>›</i><span>추천</span><i>›</i><span>수익</span></div></div>
+  <div class="hyp"><span class="t">가설</span><div><p>모든 세입자가 관심 있는 <b>"환급"</b>으로 시작하면 클릭이 늘고, 들어온 사람도 계약서를 가진 "진짜 세입자"라 다음 단계로 잘 넘어간다.</p><p class="ev">검증: 같은 예산으로 "현금 부족" 광고 vs "환급 계산" 광고 A/B 비교 → 첫 결제까지 비용 비교</p></div></div>
+  <div class="ab">
+    <div class="side asis"><span class="tagx a">AS-IS</span>
+      <div class="adcard"><div class="ad">광고 · 자리톡</div><div class="ti">💰 월세, 거래대금, 인건비 신용카드로 할부 결제하세요!</div><div class="ds">상대방에게 현금으로 입금! 결제하면 즉시 송금돼요</div></div>
+      <div class="row" style="gap:10px;flex:1;min-height:0"><ul class="clean rose" style="flex:1"><li>세입자 · 사장님 · 인건비 → <b>누구에게 하는 말인지 흐림</b></li><li>랜딩 "카드로 내고 17% 환급까지!"는 <b>카드로 내야 환급되는 것처럼</b> 읽힐 수 있음 (환급은 계좌이체로 내도 받음)</li></ul><div class="crop" style="width:150px;flex:none"><span class="cap">환급 랜딩</span><img src="img/refund-landing.jpg" style="width:100%;top:0;left:0"></div></div></div>
+    <div class="arr">→</div>
+    <div class="side tobe"><span class="tagx b">TO-BE</span>
+      <div class="adcard"><div class="ad">광고 · 자리톡</div><div class="ti">총급여 5,500만 원 이하라면, 낸 월세의 17%까지 돌려받아요</div><div class="ds">30초 계산 · 5년 전 것까지 · 내 세금 안에서 얼마인지 바로 확인</div></div>
+      <ul class="clean teal"><li><b>네이버</b> "월세 세액공제"(월 1.1만) · "월세 소득공제" 검색 광고</li><li><b>고지서</b> 받은 세입자 → "내 기록 보기" 버튼 (광고비 0원) · 환급 버튼은 <b>집주인 이탈률</b>(떠나는 비율)을 지켜보며 1~5%에게만 시험</li><li>세입자용 · 사장님용 광고를 <b>나눠서</b> 운영</li></ul></div>
+  </div>
+  <div class="foot"><span>월세 세액공제: 총급여 5,500만 원 이하 17%, 8,000만 원 이하 15%, 연 1,000만 원 한도, 무주택 세대주 등 조건 · 낸 세금(결정세액)보다 많이 돌려받을 수 없음. 세입자가 공제를 받으면 집주인 임대소득이 드러날 수 있어 집주인 반응을 함께 봐야 함</span><span>14</span></div>
+</section>
+
+<!-- 15 활성화 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 3 · ② 활성화 Activation</div><h2>환급 받은 순간이 <span class="hl">첫 결제로 넘어가는 문</span>입니다</h2></div><div class="stg"><span>획득</span><i>›</i><span class="on">활성화</span><i>›</i><span>유지</span><i>›</i><span>추천</span><i>›</i><span>수익</span></div></div>
+  <div class="hyp"><span class="t">가설</span><div><p>환급을 신청한 사람은 이미 <b>계약서와 집주인 계좌</b>를 입력했다. "다음 달부터 이 기록 자동으로 쌓기"만 누르면 첫 결제의 귀찮음이 거의 없다.</p><p class="ev">검증: 환급 완료 화면에 "기록 켜기" 버튼 있음 vs 없음 → 30일 안 첫 결제율 비교</p></div></div>
+  <div class="row" style="gap:18px;flex:1;align-items:center">
+    <div class="phone lg"><div class="notch"></div>
+      <div class="ui-t">🎉 환급 신청 완료</div>
+      <div class="ui-box">예상 환급 <b>450,000원</b><br><span class="small">5월에 입금 예정</span></div>
+      <div class="ui-box hang" style="background:var(--teal-soft)">📒 내년엔 서류 없이 받을까요?<br><span class="small">입력한 계약서·계좌로 매달 기록을 자동 저장해요</span><span class="pin g">1</span></div>
+      <div class="ui-box hang">💳 다음 달 월세 예약<br><span class="small">카드 혜택 + 무이자 3개월 · 이용료는 환급금에서 빼고 보여 줌</span><span class="pin g">2</span></div>
+      <div class="ui-btn">기록 켜고 첫 월세 예약하기<span class="pin g">3</span></div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="side asis"><span class="tagx a">AS-IS</span><p class="small">환급 탭과 결제 탭이 따로 있음 · 환급이 끝나면 다음 할 일이 없음 · 진입할 때마다 혜택 팝업</p></div>
+      <div class="pt"><span class="no g">1</span><span><b>입력한 걸 다시 쓰게</b> · 계약서·계좌를 또 묻지 않음 → 첫 결제까지 단계 줄이기</span></div>
+      <div class="pt"><span class="no g">2</span><span><b>이용료를 "받는 돈" 옆에</b> · 24,500원을 혼자 보이게 하지 않고 환급금과 함께 보여 줌</span></div>
+      <div class="pt"><span class="no g">3</span><span><b>버튼 하나</b> · 팝업 대신 할 일 한 개만</span></div>
+      <div class="card blue"><p class="small"><b>지표</b> · 환급 신청자 중 <b>기록 켠 비율</b>(무료) → 그중 카드가 필요한 사람의 첫 결제율. 결제를 모두에게 밀지 않습니다</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>화면은 제안용 그림입니다. 앱 흐름 근거: 자리톡 고객센터(자리페이 이용 방법) [자사발표], 브런치 @uibowl 앱 분석 [제3자]. 45만 원 = 2024년 월세 세액공제 1인 평균(국세통계연보 인용 보도) [제3자]</span><span>15</span></div>
+</section>
+
+<!-- 16 유지 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 3 · ③ 유지 Retention</div><h2>"급할 때 한 번"을 <span class="hl">"매달 자동"</span>으로 바꾸는 것이 LTV의 핵심입니다</h2></div><div class="stg"><span>획득</span><i>›</i><span>활성화</span><i>›</i><span class="on">유지</span><i>›</i><span>추천</span><i>›</i><span>수익</span></div></div>
+  <div class="hyp"><span class="t">가설</span><div><p>"급할 때" 메시지로 온 사람은 급한 일이 끝나면 떠난다. 매달 <b>쌓이는 게 보이면</b> 계좌이체로 돌아가지 않는다.</p><p class="ev">검증: 첫 결제자를 두 그룹으로 → "월세 기록 리포트" 받음 vs 안 받음 → 3개월 연속 결제율 비교 (안 받은 그룹이 비교 기준)</p></div></div>
+  <div class="ab">
+    <div class="side asis"><span class="tagx a">AS-IS</span>
+      <ul class="clean rose"><li>예약 기능은 있지만 <b>"급할 때"로 들어와 1번만 씀</b></li><li>매달 무엇이 쌓이는지 안 보임</li><li>다음 달에 다시 쓸 이유가 "또 급할 때"뿐</li></ul>
+      <div class="vbars" style="height:120px;margin-top:6px"><div class="vb"><span class="n">1회</span><div class="f" style="height:90%;background:var(--rose)"></div></div><div class="vb"><span class="n"></span><div class="f" style="height:20%;background:#F7D5CE"></div></div><div class="vb"><span class="n"></span><div class="f" style="height:8%;background:#F7D5CE"></div></div></div><div class="xl"><span>1달</span><span>2달</span><span>3달</span></div></div>
+    <div class="arr">→</div>
+    <div class="side tobe"><span class="tagx b">TO-BE</span>
+      <ul class="clean teal"><li><b>매달 자동 예약</b>이 기본 · 그달 쓸 카드만 바꾸기</li><li><b>월세 기록 리포트</b> "올해 낸 월세 300만 원 · 내 환급 예상 ○○만 원 · 카드 포인트 1.5만"</li><li>12달 채우면 <b>"성실 납부 확인서"</b> 발급 (집주인 확인)</li></ul>
+      <div class="vbars" style="height:120px;margin-top:6px"><div class="vb"><span class="n"></span><div class="f" style="height:90%;background:var(--teal)"></div></div><div class="vb"><span class="n"></span><div class="f" style="height:75%;background:var(--teal)"></div></div><div class="vb"><span class="n">매달</span><div class="f" style="height:68%;background:var(--teal)"></div></div></div><div class="xl"><span>1달</span><span>2달</span><span>3달</span></div></div>
+  </div>
+  <div class="foot"><span>막대는 모양을 보여 주는 그림이며 실제 수치가 아님 [가정]. 리포트 환급액은 소득·세금 조건에 따라 사람마다 다르게 계산. 예약 송금 기능·0.1% 포인트: 자리톡 고객센터 [자사발표]</span><span>16</span></div>
+</section>
+
+<!-- 17 추천 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">PART 3 · ④ 추천 Referral</div><h2>카톡은 <span class="hl rose">줄이고</span>, 집주인과 세입자가 <span class="hl teal">서로를 데려오게</span> 합니다</h2></div><div class="stg"><span>획득</span><i>›</i><span>활성화</span><i>›</i><span>유지</span><i>›</i><span class="on">추천</span><i>›</i><span>수익</span></div></div>
+  <div class="ab" style="max-height:270px">
+    <div class="side asis"><span class="tagx a">AS-IS</span>
+      <ul class="clean rose"><li>카톡 채널 여러 개 → 차단해도 다른 이름으로 옴</li><li>수신 거부는 고객센터를 거쳐야 함</li><li>고지서에 보낸 사람이 안 보여 피싱 오해</li><li>세입자가 결제해도 집주인은 모름 → <b>양쪽이 따로 놂</b></li></ul></div>
+    <div class="arr">→</div>
+    <div class="side tobe"><span class="tagx b">TO-BE</span>
+      <ul class="clean teal"><li><b>알림 규칙</b> · 채널 1개로 묶기 · 앱 안에서 1번 눌러 수신 거부 · 한 사람당 주 1회까지</li><li><b>믿을 수 있는 고지서</b> · "집주인 ○○○님 · ○○동 ○호" 표시 + "제 집 맞아요" 확인 버튼</li><li><b>서로 초대</b> · 세입자: "집주인에게 납부 확인 요청" → 집주인은 장부가 자동으로 채워짐</li></ul></div>
+  </div>
+  <div class="row" style="gap:10px;margin-top:12px;align-items:center">
+    <div class="tp"><div class="e">🏠</div><div class="n">집주인</div><div class="say">장부 무료 · 입금 자동 확인</div></div><span class="op">⇄</span>
+    <div class="tp" style="border:2px solid var(--teal)"><div class="e">📒</div><div class="n">양쪽이 확인한 월세 기록</div><div class="say">환급 서류 · 성실 납부 확인서</div></div><span class="op">⇄</span>
+    <div class="tp"><div class="e">🙋</div><div class="n">세입자</div><div class="say">환급 · 카드 혜택 · 기록</div></div>
+  </div>
+  <div class="card amber" style="margin-top:10px;padding:9px 14px"><p class="small"><b>지킬 선</b> · 정보성 알림톡과 광고성 메시지의 수신 동의를 나눔 · 카드깡(카드로 현금 빼기, 불법)으로 보일 수 있는 결제는 막는 규정 유지 · 집주인 이름 표시는 집주인 동의 후</p></div>
+  <div class="foot"><span>검증: 알림을 주 1회로 줄인 그룹 vs 지금 그대로 → 차단율과 결제 수를 함께 봄 (알림을 줄여도 결제가 안 줄면 줄인 만큼 이득). 리뷰·개발사 답변: 앱스토어 [제3자]</span><span>17</span></div>
+</section>
+
+<!-- 18 수익 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">PART 3 · ⑤ 수익 Revenue</div><h2>값을 내리지 않고 <span class="hl">"매달 쓰면 덜 내는"</span> 구조로 바꿉니다</h2></div><div class="stg"><span>획득</span><i>›</i><span>활성화</span><i>›</i><span>유지</span><i>›</i><span>추천</span><i>›</i><span class="on">수익</span></div></div>
+  <div class="hyp"><span class="t">가설</span><div><p>4.9%를 1.8%로 내리면 매출이 바로 63% 줄어든다. 대신 <b>새로 매달 쓰게 된 사람에게만 혜택</b>을 주면 1건 수익은 조금 줄어도 1년 수익은 커진다.</p><p class="ev">검증: 정기 예약 혜택(예: 3개월 연속 후 이용료 20% 포인트) 그룹 vs 없음 → <b>늘어난 공헌이익 − 이미 매달 내던 사람에게 준 할인</b>이 0보다 큰지</p></div></div>
+  <div class="row" style="gap:14px;flex:1">
+    <div class="card out" style="flex:1.2"><h3>세입자 1명의 1년 이용료 · 매출 기준 (월세 50만 원)</h3>
+      <div class="bars" style="margin-top:12px">
+        <div class="bar"><span>급할 때 3번</span><div class="t"><div class="f" style="width:25%;background:var(--rose)"></div></div><span class="v">73,500원</span></div>
+        <div class="bar"><span>매달 12번 (20% 혜택)</span><div class="t"><div class="f" style="width:80%;background:var(--teal)"></div></div><span class="v">235,200원</span></div>
+        <div class="bar"><span>매달 12번 (혜택 없음)</span><div class="t"><div class="f" style="width:100%;background:var(--blue)"></div></div><span class="v">294,000원</span></div>
+      </div>
+      <p class="small" style="margin-top:10px">20%를 돌려줘도 매출은 <b>약 3.2배</b>. 할인보다 "횟수"가 큰 칸입니다.</p><p class="small" style="margin-top:4px">⚠ 이익은 결제망·할부 비용을 빼고, <b>이미 매달 내던 사람에게 준 할인</b>도 빼서 판단합니다.</p>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card"><h3>🧩 함께 쓰는 서비스 연결</h3><ul class="clean" style="margin-top:6px"><li>계약 끝나기 2달 전 → 매물 · 단기임대 안내</li><li>집주인 빈 방 → 자리스테이에 바로 올리기</li><li>보증금 불안 → 보증보험 제휴 (아무 때나 뜨는 배너를 필요한 순간에)</li></ul></div>
+      <div class="card rose"><p class="small"><b>하지 않을 것</b> · 수수료 가격 싸움 · 모든 사람에게 같은 쿠폰</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>계산 [가정]: 50만 원 × 4.9% = 24,500원/회. 3회 = 73,500원, 12회 = 294,000원, 12회 × 80% = 235,200원. "1.8%로 내리면 63% 감소" = (4.9−1.8)÷4.9</span><span>18</span></div>
+</section>
+
+<!-- 19 기대효과 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 3 · 기대 효과</div><h2>5가지 액션은 모두 <span class="hl">한 지표</span>로 모입니다 — 매달 자리톡으로 월세 내는 세입자 수</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="row" style="gap:14px;flex:1">
+    <div class="col" style="flex:1.3">
+      <div class="dark" style="text-align:center;padding:18px"><p style="font-size:13px">⭐ 목표 지표 (North Star · 팀 전체가 보는 숫자 1개)</p><p style="font-size:24px;font-weight:800;color:#fff;margin-top:4px">매달 자리톡으로 월세를 내는 세입자 수</p><p style="font-size:13px;margin-top:4px">= 새로 온 사람 × 첫 결제율 × 매달 남는 비율 · 먼저 볼 숫자: <b style="color:#fff">기록 켠 세입자 수</b></p></div>
+      <table class="tb tall">
+        <tr><th>액션</th><th>먼저 움직일 숫자</th><th>LTV 칸</th></tr><!--tall-->
+        <tr><td class="hang">① 환급 메시지 · 고지서 통로</td><td>첫 결제까지 비용 ↓</td><td>들어오는 사람</td></tr>
+        <tr><td class="hang">② 환급 → 기록 켜기</td><td>30일 첫 결제율 ↑</td><td>들어오는 사람</td></tr>
+        <tr class="hi"><td class="hang">③ 매달 자동 + 리포트</td><td>3개월 연속 결제율 ↑</td><td><b>1년 횟수</b></td></tr>
+        <tr><td class="hang">④ 알림 정리 · 서로 초대</td><td>차단율 ↓ · 집주인 연결률 ↑</td><td>머무는 기간</td></tr>
+        <tr><td class="hang">⑤ 매달 혜택 · 이사 연결</td><td>1인 연 이용료 ↑</td><td>함께 쓰는 서비스</td></tr>
+      </table>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card blue"><div class="big blue">약 3.2배</div><div class="lab">세입자 1명 1년 이용료(매출) · 급할 때 3번 → 매달 12번 (20% 혜택 포함) [가정] · 이익 기준은 입사 후 계산</div></div>
+      <div class="card teal"><div class="big teal">↓ 차단</div><div class="lab">알림을 줄여 부정 리뷰 1위 불만 해소 → 평점·앱 설치율에 도움</div></div>
+      <div class="card"><div class="big">0원</div><div class="lab">고지서를 받은 세입자를 데려오는 광고비 · 이미 있는 통로</div></div>
+      <div class="card rose"><div class="ic-row"><i>🛑</i><p class="small"><b>지킬 숫자 (가드레일 · 나빠지면 멈추는 선)</b> · 카톡 차단율 · 집주인 장부 이탈률 · 결제 분쟁·환불 · 고객 문의 수 — 하나라도 기준을 넘으면 실험 중단</p></div></div><p class="small">모든 효과는 "안 했을 때(비교 그룹)"와 비교해 <b>더 생긴 만큼만</b> 성과로 보고합니다.</p>
+    </div>
+  </div>
+  <div class="foot"><span>3.2배 계산은 18장과 같음 [가정]. 실제 효과는 입사 후 데이터로 기준값을 잡고 비교 그룹을 둔 실험으로 확인</span><span>19</span></div>
+</section>
+
+<!-- 20 90일 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 3 · 90일 계획</div><h2>작게 시험하고, <span class="hl">비교 그룹</span>으로 증명하고, 키웁니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="gantt" style="margin-top:6px;gap:6px 4px">
+    <span></span><span class="wk">1주</span><span class="wk">2</span><span class="wk">3</span><span class="wk">4</span><span class="wk">5</span><span class="wk">6</span><span class="wk">7</span><span class="wk">8</span><span class="wk">9</span><span class="wk">10</span><span class="wk">11</span><span class="wk">12</span>
+    <span class="lb">준비</span><div class="gb" style="grid-column:2/4;background:var(--gray2)">기대치 문서 · 지표 기준값</div><span style="grid-column:4/14"></span>
+    <span class="lb">① 획득</span><span></span><div class="gb" style="grid-column:3/7;background:var(--blue)">환급 소재 vs 현금 소재 A/B</div><div class="gb" style="grid-column:7/14;background:var(--blue-2)">이긴 소재로 네이버·메타 확대</div>
+    <span class="lb">② 활성화</span><span></span><span></span><div class="gb" style="grid-column:4/9;background:var(--blue)">환급 완료 → 기록 켜기 버튼</div><span style="grid-column:9/14"></span>
+    <span class="lb">③ 유지</span><span style="grid-column:2/6"></span><div class="gb" style="grid-column:6/14;background:var(--teal)">월세 기록 리포트 · 3개월 연속 결제 측정</div>
+    <span class="lb">④ 추천</span><div class="gb" style="grid-column:2/6;background:var(--rose)">알림 규칙 · 수신 거부 정리</div><span></span><div class="gb" style="grid-column:7/14;background:var(--teal-d)">고지서 표시 개선 · 서로 초대</div>
+    <span class="lb">⑤ 수익</span><span style="grid-column:2/9"></span><div class="gb" style="grid-column:9/14;background:var(--amber-d)">정기 예약 혜택 시험</div>
+  </div>
+  <div class="row" style="gap:12px;margin-top:16px">
+    <div class="card" style="flex:1"><h3>30일</h3><p class="small" style="margin-top:4px">퍼널(가입→결제 단계별) 숫자 기준값 확인 · 알림 정리처럼 <b>위험이 큰 것부터</b> 고침</p></div>
+    <div class="card" style="flex:1"><h3>60일</h3><p class="small" style="margin-top:4px">획득·활성화 A/B 결과 · 이긴 쪽에 예산 이동</p></div>
+    <div class="card blue" style="flex:1"><h3>90일</h3><p class="small" style="margin-top:4px"><b>3개월 연속 결제율</b> 첫 측정 · 다음 분기 우선순위 제안</p></div>
+  </div>
+  <div class="card out" style="margin-top:12px"><p class="small"><b>🔬 실험 규칙</b></p><ul class="clean" style="margin-top:4px"><li>시작 전에 <b>최소로 확인할 차이와 필요한 인원</b>을 계산</li><li>환급은 몇 달 뒤 입금 → "기록 켜기·첫 결제"처럼 <b>빨리 보이는 숫자</b>로 먼저 판정하고 시즌(1~2월·5월)에 다시 확인</li><li>서로 초대는 <b>집주인 수락률</b>과 1명이 데려오는 사람 수를 함께 측정</li></ul></div>
+  <div class="foot"><span>순서 원칙: 고객 불만(알림)을 먼저 고치고 → 유입 → 유지 순. 매 실험은 시작 7일 뒤(D+7)에 결과 · 이유 · 다음 액션 3줄로 공유</span><span>20</span></div>
+</section>
+
+<!-- 21 왜 이도형 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">PART 4 · 왜 이도형인가</div><h2>유입부터 재구매까지 <span class="hl">혼자 끝까지 돌려 본 사람</span>입니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="why fill">
+    <div class="w"><div class="n2">약 40배</div><h3>0에서 키워 본 경험</h3><p>커버링에서 1인 마케터로 시작해 5인 팀까지, 월 매출 약 40배</p><span class="lk">→ 우대: 0→1 급성장(J커브)</span></div>
+    <div class="w"><div class="n2">−51.8%</div><h3>유료 광고 · 광고가 배울 신호 설계</h3><p>광고가 찾을 목표를 설치 → 구매로 바꾸고 중간 페이지를 만들어 구매 1건 비용 절반</p><span class="lk">→ ① 획득 · 첫 결제까지 비용</span></div>
+    <div class="w"><div class="n2">−66%</div><h3>광고 같지 않은 콘텐츠</h3><p>작은 인플루언서 콘텐츠를 광고로 확장, 소재 직접 기획·제작</p><span class="lk">→ ① "돌려받기" 소재</span></div>
+    <div class="w"><div class="n2">+41%p</div><h3>CRM 자동화</h3><p>회원 등급 · 떠나기 직전 알림톡 자동화로 첫 달 재구매 +41%p, 안 쓰던 7,997명이 다시 사용</p><span class="lk">→ ③ 유지 · 매달 자동</span></div>
+    <div class="w"><div class="n2">9천원대</div><h3>카카오 메시지 운영</h3><p>통신 플랫폼에서 알림톡 · 브랜드메시지 운영, 발송 캘린더로 겹침 정리, 단발 캠페인 신청 1건당 비용 9천원대</p><span class="lk">→ ④ 알림 규칙 정리</span></div>
+    <div class="w"><div class="n2">4채널</div><h3>이 발표를 위해 직접 확인</h3><p>메타 광고 57개 · 경쟁 광고 54개 · 구글 약 200개 · 네이버 키워드 30여 개 · 앱 리뷰</p><span class="lk">→ 입사 첫 주에도 같은 방식</span></div>
+  </div>
+  <div class="row" style="gap:10px;margin-top:12px">
+    <div class="card blue" style="flex:1"><p class="small"><b>공고: AARRR 병목 찾기</b> → 단계마다 문제 1개 · 액션 1개로 이 발표를 구성</p></div>
+    <div class="card blue" style="flex:1"><p class="small"><b>공고: 쉬운 카피</b> → "월세, 내면 남게" · 어려운 세금을 "돌려받기"로</p></div>
+    <div class="card blue" style="flex:1"><p class="small"><b>공고: MVP 실험</b> → 모든 액션에 가설 · 비교 그룹 · 판정 기준</p></div>
+  </div>
+  <div class="foot"><span>출처: 이도형 포트폴리오, 전 직장 실측 [본인 실적]. 매출은 절대액 비공개로 배수 표기. 공고 항목: 원티드 wd/366610 [자사발표]</span><span>21</span></div>
+</section>
+
+<!-- 22 포부 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">PART 4 · 회고에서 배운 것 · 포부</div><h2>회고로 바꾼 <span class="hl teal">일하는 방식 3가지</span>를 자리톡에서 처음부터 씁니다</h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <div class="row" style="gap:14px">
+    <div class="card out" style="flex:1"><div class="emo">📏</div><h3 style="margin-top:6px">전체 숫자가 아니라 "더 생긴 만큼"</h3><p class="small" style="margin-top:4px"><b>배운 것</b> · "쿠폰 쓴 사람이 더 산다"는 원래 살 사람이었을 수 있다</p><p class="small" style="margin-top:4px"><b>자리톡에서</b> · 알림·혜택마다 안 받는 비교 그룹을 두고, 늘어난 결제만 성과로 보고</p></div>
+    <div class="card out" style="flex:1"><div class="emo">✅</div><h3 style="margin-top:6px">품질은 다짐이 아니라 구조로</h3><p class="small" style="margin-top:4px"><b>배운 것</b> · 빨리 낸 초안은 동료의 수정 시간이 된다</p><p class="small" style="margin-top:4px"><b>자리톡에서</b> · 고객에게 나가는 메시지는 5가지 체크(사실·랜딩 일치·수신 동의·오탈자·모바일) 후 발송</p></div>
+    <div class="card out" style="flex:1"><div class="emo">🗣️</div><h3 style="margin-top:6px">먼저 맞추고, 먼저 말하기</h3><p class="small" style="margin-top:4px"><b>배운 것</b> · 요청을 다 받는 것이 좋은 팀워크는 아니다</p><p class="small" style="margin-top:4px"><b>자리톡에서</b> · 첫 2주 안에 기대치 문서 · 새 요청엔 "무엇이 밀리는지" 먼저 · D+7에 결과 3줄 공유</p></div>
+  </div>
+  <div class="dark" style="margin-top:16px;padding:22px 26px">
+    <p style="font-size:14px">포부</p>
+    <p style="font-size:23px;line-height:1.45;color:#fff;font-weight:800;margin-top:6px">"월세 낼 때가 되면 계좌이체가 아니라 자리톡을 여는 것"을<br>600만 세입자의 습관으로 만들겠습니다.</p>
+    <p style="margin-top:10px">알림은 줄이고, 돌려받는 돈과 쌓이는 기록은 늘려서 — 숫자로 증명하겠습니다.</p>
+  </div>
+  <div class="row" style="gap:12px;margin-top:14px">
+    <div class="card blue" style="flex:1"><h3>입사 1주</h3><p class="small" style="margin-top:4px">리드와 <b>기대치 문서</b> 1장 · 퍼널 숫자 기준값 확인</p></div>
+    <div class="card blue" style="flex:1"><h3>입사 2주</h3><p class="small" style="margin-top:4px">카톡 채널·발송 빈도 <b>전수 점검</b> · 부정 리뷰 1위부터</p></div>
+    <div class="card blue" style="flex:1"><h3>입사 4주</h3><p class="small" style="margin-top:4px">첫 A/B(환급 소재) 결과를 <b>D+7 3줄</b>로 공유</p></div>
+  </div>
+  <div class="foot"><span>출처: 본인 회고 문서 (노션 "ROI 관점에서 회고해야 하는 것", "퇴사 회고 · 일하는 방식") [본인 기록]</span><span>22</span></div>
+</section>
+
+<!-- 23 마무리 -->
+<section class="slide" style="justify-content:center;background:radial-gradient(900px 520px at 88% -10%, var(--blue-soft) 0%, transparent 55%),#fff">
+  <div class="kicker">다시 한 번, 핵심 메시지</div>
+  <h1>월세, <span class="hl">내면 남게.</span></h1>
+  <div class="row" style="gap:12px;margin-top:24px">
+    <div class="card" style="flex:1"><span class="chip rose">문제</span><p style="margin-top:8px">"급할 때 카드"는 공감이 약하고, 12곳이 똑같이 말하고, 한 번 쓰고 떠난다</p></div>
+    <div class="card" style="flex:1"><span class="chip teal">무기</span><p style="margin-top:8px">집주인 70만 · 세입자 600만이 함께 쓰는 <b>양쪽이 확인한 월세 기록</b></p></div>
+    <div class="card blue" style="flex:1"><span class="chip blue">해결</span><p style="margin-top:8px">기록·환급은 무료로 데려오고 → 카드가 필요한 사람은 매달 자동으로 → 집주인과 묶어 1인 연 매출 약 3배 [가정]</p></div>
+  </div>
+  <div class="row" style="gap:12px;margin-top:14px">
+    <div class="card out" style="flex:1"><div class="big blue">68.5%</div><div class="lab">임대차 중 월세 비중 · 시장은 커진다</div></div>
+    <div class="card out" style="flex:1"><div class="big teal">1.4만</div><div class="lab">한 달 "돌려받기" 검색 · 결제 회사 중 빈자리</div></div>
+    <div class="card out" style="flex:1"><div class="big">70만</div><div class="lab">자리톡 장부를 쓰는 집주인 · 남이 못 가진 것</div></div>
+  </div>
+  <p class="sub" style="margin-top:22px">이도형 · 그로스 마케터 &nbsp;·&nbsp; 감사합니다</p>
+</section>
+
+
+<!-- 24 부록 예상 질문 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">부록 · 예상 질문</div><h2>나올 수 있는 질문 5개와 <span class="hl">짧은 답</span></h2></div><div class="logo"><span class="ic">자</span>자리톡</div></div>
+  <table class="tb tall">
+    <!--q--><tr><th style="width:38%">질문</th><th>답의 방향</th></tr>
+    <tr><td><b>환급은 계좌이체로도 받는데, 왜 4.9%를 내나요?</b></td><td>모두에게 결제를 팔지 않습니다. 기록·환급으로 데려오고, <b>카드 실적·할부가 필요한 사람만</b> 매달 결제로 보냅니다.</td></tr>
+    <tr><td><b>4.9%에서 비용을 빼면 남는 게 얼마인가요?</b></td><td>지금은 모릅니다. 그래서 <b>공헌이익</b>(4.9% − 결제망 − 할부 비용)으로 다시 계산하고, 할인 실험은 늘어난 이익으로 판정합니다.</td></tr>
+    <tr><td><b>집주인이 세입자 환급을 싫어하면요?</b></td><td>고지서 안 환급 버튼은 <b>1~5%만</b> 시험하고, 집주인 장부 이탈률이 기준을 넘으면 멈춥니다.</td></tr>
+    <tr><td><b>환급 검색은 1월·5월에 몰리는데 나머지 달은요?</b></td><td>시즌에는 서류를 모아 기록을 켜고, 다른 달은 <b>고지서 통로</b>와 매달 리포트가 유입·유지를 맡습니다.</td></tr>
+    <tr><td><b>이미 "환급앱"이라고 하는데 뭐가 새롭나요?</b></td><td>환급을 새로 하자는 게 아닙니다. <b>환급과 결제가 따로 노는 것</b>을 하나의 흐름으로 잇자는 것이고, 그 연결 비율이 핵심 지표입니다.</td></tr>
+  </table>
+  <div class="card blue" style="margin-top:14px"><p><b>제가 여쭤보고 싶은 것</b> · ① 월세 환급의 이용료 구조 ② 자리페이 결제자 중 매달 쓰는 비율 ③ 이 포지션에 첫 90일 동안 기대하시는 결과</p></div>
+  <div class="foot"><span>답변은 숫자를 지어내지 않고, 모르는 것은 "입사 후 확인할 방법"으로 답합니다</span><span>24</span></div>
+</section>
+</div></div>
+<div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';}
+addEventListener('resize',fit);fit();
+const h=parseInt(location.hash.slice(1));show(isNaN(h)?0:h-1);
+</script>
+</body>
+</html>
