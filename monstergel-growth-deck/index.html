@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>몬스터겔 자사몰 200억 · 이도형</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+:root{
+  --ink:#15171C; --gray:#8A8F99; --gray2:#5B6170;
+  --bg:#FFFFFF; --soft:#F4F6FA; --line:#E7EBF1;
+  --radius:18px; --shadow:0 12px 36px rgba(21,23,28,.10);
+  --font:"Pretendard","Noto Sans KR",-apple-system,system-ui,sans-serif;
+  --blue:#007BFF; --blue-d:#0052AD; --blue-soft:#E3F0FF; --blue-2:#7DB8FF;
+  --teal:#00B5A3; --teal-d:#019184; --teal-soft:#DBF5F1;
+  --amber:#F59E0B; --amber-soft:#FDF0D5; --amber-d:#b9770a;
+  --rose:#E0533D; --rose-d:#c0402c; --rose-soft:#FCE7E2;
+  --vio:#6E4BFF; --vio-soft:#ECE6FF; --vio-d:#5436E0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#22252C;font-family:var(--font);-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.deck{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;padding:34px 60px 52px;overflow:hidden}
+.slide.active{display:flex;animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.03em;color:var(--blue-d);margin-bottom:6px}
+.kicker.rose{color:var(--rose-d)} .kicker.teal{color:var(--teal-d)} .kicker.vio{color:var(--vio-d)}
+h1{font-size:50px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:-.025em}
+h2{font-size:30px;font-weight:800;line-height:1.25;color:var(--ink);letter-spacing:-.025em}
+h3{font-size:17.5px;font-weight:800;color:var(--ink)}
+p{font-size:14.5px;line-height:1.55;color:#2C313C}
+.sub{font-size:17px;color:var(--gray2);font-weight:600;line-height:1.55}
+.hl{background:linear-gradient(transparent 58%, var(--blue-soft) 58%)}
+.hl.rose{background:linear-gradient(transparent 58%, var(--rose-soft) 58%)}
+.hl.teal{background:linear-gradient(transparent 58%, var(--teal-soft) 58%)}
+b{font-weight:800;color:var(--ink)}
+.small{font-size:13px;color:var(--gray2);line-height:1.45}
+.head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:20px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--ink);flex:none}
+.logo .ic{width:22px;height:22px;border-radius:7px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+.row{display:flex;gap:14px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--soft);border-radius:var(--radius);padding:15px 18px}
+.card.blue{background:var(--blue-soft)} .card.teal{background:var(--teal-soft)} .card.rose{background:var(--rose-soft)} .card.amber{background:var(--amber-soft)} .card.vio{background:var(--vio-soft)}
+.card.out{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.dark{background:var(--ink);color:#fff;border-radius:var(--radius);padding:16px 20px}
+.dark p{color:#D5D9E2} .dark b{color:#fff}
+.big{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.big.blue{color:var(--blue)} .big.rose{color:var(--rose)} .big.teal{color:var(--teal-d)}
+.lab{font-size:13.5px;color:var(--gray2);font-weight:600;margin-top:6px;line-height:1.4}
+.emo{font-size:30px;line-height:1}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:800;padding:5px 11px;border-radius:999px;background:var(--soft);color:var(--gray2)}
+.chip.blue{background:var(--blue-soft);color:var(--blue-d)} .chip.rose{background:var(--rose-soft);color:var(--rose-d)} .chip.teal{background:var(--teal-soft);color:var(--teal-d)} .chip.k{background:var(--ink);color:#fff} .chip.amber{background:var(--amber-soft);color:var(--amber-d)}
+.foot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--gray);border-top:1px solid var(--line);padding-top:7px;gap:20px}
+.foot span:first-child{flex:1}
+.ic-row{display:flex;gap:8px;align-items:flex-start}
+.ic-row>i{font-style:normal;flex:none}
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:16px;margin-bottom:4px;font-size:13.5px;line-height:1.45;color:#2C313C}
+ul.clean li:before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:2px;background:var(--blue)}
+ul.clean.rose li:before{background:var(--rose)} ul.clean.teal li:before{background:var(--teal)}
+/* 실제 화면 캡처 */
+.crop{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow)}
+.crop img{position:absolute;max-width:none;display:block}
+.crop .cap{position:absolute;left:8px;top:8px;z-index:2;background:rgba(21,23,28,.86);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px}
+.crop .cap.r{background:var(--rose)}
+/* 단계 표시 */
+.stg{display:flex;gap:4px;align-items:center;flex:none}
+.stg span{font-size:11.5px;font-weight:800;padding:5px 9px;border-radius:7px;background:var(--soft);color:#B3B8C2}
+.stg span.on{background:var(--blue);color:#fff}
+.stg i{font-style:normal;font-size:11px;color:#C5C9D1;font-weight:800}
+/* 가설 박스 */
+.hyp{display:flex;gap:12px;align-items:flex-start;background:#FFF9EC;border:1px solid #F6E2B3;border-radius:14px;padding:11px 16px;margin-bottom:14px}
+.hyp .t{flex:none;font-size:12px;font-weight:800;color:#fff;background:var(--amber-d);border-radius:6px;padding:3px 8px;margin-top:1px}
+.hyp p{font-size:14.5px;line-height:1.5}
+.hyp .ev{font-size:12.5px;color:var(--gray2);margin-top:2px}
+/* AS-IS → TO-BE */
+.ab{display:grid;grid-template-columns:1fr 46px 1fr;gap:0;flex:1;min-height:0}
+.ab .arr{display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--blue)}
+.side{border-radius:var(--radius);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.side.asis{background:#FFF4F2;border:1px solid #F7D5CE}
+.side.tobe{background:#F0FBF9;border:1px solid #BDEAE3}
+.tagx{display:inline-block;font-size:12px;font-weight:800;padding:3px 10px;border-radius:6px;align-self:flex-start}
+.tagx.a{background:var(--rose);color:#fff} .tagx.b{background:var(--teal);color:#fff}
+/* 광고 카드 */
+.adcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+.adcard .ad{font-size:10px;font-weight:800;color:#202124}
+.adcard .u{font-size:11px;color:var(--gray)}
+.adcard .ti{font-size:15px;font-weight:700;color:#1a0dab;line-height:1.3;margin:3px 0}
+.adcard .ds{font-size:12px;color:#4a4f5e;line-height:1.4}
+/* 휴대폰 */
+.phone{width:250px;background:#fff;border:8px solid #1A1F2E;border-radius:28px;padding:12px 12px;box-shadow:var(--shadow);position:relative;flex:none}
+.phone .notch{height:5px;width:56px;background:#1A1F2E;border-radius:4px;margin:0 auto 9px}
+.ui-t{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.ui-box{background:var(--soft);border-radius:9px;padding:7px 9px;font-size:11.5px;color:#2C313C;margin-bottom:6px;line-height:1.4;position:relative}
+.ui-btn{background:var(--blue);color:#fff;border-radius:9px;padding:8px;text-align:center;font-size:12px;font-weight:800;position:relative}
+.ui-btn.off{background:#A9C9F5}
+.pin{position:absolute;right:-26px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--rose);color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.pin.g{background:var(--teal)}
+.pt{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:#2C313C}
+.pt .no{width:22px;height:22px;border-radius:50%;background:var(--rose);color:#fff;font-weight:800;font-size:11.5px;display:flex;align-items:center;justify-content:center;flex:none}
+.pt .no.g{background:var(--teal)}
+/* 막대 */
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:150px 1fr 74px;align-items:center;gap:10px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.bar .t{height:24px;border-radius:7px;background:#fff;overflow:hidden;border:1px solid var(--line)}
+.bar .f{height:100%;border-radius:7px;background:var(--blue)}
+.bar .v{font-weight:800;text-align:right}
+.vbars{display:flex;align-items:flex-end;gap:10px;border-bottom:2px solid var(--line);padding:0 4px}
+.vbars .vb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px}
+.vbars .vb .f{width:100%;border-radius:7px 7px 0 0;background:var(--blue-2)}
+.vbars .vb .n{font-size:12.5px;font-weight:800;color:var(--ink)}
+.xl{display:flex;gap:10px;padding:5px 4px 0}
+.xl span{flex:1;text-align:center;font-size:11.5px;color:var(--gray2);font-weight:700}
+/* 공식 */
+.formula{display:flex;align-items:center;gap:8px}
+.fb{flex:1;border-radius:16px;padding:14px 8px;text-align:center;background:var(--soft)}
+.fb .e{font-size:28px}
+.fb .k{font-size:11.5px;font-weight:800;color:var(--blue-d);margin-top:4px}
+.fb .t{font-size:17px;font-weight:800;color:var(--ink);margin-top:2px}
+.op{font-size:26px;font-weight:800;color:var(--gray)}
+/* 접점 지도 */
+.tp{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
+.tp .e{font-size:26px}
+.tp .n{font-size:15px;font-weight:800;color:var(--ink)}
+.tp .s{font-size:11.5px;font-weight:800;color:var(--blue-d)}
+.tp .say{font-size:12px;color:var(--gray2);line-height:1.4;background:var(--soft);border-radius:8px;padding:6px}
+.tp .x{font-size:13px;font-weight:800;color:var(--rose)}
+/* 비교 표 */
+.mx{width:100%;border-collapse:separate;border-spacing:0 5px}
+.mx th{font-size:12.5px;color:var(--gray2);font-weight:800;padding:3px 6px;text-align:center}
+.mx td{background:var(--soft);padding:9px 6px;text-align:center;font-size:19px}
+.mx td:first-child{text-align:left;font-size:14px;font-weight:800;color:var(--ink);border-radius:10px 0 0 10px;padding-left:14px}
+.mx td:last-child{border-radius:0 10px 10px 0}
+.mx td.me{background:var(--blue-soft)} .mx th.me{color:var(--blue-d)}
+/* 표 */
+table.tb{width:100%;border-collapse:collapse;font-size:13px}
+table.tb th,table.tb td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.4}
+table.tb th{font-size:12px;color:var(--gray);font-weight:800}
+table.tb tr.hi td{background:var(--blue-soft)}
+/* 간트 */
+.gantt{display:grid;grid-template-columns:130px repeat(12,1fr);gap:6px 4px;align-items:center}
+.gantt .lb{font-size:13.5px;font-weight:800;color:var(--ink)}
+.gantt .wk{font-size:11px;color:var(--gray);text-align:center;font-weight:700}
+.gantt .gb{height:30px;border-radius:8px;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;padding:0 10px;white-space:nowrap;overflow:hidden}
+/* 제품 카드 */
+.prod{background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:6px 8px;margin-bottom:5px;font-size:11px;line-height:1.35;position:relative}
+.prod.on{border-color:var(--blue);background:#F3F8FF}
+.prod .pn{font-weight:800;color:var(--ink);font-size:11.5px}
+.prod .pr{position:absolute;right:8px;top:6px;font-weight:800;color:var(--ink);font-size:11.5px}
+.prod .bd{display:inline-block;font-size:9.5px;font-weight:800;color:#fff;background:var(--blue);border-radius:4px;padding:0 5px;margin-left:4px}
+.mini{display:grid;grid-template-columns:70px 1fr 52px;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--ink);margin-top:3px}
+.mini .t{height:10px;border-radius:4px;background:#E9EDF3;overflow:hidden}
+.mini .f{height:100%;background:var(--blue);border-radius:4px}
+/* 계단 */
+.stairs{display:flex;align-items:flex-end;gap:14px;height:450px}
+.stair{flex:1;border-radius:14px 14px 0 0;padding:12px 14px;color:#fff;display:flex;flex-direction:column;justify-content:flex-start}
+.stair .s{font-size:12px;font-weight:800;opacity:.85}
+.stair .t{font-size:14.5px;font-weight:800;margin-top:2px;line-height:1.35}
+.stair .m{font-size:21px;font-weight:800;margin-top:6px;letter-spacing:-.02em}
+.stair .d{font-size:12px;opacity:.9;margin-top:4px;line-height:1.4}
+.gate{flex:none;width:118px;align-self:center;text-align:center;font-size:11.5px;font-weight:800;color:var(--amber-d);background:var(--amber-soft);border-radius:10px;padding:8px 6px;line-height:1.4}
+/* 폭포 */
+.wf{display:flex;align-items:flex-end;gap:12px;height:390px;border-bottom:2px solid var(--line);padding:0 6px}
+.wf .w{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative}
+.wf .w .f{width:100%;border-radius:8px 8px 0 0}
+.wf .w .n{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:4px}
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.why .w{background:var(--soft);border-radius:16px;padding:14px 16px}
+.why .w .n2{font-size:26px;font-weight:800;color:var(--blue);letter-spacing:-.02em}
+.why .w h3{margin-top:4px;font-size:16px}
+.why .w p{font-size:13px;margin-top:4px;line-height:1.45}
+.why .w .lk{display:inline-block;margin-top:6px;font-size:12px;font-weight:800;color:var(--teal-d)}
+@media print{.slide{display:flex!important;page-break-after:always}#nav,#bar{display:none}}
+#nav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(21,23,28,.62);backdrop-filter:blur(8px);padding:8px 16px;border-radius:999px;z-index:50;opacity:0;transition:opacity .2s}
+#nav:hover{opacity:1}
+#nav button{background:none;border:none;color:#fff;font-size:17px;cursor:pointer;opacity:.85;line-height:1}
+#nav .ct{color:#fff;font-size:13px;font-weight:600;min-width:54px;text-align:center}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--blue);z-index:60;transition:width .3s}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div class="deck" id="deck">
+
+<!-- 1 표지 -->
+<section class="slide" style="justify-content:center">
+  <div class="logo" style="position:absolute;top:34px;left:60px"><span class="ic">M</span>몬스터겔 자사몰 · 디스커션</div>
+  <div class="kicker">NextChapter 퍼포먼스 마케팅 과제 · 자사몰 연 매출 200억</div>
+  <h1>부족한 건 인지도가 아니라<br><span class="hl">"자사몰에서 살 이유"</span>입니다</h1>
+  <p class="sub" style="margin-top:18px">살 이유를 만들고 → 되는 것을 키우고 → 늘어난 이익을 다시 겁니다</p>
+  <div class="row" style="margin-top:34px;gap:12px">
+    <div class="card" style="flex:none;width:250px"><div class="big">1,000만</div><div class="lab">클리어겔 3m 누적 판매 (개) ✅</div></div>
+    <div class="card" style="flex:none;width:250px"><div class="big">7.5%</div><div class="lab">브랜드 매출 중 자사몰 비중 (추정)</div></div>
+    <div class="card blue" style="flex:none;width:250px"><div class="big blue">M29</div><div class="lab">연 200억 페이스 도달 (규칙으로 굴린 결과)</div></div>
+  </div>
+  <div style="margin-top:30px;display:flex;gap:10px"><span class="chip k">이도형 · 그로스 마케터</span><span class="chip">숫자는 모두 함수로 연결한 엑셀 모델(v5)</span></div>
+</section>
+
+<!-- 2 결론 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">결론</div><h2>3단계 규칙으로 한 달씩 굴리면, M29에 연 200억 페이스</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="stairs" style="height:300px;margin-top:6px">
+    <div class="stair" style="background:#7DB8FF;height:46%"><div class="s">1단계 · M1~M6</div><div class="t">살 이유 만들기</div><div class="m">월 1.5 → 2.5억</div><div class="d">상세·키트·쿠폰, 페르소나 확정</div></div>
+    <div class="gate">통과 조건<br>ROAS 170% 4주<br>3만 원↑ 50%</div>
+    <div class="stair" style="background:#3B94FF;height:70%"><div class="s">2단계 · M7~M18</div><div class="t">되는 것을 키우기</div><div class="m">월 → 7.5억</div><div class="d">위닝 소재 2~3개, 번들·CRM</div></div>
+    <div class="gate">통과 조건<br>매체비 3억에서<br>ROAS 200%</div>
+    <div class="stair" style="background:#0052AD;height:100%"><div class="s">3단계 · M19~M36</div><div class="t">이익을 다시 걸기</div><div class="m">월 → 24억</div><div class="d">메가·준메가, 글로벌(선택)</div></div>
+  </div>
+  <div class="row" style="margin-top:16px">
+    <div class="card" style="flex:1"><div class="big" style="font-size:32px">226억</div><div class="lab">3년차 자사몰 매출<br>(국내 195.6억 + 글로벌 30.5억)</div></div>
+    <div class="card" style="flex:1"><div class="big" style="font-size:32px">2.3억</div><div class="lab">누적 적자 최대 (M11)<br>M18에 회수</div></div>
+    <div class="card" style="flex:1"><div class="big" style="font-size:32px">3.1 → 4.2만</div><div class="lab">객단가 (원)<br>3만 원 이상 주문 27% → 85%</div></div>
+    <div class="dark" style="flex:1.3"><p><b>역산이 아니라 순산입니다.</b><br>'목표 ROAS를 넘는 동안만 증액' 규칙으로 굴린 결과입니다. 규칙을 못 넘으면 속도가 저절로 줄어듭니다.</p></div>
+  </div>
+  <div class="foot"><span>국내만으로는 월 19억 상한에서 멈춥니다 → 글로벌은 3단계 선택 레버(진행 여부는 같이 정할 사항)</span><span>2</span></div>
+</section>
+
+<!-- 3 진단 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker rose">진단</div><h2>자사몰(월 약 1.5억)에서 '살 이유'가 없는 4가지 증거</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <p class="small" style="margin-bottom:12px">브랜드 월 20억(과제 제시) 중 자사몰은 약 7.5% — 계산은 부록 A</p>
+  <div class="row" style="flex:1;min-height:0">
+    <div class="card out" style="flex:1"><div class="chip rose">① 가격 구성</div><h3 style="margin-top:10px">3+1이 29,700원<br>무료배송까지 300원 부족</h3><p style="margin-top:8px">세트를 사도 배송비 3,000원을 냅니다. 그래서 3만 원 이상 주문은 <b>약 27%</b>뿐입니다.</p><p class="small" style="margin-top:8px">근거: 자사몰 리뷰 수 — 3+1 89% · 워터포 4% · 소품 6% ✅</p><img src="img/mg_price.png" style="width:100%;border-radius:10px;border:1px solid var(--line);margin-top:10px"><p class="small" style="margin-top:4px">자사몰 3+1 상세 (2026-10-29 캡처)</p></div>
+    <div class="card out" style="flex:1"><div class="chip rose">② 쿠폰</div><h3 style="margin-top:10px">쓸 수 없는 쿠폰,<br>급할 이유 없는 쿠폰</h3><p style="margin-top:8px">회원가입 쿠폰은 <b>5만 원 이상</b>부터라 3+1 고객은 못 씁니다. 카톡 쿠폰은 유효 8개월입니다.</p><img src="img/mg_banner.png" style="width:100%;border-radius:8px;border:1px solid var(--line);margin-top:12px"><p class="small" style="margin-top:4px">상단 배너는 "33,000원 쿠폰" → 실제 가장 낮은 조건은 5만 원 이상</p></div>
+    <div class="card out" style="flex:1"><div class="chip rose">③ 리뷰·링크</div><h3 style="margin-top:10px">리뷰는 쿠팡에,<br>유튜버 링크도 쿠팡에</h3><p style="margin-top:8px">리뷰 쿠팡 60,520 : 자사몰 8,745 = <b>7 : 1</b>. 영상을 보고 사러 가는 고객은 쿠팡으로 갑니다(쿠팡 파트너스).</p></div>
+    <div class="card out" style="flex:1"><div class="chip rose">④ 타겟</div><h3 style="margin-top:10px">메인 페르소나가 없어<br>메시지가 흩어짐</h3><p style="margin-top:8px">신제품은 계속 나오지만 누구에게 무엇을 팔지가 하나로 모이지 않습니다. 광고도 브랜드 자랑 중심입니다.</p></div>
+  </div>
+  <div class="foot"><span>자사몰이 작은 이유 = 인지도 문제가 아니라 구매 설계 문제</span><span>3</span></div>
+</section>
+
+<!-- 4 페르소나 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">누구에게</div><h2>메인 페르소나 1개: 집을 꾸미고 관리하는 30~40대</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div class="card teal" style="flex:0 0 330px"><div class="emo">🏠</div><h3 style="margin-top:8px">인테리어 관심층 · 이사를 앞둔 세입자</h3>
+      <ul class="clean teal" style="margin-top:10px">
+        <li>구매 동기: "무타공으로 붙이고, 떼도 자국 없이"</li>
+        <li>리뷰·댓글의 대표 동기가 이 맥락(세입자·인테리어)</li>
+        <li>세제 출시와 같은 장바구니에 들어감</li>
+      </ul>
+      <div class="dark" style="margin-top:14px"><p><b>2트랙은 테스트 설계일 뿐입니다.</b> 첫 4주만 공구·차량(트랙 B)을 대조군으로 돌리고, A가 이기면 1개로 좁힙니다. 블랙겔은 같은 사람의 베란다·현관·차량 장면으로 흡수합니다.</p></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+      <div class="small" style="font-weight:800">집 여정에 SKU를 배치 → 빈 칸이 다음 신제품</div>
+      <div class="row" style="flex:1">
+        <div class="tp"><div class="e">📦</div><div class="n">이사</div><div class="s">이사·입주 키트</div><div class="say">붙이기 + 떼기를 한 번에</div></div>
+        <div class="tp"><div class="e">🖼️</div><div class="n">꾸미기</div><div class="s">클리어겔 · 핑크(벽지)</div><div class="say">무타공 선반·액자</div></div>
+        <div class="tp"><div class="e">🧹</div><div class="n">청소</div><div class="s">청소 올인원 · 워터포 · <b>세제(출시 예정)</b></div><div class="say">같은 사람의 다음 구매</div></div>
+        <div class="tp"><div class="e">✨</div><div class="n">원상복구</div><div class="s">제거제 · 스크래퍼</div><div class="say">이사 나갈 때</div></div>
+      </div>
+      <div class="card"><p><b>왜 1개인가</b>: 한 사람에게 여러 SKU를 팔아야 번들·크로스셀로 객단가가 오릅니다. 페르소나가 둘이면 번들·메시지·CRM이 둘로 쪼개집니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>SKU 확장 원칙 = "이 사람의 집 여정에서 빈 칸을 채우는가"</span><span>4</span></div>
+</section>
+
+<!-- 5 주문 유형별 손익 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">무엇을</div><h2>광고비는 '사람 1명 값' → 한 번에 많이 사게 만든다</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <p class="small" style="margin-bottom:10px">주문 1건 광고 후 공헌이익 · 배송비는 회사가 모두 부담 · 고객 1명 획득 광고비 약 1.9만 원(무엇을 사든 같음) · 원가율 15%</p>
+  <div class="row" style="flex:1;min-height:0">
+    <div style="flex:1.4;display:flex;flex-direction:column;justify-content:center">
+      <div class="bars">
+        <div class="bar"><span>스크래퍼 단독 9,900</span><div class="t"><div class="f" style="width:45%;background:var(--rose);margin-left:0"></div></div><span class="v" style="color:var(--rose)">−15,779</span></div>
+        <div class="bar"><span>3+1 단독 29,700</span><div class="t"><div class="f" style="width:4%;background:var(--rose)"></div></div><span class="v" style="color:var(--rose)">−1,186</span></div>
+        <div class="bar"><span>괴물 부착 키트 32,900</span><div class="t"><div class="f" style="width:4%;background:var(--teal)"></div></div><span class="v" style="color:var(--teal-d)">+1,172</span></div>
+        <div class="bar"><span>붙이고·떼는 번들 45,000</span><div class="t"><div class="f" style="width:29%;background:var(--teal)"></div></div><span class="v" style="color:var(--teal-d)">+10,090</span></div>
+        <div class="bar"><span>이사·입주 키트 79,000</span><div class="t"><div class="f" style="width:100%;background:var(--teal)"></div></div><span class="v" style="color:var(--teal-d)">+35,148</span></div>
+      </div>
+      <p class="small" style="margin-top:10px">막대 = 손실(빨강) · 이익(초록)의 크기 · 엑셀 '4_주문1건손익'</p>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="dark"><p><b>광고를 늘리기 전에 세트 비중부터 올립니다.</b> 배송비 3,000원을 회사가 내도 키트부터 흑자입니다.</p></div>
+      <div class="card"><h3>새 구성 3개 (기존 SKU 묶음)</h3><ul class="clean" style="margin-top:6px">
+        <li>괴물 부착 키트: 3+1 클리어 + 미니 스크래퍼 = 32,900원(무료배송)</li>
+        <li>붙이고·떼는 번들: 3+1 + 제거제 300ml(52,900원) → 45,000원</li>
+        <li>이사·입주 키트: 3+1 클리어 + 3+1 블랙 + 제거제 + 스크래퍼 세트(92,500원) → 79,000원</li></ul></div>
+      <div class="card amber"><p><b>Q. 무료배송 기준을 낮추면?</b> 모든 주문 배송비를 회사가 내고 객단가 장치가 사라집니다. 키트는 300원 차이를 '제품 추가'로 메웁니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>할인 세트 원가를 정가 기준으로 봐도 번들 +8,905원 · 이사 키트 +33,123원 (부록 D)</span><span>5</span></div>
+</section>
+
+<!-- 6 상세페이지 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">어떻게 ① 상세페이지</div><h2>메디온형 '구성 선택표'를 결제 버튼 바로 위에</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0;gap:22px">
+    <div class="phone" style="width:270px">
+      <div class="notch"></div>
+      <div class="ui-box" style="background:var(--amber-soft)">🎟 카톡 친구 쿠폰 · 재구매 전용 90일</div>
+      <div class="ui-box">⭐ 4.8 · 리뷰 8,745개 "진짜 안 떨어져요"</div>
+      <div class="ui-t">구성 선택 (1롤당 가격)</div>
+      <div class="prod"><span class="pn">3+1</span><span class="pr">29,700</span><br>배송비 3,000원 · 1롤 7,425원</div>
+      <div class="prod on"><span class="pn">괴물 부착 키트</span><span class="bd">기본 선택</span><span class="pr">32,900</span><br>무료배송 · +3,200원으로 스크래퍼</div>
+      <div class="prod"><span class="pn">붙이고·떼는 번들</span><span class="pr">45,000</span><br>15% 할인 · 제거제 포함</div>
+      <div class="prod"><span class="pn">이사·입주 키트</span><span class="pr">79,000</span><br>15% 할인 · 이사 전후 한 번에</div>
+      <div class="ui-btn">키트로 구매하기</div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card"><h3>TO-BE 순서</h3><p style="margin-top:6px">쿠폰 바 → 리뷰 요약 → <b>구성 선택표</b> → 혜택(무료배송·부착법 영상) → 괴물 부착법 4단계 → 2mm 원리·다이소 비교 → 함께 쓰면 좋은 제품 → 후기·FAQ</p></div>
+      <div class="card blue"><h3>CVR은 사람 기준</h3><p style="margin-top:6px">상세를 본 <b>사람</b> 중 산 사람 비율. 세션 기준은 '몇 번 방문했나'라는 변수가 하나 더 들어갑니다.</p></div>
+      <div class="card"><h3>A/B 방법 (카페24 + GTM·GA4·메타 픽셀 설치 확인 ✅)</h3><ul class="clean" style="margin-top:6px">
+        <li>광고 유입: 상세 복제(A·B URL) + 메타 A/B 테스트 → 사람 단위로 나뉨</li>
+        <li>자연 유입: GTM 쿠키로 무작위 배정 + GA4 'ab_group' 속성</li>
+        <li>판정: 그룹당 상세 방문자 약 1.4만 명(2.0% vs 2.5%) → 1~2주</li></ul></div>
+    </div>
+  </div>
+  <div class="foot"><span>복제 상품은 리뷰 0개로 보임 → 리뷰 앱에서 원본 리뷰 공유 노출 설정부터 확인</span><span>6</span></div>
+</section>
+
+<!-- 7 CRM -->
+<section class="slide">
+  <div class="head"><div><div class="kicker teal">어떻게 ② CRM</div><h2>쿠폰은 '재구매 전용 90일', 재구매가 드물면 친구·다른 라인으로</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div class="col" style="flex:1.1">
+      <div class="small" style="font-weight:800">재구매 쿠폰 유효기간별 순효과 (첫 구매 고객 1,000명 · 3,000원)</div>
+      <div class="vbars" style="height:250px">
+        <div class="vb"><span class="n">+23만</span><div class="f" style="height:39%"></div></div>
+        <div class="vb"><span class="n">+37만</span><div class="f" style="height:64%"></div></div>
+        <div class="vb"><span class="n">+58만</span><div class="f" style="height:100%;background:var(--teal)"></div></div>
+        <div class="vb"><span class="n">+42만</span><div class="f" style="height:72%"></div></div>
+      </div>
+      <div class="xl"><span>7일</span><span>30일</span><span>90일</span><span>180일</span></div>
+      <p class="small" style="margin-top:8px">90일 = 테이프 1롤을 다 쓰는 시점(1~3개월)과 겹침. 180일은 '어차피 살 고객'이 쓰는 비율이 커짐. 사용률은 가정 → 30·90·180일 3그룹 홀드아웃으로 확정</p>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card"><h3>첫 구매는 쿠폰 대신 '키트 무료배송'</h3><p style="margin-top:4px">쿠폰은 첫 구매에 못 씁니다. 쿠폰은 마진을 깎고, 무료배송 키트는 객단가를 올립니다.</p></div>
+      <div class="card teal"><h3>친구 추천 페이백</h3><p style="margin-top:4px">친구 첫 구매 3,000원 할인 + 추천인 3,000원 적립 → 1명 획득 <b>6,000원</b> vs 광고 약 1.9만 원</p></div>
+      <div class="card"><h3>재구매 시점 알림톡 · 크로스셀</h3><p style="margin-top:4px">D+60 리필 · D+120 새 공간 · 쿠폰 만료 7일 전 알림. 청소 라인 전용 5,000원 쿠폰(60일) → 1,000명당 공헌이익 약 266만 원</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>크로스셀 주문 비중 5% → 12% = 전용 쿠폰 +3%p · 알림톡 +2%p · 상세 번들 노출 +2%p (가정, 첫 3개월 실측)</span><span>7</span></div>
+</section>
+
+<!-- 8 광고 운영 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">어떻게 ③ 광고</div><h2>모든 소재는 메인 후보 · 목표 ROAS 미달은 OFF · 숲은 MER로</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="formula" style="margin-top:8px">
+    <div class="fb"><div class="e">🎬</div><div class="k">집행</div><div class="t">모든 소재 같은 기준</div></div><div class="op">→</div>
+    <div class="fb"><div class="e">⏱️</div><div class="k">최소 지출</div><div class="t">목표 CPA × 2 ≈ 3.6만 원</div></div><div class="op">→</div>
+    <div class="fb" style="background:var(--rose-soft)"><div class="e">⛔</div><div class="k">목표 ROAS 미달</div><div class="t">바로 OFF</div></div>
+    <div class="fb" style="background:var(--teal-soft)"><div class="e">📈</div><div class="k">목표 ROAS 넘음</div><div class="t">하루 20~30% 증액</div></div>
+  </div>
+  <div class="row" style="margin-top:16px;flex:1;min-height:0">
+    <div class="card" style="flex:1"><h3>테스트 예산을 따로 두지 않습니다</h3><p style="margin-top:6px">테스트용·본 집행용을 나누지 않습니다. 최소 지출 규칙으로 학습 구간만 보장하고, 넘으면 다른 핏(타겟·훅·포맷)으로 디벨롭합니다.</p><p class="small" style="margin-top:8px">1단계 주문당 허용 광고비 17,788원 × 2</p></div>
+    <div class="card blue" style="flex:1"><h3>안전장치 = MER</h3><p style="margin-top:6px">MER = 자사몰 매출 ÷ 자사몰 마케팅비(쿠팡 매출은 빼고 보수적으로). 목표를 받쳐주는 동안 새 소재를 계속 넣고, 밑으로 가면 투입 속도를 줄입니다.</p></div>
+    <div class="card amber" style="flex:1"><h3>예상 질문</h3><p style="margin-top:6px"><b>"3.6만 원이면 전환 1~2건인데?"</b><br>OFF는 빠르게, 증액은 엄격하게. 끄는 손실은 작고, 증액은 전환 20건 이후에만 합니다. 7일 롤링 ROAS가 목표 미만이면 증액 전으로 되돌립니다.</p></div>
+  </div>
+  <div class="foot"><span>"테스트비가 매체비의 몇 %?" → 따로 없습니다. 기준은 소재별 목표 ROAS와 전체 MER입니다</span><span>8</span></div>
+</section>
+
+<!-- 9 ROAS 객단가 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">ROAS의 구조</div><h2>ROAS는 객단가로 오른다 — 액션이 실패하면 증액도 멈춘다</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="formula">
+    <div class="fb"><div class="k">신규 ROAS</div><div class="t">=</div></div>
+    <div class="fb"><div class="k">1,000 ×</div><div class="t">CTR</div></div><div class="op">×</div>
+    <div class="fb"><div class="k">사람 기준</div><div class="t">CVR</div></div><div class="op">×</div>
+    <div class="fb" style="background:var(--blue-soft)"><div class="k">설계로 올림</div><div class="t">객단가</div></div><div class="op">÷</div>
+    <div class="fb"><div class="k">매체 단가</div><div class="t">CPM</div></div>
+  </div>
+  <div class="row" style="margin-top:14px;flex:1;min-height:0">
+    <div style="flex:1.2">
+      <table class="tb">
+        <tr><th>객단가 액션 달성률</th><th>1단계 말</th><th>2단계 말</th><th>3단계 말</th></tr>
+        <tr><td><b>0% (실패)</b></td><td>30,921 · 167%</td><td>30,921 · 179%</td><td>30,921 · 166%</td></tr>
+        <tr><td><b>50%</b></td><td>32,565 · 176%</td><td>34,497 · 200%</td><td>36,516 · 196%</td></tr>
+        <tr class="hi"><td><b>100%</b></td><td>34,209 · 185%</td><td>38,072 · 220%</td><td>42,111 · 226%</td></tr>
+        <tr><td>목표 ROAS</td><td>175%</td><td>210%</td><td>230%</td></tr>
+      </table>
+      <p class="small" style="margin-top:6px">객단가(원) · 계산 신규 ROAS. CTR·CVR·CPM은 같다고 둠 · 엑셀 '6_객단가액션'</p>
+      <div class="card" style="margin-top:10px"><p><b>각주</b>: 3단계는 100% 달성해도 226%로 목표 230%에 4%p 모자랍니다. 위닝 소재 4~5개로 CVR 3.15% → 3.2%(+0.05%p)가 필요하고, 없으면 규칙상 3단계 증액이 느려집니다.</p></div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="dark"><p><b>목표 ROAS가 바뀌면 이익률도 바뀝니다.</b><br>공헌이익률 = 광고 전 공헌이익률 − (1 − 재구매)(1 + 인플루언서) ÷ 목표 ROAS</p></div>
+      <div class="card"><p>1단계 구조: 목표 175% → 공헌이익률 <b>6%</b> · 210% → <b>16%</b> · 230% → <b>20%</b><br>손익분기 ROAS: 1단계 약 158% · 3단계 약 147%</p></div>
+      <div class="card amber"><p><b>Q. CTR·CVR·CPM 근거?</b> 가정입니다. 한국 메타 공식 벤치마크가 없어 1단계 실측으로 바꿉니다. CPM +10%면 ROAS 약 −9%.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>그래서 2단계 증액 조건에 '객단가 3.6만 원 이상'을 함께 둡니다</span><span>9</span></div>
+</section>
+
+<!-- 10 로드맵 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">로드맵</div><h2>단계마다 '증명할 것 1개'와 통과 조건</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div class="card out" style="flex:1"><div class="chip blue">1단계 · M1~M6</div><h3 style="margin-top:10px">증명: 자사몰에서 살 이유</h3><ul class="clean" style="margin-top:8px"><li>상세 구성 선택표 · 키트 3종</li><li>재구매 전용 쿠폰 · 카톡 웰컴</li><li>페르소나 A vs B 4주</li><li>마이크로 인플루언서 월 10명</li></ul><div class="card amber" style="margin-top:10px"><p><b>통과</b>: 신규 ROAS 170% 4주 · 3만 원 이상 주문 50% · 히어로 소재 1개 · 마켓 매출 감소 −3% 이내</p></div></div>
+    <div class="card out" style="flex:1"><div class="chip blue">2단계 · M7~M18</div><h3 style="margin-top:10px">증명: 키워도 ROAS가 버틴다</h3><ul class="clean" style="margin-top:8px"><li>위닝 소재 2~3개 · 구글·틱톡 확장</li><li>번들·시즌 이사 키트</li><li>재구매·크로스셀·추천 CRM</li><li>준메가 격월 1회</li></ul><div class="card amber" style="margin-top:10px"><p><b>통과</b>: 월 매체비 3억에서 신규 ROAS 200% · 객단가 3.6만 원 · 공헌이익률 10%</p></div></div>
+    <div class="card out" style="flex:1"><div class="chip blue">3단계 · M19~M36</div><h3 style="margin-top:10px">증명: 다시 건 돈이 돌아온다</h3><ul class="clean" style="margin-top:8px"><li>목표 ROAS 230%로 재투자</li><li>메가·준메가 + 구글 CPV·리타겟</li><li>한계 신호 시 글로벌(일본)</li></ul><div class="card amber" style="margin-top:10px"><p><b>규칙</b>: 베팅은 3개월 안 회수면 확대, 3~6개월 유지, 6개월 넘으면 중단</p></div></div>
+  </div>
+  <div class="dark" style="margin-top:14px"><p><b>매출 목표에는 끝이 없습니다.</b> 끝없는 목표를 쫓으면 우선순위가 흐려지고 팀 동기가 떨어집니다. 단계마다 성공을 확인하고 넘어갑니다. 못 넘으면 증액을 멈추고, ROAS 분해식으로 막힌 축만 다시 테스트합니다.</p></div>
+  <div class="foot"><span>통과 조건을 못 넘으면 단계 연장 → 누적 적자 상한이 저절로 통제됨</span><span>10</span></div>
+</section>
+
+<!-- 11 리소스 예산 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">리소스 · 예산</div><h2>팀 3명 → 6명 → 9명, 통과 조건을 넘을 때만 늘린다</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <table class="tb" style="margin-top:6px">
+    <tr><th style="width:120px">단계</th><th style="width:90px">인원</th><th>역할</th><th>외부</th><th style="width:120px">고정비(월)</th><th style="width:150px">연 마케팅비</th></tr>
+    <tr><td><b>1단계</b></td><td>3명</td><td>그로스 리드 1(매체·데이터·CRM) · 콘텐츠 마케터 2(기획·촬영·편집, 주 2편 × 인트로 3종 = 소재 6개)</td><td>인플루언서 서칭 대행</td><td>0.30억</td><td rowspan="1">1년차 18.2억</td></tr>
+    <tr><td><b>2단계</b></td><td>6명 (+3)</td><td>퍼포먼스 1(구글·틱톡) · 콘텐츠 1 · CRM 1</td><td>CRM 솔루션</td><td>0.55억</td><td>2년차 44.6억</td></tr>
+    <tr><td><b>3단계</b></td><td>9명 (+3)</td><td>인플루언서·제휴 1 · 글로벌 1 · 콘텐츠 1</td><td>크로스보더 물류</td><td>0.85억</td><td>3년차 97.5억</td></tr>
+  </table>
+  <div class="row" style="margin-top:18px;flex:1;min-height:0">
+    <div class="card" style="flex:1"><h3>고정비 산정</h3><p style="margin-top:6px">1인 월 약 600만 원(4대보험 포함) × 인원 + 운영비(툴·촬영 장비·제작·사무실)</p></div>
+    <div class="card" style="flex:1"><h3>예산 구성</h3><p style="margin-top:6px">인플루언서 = 매체비의 약 7~9%. 1단계 메타 70% · 네이버 20% · 구글 10% → 2단계부터 틱톡·카카오 추가</p></div>
+    <div class="card amber" style="flex:1"><h3>Q. 3명으로 주 6소재 + 매체 + CRM?</h3><p style="margin-top:6px">1단계 CRM은 자동 메시지 3개(D+1·D+7·D+40)만 운영합니다. 매체 운영의 병목은 사람이 아니라 소재 수입니다.</p></div>
+  </div>
+  <div class="foot"><span>적자의 원인은 광고가 아니라 팀 고정비 — 수정안에선 광고 단위 공헌이익이 처음부터 +</span><span>11</span></div>
+</section>
+
+<!-- 12 숫자 + 브랜드 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">숫자</div><h2>자사몰 이익과 브랜드 전체 이익을 한 화면에</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div style="flex:1.15">
+      <div class="small" style="font-weight:800;margin-bottom:4px">자사몰 (연간 합계 기준)</div>
+      <table class="tb">
+        <tr><th>연도</th><th>매출</th><th>공헌이익</th><th>영업이익 (률)</th></tr>
+        <tr><td>1년차</td><td>33억</td><td>2.8억</td><td>−2.3억 (−6.9%)</td></tr>
+        <tr><td>2년차</td><td>96억</td><td>16.8억</td><td>+8.4억 (8.7%)</td></tr>
+        <tr class="hi"><td>3년차</td><td>226억<br><span class="small">국내 195.6 + 글로벌 30.5</span></td><td>46.4억</td><td>+36.2억 (16.0%)</td></tr>
+      </table>
+      <p class="small" style="margin-top:6px">단계 말 '주문 1건 기준' 영업이익률은 −6.6% · 10.4% · 19.1%(연간 값과 다름)</p>
+      <div class="small" style="font-weight:800;margin:12px 0 4px">브랜드 이익 합계 (마켓 공헌이익 + 자사몰 영업이익)</div>
+      <div class="vbars" style="height:120px">
+        <div class="vb"><span class="n">111.6억</span><div class="f" style="height:92%;background:#C5C9D1"></div></div>
+        <div class="vb"><span class="n">106.0억</span><div class="f" style="height:87%"></div></div>
+        <div class="vb"><span class="n">107.7억</span><div class="f" style="height:89%"></div></div>
+        <div class="vb"><span class="n">121.2억</span><div class="f" style="height:100%;background:var(--blue)"></div></div>
+      </div>
+      <div class="xl"><span>지금</span><span>1년차</span><span>2년차</span><span>3년차</span></div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="dark"><p><b>쿠팡 매출은?</b> "경험상 쿠팡 매출이 떨어진 적은 없습니다[사례 1줄]. 그래도 모델엔 자사몰 증가분의 35→25%가 마켓에서 옮겨 온다는 보수 가정을 넣었습니다. 이 가정에서도 3년 누적 브랜드 이익은 줄지 않습니다(+0.3억)."</p><p class="small" style="color:#AEB4C0;margin-top:6px">경험이 답이고, 모델은 안전장치입니다</p></div>
+      <div class="card amber"><p><b>Q. 3년 고생해서 +0.3억?</b> 잠식 최악 가정의 값입니다. 마켓 공헌이익률을 낮게 잡을수록 제 안이 유리합니다(37%면 +10.8억). 3년차부터 연 +9.7억씩 더 남고, 고객 데이터·신제품 채널이 남습니다.</p></div>
+      <div class="card amber"><p><b>Q. 성숙한 제품인데 왜 적자를 감수?</b> 성숙한 건 쿠팡의 클리어겔입니다. 성숙기엔 같은 고객에게 더 파는 것이 성장 수단이고, 그건 고객 데이터가 남는 자사몰에서만 됩니다.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>누적 적자 최대 2.3억(M11) → M18 누적 흑자 · 연 200억 페이스 M29 · 엑셀 '7_월별프로젝션' '8_브랜드전체'</span><span>12</span></div>
+</section>
+
+<!-- 13 Q2 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker vio">Q2 · 히어로 소재</div><h2>"몬스터겔 떨어졌다고요? 이렇게 붙이셨죠?"</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div style="flex:1.1">
+      <div class="small" style="font-weight:800;margin-bottom:6px">20초 스토리보드 — 실제 불만 댓글이 훅, 부착법이 곧 USP</div>
+      <div class="why" style="grid-template-columns:repeat(3,1fr);gap:8px">
+        <div class="w"><div class="n2" style="font-size:18px">0~2초</div><p>벽에서 떨어지는 멀티탭 · "몬스터겔도 떨어지던데요?"</p></div>
+        <div class="w"><div class="n2" style="font-size:18px">2~5초</div><p>먼지 낀 벽에 작은 조각 · "혹시 이렇게 붙이셨나요?"</p></div>
+        <div class="w"><div class="n2" style="font-size:18px">5~12초</div><p>닦기 → 데우기 → 10초 누르기 → 24시간 · "괴물 모드 켜는 법"</p></div>
+        <div class="w"><div class="n2" style="font-size:18px">12~16초</div><p>2mm 단면 vs 얇은 테이프 · "벽의 틈까지 채웁니다"</p></div>
+        <div class="w"><div class="n2" style="font-size:18px">16~18초</div><p>깔끔하게 떼기 · "붙일 땐 괴물, 뗄 땐 깔끔"</p></div>
+        <div class="w"><div class="n2" style="font-size:18px">18~20초</div><p>괴물 부착 키트 · "키트로 무료배송"</p></div>
+      </div>
+      <p class="small" style="margin-top:8px">오래 가는 이유: 메시지(부착법)는 고정, 장소·계절만 바꿈. 피로가 오면 인트로만 교체</p>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card vio"><h3>판별 · 스케일업 기준</h3><ul class="clean" style="margin-top:6px">
+        <li><b>탐색</b>: 최소 지출 3.6만 원 이후, 3초 시청률·CTR 둘 다 같은 주 상위 30%만 검증으로</li>
+        <li><b>검증</b>: 소재당 하루 30~50만 원, 3일 신규 ROAS ≥ 목표 + 전환 20건 → 증액 신호</li>
+        <li><b>증액</b>: 총예산 2~5배, 기존 세트 하루 20~30%, 나머지는 다른 핏으로</li>
+        <li><b>되돌리기</b>: 7일 롤링 ROAS가 목표 미만이면 증액 전으로</li></ul></div>
+      <div class="card"><p>위닝 소재 수: 1단계 1~2개 → 2단계 2~3개 → 3단계 4~5개</p></div>
+      <div class="card amber"><p><b>Q. 부정 댓글 훅은 역효과?</b> 3초 안에 해결(부착법)로 넘어가는 '의심 → 검증' 구조입니다. 부정형 vs 긍정형 훅을 A/B로 비교합니다.</p></div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:12px"><div class="card teal" style="flex:1"><h3>장소로 변주</h3><p style="margin-top:4px">욕실 · 현관 · 베란다 · 차량 — 같은 부착법, 다른 장면</p></div><div class="card teal" style="flex:1"><h3>계절로 변주</h3><p style="margin-top:4px">장마(습기) · 겨울(저온) · 이사철(2~3월) — 실패 원인이 바뀌는 시점</p></div><div class="card teal" style="flex:1"><h3>인트로만 교체</h3><p style="margin-top:4px">실제 불만 댓글 3종 × 촬영 1편 = 소재 3개. 피로가 오면 첫 3초만 바꿈</p></div></div>
+  <div class="foot"><span>제3자가 직접 검증하는 장면을 소재의 중심에 — 지금 광고는 브랜드 자랑 중심</span><span>13</span></div>
+</section>
+
+<!-- 14 Q3 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker vio">Q3 · 저비용 연예인</div><h2>연예인은 광고 모델이 아니라 '검증하는 사람'</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="align-items:center">
+    <div class="tp"><div class="n">마이크로</div><div class="s">월 10명 · 1명 30~50만 원</div><div class="say">싸게 많이 시도 → PA ROAS로 선별</div></div><div class="op">→</div>
+    <div class="tp"><div class="n">준메가</div><div class="s">격월→월 1회 · 1천만 원 이내</div><div class="say">전환이 난 유형에 베팅</div></div><div class="op">→</div>
+    <div class="tp"><div class="n">메가·연예인급</div><div class="s">격월 1회 · 5천만 원 이내</div><div class="say">구글 CPV + 시청자 리타겟</div></div>
+  </div>
+  <div class="row" style="margin-top:14px;flex:1;min-height:0">
+    <div style="flex:1.3">
+      <table class="tb">
+        <tr><th>계약 방식</th><th>예상 비용 🟡</th><th>리스크</th></tr>
+        <tr class="hi"><td style="padding-left:26px;text-indent:-17px"><b>① 기존 출연분 2차 활용권</b><br><span class="small">무(無)속인 EP.8, 112만 뷰</span></td><td>3~6개월 1,000~5,000만 원</td><td>제작사·소속사 모두 동의</td></tr>
+        <tr><td style="padding-left:26px;text-indent:-17px"><b>② 디지털 전용 단기 초상권</b><br><span class="small">SNS·자사몰만 3개월</span></td><td>3,000만~1억 원<br><span class="small">전속 모델의 약 1/3</span></td><td>기간·매체 초과 위약금</td></tr>
+        <tr><td style="padding-left:26px;text-indent:-17px"><b>③ 홈쇼핑 출연분 재사용</b></td><td>수백만~1,000만 원</td><td>홈쇼핑사 저작권</td></tr>
+      </table>
+      <p class="small" style="margin-top:6px">순서: ① 먼저 테스트 → 증분 ROAS가 비용을 넘으면 ② · ①이 안 되면 ③ → 검증된 준메가로 대체</p>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card vio"><h3>콘텐츠 문법 접목</h3><p style="margin-top:4px">몬스터겔 문법 = 의심 → 검증 → 놀람. 연예인에겐 가이드 4줄만: 의심 → 부착법 → 우리 집 테스트 → 솔직한 결과</p></div>
+      <div class="card"><h3>효과 측정</h3><p style="margin-top:4px">같은 본편에 얼굴 있는/없는 인트로 → ROAS 차이 × 예산 = 활용권에 낼 수 있는 상한</p></div>
+      <div class="card amber"><p><b>Q. 메가 효과를 메타 광고와 어떻게 나누나?</b> 공개 전후 2주 메타 예산 고정 · 전용 쿠폰·UTM · 리타겟 10% 홀드아웃</p></div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:12px"><div class="fb"><div class="k">① 비용</div><div class="t">0.7억</div><div class="small">5천만 + CPV 2천만</div></div><div class="op">→</div><div class="fb"><div class="k">② 6개월 증분 매출</div><div class="t">2.5억</div><div class="small">쿠폰 매출의 50~60% + 검색 증가</div></div><div class="op">×</div><div class="fb"><div class="k">③ 광고 전 공헌이익률</div><div class="t">약 64%</div><div class="small">원가 15% 기준</div></div><div class="op">=</div><div class="fb" style="background:var(--vio-soft)"><div class="k">④ 남는 돈</div><div class="t">약 1.6억</div><div class="small">공개 직후 몰리면 2~3개월 회수</div></div></div>
+  <div class="foot"><span>증분이 절반이면 6개월에 겨우 회수 → 확대하지 않고 다음 회차 결과로 판단</span><span>14</span></div>
+</section>
+
+<!-- 15 첫 90일 -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">토론</div><h2>첫 90일에 확인할 것, 그리고 같이 정할 것</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="margin-bottom:14px">
+    <div class="card blue" style="flex:1"><div class="n2 big blue" style="font-size:26px">①</div><p style="margin-top:4px">실제 매출·객단가·원가율·반품률 → 모델 출발점 보정</p></div>
+    <div class="card blue" style="flex:1"><div class="big blue" style="font-size:26px">②</div><p style="margin-top:4px">페르소나 A vs B 신규 ROAS → 메인 페르소나 확정</p></div>
+    <div class="card blue" style="flex:1"><div class="big blue" style="font-size:26px">③</div><p style="margin-top:4px">키트 출시 후 3만 원 이상 주문 비중 → 객단가 가정 검증</p></div>
+  </div>
+  <table class="tb">
+    <tr><th style="width:40px">#</th><th>같이 정할 것</th><th>제 추천</th></tr>
+    <tr><td>1</td><td>마켓 공헌이익률 · 원가율 실제 값</td><td>알려주시면 엑셀에 넣고 이 자리에서 브랜드 이익을 다시 계산합니다</td></tr>
+    <tr><td>2</td><td>키트·번들 할인율</td><td>15%로 시작, 실제 원가율이 20%를 넘으면 10%</td></tr>
+    <tr><td>3</td><td>1단계 통과 조건 수준</td><td>3만 원 이상 주문 50%(목표 60%) · 신규 ROAS 170% 4주</td></tr>
+    <tr><td>4</td><td>채널·출시 캘린더 (쿠팡 MD + 세제 출시)</td><td>단품가는 같게, 자사몰은 단독 구성·신제품 선공개</td></tr>
+    <tr class="hi"><td>5</td><td>이익 vs 속도</td><td>재투자안(3단계 ROAS 230%). 한계 ROAS가 손익분기 아래로 3개월이면 효율 유지안(260%)</td></tr>
+  </table>
+  <div class="row" style="margin-top:12px"><div class="card" style="flex:1"><div class="lab" style="margin-top:0">3만 원 이상 주문</div><div class="big" style="font-size:24px">27% → 60%</div></div><div class="card" style="flex:1"><div class="lab" style="margin-top:0">객단가</div><div class="big" style="font-size:24px">3.1 → 3.4만</div></div><div class="card" style="flex:1"><div class="lab" style="margin-top:0">신규 ROAS</div><div class="big" style="font-size:24px">→ 175%</div></div><div class="card" style="flex:1"><div class="lab" style="margin-top:0">자사몰 월 매출</div><div class="big" style="font-size:24px">1.5 → 2.5억</div></div></div>
+  <div class="dark" style="margin-top:12px"><p><b>"그래서 단계별 규칙입니다."</b> 계획을 고집하지 않고 숫자로 판단합니다. 결과가 가정과 다르면 통과 조건과 예산을 바로 바꿉니다.</p></div>
+  <div class="foot"><span>순서: 데이터 확인 → 운영 → 이익 vs 속도</span><span>15</span></div>
+</section>
+
+<!-- 부록 A -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">부록 A</div><h2>출발점: 자사몰 월 약 1.5억은 이렇게 계산했습니다</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="formula" style="margin-top:44px">
+    <div class="fb"><div class="k">리뷰 중 자사몰</div><div class="t">9.6%</div><div class="small">8,745 ÷ 90,770</div></div><div class="op">×</div>
+    <div class="fb"><div class="k">온라인 비중</div><div class="t">80%</div><div class="small">홈쇼핑 20% 제외</div></div><div class="op">×</div>
+    <div class="fb"><div class="k">리뷰 작성률 보정</div><div class="t">0.97</div><div class="small">적립금 효과</div></div><div class="op">=</div>
+    <div class="fb" style="background:var(--blue-soft)"><div class="k">자사몰 비중</div><div class="t">7.5%</div></div><div class="op">→</div>
+    <div class="fb" style="background:var(--blue-soft)"><div class="k">20억 × 7.5%</div><div class="t">1.5억</div></div>
+  </div>
+  <div class="row" style="margin-top:40px">
+    <div class="card" style="flex:1"><h3>근거</h3><p style="margin-top:6px">클리어겔 3m 리뷰: 쿠팡 60,520 · 네이버 21,505 · 자사몰 8,745 ✅ · 브랜드 월 20억은 과제 제시 ✅</p></div>
+    <div class="card amber" style="flex:1"><h3>Q. 20억 × 9.6% 아닌가?</h3><p style="margin-top:6px">9.6%는 '온라인 3개 채널 안'의 비중이라 홈쇼핑을 빼는 단계를 한 번 더 거칩니다.</p></div>
+    <div class="card amber" style="flex:1"><h3>Q. 리뷰를 판매 비중으로 써도 되나?</h3><p style="margin-top:6px">내부 데이터가 없어 판매량에 가장 비례하는 공개 지표를 썼습니다. 합류 후 첫 확인 항목입니다.</p></div>
+  </div>
+  <div class="card out" style="margin-top:40px"><h3>클리어겔 3m 채널별 리뷰 수 ✅</h3><div class="bars" style="margin-top:10px"><div class="bar"><span>쿠팡</span><div class="t"><div class="f" style="width:100%"></div></div><span class="v">60,520</span></div><div class="bar"><span>네이버</span><div class="t"><div class="f" style="width:35.5%"></div></div><span class="v">21,505</span></div><div class="bar"><span>자사몰</span><div class="t"><div class="f" style="width:14.4%;background:var(--rose)"></div></div><span class="v">8,745</span></div></div></div>
+  <div class="foot"><span>엑셀 '2_출발점'</span><span>A</span></div>
+</section>
+
+<!-- 부록 B -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">부록 B</div><h2>제출본 대비 바뀐 숫자 — 먼저 말합니다</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="dark" style="margin-bottom:14px"><p><b>"제출 후 가정 4개를 다시 봤습니다. 매출 경로는 같고 이익이 좋아졌습니다."</b></p></div>
+  <table class="tb">
+    <tr><th>가정</th><th>제출본</th><th>수정안</th><th>이유</th></tr>
+    <tr><td>원가율</td><td>28%</td><td><b>15%</b></td><td>커머스 통상 10~20%의 중간</td></tr>
+    <tr><td>반품률</td><td>0%</td><td><b>5%</b></td><td>환불 + 회수 배송비 3,000원</td></tr>
+    <tr><td>지금 주문 구성</td><td>단품 30% · 3+1 50% · 번들 20%</td><td><b>소품 6% · 3+1 89% · 워터포 4%</b></td><td>자사몰 상품별 리뷰 수로 재추정</td></tr>
+    <tr><td>객단가 · 3만 원 이상</td><td>2.7만 원 · 70%</td><td><b>3.1만 원 · 27%</b></td><td>위 구성 × 가격</td></tr>
+    <tr><td>CVR 기준</td><td>세션</td><td><b>사람</b></td><td>방문 횟수 변수 제거</td></tr>
+  </table>
+  <div class="row" style="margin-top:14px">
+    <div class="card" style="flex:1"><h3>같은 단순화 규칙끼리 비교</h3><p style="margin-top:4px">누적 적자 5.6억(M16) → <b>2.3억(M11)</b> · 누적 흑자 M29 → <b>M18</b> · 3년차 매출 226억 그대로</p></div>
+    <div class="card" style="flex:1"><h3>제출본 원문 값</h3><p style="margin-top:4px">누적 적자 7.7억(M23) · 흑자 M32 · 3년차 231억. 엑셀은 이를 월 성장률 규칙으로 근사 재현해 조금 다릅니다.</p></div>
+  </div>
+  <div class="card blue" style="margin-top:12px"><p><b>왜 매출은 그대로인가</b>: 매출 = 매체비 × 신규 ROAS ÷ (1 − 재구매). 원가·반품은 이 식에 없습니다. 그래서 바뀐 가정은 매출이 아니라 이익만 움직입니다.</p></div>
+  <div class="foot"><span>엑셀 '1_가정' C3 셀: 1 = 제출본, 2 = 수정안</span><span>B</span></div>
+</section>
+
+<!-- 부록 C -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">부록 C</div><h2>민감도: 가정 하나가 틀리면 무엇이 바뀌나</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div class="card out" style="flex:1"><h3>마켓 공헌이익률 → 브랜드 이익 3년 누적 (지금 대비)</h3>
+      <div class="bars" style="margin-top:14px">
+        <div class="bar"><span>37%</span><div class="t"><div class="f" style="width:100%"></div></div><span class="v">+10.8억</span></div>
+        <div class="bar"><span>45%</span><div class="t"><div class="f" style="width:40%"></div></div><span class="v">+4.3억</span></div>
+        <div class="bar"><span>50% (기본)</span><div class="t"><div class="f" style="width:3%"></div></div><span class="v">+0.3억</span></div>
+      </div>
+      <p class="small" style="margin-top:10px">마켓 마진이 높을수록 잠식으로 잃는 이익이 커집니다 → 낮게 잡을수록 제 안이 유리</p></div>
+    <div class="col" style="flex:1">
+      <div class="card"><h3>원가율 20%면</h3><p style="margin-top:4px">1단계 손익분기 신규 ROAS 약 171%(목표 175% 아래) · 목표에서 공헌이익률 약 +1%. 원가율 5%p ≈ 공헌이익률 5%p</p></div>
+      <div class="card"><h3>CPM · 객단가</h3><p style="margin-top:4px">CPM +10% → ROAS 약 −9% · 객단가 +10% → ROAS +10%</p></div>
+      <div class="card"><h3>목표 ROAS</h3><p style="margin-top:4px">3단계 230% → 210%면 국내 공헌이익률 약 4%p 하락. 민감도 순서: ① 신규 ROAS ② 객단가 ③ 원가</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>이익률 라벨: 단계 말 값 = 주문 1건 기준, 연간 값 = 연 합계 기준</span><span>C</span></div>
+</section>
+
+<!-- 부록 D -->
+<section class="slide">
+  <div class="head"><div><div class="kicker">부록 D · E</div><h2>할인 세트 원가와 나머지 예상 질문</h2></div><div class="logo"><span class="ic">M</span>몬스터겔</div></div>
+  <div class="row" style="flex:1;min-height:0">
+    <div class="col" style="flex:1">
+      <div class="card out"><h3>할인 세트 원가를 정가 기준으로</h3><table class="tb" style="margin-top:6px">
+        <tr><th>구성</th><th>정가 × 15%</th><th>광고 후 공헌이익</th></tr>
+        <tr><td>붙이고·떼는 번들</td><td>52,900 → 원가 7,935</td><td>+8,905원</td></tr>
+        <tr><td>이사·입주 키트</td><td>92,500 → 원가 13,875</td><td>+33,123원</td></tr></table>
+        <p class="small" style="margin-top:6px">결론 같음: 둘 다 흑자</p></div>
+      <div class="card"><h3>상품 링크 (자사몰)</h3><p class="small" style="margin-top:4px">3+1 클리어 product_no=41 · 3+1 블랙 52 · 제거제 68 · 스크래퍼 세트 56 · 청소 올인원 284 · 워터포 222</p></div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card amber"><p><b>Q. 지금 계산 ROAS(138%)가 가정(160%)보다 낮은데?</b> 지금의 CTR·CVR은 측정값이 없는 참고값이라 쓰지 않습니다. 분해식은 1단계부터 실측으로 채웁니다.</p></div>
+      <div class="card amber"><p><b>Q. 키트 재고 운영이 되나?</b> 새 상품이 아니라 기존 SKU를 묶는 구성이라 포장·출고 설정만 바꿉니다. 미니 스크래퍼만 새로 준비합니다.</p></div>
+      <div class="card amber"><p><b>Q. 국내 상한 19억의 근거?</b> 공개 자료가 없어 '지금 브랜드 전체 월 매출 수준'으로 보수적으로 뒀습니다. 운영은 한계 신호 3개 중 2개로 판단합니다.</p></div>
+    </div>
+  </div>
+  <div class="row" style="margin-top:12px"><div class="card" style="flex:1"><h3>쿠폰 한도 "공헌이익의 15~20%"</h3><p style="margin-top:4px">키트 1개 팔아 남는 돈 약 20,600원 중 쿠폰 3,000원 = 약 15%. 20%를 넘으면 광고비를 낼 돈이 모자랍니다.</p></div><div class="card" style="flex:1"><h3>공헌이익으로 판단하는 이유</h3><p style="margin-top:4px">광고를 더 쓸지는 "1개 더 팔면 남나"로 정합니다. 팀 고정비는 광고와 상관없이 같아서, 영업이익은 분기 점검에 씁니다.</p></div></div>
+  <div class="foot"><span>모든 숫자: 몬스터겔_자사몰200억_프로젝션모델.xlsx</span><span>D</span></div>
+</section>
+
+</div></div>
+
+<div id="nav"><button id="prev">‹</button><span class="ct"><span id="cur">1</span> / <span id="tot">1</span></span><button id="next">›</button></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;const tot=slides.length;
+document.getElementById('tot').textContent=tot;
+function show(n){i=Math.max(0,Math.min(tot-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/tot*100)+'%';}
+function next(){show(i+1)} function prev(){show(i-1)}
+document.getElementById('next').onclick=next;
+document.getElementById('prev').onclick=prev;
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){next();e.preventDefault();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){prev();e.preventDefault();}
+  else if(e.key==='Home')show(0); else if(e.key==='End')show(tot-1);
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)next();else if(d>50)prev();});
+function fit(){const d=document.getElementById('deck');
+  const s=Math.min(innerWidth/1280,innerHeight/720);
+  d.style.transform='scale('+s+')';}
+addEventListener('resize',fit);fit();
+const h=parseInt(location.hash.slice(1));show(isNaN(h)?0:h-1);
+</script>
+</body>
+</html>
